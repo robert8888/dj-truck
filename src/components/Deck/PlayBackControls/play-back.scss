@@ -1,0 +1,31 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/mixins.scss";
+
+@mixin play-back-controls ($deck-primary){
+    display: inline-block;
+    .btn.btn-primary{
+
+        @include deck-button($deck-primary);
+        margin: 5px;
+        
+        &.btn-play{
+            margin-left: 2px;
+        }
+        &.btn-cue{
+            font-weight: bold;
+            &.btn--pressed{
+                background: $deck-primary;
+                color: $primary-dark;
+            }
+        }
+    }
+
+
+}
+
+.play-back-controls-A{
+    @include play-back-controls($deck-A-primary);
+}
+.play-back-controls-B{
+    @include play-back-controls($deck-B-primary);
+}

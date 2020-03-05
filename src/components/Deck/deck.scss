@@ -1,0 +1,21 @@
+@import "./../../css/colors.scss";
+
+@mixin deck($primary-color){
+    height: 300px;
+    box-shadow: 0 0 8px 1px rgba(255, 255, 255, .05) inset;
+}
+
+.deck{
+    padding: 5px;
+    background: $secondary-dark;
+    &.deck-A{
+        @include deck($deck-A-primary);
+    }
+    &.deck-B{
+        @include deck($deck-B-primary);
+    }
+
+    .flex-container{
+        display: flex;
+    }
+}

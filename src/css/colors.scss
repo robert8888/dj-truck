@@ -1,0 +1,25 @@
+
+$primary-dark : #1b1b1b;
+$secondary-dark : #313131;
+$tertiary-dark : #616161;
+$primary-light : #999999;
+
+$primary-focus: #4dbcd0;
+
+$primary-text-color: #d4d4d4;
+$secondary-text-color: #1b1b1b;
+
+
+$deck-A-primary: #61cb37;
+$deck-A-primary-dark: darken($deck-A-primary, 30%);
+:export { 
+    deckAPrimary: $deck-A-primary; 
+    deckAPrimaryDark : $deck-A-primary-dark
+}
+
+$deck-B-primary: #e6781f;
+$deck-B-primary-dark: darken($deck-B-primary, 30%);
+:export { 
+    deckBPrimary: $deck-B-primary; 
+    deckBPrimaryDark : $deck-B-primary-dark
+}

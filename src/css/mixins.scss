@@ -1,0 +1,47 @@
+
+// std butto 
+@mixin button($color) {
+    background: $color;
+    border-color:$color;
+
+    &:visited{
+        background: $color;
+        border-color:$color;
+    }
+
+    &:hover,  &:focus,  &:active {
+        background: $primary-dark;
+        border-color: $primary-dark;
+        -webkit-box-shadow: 0 0 0 0.2rem $color;
+        box-shadow: 0 0 0 0.2rem $color  ;
+        color: $color;
+    }
+
+    &:active:hover , &:active:focus, &.active.focus, &.btn--pressed {
+        background: $primary-dark;
+        border-color: $primary-dark;
+        -webkit-box-shadow: 0 0 0 0.2rem $color;
+        box-shadow: 0 0 0 0.2rem $color  ;
+        color: $color;
+    }
+}
+
+
+@mixin deck-button($deck-primary){
+    @include button($deck-primary);
+
+    background: $primary-dark;
+    border-color: $deck-primary;
+    &:hover,  &:focus,  &:active &:active:hover , &:active:focus, &.active.focus{
+        background: $primary-dark;
+        border-color: $primary-dark;
+
+        color:$deck-primary;
+    }
+    &:focus:hover:active{
+        background: $deck-primary;
+        color: $primary-dark;
+    }
+
+
+}

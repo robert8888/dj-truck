@@ -1,0 +1,30 @@
+@import "./../../../css/colors.scss";
+
+
+@mixin pitch-control($deck-color) {
+    background: $secondary-dark ;
+    .slider-area{
+        background: $primary-dark;
+        .slider-range{
+            background: $deck-color;
+        }
+        .slider-thumb{
+            background: $deck-color;
+            border-color: $secondary-dark;
+            &:after{
+                background: $primary-dark;
+            }
+        }
+    }
+}
+
+.pitch{
+    display: flex;
+    &.pitch-A{
+        @include pitch-control($deck-A-primary);
+    }
+    
+    &.pitch-B{
+        @include pitch-control($deck-B-primary);
+    }
+}

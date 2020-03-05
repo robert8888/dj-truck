@@ -1,0 +1,35 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/mixins.scss";
+
+
+@mixin pitch-button($deck-color){
+    float : right;
+    button{
+        @include deck-button($deck-color);
+        &.btn.pitch-btn{
+            height: 21px;
+            line-height: 0;
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            width: 45px;
+            margin: 2px;
+            &.btn-increase {
+    
+            }
+            &.btn-decrease {
+    
+            }
+        
+        }
+    }
+
+}
+
+.pitch-btns-A {
+    @include pitch-button($deck-A-primary);
+}
+
+.pitch-btns-B {
+    @include pitch-button($deck-B-primary);
+}
