@@ -5,9 +5,9 @@ import { togglePlay,
          setTimeLeft,
          setCuePoint, }
          from "./../../actions/actions";
-import Player from "../../components/Deck/Player/Player";
 
 let mixConsole;
+
 export default class Console{
     constructor(){
         store.subscribe(this.handleChange.bind(this));
@@ -19,7 +19,7 @@ export default class Console{
         }
     }
 
-    static Init(){
+    static Create(){
         mixConsole = new Console();
     }
 
@@ -93,13 +93,17 @@ export default class Console{
                 break;
             }
 
-            default : return; //by default don't call any action 
+            case STATUS.PITCH_CHANGE : {
+                this.adjustPitch(diff.channel, diff.currentValue)
+                break;
+            }
+
+            default : return; 
         }
     }
 
     togglePlay(channelName, currentValue){
-        if(currentValue)//paused true
-        {
+        if(currentValue){
             this.channels[channelName].pause();
         } else {
             this.channels[channelName].play();
@@ -126,5 +130,9 @@ export default class Console{
             this.channels[channelName].play();
             this.dispatch(setCuePoint(channelName, cuePoint)) // in float seconds
         }
+    }
+
+    adjustPitch(channelName, currentValue){
+        this.channels[channelName].setPlaybackRate( 1 + currentValue/100 )
     }
 }

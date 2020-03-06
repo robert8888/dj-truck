@@ -25,7 +25,7 @@
             position: absolute;
             height: 14px;
             left: $thumb-horizonatl-shift;
-            //top: 50%;
+            top: 50%;
             transform: translateY(-50%);
             width: $width - 2 * ($thumb-horizonatl-shift + $padding-horizontal);
             margin: 0 auto;

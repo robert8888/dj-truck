@@ -7,7 +7,7 @@
     button{
         @include deck-button($deck-color);
         &.btn.pitch-btn{
-            height: 21px;
+            height: 20px;
             line-height: 0;
             font-weight: bold;
             font-size: 14px;
@@ -15,10 +15,10 @@
             width: 45px;
             margin: 2px;
             &.btn-increase {
-    
+                margin-top: 4px;
             }
             &.btn-decrease {
-    
+                padding-bottom: 10px;
             }
         
         }

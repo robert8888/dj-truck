@@ -14,5 +14,9 @@ export async function search(query = ""){
 export default {
     getUrl : (id) => {
         return apiUrl + "/download?url=https://www.youtube.com/watch?v=" + id ; 
+    },
+
+    getUrlToExternall : (id) => {
+        return "https://www.youtube.com/watch?v=" + id;
     }
 } 

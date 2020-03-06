@@ -4,7 +4,6 @@
 @mixin play-back-controls ($deck-primary){
     display: inline-block;
     .btn.btn-primary{
-
         @include deck-button($deck-primary);
         margin: 5px;
         

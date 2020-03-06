@@ -1,10 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setPitch } from './../../actions/actions';
 import "./deck.scss";
 
-
 import getApi from "./../../apis/apiProvider";
+
 import Player from "./Player/Player";
 import TrackInfo from "./TrackInfo/TrackInfo";
 import PlayBackControls from "./PlayBackControls/PlayBackControls";
@@ -30,13 +29,10 @@ class Deck extends React.Component {
             </div>
             )
         }
-    
 }
 
 const mapStateToProps = (state, ownProps) => ({
     track : state.console.channel[ownProps.name].track,
-    //state : state.console.channel[ownProps.name].playBackState,
 })
-
 
 export default connect(mapStateToProps)(Deck);

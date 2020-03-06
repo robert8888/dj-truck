@@ -12,14 +12,15 @@ import Console from "./core/console/console";
 //components 
 import Search from "./components/Search/Search";
 import Deck from "./components/Deck/Deck";
-import PlayList from "./components/PlayList/PlayList"
+import PlayList from "./components/PlayList/PlayList";
+import Mikser from "./components/Mikser/Mikser";
 
 import { Container, Row, Col } from 'react-bootstrap';
 
 function App() {
 
   useEffect(()=>{
-    Console.Init();
+    Console.Create();
   },[])
 
   return (
@@ -31,7 +32,7 @@ function App() {
                   <Deck active name="A">A</Deck>
                 </Col>
                 <Col className="mikser"  lg="2" xs="2" xl="2"  md="12" sm="12"  style={{background:'white'}}>
-                   Mikser
+                   <Mikser />
                 </Col>
                 <Col className="deck-b" lg="5" xs="5" xl="5"  md="12" sm="12"  >
                   <Deck name="B">B</Deck>

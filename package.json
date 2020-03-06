@@ -22,6 +22,7 @@
     "react-scripts": "3.4.0",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
+    "visualizer-micro": "^0.1.0",
     "wavesurfer": "^1.3.4",
     "web-audio-beat-detector": "^8.0.3"
   },

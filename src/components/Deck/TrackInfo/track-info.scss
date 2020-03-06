@@ -27,6 +27,7 @@ $track-info-height : 60px;
     .track-info-description{
         flex-grow: 5;
         padding-right: 5px;
+        line-height: 0.5rem;
         .track-info-title{
 
         }
@@ -69,13 +70,14 @@ $track-info-height : 60px;
         span{
             text-align: right;
             padding: 0;
-            padding-right : 10px;
+            padding-right : 5px;
             line-height: 14px;
             font-size: 14px;
             width: 60px;
         }
-        .track-bpm-current{
-
+        span.track-bpm-current{
+            font-size: 16px;
+            font-weight: 600;
         }
         .track-bpm-pitch{
 

@@ -1,4 +1,4 @@
-import * as checkers from "./checkers";
+import * as comperators from "./comperators";
 
 let prevState; 
 export default class Observer{
@@ -10,7 +10,7 @@ export default class Observer{
     check(){
         let state = this.store.getState().console;
         let diffs = [];
-        for( let test of  Object.values(checkers)){
+        for( let test of  Object.values(comperators)){
             let response  = test(prevState, state)
             if(response){
                diffs.push(response);

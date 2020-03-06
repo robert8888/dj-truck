@@ -10,12 +10,10 @@ class Slider extends React.Component{
         this.sliderAreaElement = React.createRef();
     }
 
-    static getDerivedStateFromProps(props, state) {
-        console.log("get dirived state from porpos", props, state)
-    }
-
-
     state = {
+        //from get derived stated from props
+        sliderCurrnetPositionFromProps: null,
+
         sliderRange: null,
         sliderCurrnetPosition: null,
         sliderPrevPosition: null,
@@ -25,41 +23,62 @@ class Slider extends React.Component{
         sliderAreaTopOffset : 0,
     }
 
-    getRange = () => {
-        const from = this.props.from;
-        const to = this.props.to;
+    static getRange = (from , to) => {
         return{
             from,
             to,
             range : (from * to < 0) ?  Math.abs(to) + Math.abs(from) : to - from,
         }
-  
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if(!state.sliderRange || !state.thumbHeight) return null;
+
+        const getPostion = (value) => {
+            const { from , range } = Slider.getRange(props.from, props.to);
+            const progress = (value - from)/ range;  
+            const position = progress * (state.sliderRange);
+            return (position + state.thumbHeight / 2 )
+        }
+
+        if(props.value > props.to || props.value < props.from){
+            return null;
+        }
+
+        let currentPosition = getPostion(props.value);
+        return {
+            ...state,
+            sliderCurrnetPositionFromProps: currentPosition,
+        }
+    }
+
+
+
     evalValue = () => {
-        const {from , to,  range} = this.getRange();
+        const {from , range} = Slider.getRange(this.props.from, this.props.to);
         const progress = (this.state.sliderCurrnetPosition - this.state.thumbHeight / 2)
                          / this.state.sliderRange;
 
         let value =  range * progress + from;
-        if(this.props.quantize !== undefined){
-            console.log(this.state.sliderCurrnetPosition)
-            const rest = value % this.props.quantize;
-            return  (value === from || value === to) ? value : value - rest;
-        } 
         return value;
     }
 
     setValue = (value) => {
-        const { from , range } = this.getRange();
+        const { from , range } = Slider.getRange(this.props.from, this.props.to);
         const progress = (value - from)/ range;  
         const position = progress * (this.state.sliderRange);
         this.setPosition(position + this.state.thumbHeight / 2 )
     }
 
+    positionNormalize(position){
+        return Math.min( Math.max(position, this.state.thumbHeight / 2), 
+                        this.state.sliderRange + this.state.thumbHeight / 2 );
+    }
+
+
     setPosition = (currentPosition, prevPosition) => {
         this.setState({...this.state, 
-            sliderCurrnetPosition : currentPosition,
+            sliderCurrnetPosition : this.positionNormalize(currentPosition),
             sliderPrevPosition : prevPosition || this.state.sliderPrevPosition,
         }, ()=>{
             if(this.props.onChange){
@@ -71,7 +90,7 @@ class Slider extends React.Component{
     mouseDownHandle = (event) =>{
         if(event.target === this.sliderAreaElement.current || event.target === this.sliderRangeElement.current){ //temporary
             let clickY = event.clientY - this.sliderAreaElement.current.getBoundingClientRect().top;
-            this.setPosition(clickY, this.state.sliderCurrnetPosition);
+            this.setPosition(clickY, this.state.sliderCurrnetPositionFromProps);
         } else // dragging 
             if(event.target === this.sliderThumbElement.current){ 
             this.setState({...this.state, isDragged: true});
@@ -79,6 +98,7 @@ class Slider extends React.Component{
             document.addEventListener('mousemove', e =>  this.mouseMoveHandler.call(this, e, shiftY))
             document.addEventListener('dragstart', e => e.preventDefault())
         }
+
         document.addEventListener('mouseup', this.mouseUpHandler);
         document.addEventListener('dragend', this.mouseUpHandler);
     }
@@ -101,9 +121,6 @@ class Slider extends React.Component{
                         - this.state.sliderAreaTopOffset 
                         - shiftY 
                         + (this.state.thumbHeight/2);
-
-        position = Math.min( Math.max(position, this.state.thumbHeight/2), 
-                            this.state.sliderRange + this.state.thumbHeight/2 );
        
         this.setPosition(position);
     }
@@ -114,7 +131,6 @@ class Slider extends React.Component{
         const top = parseInt(window.getComputedStyle(this.sliderThumbElement.current).top) ;
         const range = parseInt(window.getComputedStyle(this.sliderRangeElement.current).height)
 
-
         this.setState( state => {
             const _state = {...state};
             _state.sliderCurrnetPosition = top;
@@ -124,18 +140,15 @@ class Slider extends React.Component{
             return _state;
         }, () => {
             if(this.props.value !== undefined){
-                this.setValue(this.props.initValue);
+                this.setValue(this.props.value);
             }
         })
 
         this.sliderAreaElement.current.addEventListener('mousedown',  this.mouseDownHandle.bind(this));
     }
-    shouldComponentUpdate(nextProps){
-        return (nextProps.value !== this.props.value)
-    }
+
 
     render() {
-
             return (
                 <div className="slider" >
                     <div ref={this.sliderAreaElement} className="slider-area">
@@ -143,7 +156,7 @@ class Slider extends React.Component{
                         <div className="slider-thumb" 
                              ref={this.sliderThumbElement} 
                              style={ (this.state.sliderCurrnetPosition !== null || this.state.sliderCurrnetPosition !== undefined)
-                                     && {top: this.state.sliderCurrnetPosition}} />
+                                     && {top: this.state.sliderCurrnetPositionFromProps}} />
                     </div>
                 </div>
             )

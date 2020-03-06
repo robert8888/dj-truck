@@ -20,20 +20,20 @@ const Search = props => {
         setListOpen( false );
     }
 
-
     return (
         <div className="search">
-           <FormControl className="search-control"
-           type="text" 
-           placeholder="Tap in to serach on youtube"
-           onChange={ event => props.searchInputHandler(event.target.value) }
-           onKeyPress = {event => {if(event.key == "Enter") { props.searchStartHandler(props.searchString)}} }
-           onFocus={ openList }
-           value={ props.searchString }
+           <FormControl 
+                className="search-control"
+                type="text" 
+                placeholder="Tap in to serach on youtube"
+                onChange={ event => props.searchInputHandler(event.target.value) }
+                onKeyPress = { event => { if(event.key === "Enter") { props.searchStartHandler(props.searchString)}} }
+                onFocus={ openList }
+                value={ props.searchString }
            />
            <SearchList 
-           open={ listOpen }
-           selectedHandle={ selectedHandel }/>
+                open={ listOpen }
+                selectedHandle={ selectedHandel }/>
         </div>
     );
 }

@@ -7,7 +7,7 @@ import "./pitch-slider.scss";
 const PitchSlider = props => {
     return (
         <div className={"pitch pitch-" + props.name} >
-            <Slider from={-8} to={8} initValue={0} onChange={props.setPitch} value={ props.pitch } quantize={0.01}/>
+            <Slider from={-8} to={8}  onChange={props.setPitch} value={ props.pitch }/>
         </div>
     )
 }
