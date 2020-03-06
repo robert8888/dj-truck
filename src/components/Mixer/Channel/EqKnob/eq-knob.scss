@@ -1,0 +1,6 @@
+@import "./../../../common/Knob/knob.scss";
+@import "./../../../../css/colors.scss";
+
+.eq-knob.knob{
+    @include knob($mikser-primary, 40px)
+}

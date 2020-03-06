@@ -27,7 +27,11 @@ $track-info-height : 60px;
     .track-info-description{
         flex-grow: 5;
         padding-right: 5px;
-        line-height: 0.5rem;
+        height: $track-info-height - 10px;
+        overflow: hidden;
+        span{
+            font-weight: bold;
+        }
         .track-info-title{
 
         }

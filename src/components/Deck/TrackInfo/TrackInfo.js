@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import "./track-info.scss";
 import track_thumbnail from "./../../../assets/img/track_thumbnail.png";
@@ -8,10 +8,15 @@ import { stripHtml } from "./../../../utils/html/htmlHelper.js";
 import { formater } from "./../../../utils/time/timeFromater"
 
 const TrackInfo = props => {
-    let track = useMemo(()=>({
-        ...props.track
-    }), [props.track]);
+    const track = props.track;
+    
+    let title = stripHtml(track.details.title);
+    let seprator = title.indexOf("-");
+    if(seprator !== -1){
+        title = (<Fragment><span>{title.substr(0, seprator)}</span> {title.substr(seprator, title.length)}</Fragment>);
 
+    }
+ 
     return (
         <div className={"track-info deck-" + props.name}>
             <div className="track-info-thumbnail">
@@ -20,9 +25,9 @@ const TrackInfo = props => {
                 src={track.details.thumbnail?.default?.url || track_thumbnail}></img>
             </div>
             <div className="track-info-description">
-                <span className="track-info-title">
-                    { stripHtml(track.details.title) }
-                </span>
+                <p className="track-info-title">
+                    { title }
+                </p>
             </div>
             <div className="track-info-time">
                 <span className="time-left">

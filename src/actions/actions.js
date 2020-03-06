@@ -12,7 +12,7 @@ let ACTIONS = {
     DECREASE_BPM : "Decreasing Bpm on destination chanel"
 }
 
-// ---------Console-------------
+// ---------Console-Decks------------
 
 export function loadTrack(track, destination ){
     return {
@@ -92,6 +92,14 @@ export function decreaseBpm(destination, amount){
         amount
     }
 }
+//-----------Console-Mixer
+
+
+
+
+
+
+
 //--------- Serching----------------
 
 ACTIONS = {

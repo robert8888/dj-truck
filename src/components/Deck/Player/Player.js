@@ -54,7 +54,7 @@ class Player extends React.Component {
             if(wasPlaying){
                 this.props.setTimeLeftHandler(parseInt(this.master.getDuration() - this.master.getCurrentTime()))
             } else {
-                this.props.setTimeLeftHandler(parseInt(this.master.getDuration() * progress))
+                this.props.setTimeLeftHandler(parseInt(this.master.getDuration() - (this.master.getDuration() * progress)))
             }
 
 

@@ -2,9 +2,10 @@ import store from "./../../store";
 import Observer from "./observer/observer";
 import STATUS from "./observer/STATUS";
 import { togglePlay,
-         setTimeLeft,
-         setCuePoint, }
+         setTimeLeft }
          from "./../../actions/actions";
+import Channels from "./channels/channels";
+import Mixer from "./mixer/mixer";
 
 let mixConsole;
 
@@ -13,10 +14,10 @@ export default class Console{
         store.subscribe(this.handleChange.bind(this));
         this.dispatch = store.dispatch;
         this.observer = new Observer(store);
-        this.channels = {
-            A: null, 
-            B: null
-        }
+
+        this.channels = new Channels();
+        this.mixer = new Mixer(this.channels);
+
     }
 
     static Create(){
@@ -32,13 +33,13 @@ export default class Console{
         }
     }
 
-    setPlayer(channel, player){
-        this.channels[channel] = player;
-        this.attachEvents(channel);
+    setPlayer(channelName, player){
+        this.channels.setChannel(channelName, player);
+        this.attachEvents(channelName);
     }
 
     attachEvents(channel){
-        const player = this.channels[channel];
+        const player = this.channels.getChannel(channel);
         player.on('finish', ()=>{
             this.dispatch(togglePlay(channel))
         })
@@ -63,11 +64,11 @@ export default class Console{
             lastCall.time = (new Date()).getTime();
             lastCall.value = progress;
             if(!watcher){
-                watcher = setInterval(()=>{
+                watcher = setTimeout(()=>{
                         if(((new Date()).getTime() - lastCall.time) >= 100)
                         {
                             this.dispatch(setTimeLeft(channel, parseInt(player.getDuration() * lastCall.value)))
-                            clearInterval(watcher);
+                            clearTimeout(watcher);
                             watcher = null
                         }
                     }, 500)
@@ -85,16 +86,16 @@ export default class Console{
     callAction(diff){
         switch(diff.status){
             case STATUS.TOGGLE_PLAY : {
-                this.togglePlay(diff.channel, diff.currentValue);
+                this.channels.togglePlay(diff.channel, diff.currentValue);
                 break;
             }
             case STATUS.TOGGLE_CUE : {
-                this.toggleCue(diff.channel, diff.currentValue)
+                this.channels.toggleCue(diff.channel, diff.currentValue)
                 break;
             }
 
             case STATUS.PITCH_CHANGE : {
-                this.adjustPitch(diff.channel, diff.currentValue)
+                this.channels.adjustPitch(diff.channel, diff.currentValue)
                 break;
             }
 
@@ -102,37 +103,5 @@ export default class Console{
         }
     }
 
-    togglePlay(channelName, currentValue){
-        if(currentValue){
-            this.channels[channelName].pause();
-        } else {
-            this.channels[channelName].play();
-        }
-    }
-
-    toggleCue(channelName, currentValue){
-        const player = this.channels[channelName]
-        const isPaused = store.getState().console.channel[channelName].playBackState.paused;
-        if(!currentValue && isPaused){ // back to cue point and pause
-            let cuePoint =  store.getState().console.channel[channelName].playBackState.cuePoint; //in seconds
-            //seek to
-            player.pause();
-            player.backend.seekTo(cuePoint);
-            player.drawer.progress(cuePoint / player.getDuration());
-            player.drawer.recenter(cuePoint / player.getDuration());
-        } else if(!currentValue) { //Cancel cue and play
-            if(!player.isPlaying()){
-                player.play();
-            }
-        }
-        else {
-            const cuePoint = this.channels[channelName].getCurrentTime();
-            this.channels[channelName].play();
-            this.dispatch(setCuePoint(channelName, cuePoint)) // in float seconds
-        }
-    }
-
-    adjustPitch(channelName, currentValue){
-        this.channels[channelName].setPlaybackRate( 1 + currentValue/100 )
-    }
+ 
 }

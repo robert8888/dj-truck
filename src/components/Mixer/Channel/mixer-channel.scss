@@ -1,0 +1,19 @@
+@import "./../../../css/colors.scss";
+
+
+@mixin  mixer-chanel() {
+  
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    padding-top: 5px;
+    .knob{
+        margin: 5px auto;
+    }
+}
+
+.mixer-channel{
+    &.channel-A, &.channel-B{
+        @include mixer-chanel();
+    }
+}
