@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import WaveSurfer from "wavesurfer";
 import Console from "./../../../core/console/console";
 import config from "./configuration";
-import {setChannelReady , setTimeLeft } from "./../../../actions/actions";
+import {setChannelReady , setTimeLeft } from "./../../../actions";
 import "./player.scss"
 
 class Player extends React.Component {

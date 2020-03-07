@@ -20,9 +20,9 @@ const TrackInfo = props => {
     return (
         <div className={"track-info deck-" + props.name}>
             <div className="track-info-thumbnail">
-                <img 
+                {(track.details.thumbnail?.default?.url && <img 
                 alt="track thumbnails"
-                src={track.details.thumbnail?.default?.url || track_thumbnail}></img>
+                src={track.details.thumbnail?.default?.url}></img>)}
             </div>
             <div className="track-info-description">
                 <p className="track-info-title">

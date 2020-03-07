@@ -3,7 +3,7 @@ import Observer from "./observer/observer";
 import STATUS from "./observer/STATUS";
 import { togglePlay,
          setTimeLeft }
-         from "./../../actions/actions";
+         from "./../../actions";
 import Channels from "./channels/channels";
 import Mixer from "./mixer/mixer";
 

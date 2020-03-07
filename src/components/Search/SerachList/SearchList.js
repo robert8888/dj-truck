@@ -1,4 +1,4 @@
-import { ACTIONS } from "../../../actions/actions";
+import { ACTIONS } from "../../../actions";
 import React from "react";
 import { connect } from "react-redux";
 import { stripHtml } from "./../../../utils/html/htmlHelper";

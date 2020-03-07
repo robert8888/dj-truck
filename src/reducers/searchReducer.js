@@ -1,4 +1,4 @@
-import { ACTIONS } from "../actions/actions";
+import { ACTIONS } from "../actions";
 
 const initState = {
     searchString: "",

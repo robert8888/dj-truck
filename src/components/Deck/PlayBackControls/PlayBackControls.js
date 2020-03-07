@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux"; 
-import { togglePlay , toggleCue , canelCueAndPlay } from "./../../../actions/actions";
+import { togglePlay , toggleCue , canelCueAndPlay } from "./../../../actions";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay , faPause } from '@fortawesome/free-solid-svg-icons';

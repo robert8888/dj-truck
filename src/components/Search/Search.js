@@ -5,7 +5,7 @@ import { FormControl } from "react-bootstrap"
 import SearchList from './SerachList/SearchList.js';
 
 
-import { searchInput, clearSearch, searchStart} from "../../actions/actions.js";
+import { searchInput, clearSearch, searchStart} from "../../actions";
 
 import "./search.scss";
 

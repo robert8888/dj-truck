@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {Button} from "react-bootstrap";
-import { loadTrack} from "../../actions/actions";
+import { loadTrack} from "../../actions";
 
 import "./play-list.scss";
 

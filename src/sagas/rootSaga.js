@@ -1,6 +1,6 @@
 
 import { takeEvery } from 'redux-saga/effects';
-import { ACTIONS } from "../actions/actions";
+import { ACTIONS } from "../actions";
 import ytSearchAsync from "./ytSearchSaga";
 import calcBpmAsync from "./calcBpmSaga";
 

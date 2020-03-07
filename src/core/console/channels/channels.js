@@ -1,6 +1,6 @@
 import store from "./../../../store/";
 import { setCuePoint }
-    from "./../../../actions/actions";
+    from "./../../../actions";
 
 export default class Channels{
     constructor(){

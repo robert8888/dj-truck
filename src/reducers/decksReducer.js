@@ -1,4 +1,4 @@
-import {  ACTIONS } from "./../actions/actions.js";
+import {  ACTIONS } from "./../actions";
 import { produce } from "imer";
 
 const deck = {
