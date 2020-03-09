@@ -1,0 +1,117 @@
+@import "./../../../css/colors.scss";
+
+@mixin slider-vertical($width) {
+    $padding-horizontal: 3px;
+    $thumb-horizonatl-shift: 4px;
+
+    width: $width;
+    background: $secondary-dark ;
+    padding: 0 3px;
+ 
+    .slider-area{
+        position: relative;
+        height: 100%;
+        background: $primary-dark;
+        .slider-range{
+            position: relative;
+            margin: 0 auto;
+            width: 1px;
+            height: calc(100% - 12px);
+            top: 6px;
+            background: grey;
+        }
+
+        .slider-thumb{
+            position: absolute;
+            height: 14px;
+            left: $thumb-horizonatl-shift;
+            top: 50%;
+            transform: translateY(-50%);
+            width: $width - 2 * ($thumb-horizonatl-shift + $padding-horizontal);
+            margin: 0 auto;
+            background: white;
+
+            &:after{
+                content: "";
+                display: block;
+                position: absolute;
+                width: calc(100% - 2px);
+                left: 1px;
+                height: 3px;
+                background: $primary-dark;
+                top: 50%;
+                transform: translateY(-50%);
+
+            }
+        }
+    }
+}
+
+
+
+@mixin slider-horizontal($height) {
+    $padding-vertical: 3px;
+    $thumb-vertical-shift: 4px;
+
+    width: 100%;
+    height: $height;
+    background: $secondary-dark ;
+    padding: 3px 0;
+ 
+    .slider-area{
+        position: relative;
+        height: 100%;
+        background: $primary-dark;
+        .slider-range{
+            position: relative;
+            top:50%;
+            transform: translateY(-1px);
+            height: 1px;
+            width: calc(100% - 12px);
+            left: 6px;
+            background: grey;
+        }
+
+        .slider-thumb{
+            position: absolute;
+            width: 14px;
+            top: $thumb-vertical-shift;
+            left: 50%;
+            transform: translateX(-50%);
+            height: $height - 2 * ($thumb-vertical-shift + $padding-vertical);
+            margin: 0 auto;
+            background: white;
+
+            &:after{
+                content: "";
+                display: block;
+                background: $primary-dark;
+                position: absolute;
+                height: calc(100% - 2px);
+                width: 3px;
+                left: 50%;
+                top:1px;
+                transform: translateX(-50%);
+
+            }
+        }
+    }
+}
+
+@mixin slider-color($deck-color) {
+    background: $secondary-dark ;
+    .slider-area{
+        background: $primary-dark;
+        .slider-range{
+            background: $deck-color;
+        }
+        .slider-thumb{
+            background: $deck-color;
+            border-color: $secondary-dark;
+            &:after{
+                background: $primary-dark;
+            }
+        }
+    }
+}
+

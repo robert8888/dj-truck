@@ -1,0 +1,22 @@
+@import "./../../../css/colors.scss";
+@import "./../../common/Slider/slider.scss";
+
+.fader {
+  padding: 10px;
+  .fader.slider {
+    @include slider-horizontal(50px);
+    @include slider-color($mixer-primary);
+  }
+
+  .zero-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: darken($mixer-primary, 20%);
+    border: 2px solid $primary-dark;
+    margin: 0 auto;
+    &.indicator--active {
+      background: $mixer-primary;
+    }
+  }
+}
