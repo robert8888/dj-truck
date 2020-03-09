@@ -1,35 +1,33 @@
-.layout.container{
-    margin-top: 20px;
-    padding: 0;
-    .dj-truck-console{
-        display: flex;
+.layout.container {
+  margin-top: 20px;
+  padding: 0;
+  .dj-truck-console {
+    display: flex;
 
-        .deck{
-            width: calc((100% - 250px)/2);
-        }
-        .mixer{
-            width: 250spx;
-        }
+    .deck {
+      width: calc((100% - 250px) / 2);
     }
-    @media (max-width: $vertical-break-point){
-        .dj-truck-console{
-            flex-wrap: wrap;
-            .deck{
-                width: 100%;
-            }
+    .mixer {
+      width: 250spx;
+    }
+  }
+  @media (max-width: $vertical-break-point) {
+    .dj-truck-console {
+      flex-wrap: wrap;
+      .deck {
+        width: 100%;
+      }
 
-            .mixer {
-                order:2;
-                width: 100%;
-            }
-        }   
-    }   
+      .mixer {
+        order: 2;
+        width: 100%;
+      }
+    }
+  }
 }
 
-
-@media (min-width: 1450px)
-{
-    .container-xl {
-        max-width: 1400px;
-    }
+@media (min-width: 1450px) {
+  .container-xl {
+    max-width: 1400px;
+  }
 }
