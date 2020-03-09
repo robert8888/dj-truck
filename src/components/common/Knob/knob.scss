@@ -94,5 +94,5 @@
 }
 
 .knob{
-    @include knob($mikser-knob-primary, 100px)
+    @include knob($mixer-knob-primary, 100px)
 }

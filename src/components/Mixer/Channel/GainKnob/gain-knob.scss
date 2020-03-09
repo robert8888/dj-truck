@@ -2,5 +2,5 @@
 @import "./../../../../css/colors.scss";
 
 .gain-knob.knob{
-    @include knob($mikser-primary, 45px)
+    @include knob($mixer-knob-primary, 45px)
 }

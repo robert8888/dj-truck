@@ -11,6 +11,10 @@ export default class Channels{
         }
     }
 
+    getChannelNames(){
+        return Object.keys(this.channels);
+    }
+
     setChannel(channelName, player){
         this.channels[channelName] = player;
     }

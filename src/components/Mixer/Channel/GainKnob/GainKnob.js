@@ -8,8 +8,9 @@ const GainKnob = props =>{
         <Knob className={"gain-knob " + props.className} 
             showValue 
             scale={100} 
-            initValue={75}
-            quantize={5} 
+            unsymetric={{positive:4}}
+            alt="Gain"
+            quantize={{negative: 5, positive:1}} 
             onChange={ props.onChange }/>
     )
 }

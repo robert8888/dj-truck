@@ -1,17 +1,34 @@
 @import "./../../css/colors.scss";
+@import "./../../css/general.scss";
 
 .mixer{
     background: $secondary-dark;
-    width: 100%;
-    height: 100%;
+    width: 250px;
+   // height: 100%;
+    padding: 5px;
+    display: grid;
+    @media (max-width : $vertical-break-point ) {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas: 
+        "channel-a fader channel-b";
+    }
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+    "channel-a channel-b"
+    "fader fader";
     .mixer-channel{
-        margin: 10px 15px;
+        width: 100%;
+
         &.channel-A{
-            float: left;
+            grid-area: channel-a;
         }
         &.channel-B{
-            float: right;
+            grid-area: channel-b;
         }
+    }
+
+    .fader{
+        grid-area: fader;
     }
 
 }

@@ -24,5 +24,9 @@ $deck-B-primary-dark: darken($deck-B-primary, 30%);
     deckBPrimaryDark : $deck-B-primary-dark
 }
 
-$mikser-primary: #4dbcd0;
-$mikser-knob-primary: #4dbcd0;
+$mixer-primary: #4dbcd0;
+$mixer-knob-primary: #4dbcd0;
+
+$mixer-level-meter: #4dbcd0;
+$mixer-level-meter-cliping: #ee000c;
+$mixer-level-meter-safe: #ee8700;

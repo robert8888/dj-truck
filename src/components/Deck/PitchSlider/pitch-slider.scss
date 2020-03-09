@@ -1,7 +1,8 @@
 @import "./../../../css/colors.scss";
+@import "./../../common/Slider/slider.scss";
 
 
-@mixin pitch-control($deck-color) {
+@mixin slider-color($deck-color) {
     background: $secondary-dark ;
     .slider-area{
         background: $primary-dark;
@@ -20,11 +21,16 @@
 
 .pitch{
     display: flex;
+    .slider{
+        @include slider-vertical(50px);
+    }
+
     &.pitch-A{
-        @include pitch-control($deck-A-primary);
+        @include slider-color($deck-A-primary);
+
     }
     
     &.pitch-B{
-        @include pitch-control($deck-B-primary);
+        @include slider-color($deck-B-primary);
     }
 }

@@ -2,5 +2,5 @@
 @import "./../../../../css/colors.scss";
 
 .eq-knob.knob{
-    @include knob($mikser-primary, 40px)
+    @include knob($mixer-knob-primary, 40px)
 }

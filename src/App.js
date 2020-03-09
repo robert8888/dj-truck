@@ -27,17 +27,11 @@ function App() {
       <div className="app">
           <Provider store={store}>
             <Container className="layout container-xl" >
-              <Row className="console">
-                <Col className="deck-a" lg="5" xs="5" xl="5"  md="12" sm="12" >
-                  <Deck active name="A">A</Deck>
-                </Col>
-                <Col className="mikser"  lg="2" xs="2" xl="2"  md="12" sm="12"  style={{background:'white'}}>
-                   <Mixer />
-                </Col>
-                <Col className="deck-b" lg="5" xs="5" xl="5"  md="12" sm="12"  >
-                  <Deck name="B">B</Deck>
-                </Col>
-              </Row>
+              <div class="dj-truck-console">
+                <Deck name="A">A</Deck>
+                <Mixer />
+                <Deck name="B">B</Deck>
+              </div>
               <Row>
                 <Col>
                   <Search/>

@@ -35,9 +35,10 @@ const initState = {
 
 function nextState(part){
     return (state, destination, haveToBeReady, variables)=>{
+
         if(!state.channel[destination]) return state;
         if(haveToBeReady && !state.channel[destination].playBackState.ready) return state;
-    
+
         const nextState = produce(state, (draftState) => {
             for(let [variable, value] of Object.entries(variables)){
                 if(part === "playBackState"){
@@ -47,6 +48,7 @@ function nextState(part){
                 }
             }
         })
+        
         return nextState;
     }
 }

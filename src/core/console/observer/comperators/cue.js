@@ -8,6 +8,8 @@ const responseTempalte = {
 }*/
 
 export default function cueActive(prev, current){
+    prev = prev.console;
+    current = current.console;
     let response = null;
     for(let channelName of Object.keys(prev.channel)){
         const prevValue = prev.channel[channelName].playBackState.cueActive;

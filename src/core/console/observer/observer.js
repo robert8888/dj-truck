@@ -4,11 +4,11 @@ let prevState;
 export default class Observer{
     constructor(store){
         this.store = store;
-        prevState = store.getState().console;
+        prevState = store.getState();
     }
 
     check(){
-        let state = this.store.getState().console;
+        let state = this.store.getState();
         let diffs = [];
         for( let test of  Object.values(comperators)){
             let response  = test(prevState, state)

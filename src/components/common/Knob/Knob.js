@@ -2,6 +2,20 @@ import React from "react";
 import style from "./knob.scss";
 
 
+// Spec 
+// witout any option Knob is standard with value from 0 to 100 and on inti value is 0
+// -initValue:number allow to set init value
+// -showValue props allows to display numeric value on knob
+// -diplayFormula : a callbac function with will be used to show value on knob
+// -scale:number allow to scale value eg. 10 give range from 0 to 10 
+// -symetric:boolean if this props is present knob havse valeu from -100 to 100 * scale 
+// -unsymetric:{negative:number, positive:number} allows to set unsymetric range value : 
+//  {positive : 5 } means that values bigger than 0 are divided by 5 range is from -100 to 20 * scale
+// -quantize:number switch knob to quantize mode in witch returned values are quantize to parametr 
+//       eg: 2 returns value 100, 98 , 96 ... quantize:0.05 returns values 100, 99.95.... 
+// -qunatize:{negative:number, positive:number} allows to set diffrent qunatizes for negative and positives values.
+// -responseFactor if is present adjust knob response on a mouse move // default= 1 eg responseFactor 2 will increase response two times
+// -alt if is present when mouse is over and knob is not draggin it will display alt value 
 
 class Knob extends React.Component{
 
@@ -169,7 +183,8 @@ class Knob extends React.Component{
 
     mouseMove(startY, event){
         event.stopPropagation();
-        let position = this.state.snapShotPostion - 2 * (event.clientY  - startY);
+        let responsFactor = this.props.responsFactor || 1;
+        let position = this.state.snapShotPostion - (event.clientY  - startY) * responsFactor;
         this.setPostion(position);
     }
 
@@ -202,6 +217,19 @@ class Knob extends React.Component{
     }
 
     render(){
+        let value = ""
+        if(this.state.isMouseOver && !this.state.isDragged && this.props.alt){
+            value = this.props.alt.substr(0,4).toUpperCase();
+        } else {
+            if(this.props.showValue){
+                value = this.evalValue(this.state.position)
+            }
+            if(this.props.displayFormula){
+                value = this.props.displayFormula(value);
+            }
+        }
+
+        
         return (
             <div className={"knob " + this.props.className}
                 onMouseDown={this.mouseDown.bind(this)}
@@ -222,7 +250,7 @@ class Knob extends React.Component{
                     {( this.props.showValue && <div className={"knob-value " + ((this.state.isActive) ? "knob--focus" : "")}
                         onMouseEnter={ this.mouseEnter.bind(this)}
                         onMouseLeave={ this.mouseLeve.bind(this)}>
-                        { this.evalValue(this.state.position) }
+                        { value }
                     </div>)}
                 </div>
                 <div 

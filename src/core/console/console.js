@@ -33,8 +33,13 @@ export default class Console{
         }
     }
 
+    getMixerChannelInterface(channelName){
+        return this.mixer.getChannelInterface(channelName);
+    }
+
     setPlayer(channelName, player){
         this.channels.setChannel(channelName, player);
+        this.mixer.setUpAudioNodes(channelName);
         this.attachEvents(channelName);
     }
 
@@ -93,15 +98,32 @@ export default class Console{
                 this.channels.toggleCue(diff.channel, diff.currentValue)
                 break;
             }
-
             case STATUS.PITCH_CHANGE : {
                 this.channels.adjustPitch(diff.channel, diff.currentValue)
                 break;
             }
-
+            case STATUS.GAIN_CHANGE : {
+                this.mixer.setGain(diff.channel, diff.currentValue);
+                break;
+            }
+            case STATUS.EQ_LOW_CHANGE : {
+                this.mixer.setEqLow(diff.channel, diff.currentValue);
+                break;
+            }
+            case STATUS.EQ_MID_CHANGE : {
+                this.mixer.setEqMid(diff.channel, diff.currentValue);
+                break;
+            }
+            case STATUS.EQ_HI_CHANGE : {
+                this.mixer.setEqHigh(diff.channel, diff.currentValue);
+                break;
+            }
+            case STATUS.FADER_CHANGE : {
+                this.mixer.setFader(diff.currentValue);
+                break;
+            }
             default : return; 
         }
     }
 
- 
 }

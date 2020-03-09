@@ -1,6 +1,14 @@
-import React from "react"
+import React from "react";
+import {connect} from "react-redux";
 import EqKnob from "./EqKnob/EqKnob"
 import GainKnob from "./GainKnob/GainKnob";
+import PeakLevelMeter from "./PeakLevelMeter/PeakLevelMeter";
+import {
+    setGain,
+    setLow,
+    setMid,
+    setHi
+} from "./../../../actions";
 
 import "./mixer-channel.scss";
 
@@ -9,15 +17,25 @@ class Channel extends React.Component{
     render(){
         return (
             <div className={"mixer-channel channel-" + this.props.name }>
-                <GainKnob className="eq-mid" onChange={ value => console.log(value)}/>
-                <EqKnob band="mid" className="eq-hi" onChange={ value => console.log(value)}/>
-                <EqKnob band="mid" className="eq-mid" onChange={ value => console.log(value)}/>
-                <EqKnob band="low" className="eq-low" onChange={ value => console.log(value)}/>
+                <PeakLevelMeter name={this.props.name}/>
+                <div className="knobs">
+                    <GainKnob className="eq-gain" onChange={ this.props.setGain }/>
+                    <EqKnob alt="Hi" className="eq-hi" onChange={ this.props.setHi }/>
+                    <EqKnob alt="Mid" className="eq-mid" onChange={this.props.setMid }/>
+                    <EqKnob alt="Low" className="eq-low" onChange={ this.props.setLow }/>
+                </div>
+
             </div>
         )
     }
 
 }
 
+const mapDispachToProps = (dispatch, ownProps) =>({
+    setGain : (value) => dispatch(setGain(ownProps.name, value)),
+    setHi : (value) => dispatch(setHi(ownProps.name, value)),
+    setMid : (value) => dispatch(setMid(ownProps.name, value)),
+    setLow : (value) => dispatch(setLow(ownProps.name, value)),
+})
 
-export default Channel;
+export default connect(null, mapDispachToProps)(Channel);
