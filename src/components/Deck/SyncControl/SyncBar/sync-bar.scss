@@ -1,0 +1,43 @@
+@import "./../../../../css/colors.scss";
+
+@mixin sync-bar($color){
+    &.sync-bar{
+        width: 100%;
+        margin-right: 50px;
+        margin-left: 20px;
+        .bar-area{
+            position: relative;
+            height: 100%;
+            width: 100%;
+            background: $primary-dark;
+            &:after{
+                content: "";
+                display: block;
+                width: 1px;
+                height: 100%;
+                background: $color;
+                position: absolute;
+                left: 50%;
+                top:0;
+                transform: translateX(-50%);
+            }
+            .bar-thumb{
+                position: absolute;
+                top:15%;
+                transition: width 0.1s;
+                height: 70%;
+                width: 50%;
+                left: 50%;
+                background: $color;
+            }
+        }
+    }
+}
+
+.sync-bar-deck-A{
+    @include sync-bar($deck-A-primary)
+}
+
+.sync-bar-deck-B{
+    @include sync-bar($deck-B-primary)
+}
