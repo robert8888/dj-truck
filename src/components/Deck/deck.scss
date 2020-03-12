@@ -1,13 +1,14 @@
 @import "./../../css/colors.scss";
 
 @mixin deck($primary-color){
-    height: 300px;
     box-shadow: 0 0 8px 1px rgba(255, 255, 255, .05) inset;
 }
 
 .deck{
     padding: 5px;
+    padding-bottom: 0;
     background: $secondary-dark;
+    border: 1px solid;
     &.deck-A{
         @include deck($deck-A-primary);
     }
@@ -17,5 +18,9 @@
 
     .flex-container{
         display: flex;
+    }
+    
+    .control-buttons{
+        padding: 2px 0;
     }
 }

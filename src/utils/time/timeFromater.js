@@ -15,8 +15,8 @@ const ytToObj = (ytTime) => {
 const objToStr = (objTime) => {
     let { h = 0, m = 0, s = 0}  = objTime;
     const houre =  ( h === 0 ) ? "" : h + ":";
-    const minute = ( m === 0 ) ? "0:" : (m < 10) ?  "0" + m + ":" : m + ":";
-    const seconds = ( s === 0 ) ? "0" : (s < 10) ?  "0" + s : s;
+    const minute = ( m === 0 ) ? "00:" : (m < 10) ?  "0" + m + ":" : m + ":";
+    const seconds = ( s === 0 ) ? "00" : (s < 10) ?  "0" + s : s;
     
     return houre + minute + seconds;
 }

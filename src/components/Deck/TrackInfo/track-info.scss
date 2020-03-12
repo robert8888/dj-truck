@@ -9,7 +9,6 @@ $track-info-height : 60px;
 @mixin track-info($deck-primary-color){
     height: $track-info-height;
     display: flex;
-    margin-bottom: 5px;
     background: $primary-dark;
 
     .track-info-thumbnail{

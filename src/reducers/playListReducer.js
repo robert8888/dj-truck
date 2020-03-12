@@ -23,6 +23,16 @@ function playListReducer(state = initState, action){
             return produce(state, draftState => { draftState.list[index].bpm = action.bpm; })
         }
 
+        case ACTIONS.SET_BPM_AND_OFFSET : {
+            const source = action.source;
+            const id = action.id;
+            let index = state.list.findIndex( element => (element.id === id && element.source === source));
+            return produce(state, draftState => { 
+                draftState.list[index].bpm = action.bpm;
+                draftState.list[index].offset = action.offset;
+             })
+        }
+
         default : return state;
     }
 }

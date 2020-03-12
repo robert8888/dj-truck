@@ -5,8 +5,8 @@ const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + var
 
 const masterConfig = (container, name) => ({ // name deck A or B 
     container: container,
-    waveColor: getCssColor('Primary', name) || 'white',
-    progressColor: getCssColor('PrimaryDark', name) || 'gray',
+    waveColor: (name && getCssColor('Primary', name)) || 'white',
+    progressColor: (name && getCssColor('PrimaryDark', name))|| 'gray',
     autoCenter : true,
     scrollParent: true,
     hideScrollbar:true,
@@ -17,8 +17,8 @@ const masterConfig = (container, name) => ({ // name deck A or B
 
 const slaveConfig = (container, name) => ({
     container: container,
-    waveColor: getCssColor('Primary', name) || 'white',
-    progressColor: getCssColor('PrimaryDark', name) || 'gray',
+    waveColor: (name && getCssColor('Primary', name)) || 'white',
+    progressColor: (name && getCssColor('PrimaryDark', name)) || 'gray',
     fillParent: true,
     scrollParent : false,
     hideScrollbar: true,

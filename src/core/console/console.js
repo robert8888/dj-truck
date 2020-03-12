@@ -37,24 +37,29 @@ export default class Console{
         return this.mixer.getChannelInterface(channelName);
     }
 
+    getChannelInterface(channelName){
+        return this.channels.getChannelInterface(channelName);
+    }
+
     setPlayer(channelName, player){
         this.channels.setChannel(channelName, player);
         this.mixer.setUpAudioNodes(channelName);
         this.attachEvents(channelName);
     }
 
-    attachEvents(channel){
-        const player = this.channels.getChannel(channel);
+    attachEvents(channelName){
+        const player = this.channels.getChannel(channelName);
         player.on('finish', ()=>{
-            this.dispatch(togglePlay(channel))
+            this.dispatch(togglePlay(channelName))
         })
 
         let lastUpdate = (new Date()).getTime();
         player.on('audioprocess', ()=>{
             const currentTime = (new Date()).getTime();
-            if((currentTime - lastUpdate) >= 999){
+            if((currentTime - lastUpdate) >= 500){
                 lastUpdate = currentTime;
-                this.dispatch(setTimeLeft(channel, parseInt(player.getDuration() - player.getCurrentTime())))
+            //    this.dispatch(setTimeLeft(channelName, parseInt(player.getDuration() - player.getCurrentTime())))
+                this.channels.updatePosition(channelName)
             }
         })
         // updating time Left value
@@ -72,7 +77,7 @@ export default class Console{
                 watcher = setTimeout(()=>{
                         if(((new Date()).getTime() - lastCall.time) >= 100)
                         {
-                            this.dispatch(setTimeLeft(channel, parseInt(player.getDuration() * lastCall.value)))
+                            this.dispatch(setTimeLeft(channelName, parseInt(player.getDuration() * lastCall.value)))
                             clearTimeout(watcher);
                             watcher = null
                         }
@@ -90,6 +95,10 @@ export default class Console{
 
     callAction(diff){
         switch(diff.status){
+            case STATUS.TRACK_LOADED : {
+                this.channels.loadTrack(diff.channel, diff.currentValue);
+                break;
+            }
             case STATUS.TOGGLE_PLAY : {
                 this.channels.togglePlay(diff.channel, diff.currentValue);
                 break;
@@ -121,6 +130,10 @@ export default class Console{
             case STATUS.FADER_CHANGE : {
                 this.mixer.setFader(diff.currentValue);
                 break;
+            }
+
+            case STATUS.SYNC_ACTIVATE : {
+                this.channels.sync(diff.channel);
             }
             default : return; 
         }

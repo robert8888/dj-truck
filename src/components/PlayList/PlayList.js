@@ -15,6 +15,7 @@ const Row = (props) => {
         duration : props.item.duration, 
         source: props.item.source || "YouTube",
         bpm: props.item.bpm, 
+        offset : props.item.offset,
         quality : props.item.quality,
         thumbnail : props.item.thumbnails
     };
@@ -34,7 +35,7 @@ const Row = (props) => {
     )
 }
 
-const mapDispachToProps = dispach =>({
+const mapDispachToProps = dispach => ({
     load : (track, destination) => dispach(loadTrack(track, destination))
 })
 

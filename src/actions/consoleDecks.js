@@ -8,8 +8,11 @@ const  ACTIONS = {
     TOGGLE_CUE : "Toggle $active_cue in  $destination chanel",
     CANCEL_CUE_AND_PLAY : "Set paused to false what triger play and after that set cueActive to false",
     SET_CUE_POINT : "Setting cue point from actual tarck position",
-    INCREASE_BPM : "Increasing Bpm on destination chanel",
-    DECREASE_BPM : "Decreasing Bpm on destination chanel"
+    INCREASE_PITCH : "Increasing Bpm on destination chanel",
+    DECREASE_PITCH : "Decreasing Bpm on destination chanel",
+    TOGGLE_SYNC: "Toggle $isSync state on $destynation channel",
+    SET_MASTER: "set $master valeu to $destynation channel",
+    SET_SYNC: "set sync $value to $destination channel "
 }
 export {ACTIONS as CONSOLE_ACTIONS}
 // ---------Console-Decks------------
@@ -77,18 +80,40 @@ export function setTimeLeft(destination, timeLeft){
     }
 }
 
-export function increaseBpm(destination, amount){
+export function increasePitch(destination, amount){
     return {
-        type: ACTIONS.INCREASE_BPM, 
+        type: ACTIONS.INCREASE_PITCH, 
         destination,
         amount
     }
 }
 
-export function decreaseBpm(destination, amount){
+export function decreasePitch(destination, amount){
     return {
-        type: ACTIONS.DECREASE_BPM, 
+        type: ACTIONS.DECREASE_PITCH, 
         destination,
         amount
+    }
+}
+
+export function setMaster(destination){
+    return {
+        type: ACTIONS.SET_MASTER, 
+        destination,
+    }
+}
+
+export function toggleSync(destination){
+    return {
+        type: ACTIONS.TOGGLE_SYNC, 
+        destination,
+    }
+}
+
+export function setSync(destination,value){
+    return {
+        type: ACTIONS.SET_SYNC,
+        destination,
+        value
     }
 }

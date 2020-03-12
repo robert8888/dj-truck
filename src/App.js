@@ -27,7 +27,7 @@ function App() {
       <div className="app">
           <Provider store={store}>
             <Container className="layout container-xl" >
-              <div class="dj-truck-console">
+              <div className="dj-truck-console">
                 <Deck name="A">A</Deck>
                 <Mixer />
                 <Deck name="B">B</Deck>

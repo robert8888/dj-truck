@@ -1,7 +1,7 @@
 import React from "react"
 import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import {increaseBpm, decreaseBpm} from "./../../../actions";
+import {increasePitch, decreasePitch} from "./../../../actions";
 import "./pitch-buttons.scss"
 
 const buttonStepAmount = 0.01;
@@ -46,8 +46,8 @@ const PitchButtons = props =>{
 }
 
 const mapDispachToProps = (dispatch, ownProps) =>({
-    increaseBpm : () => dispatch(increaseBpm(ownProps.name, buttonStepAmount)),
-    decreaseBpm : () => dispatch(decreaseBpm(ownProps.name, buttonStepAmount)),  
+    increaseBpm : () => dispatch(increasePitch(ownProps.name, buttonStepAmount)),
+    decreaseBpm : () => dispatch(decreasePitch(ownProps.name, buttonStepAmount)),  
 })
 
 export default connect(null, mapDispachToProps)(PitchButtons);
