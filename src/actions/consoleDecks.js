@@ -1,6 +1,7 @@
 //Actions types 
 const  ACTIONS = {
     LOAD_TRACK : "Load $track to $destination channel",
+    SET_LOADING_PROGRESS : "set $value of loading progress to $destination channel",
     SET_READY : "Set channel ready playBackStatus",
     SET_PITCH : "Settin $pitch to $destiantion channel", 
     SET_TIME_LEFT: "Sett $timeLEft to $destination channel",
@@ -12,7 +13,8 @@ const  ACTIONS = {
     DECREASE_PITCH : "Decreasing Bpm on destination chanel",
     TOGGLE_SYNC: "Toggle $isSync state on $destynation channel",
     SET_MASTER: "set $master valeu to $destynation channel",
-    SET_SYNC: "set sync $value to $destination channel "
+    SET_SYNC: "set sync $value to $destination channel ",
+
 }
 export {ACTIONS as CONSOLE_ACTIONS}
 // ---------Console-Decks------------
@@ -22,6 +24,14 @@ export function loadTrack(track, destination ){
         type: ACTIONS.LOAD_TRACK,
         track: track,
         destination : destination
+    }
+}
+
+export function setLoadingProgress(destination, value){
+    return {
+        type: ACTIONS.SET_LOADING_PROGRESS,
+        destination,
+        value,
     }
 }
 

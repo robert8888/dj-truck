@@ -13,6 +13,7 @@ const deck = {
     }, // 
     playBackState : {
         ready: false,
+        loadingProgress: 0,
         paused: true,
         cuePoint: 0,
         cueActive: false,
@@ -80,6 +81,10 @@ function consoleReducer(state = initState, action){
                     offset : nextTrack.offset,
                 }
             })
+        }
+
+        case ACTIONS.SET_LOADING_PROGRESS :{
+            return nextPlayBackState(state, action.destination, false , {loadingProgress: action.value})
         }
 
         case ACTIONS.SET_READY : {

@@ -10,4 +10,5 @@ export {default as eqMid}  from "./eqMid";
 export {default as eqHi}  from "./eqHi";
 export {default as gain}  from "./gain";
 export {default as fader} from "./fader";
-export {default as sync} from "./sync"
+export {default as sync} from "./sync";
+export {default as bpmAndOffset} from "./bpmAndOffset";

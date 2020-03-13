@@ -41,49 +41,10 @@ export default class Console{
         return this.channels.getChannelInterface(channelName);
     }
 
-    setPlayer(channelName, player){
-        this.channels.setChannel(channelName, player);
+
+    createChannel(channelName, ...args){
+        this.channels.createChannel(channelName, ...args);
         this.mixer.setUpAudioNodes(channelName);
-        this.attachEvents(channelName);
-    }
-
-    attachEvents(channelName){
-        const player = this.channels.getChannel(channelName);
-        player.on('finish', ()=>{
-            this.dispatch(togglePlay(channelName))
-        })
-
-        let lastUpdate = (new Date()).getTime();
-        player.on('audioprocess', ()=>{
-            const currentTime = (new Date()).getTime();
-            if((currentTime - lastUpdate) >= 500){
-                lastUpdate = currentTime;
-            //    this.dispatch(setTimeLeft(channelName, parseInt(player.getDuration() - player.getCurrentTime())))
-                this.channels.updatePosition(channelName)
-            }
-        })
-        // updating time Left value
-        ///Because on seek event is called a 1000 time per second, is created watcher witch update 
-        // value after 500 ms with last progress value 
-        let lastCall = {
-            time :(new Date()).getTime(),
-            value : null
-        };
-        let watcher = null;
-        player.on('seek', progress => {
-            lastCall.time = (new Date()).getTime();
-            lastCall.value = progress;
-            if(!watcher){
-                watcher = setTimeout(()=>{
-                        if(((new Date()).getTime() - lastCall.time) >= 100)
-                        {
-                            this.dispatch(setTimeLeft(channelName, parseInt(player.getDuration() * lastCall.value)))
-                            clearTimeout(watcher);
-                            watcher = null
-                        }
-                    }, 500)
-            }
-        })
     }
 
     handleChange(){
@@ -99,6 +60,11 @@ export default class Console{
                 this.channels.loadTrack(diff.channel, diff.currentValue);
                 break;
             }
+
+            case STATUS.BPM_AND_OFFSET_READY : {
+                this.channels.createBars(diff.channel, diff.currentValue)
+            }
+            
             case STATUS.TOGGLE_PLAY : {
                 this.channels.togglePlay(diff.channel, diff.currentValue);
                 break;

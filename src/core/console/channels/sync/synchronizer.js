@@ -6,6 +6,7 @@ export default class Synchronizer {
   constructor(channels) {
     this.channels = channels;
     this.dispatch = store.dispatch;
+    this.stdDivceDiff = {}
   }
 
   getSyncBarPostion(channelName) {
@@ -51,7 +52,7 @@ export default class Synchronizer {
     let state = store.getState();
     if (!state.console.master) return null;
 
-    const masterChannel = this.channels[state.console.master];
+    const masterChannel = this.channels.getChannel(state.console.master);
     const slaveChannel = this.channels.getChannel(channelName);
     if (!masterChannel.isPlaying() || !slaveChannel.isPlaying()) return null;
 

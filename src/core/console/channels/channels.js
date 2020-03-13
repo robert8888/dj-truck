@@ -1,4 +1,5 @@
 import store from "./../../../store/";
+import ChannelBuilder from "./channelBuilder/channelBuilder";
 import Synchronizer from "./sync/synchronizer";
 import getApi from "./../../../apis/apiProvider";
 import {setCuePoint, 
@@ -6,8 +7,10 @@ import {setCuePoint,
         setTimeLeft 
       } from "./../../../actions";
 
+
 export default class Channels {
   constructor() {
+    this.channelBuilder = new ChannelBuilder();
     this.synchronizer = new Synchronizer(this);
     this.dispatch = store.dispatch;
     this.channels = {
@@ -26,14 +29,28 @@ export default class Channels {
     this.channels[channelName] = player;
   }
 
+  createChannel( channelName, ...args ){
+    this.channels[channelName] = 
+      this.channelBuilder.create( channelName, ...args); 
+  }
+
+  createBars( channelName, values ){
+    console.log(channelName, this.getFullChannel(channelName))
+    this.channelBuilder.createBars( this.getFullChannel(channelName), values);
+  }
+
   getChannel(channelName) {
+    return this.channels[channelName].master;
+  }
+
+  getFullChannel(channelName){
     return this.channels[channelName];
   }
 
   getChannelInterface(channelName) {
     return {
-      getSyncBarPosition: () => this.synchronizer.getSyncBarPostion
-                                .call(this.synchronizer,channelName)
+      getSyncBarPosition: () => 
+        this.synchronizer.getSyncBarPostion.call(this.synchronizer,channelName)
     };
   }
 
@@ -45,39 +62,28 @@ export default class Channels {
 
     this.dispatch(setChannelReady(false, channelName));
 
-    let player = this.channels[channelName];
+    let channel = this.getChannel(channelName);
 
-    if (player.loadWithEvent) {
-      player.loadWithEvent(url);
+    if (channel.loadWithEvent) {
+      channel.loadWithEvent(url);
+      console.log("loading", channel)
     } else {
-      player.load(url);
+      channel.load(url);
     }
   }
 
-  updatePosition(channelName) {
-    this.updateTimeLeft(channelName);
-  }
 
-  updateTimeLeft(channelName) {
-    let channel = this.channels[channelName];
-    this.dispatch(
-      setTimeLeft(
-        channelName,
-        parseInt(channel.getDuration() - channel.getCurrentTime())
-      )
-    );
-  }
 
   togglePlay(channelName, currentValue) {
     if (currentValue) {
-      this.channels[channelName].pause();
+      this.getChannel(channelName).pause();
     } else {
-      this.channels[channelName].play();
+      this.getChannel(channelName).play();
     }
   }
 
   toggleCue(channelName, currentValue) {
-    const player = this.channels[channelName];
+    const player = this.getChannel(channelName);
     const isPaused = store.getState().console.channel[channelName]
                     .playBackState.paused;
     if (!currentValue && isPaused) {
@@ -95,14 +101,14 @@ export default class Channels {
         player.play();
       }
     } else {
-      const cuePoint = this.channels[channelName].getCurrentTime();
-      this.channels[channelName].play();
+      const cuePoint = this.getChannel(channelName).getCurrentTime();
+      this.getChannel(channelName).play();
       this.dispatch(setCuePoint(channelName, cuePoint)); // in float seconds
     }
   }
 
   adjustPitch(channelName, currentValue) {
-    this.channels[channelName].setPlaybackRate(1 + currentValue / 100);
+    this.getChannel(channelName).setPlaybackRate(1 + currentValue / 100);
   }
 
   sync(channelName){

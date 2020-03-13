@@ -8,7 +8,8 @@ const STATUS = {
     EQ_MID_CHANGE : "Fire when equalization mid band was changed",
     EQ_LOW_CHANGE : "Fire when equalization lowest band was changed",
     FADER_CHANGE: "Fire when value of fader postion was chaged",
-    SYNC_ACTIVATE: "When one of channels has sync on"
+    SYNC_ACTIVATE: "When one of channels has sync on",
+    BPM_AND_OFFSET_READY : "Fire when bpm and offset on channel is loaded"
 }
 
 export default STATUS;
