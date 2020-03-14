@@ -4,7 +4,8 @@ import {
   setChannelReady,
   setLoadingProgress,
   setTimeLeft,
-  togglePlay
+  togglePlay,
+  setLoop
 } from "./../../../../actions";
 
 export default class EventHandler {
@@ -19,6 +20,7 @@ export default class EventHandler {
     this.onProcess(channel);
     this.onSlaveSeek(channel);
     this.onMasterSeek(channel);
+    this.onPause(channel);
     this.onFinish(channel);
   }
   // --- events below
@@ -102,6 +104,14 @@ export default class EventHandler {
         }, 500);
       }
     });
+
+    this.dispatch(setLoop(channel.channelName, false));
+  }
+
+  onPause(channel){
+    channel.master.on('pause', ()=>{
+      this.dispatch(setLoop(channel.channelName, false))
+    })
   }
 
   onFinish(channel) {

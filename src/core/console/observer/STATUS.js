@@ -9,7 +9,9 @@ const STATUS = {
     EQ_LOW_CHANGE : "Fire when equalization lowest band was changed",
     FADER_CHANGE: "Fire when value of fader postion was chaged",
     SYNC_ACTIVATE: "When one of channels has sync on",
-    BPM_AND_OFFSET_READY : "Fire when bpm and offset on channel is loaded"
+    BPM_AND_OFFSET_READY : "Fire when bpm and offset on channel is loaded",
+    LOOP_CHANGE : "Fire when loop state is change on channel",
+    LOOP_LENGTH_CHANGE : "Fire when loopLength is changed durring a looped track"
 }
 
 export default STATUS;

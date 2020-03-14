@@ -30,6 +30,7 @@ $slave-height: 50px;
     }
     .slave{
         height: $slave-height;
+        border-top: 1px solid $secondary-dark;
     }
 }
 

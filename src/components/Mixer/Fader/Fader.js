@@ -1,7 +1,7 @@
 import React, { useState }from "react";
 import { connect } from "react-redux";
 import { setFader } from "../../../actions";
-import Slider from "./../../common/Slider/Slider";
+import Slider from "./../../common/RangeSlider/Slider";
 import "./fader-slider.scss";
 
 const Fader = props => {

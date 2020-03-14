@@ -1,6 +1,7 @@
 
 // std butto 
 @mixin button($color) {
+    margin: auto 3px;
     background: $color;
     border-color:$color;
 
@@ -29,9 +30,10 @@
 
 @mixin deck-button($deck-primary){
     @include button($deck-primary);
-
+    padding: 8px 12px;
     background: $primary-dark;
     border-color: $deck-primary;
+    font-weight: 600;
     &:hover,  &:focus,  &:active &:active:hover , &:active:focus, &.active.focus{
         background: $primary-dark;
         border-color: $primary-dark;
@@ -43,6 +45,13 @@
         color: $primary-dark;
     }
 
+    &.btn--pressed-filed{
+        background-color: $deck-primary;
+        color: $primary-dark;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+
+    }
 }
 
 @mixin deck-sync-button($deck-primary){
@@ -60,4 +69,18 @@
         box-shadow: none;
 
     }
+
+}
+
+@mixin block-like-button($color){
+    @include deck-button($color);
+    &, &:hover{
+        color: white;
+        background: $primary-dark;
+        border-color:$color;
+        -webkit-box-shadow: 0 0 0 1px $color;
+         box-shadow: 0 0 0 1px $color;
+        border-radius: 2px;
+    }
+
 }

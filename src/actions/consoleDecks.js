@@ -14,6 +14,8 @@ const  ACTIONS = {
     TOGGLE_SYNC: "Toggle $isSync state on $destynation channel",
     SET_MASTER: "set $master valeu to $destynation channel",
     SET_SYNC: "set sync $value to $destination channel ",
+    SET_LOOP: "set $value to loop variable on $destination channel",
+    SET_LOOP_LENGTH : "set $loopLenght to $destination channel"
 
 }
 export {ACTIONS as CONSOLE_ACTIONS}
@@ -123,6 +125,22 @@ export function toggleSync(destination){
 export function setSync(destination,value){
     return {
         type: ACTIONS.SET_SYNC,
+        destination,
+        value
+    }
+}
+
+export function setLoop(destination, value){
+    return {
+        type : ACTIONS.SET_LOOP,
+        destination,
+        value
+    }
+}
+
+export function setLoopLength(destination, value){
+    return {
+        type : ACTIONS.SET_LOOP_LENGTH,
         destination,
         value
     }

@@ -6,12 +6,14 @@ import {setCuePoint,
         setChannelReady, 
         setTimeLeft 
       } from "./../../../actions";
+import Looper from "./looper/looper";
 
 
 export default class Channels {
   constructor() {
     this.channelBuilder = new ChannelBuilder();
     this.synchronizer = new Synchronizer(this);
+    this.looper = new Looper();
     this.dispatch = store.dispatch;
     this.channels = {
       A: null,
@@ -35,7 +37,7 @@ export default class Channels {
   }
 
   createBars( channelName, values ){
-    console.log(channelName, this.getFullChannel(channelName))
+   // console.log(channelName, this.getFullChannel(channelName))
     this.channelBuilder.createBars( this.getFullChannel(channelName), values);
   }
 
@@ -71,8 +73,6 @@ export default class Channels {
       channel.load(url);
     }
   }
-
-
 
   togglePlay(channelName, currentValue) {
     if (currentValue) {
@@ -113,6 +113,18 @@ export default class Channels {
 
   sync(channelName){
     this.synchronizer.sync(channelName);
+  }
+
+  makeLoop(channelName, {loopLength}){
+    this.looper.makeLoop(this.getFullChannel(channelName), loopLength)
+  }
+
+  endLoop(channelName){
+    this.looper.endLoop(this.getFullChannel(channelName));
+  }
+
+  updateLoop(channelName, {loopLength}){
+    this.looper.updateLoop(this.getFullChannel(channelName), loopLength);
   }
 
 }

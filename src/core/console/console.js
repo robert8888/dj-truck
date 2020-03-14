@@ -101,6 +101,21 @@ export default class Console{
             case STATUS.SYNC_ACTIVATE : {
                 this.channels.sync(diff.channel);
             }
+
+            case STATUS.LOOP_CHANGE : {
+                if(diff.currentValue.state){
+                    this.channels.makeLoop(diff.channel, diff.currentValue);
+                } else {
+                    this.channels.endLoop(diff.channel);
+                }
+                break;
+            }
+
+            case STATUS.LOOP_LENGTH_CHANGE : {
+                this.channels.updateLoop(diff.channel, diff.currentValue);
+                break;
+            }
+
             default : return; 
         }
     }

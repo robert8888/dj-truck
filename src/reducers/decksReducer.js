@@ -21,6 +21,8 @@ const deck = {
         timeLeft : null,
         offset: null,
         sync:false,
+        loop:false,
+        loopLength: 0
     }
 }
 
@@ -192,6 +194,15 @@ function consoleReducer(state = initState, action){
                 let trackState = nextTrackState(prevState, channelName, false, {bpm : action.bpm});
                 return nextPlayBackState(trackState, channelName, false, {offset: action.offset})
             }, state);
+        }
+
+        case ACTIONS.SET_LOOP : {
+            return nextPlayBackState(state, action.destination, true, {loop : action.value});
+        }
+
+        
+        case ACTIONS.SET_LOOP_LENGTH : {
+            return nextPlayBackState(state, action.destination, false, {loopLength : action.value});
         }
 
 

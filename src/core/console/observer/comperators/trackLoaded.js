@@ -1,6 +1,6 @@
 import STATUS from  "./../STATUS";
 
-export default function checkPitchChange(prev, current){
+export default function checkTrackLoaded(prev, current){
     prev = prev.console;
     current = current.console;
     let response = null;

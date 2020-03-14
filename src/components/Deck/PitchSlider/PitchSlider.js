@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { setPitch } from "../../../actions";
-import Slider from "./../../common/Slider/Slider";
+import Slider from "./../../common/RangeSlider/Slider";
 import "./pitch-slider.scss";
 
 const PitchSlider = props => {

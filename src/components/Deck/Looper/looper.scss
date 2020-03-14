@@ -1,0 +1,34 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/mixins.scss";
+@import "./MiniSlider/mini-slider.scss";
+
+@mixin looper($color) {
+  display: inline-block;
+  float: right;
+  button.btn {
+    @include deck-button($color);
+    &:last-of-type {
+    }
+    &.btn-next,
+    &.btn-prev {
+      padding-left: 3px;
+      padding-right: 3px;
+    }
+    &.btn-out {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+  }
+
+  @include mini-slider($color, 75px, 40px);
+}
+
+.looper {
+  &.looper-deck-A {
+    @include looper($deck-A-primary);
+  }
+
+  &.looper-deck-B {
+    @include looper($deck-B-primary);
+  }
+}
