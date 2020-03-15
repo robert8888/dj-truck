@@ -11,23 +11,22 @@ export default function checkBpmAndOfset(prev, current) {
     const currentReady = current.channel[channelName].playBackState.ready;
     const currentBpm = current.channel[channelName].track.bpm;
     const currentOffset = current.channel[channelName].playBackState.offset;
-    
-    if(!currentReady) return null;
+
+    if (!currentReady) continue;
 
     if (
-      (prevReady !== currentReady &&
-        currentBpm !== 0 &&
-        currentOffset !== 0) ||
+      (prevReady !== currentReady && currentBpm !== 0 && currentOffset !== 0) ||
       (currentBpm !== prevBpm && currentOffset !== 0)
     ) {
-      return {
+      response = response || [];
+      response.push({
         status: STATUS.BPM_AND_OFFSET_READY,
         channel: channelName,
         currentValue: {
           bpm: currentBpm,
           offset: currentOffset
         }
-      };
+      });
     }
   }
   return response;

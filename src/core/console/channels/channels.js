@@ -27,17 +27,12 @@ export default class Channels {
     return Object.keys(this.channels);
   }
 
-  setChannel(channelName, player) {
-    this.channels[channelName] = player;
-  }
-
   createChannel( channelName, ...args ){
     this.channels[channelName] = 
       this.channelBuilder.create( channelName, ...args); 
   }
 
   createBars( channelName, values ){
-   // console.log(channelName, this.getFullChannel(channelName))
     this.channelBuilder.createBars( this.getFullChannel(channelName), values);
   }
 

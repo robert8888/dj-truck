@@ -9,17 +9,18 @@ export default function checkLoopLength(prev, current){
         const currentLoopLength = current.channel[channelName].playBackState.loopLength;
         const currentLopp = current.channel[channelName].playBackState.loop;
 
-        if(!currentLopp) return;
+        if(!currentLopp) continue;
 
         if(prevLoopLength !== currentLoopLength){
-            return {
+            response = response || [];
+            response.push({
                 status : STATUS.LOOP_LENGTH_CHANGE,
                 channel : channelName,
                 currentValue : {
                     state : currentLopp,
                     loopLength : currentLoopLength
                 }
-            }                
+            })                
         }
     }
     return response;
