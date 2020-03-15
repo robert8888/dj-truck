@@ -1,4 +1,4 @@
-import * as comparators from "./comperators";
+import * as comparators from "./comparators";
 
 let prevState; 
 export default class Observer{

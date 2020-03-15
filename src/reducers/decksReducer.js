@@ -79,7 +79,7 @@ function consoleReducer(state = initState, action){
                     thumbnail : nextTrack.thumbnail,
                 }
                 draftState.channel[action.destination].playBackState = {
-                    ...state.channel[action.destination].playBackState,
+                    ...initState.channel[action.destination].playBackState,
                     offset : nextTrack.offset,
                 }
             })
@@ -197,6 +197,12 @@ function consoleReducer(state = initState, action){
         }
 
         case ACTIONS.SET_LOOP : {
+            const paused = state.channel[action.destination].playBackState.paused;
+            const bpm = state.channel[action.destination].playBackState.bpm;
+            const offset =  state.channel[action.destination].playBackState.offset;
+            if(paused || !bpm || offset === null){
+                return state;
+            }
             return nextPlayBackState(state, action.destination, true, {loop : action.value});
         }
 
