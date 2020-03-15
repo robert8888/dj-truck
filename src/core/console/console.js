@@ -62,7 +62,8 @@ export default class Console{
             }
 
             case STATUS.BPM_AND_OFFSET_READY : {
-                this.channels.createBars(diff.channel, diff.currentValue)
+                this.channels.createBars(diff.channel, diff.currentValue);
+                break;
             }
             
             case STATUS.TOGGLE_PLAY : {
@@ -100,6 +101,7 @@ export default class Console{
 
             case STATUS.SYNC_ACTIVATE : {
                 this.channels.sync(diff.channel);
+                break;
             }
 
             case STATUS.LOOP_CHANGE : {

@@ -40,7 +40,8 @@ export default class EventHandler {
   onReady(channel) {
     channel.master.on("ready", () => {
       channel.currentDuration = channel.master.getDuration();
-      let resolution = 430;
+      //resolution value is taken from manual test
+      const resolution = 280;
       channel.slave.load(null, channel.master.backend.getPeaks(resolution, 0, resolution) );
       this.dispatch(setLoadingProgress(channel.channelName, 100));
 

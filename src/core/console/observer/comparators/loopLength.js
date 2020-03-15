@@ -5,8 +5,8 @@ export default function checkLoopLength(prev, current){
     current = current.console;
     let response = null;
     for(let channelName of Object.keys(prev.channel)){
-        const prevLoopLength = prev.channel[channelName].playBackState.loopLength;
-        const currentLoopLength = current.channel[channelName].playBackState.loopLength;
+        const prevLoopLength = prev.channel[channelName].deckState.loopLength;
+        const currentLoopLength = current.channel[channelName].deckState.loopLength;
         const currentLopp = current.channel[channelName].playBackState.loop;
 
         if(!currentLopp) continue;

@@ -8,7 +8,7 @@ export default function checkLoopState(prev, current) {
     const prevValue = prev.channel[channelName].playBackState.loop;
     const currentValue = current.channel[channelName].playBackState.loop;
 
-    const loopLength = current.channel[channelName].playBackState.loopLength;
+    const loopLength = current.channel[channelName].deckState.loopLength;
     if (prevValue !== currentValue) {
       response = response || [];
       response.push({

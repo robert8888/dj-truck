@@ -19,16 +19,18 @@ export default class Looper {
         channel.loop.start = currentPosition 
             + (beatLength - (currentPosition - beatOffset) % beatLength);
         //don't quantize to whole beat
-        console.log(beatLength, currentPosition, beatOffset)
-        console.log(loopLength)
+
         if(loopLength < 1){ 
             channel.loop.start = currentPosition 
                 + ((beatLength * loopLength) - (currentPosition - beatOffset) % (beatLength * loopLength));
         }
         channel.loop.end = channel.loop.start + beatLength * loopLength;
 
-        audioBufferSource.loopStart = parseFloat(channel.loop.start);
-        audioBufferSource.loopEnd = parseFloat(channel.loop.end);
+        if(isNaN(channel.loop.start) || isNaN(channel.loop.end)){
+            throw new Error("invalid value of range variables")
+        }
+        audioBufferSource.loopStart = channel.loop.start;
+        audioBufferSource.loopEnd = channel.loop.end;
         audioBufferSource.loop = true;
 
         //looping waveSurrfer and update end position if is set; 
@@ -61,7 +63,7 @@ export default class Looper {
 
     _updateLoopEnd(channel, newEnd){
         channel.loop.end = newEnd;
-        channel.loop.audioBufferSource.loopEnd = parseFloat(newEnd);
+        channel.loop.audioBufferSource.loopEnd = newEnd;
         this.clearDraw(channel);
         this.drawLoop(channel);
     }

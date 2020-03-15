@@ -4,7 +4,7 @@ import Synchronizer from "./sync/synchronizer";
 import getApi from "./../../../apis/apiProvider";
 import {setCuePoint, 
         setChannelReady, 
-        setTimeLeft 
+        setLoop,
       } from "./../../../actions";
 import Looper from "./looper/looper";
 
@@ -111,7 +111,12 @@ export default class Channels {
   }
 
   makeLoop(channelName, {loopLength}){
-    this.looper.makeLoop(this.getFullChannel(channelName), loopLength)
+    try{
+      this.looper.makeLoop(this.getFullChannel(channelName), loopLength)
+    }
+    catch{
+      this.dispatch(setLoop(channelName, false))
+    }
   }
 
   endLoop(channelName){

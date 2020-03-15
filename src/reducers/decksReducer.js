@@ -22,7 +22,9 @@ const deck = {
         offset: null,
         sync:false,
         loop:false,
-        loopLength: 0
+    },
+    deckState : {
+        loopLength : -1,
     }
 }
 
@@ -47,10 +49,20 @@ function nextState(part){
 
         const nextState = produce(state, (draftState) => {
             for(let [variable, value] of Object.entries(variables)){
-                if(part === "playBackState"){
-                    draftState.channel[destination].playBackState[variable] = value;
-                } else if(part ==="track"){
-                    draftState.channel[destination].track[variable] = value;
+                switch (part) {
+                    case "playBackState" : {
+                        draftState.channel[destination].playBackState[variable] = value;
+                        break;
+                    }
+                    case "track" : {
+                        draftState.channel[destination].track[variable] = value;
+                        break;
+                    }
+                    case "deckState" : {
+                        draftState.channel[destination].deckState[variable] = value;
+                        break;
+                    }
+                    default : break;
                 }
             }
         })
@@ -61,6 +73,7 @@ function nextState(part){
 
 const nextPlayBackState = nextState('playBackState');
 const nextTrackState = nextState('track');
+const nextDeckState = nextState('deckState');
 
 
 
@@ -81,6 +94,7 @@ function consoleReducer(state = initState, action){
                 draftState.channel[action.destination].playBackState = {
                     ...initState.channel[action.destination].playBackState,
                     offset : nextTrack.offset,
+                    loopLength: state.channel[action.destination].playBackState.loopLength,
                 }
             })
         }
@@ -198,7 +212,7 @@ function consoleReducer(state = initState, action){
 
         case ACTIONS.SET_LOOP : {
             const paused = state.channel[action.destination].playBackState.paused;
-            const bpm = state.channel[action.destination].playBackState.bpm;
+            const bpm = state.channel[action.destination].track.bpm;
             const offset =  state.channel[action.destination].playBackState.offset;
             if(paused || !bpm || offset === null){
                 return state;
@@ -208,7 +222,7 @@ function consoleReducer(state = initState, action){
 
         
         case ACTIONS.SET_LOOP_LENGTH : {
-            return nextPlayBackState(state, action.destination, false, {loopLength : action.value});
+            return nextDeckState(state, action.destination, false, {loopLength : action.value});
         }
 
 

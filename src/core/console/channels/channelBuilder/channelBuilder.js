@@ -34,7 +34,7 @@ export default class ChannelBuilder {
   createBars(channel, {bpm, offset}){
     let wrapper = channel.master.drawer.wrapper;
     let styleApply = WaveSurfer.Drawer.style;
-    let minPxPerSec = config.master().minPxPerSec;
+    let minPxPerSec = channel.master.params.minPxPerSec;
     let bitLength = getBeatLength(bpm);
 
     let barPostions = [];
