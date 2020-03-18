@@ -214,10 +214,12 @@ function consoleReducer(state = initState, action){
             const paused = state.channel[action.destination].playBackState.paused;
             const bpm = state.channel[action.destination].track.bpm;
             const offset =  state.channel[action.destination].playBackState.offset;
+
+            let newValue  = action.value;
             if(paused || !bpm || offset === null){
-                return state;
+                newValue = false;
             }
-            return nextPlayBackState(state, action.destination, true, {loop : action.value});
+            return nextPlayBackState(state, action.destination, true, {loop : newValue});
         }
 
         

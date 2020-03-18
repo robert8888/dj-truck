@@ -3,7 +3,7 @@
   padding: 0;
   .dj-truck-console {
     display: flex;
-
+    align-items: flex-start;;
     .deck {
       width: calc((100% - 250px) / 2);
     }

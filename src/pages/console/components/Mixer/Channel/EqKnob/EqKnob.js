@@ -1,5 +1,5 @@
 import React from "react";
-import Knob from "./../../../common/Knob/Knob"
+import KnobDescribed from "./../../../common/KnobDescribed/KnobDescribed"
 import "./eq-knob.scss";
 
 
@@ -11,7 +11,7 @@ const EqKnob = props =>{
     }
 
     return (
-        <Knob className={"eq-knob " + props.className} 
+        <KnobDescribed className="eq-knob "
             showValue 
             unsymetric={{positive:5}} 
             scale={50} 

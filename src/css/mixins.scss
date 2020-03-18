@@ -4,7 +4,7 @@
     margin: auto 3px;
     background: $color;
     border-color:$color;
-
+    white-space: nowrap;
     &:visited{
         background: $color;
         border-color:$color;
@@ -52,6 +52,12 @@
         box-shadow: none;
 
     }
+}
+
+@mixin mixer-button($color) {
+    @include deck-button($color);
+    font-size: 15px;
+    display: block;
 }
 
 @mixin deck-sync-button($deck-primary){

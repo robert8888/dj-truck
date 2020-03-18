@@ -1,11 +1,11 @@
 import React from "react";
-import Knob from "./../../../common/Knob/Knob";
+import KnobDescribed from "./../../../common/KnobDescribed/KnobDescribed";
 import "./gain-knob.scss";
 
 
 const GainKnob = props =>{
     return (
-        <Knob className={"gain-knob " + props.className} 
+        <KnobDescribed className="gain-knob "
             showValue 
             scale={100} 
             unsymetric={{positive:4}}

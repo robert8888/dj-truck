@@ -5,7 +5,7 @@
     display: inline-block;
     .btn.btn-primary{
         @include deck-button($deck-primary);
-
+        
         
         &.btn-play{
             margin-left: 2px;

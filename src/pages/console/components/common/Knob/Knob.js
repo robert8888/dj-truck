@@ -1,5 +1,3 @@
-import React from "react";
-import style from "./knob.scss";
 
 
 // Spec 
@@ -16,6 +14,10 @@ import style from "./knob.scss";
 // -qunatize:{negative:number, positive:number} allows to set diffrent qunatizes for negative and positives values.
 // -responseFactor if is present adjust knob response on a mouse move // default= 1 eg responseFactor 2 will increase response two times
 // -alt if is present when mouse is over and knob is not draggin it will display alt value 
+
+import React from "react";
+import style from "./knob.scss";
+
 
 class Knob extends React.Component{
 
@@ -130,7 +132,7 @@ class Knob extends React.Component{
         if(this.props.symetric || this.props.unsymetric){
             rightArm = 88;
             leftArm = 92; 
-            dotAngle = position * 1.4;     
+            dotAngle = position  * 1.4 ;     
             
             if(position < -2 ) {
                 rightArm = 90 - Math.abs(position) * 1.5;

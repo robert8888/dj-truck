@@ -13,17 +13,21 @@ export default class ChannelBuilder {
     this.dispatch = store.dispatch;
   }
 
-  create(channelName, masterContainer, slaveContainer) {
+  create(channelName, masterContainer, slaveContainer, mainAudioContext) {
     let channel = {channelName, masterContainer, slaveContainer};
 
+    //--configs
     channel.masterConfig = config.master(masterContainer, channelName);
     channel.slaveConfig = config.slave(slaveContainer, channelName);
 
+    //--master waveSurfer obj
+    channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
     channel.master.__proto__.loadWithEvent = function(...args) {
       this.fireEvent("load");
       this.load(...args);
     };
+
     channel.slave = WaveSurfer.create(channel.slaveConfig);
 
     this.eventHandler.CreateEventHandling(channel)

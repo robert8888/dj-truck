@@ -1,0 +1,91 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/general.scss";
+@import "./../../../css/mixins.scss";
+
+$split-border : 1px solid lighten($secondary-dark, 20%);
+
+@mixin  mixer-chanel($side) {
+    display: flex;
+    @if $side == left {
+        flex-direction: row-reverse;
+        border-right: $split-border;
+    }
+    @else {
+        //border-left: $split-border;
+    }
+
+    .knobs-set-1, .knobs-set-2{
+        padding: 0 5px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+    }
+
+    .mixer-knob{
+        margin: 3px 0;
+    }
+
+    .mixer-group{
+        border : $split-border;
+        border-radius:  2px;
+
+    }
+
+
+
+    .peak-level-meter{
+        margin: 0 auto;
+        margin-top: 3px;
+    }
+
+    .btn-fx{
+        @include mixer-button($mixer-primary);
+        padding: 6px 6px;
+        margin: 5px auto;
+        width: 45px;
+    }
+
+    .flex-separator{
+        flex-grow: 1;
+    }
+}
+
+@mixin mobile-mixer-channel($side) {
+    @media screen and (max-width : $vertical-break-point) {
+        flex-direction: column;
+
+        .knobs-set-1{
+            flex-direction: row;
+        }
+
+        @if $side == "right"{
+            border-left: $split-border;
+            .knobs-set-1{
+                flex-direction: row-reverse;
+            }   
+        }
+        
+        @if $side == "left" {
+            .peak-level-meter{
+                flex-direction: row-reverse;
+                align-content: flex-end;
+             
+            }
+        }
+
+        
+    }
+}
+
+.mixer-channel{
+    &.channel-A{
+        @include mixer-chanel(left);
+        @include mobile-mixer-channel(left);
+    }
+
+    &.channel-B{
+        @include mixer-chanel(right);
+        @include mobile-mixer-channel(right);
+    }
+}

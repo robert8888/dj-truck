@@ -1,0 +1,54 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/general.scss";
+
+
+
+@mixin peak-level-meter($width){
+    width: $width;
+    background: $primary-dark;
+    display: flex;
+    padding: 0.05 * $width;
+    justify-content: center;
+    .meter-channel{
+        
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+
+    
+        @media  screen and (max-width: $vertical-break-point){
+            width: auto;
+            flex-direction: row;
+            margin-bottom: 5px;
+    
+        }
+        .level-meter-led{
+            margin: 1px;
+            width: 0.3 * $width;
+            height:  2px;
+            border-radius: 0.1px;
+    
+            background-color: darken($mixer-level-meter, 30%);
+            &:nth-last-of-type(-n+5){
+                background-color: darken($mixer-level-meter-safe, 30%);
+                &.led-on{
+                    background-color: $mixer-level-meter-safe
+                }
+            }
+            &:nth-last-of-type(-n+3){
+                background-color: darken($mixer-level-meter-cliping, 30%);
+                &.led-on{
+                    background-color: $mixer-level-meter-cliping
+                }
+            }
+    
+            &.led-on{
+                background-color: $mixer-primary;
+            }
+        }
+    }
+}
+
+.peak-level-meter{
+    @include peak-level-meter(30px)
+}

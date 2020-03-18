@@ -36,7 +36,7 @@ export default class Looper {
         //looping waveSurrfer and update end position if is set; 
         channel.loop.watch = (time)=>{
             if(time > channel.loop.end){
-                channel.master.backend.startPosition = channel.loop.start;
+                channel.master.backend.startPosition = channel.loop.start + (time - channel.loop.end);
                 channel.master.backend.lastPlay = channel.master.backend.ac.currentTime;
                 channel.master.drawer.progress(channel.master.backend.getPlayedPercents());
                 if(channel.loop.nextEnd){
@@ -69,7 +69,6 @@ export default class Looper {
     }
 
     endLoop(channel){
-        console.log("stop loop", channel);
         channel.master.un("audioprocess", channel.loop.watch);
         channel.master.backend.source.loop = false;
         this.clearDraw(channel);

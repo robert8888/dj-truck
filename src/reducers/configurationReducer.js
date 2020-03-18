@@ -2,6 +2,7 @@ import { ACTIONS } from "../actions";
 
 const initState = {
     mixer: {
+        externalChannels : 2,
         low: {
             frequency: 250
         },
@@ -12,6 +13,10 @@ const initState = {
         hi: {
             frequency: 2500
         }
+    },
+
+    effector: {
+        channels : 2,
     }
 }
 

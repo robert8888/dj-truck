@@ -6,10 +6,12 @@ import { togglePlay,
          from "./../../actions";
 import Channels from "./channels/channels";
 import Mixer from "./mixer/mixer";
+import Effector from "./effector/effector";
 
-let mixConsole;
 
 export default class Console{
+    static instance;
+
     constructor(){
         store.subscribe(this.handleChange.bind(this));
         this.dispatch = store.dispatch;
@@ -17,19 +19,21 @@ export default class Console{
 
         this.channels = new Channels();
         this.mixer = new Mixer(this.channels);
+        this.effector = new Effector(this.mixer.mainAudioContext);
+        this.mixer.connect(this.effector);
 
     }
 
     static Create(){
-        mixConsole = new Console();
+        return Console.Get();
     }
 
     static Get(){
-        if(!mixConsole){
-            mixConsole = new Console();
-            return mixConsole;
+        if(!Console.instance){
+            Console.instance = new Console();
+            return Console.instance;
         } else {
-            return mixConsole;
+            return Console.instance;
         }
     }
 
@@ -43,8 +47,9 @@ export default class Console{
 
 
     createChannel(channelName, ...args){
+        args.push(this.mixer.mainAudioContext);
         this.channels.createChannel(channelName, ...args);
-        this.mixer.setUpAudioNodes(channelName);
+        this.mixer.setUpChannelsAudioNodes(channelName);
     }
 
     handleChange(){
