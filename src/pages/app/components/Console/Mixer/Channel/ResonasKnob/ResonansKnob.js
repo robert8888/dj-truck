@@ -12,6 +12,7 @@ const ResonansKnob = props =>{
             alt={props.alt}
             quantize={1} 
             onChange={ props.onChange }
+            value={props.value}
             dobuleClickInit/>
     )
 }

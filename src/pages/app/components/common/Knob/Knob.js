@@ -36,6 +36,7 @@ class Knob extends React.Component{
         isActive: false,
     }
 
+
     snap(){
         this.setState({...this.state, snapShotPostion: this.state.position})
     }
@@ -54,10 +55,6 @@ class Knob extends React.Component{
          // value is quantaized 
          return this.valueToPosition(this.evalValue(position));
 
-    }
-
-    static staticValueToPostion(that, value){
-        
     }
 
     valueToPosition(value){
@@ -128,7 +125,6 @@ class Knob extends React.Component{
 
         (this.props.onChange && this.props.onChange(this.state.value))
     }
-
 
     mapPostionToArms(position){
         let rightArm, leftArm, dotAngle;
@@ -232,6 +228,13 @@ class Knob extends React.Component{
 
     }
 
+    componentDidUpdate(oldProps){
+        if(this.props.value !== oldProps.value){
+            const postion = this.valueToPosition(this.props.value);
+            this.setPostion(postion);
+        }
+    }
+
     render(){
         let value = ""
         if(this.state.isMouseOver && !this.state.isDragged && this.props.alt){
@@ -248,10 +251,12 @@ class Knob extends React.Component{
         value = value.toString().substr(0,6);
         
         return (
-            <div className={"knob " + this.props.className}
+            <div className={"knob " + this.props.className} 
                 onMouseDown={this.mouseDown.bind(this)}
                 onDragStart={ e => e.preventDefault()}
-                onDoubleClick={this.mouseDoubelClick.bind(this)}>
+                onDoubleClick={this.mouseDoubelClick.bind(this)}
+                data-value = {this.props.value}
+                >
                 <div className="knob-big-circle" style={{
                     backgroundImage : `linear-gradient(`+ (180 + this.state.leftArm)  +`deg, `+style.primaryDark+` 50%, transparent 50%),
                                        linear-gradient(`+ (180 + this.state.rightArm) +`deg, transparent 50%, `+style.primaryDark+` 50%)`

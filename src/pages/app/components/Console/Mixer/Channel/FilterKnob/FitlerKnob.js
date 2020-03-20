@@ -22,6 +22,7 @@ const FilterKnob = props =>{
             displayFormula={ displayText }
             quantize={1} 
             onChange={ props.onChange }
+            value={props.value}
             dobuleClickInit/>
     )
 }

@@ -17,6 +17,9 @@ import "./mixer-channel.scss";
 
 
 class Channel extends React.Component{
+    state ={
+        value: 0 
+    }
 
     render(){
         return (
@@ -32,8 +35,8 @@ class Channel extends React.Component{
                 <div className="knobs-set-2">
                     <GainKnob className="eq-gain" onChange={ this.props.setGain }/>
                     <div className="mixer-group">
-                        <ResonansKnob alt="RES" className="eq-low" onChange={ this.props.setLow }/>
-                        <FilterKnob alt="FL" className="eq-low" onChange={ this.props.setLow }/>
+                        <ResonansKnob alt="RES" className="resonans" onChange={ this.props.setLow } value={this.state.value}/>
+                        <FilterKnob alt="FL" className="filter" onChange={ (val)=>  this.setState({value:val}) }/>
                     </div>
                 </div>
                 <div className="mixer-group group-fx">
