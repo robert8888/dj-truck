@@ -1,6 +1,14 @@
+@import "./colors.scss";
+
 h1,h2,h3,h4,h5,h6, p,a, a:active, a:visited, a:link, a:hover, span {
     color: $primary-text-color;
 }
 
 
 $vertical-break-point : 1200px;
+$vertical-break-point-extra-small : 772px;
+
+:export{
+    verticalBreakPoint : $vertical-break-point;
+    verticalBreakPointExtraSmall : $vertical-break-point-extra-small;
+}

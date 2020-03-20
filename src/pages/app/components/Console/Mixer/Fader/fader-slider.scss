@@ -1,0 +1,37 @@
+@import "./../../../../../../css/colors.scss";
+@import "./../../../../../../css/general.scss";
+
+@import "./../../../common/RangeSlider/slider.scss";
+
+.fader {
+
+  .fader.slider {
+    @media screen and (min-width : $vertical-break-point-extra-small){
+      @include slider-horizontal(40px);
+    }
+    @media screen and (max-width : $vertical-break-point-extra-small) {
+      @include slider-vertical(40px);
+    }
+
+    @include slider-color($mixer-primary);
+  
+  }
+
+  .slider.fader{
+    margin-top: 10px;
+  }
+
+  .zero-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: darken($mixer-primary, 20%);
+    border: 2px solid $primary-dark;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    &.indicator--active {
+      background: $mixer-primary;
+    }
+  }
+}

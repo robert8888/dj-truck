@@ -1,0 +1,56 @@
+@import "./../../../../css/general.scss";
+@import "./../../../../css/colors.scss";
+
+.truck-console {
+  display: grid;
+  grid-template-rows: 50px 100px auto;
+  grid-template-columns: 1fr 300px 1fr;
+
+  .recorder{
+    grid-column: 1 / span 3;
+    grid-row: 1;
+  }
+
+  .console-group{
+    &.group-deck-A{
+      grid-row: 2 / span 2;
+      grid-column: 1;
+    }
+    &.group-deck-B{
+      grid-row: 2 / span 2;
+      grid-column: 3;
+    }
+  }
+
+  .mixer{
+    grid-row: 2 / span 2 ;
+    grid-column: 2;
+  }
+}
+
+
+/*.truck-console {
+    display: flex;
+    align-items: flex-start;
+    .console-group.group-deck{
+      width:100%;
+    }
+    .deck {
+      width: 100%
+    }
+  }
+
+ /* @media (max-width: $vertical-break-point) {
+    
+    .truck-console {
+      flex-wrap: wrap;
+      .deck {
+        width: 100%;
+      }
+
+      .mixer {
+        order: 2;
+        width: 100%;
+      }
+    }
+  }*/

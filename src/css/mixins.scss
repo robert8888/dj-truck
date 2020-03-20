@@ -50,6 +50,8 @@
         color: $primary-dark;
         -webkit-box-shadow: none;
         box-shadow: none;
+        -webkit-box-shadow: 0 0 0 0.2rem $primary-dark;
+        box-shadow: 0 0 0 0.2rem $primary-dark  ;
 
     }
 }
@@ -60,9 +62,30 @@
     display: block;
 }
 
+@mixin drop-down-button($color) {
+    @include deck-button($color);
+    font-size: 15px;
+    display: block;
+
+    &::first-letter{
+        text-transform: capitalize;  
+    }
+
+    & + div.dropdown-menu{
+        background: $primary-dark;
+        
+        a.dropdown-item {
+            color: $color;
+            &::first-letter{
+              text-transform: capitalize;  
+            }
+        }
+    }
+}
+
 @mixin deck-sync-button($deck-primary){
     @include deck-button($deck-primary);
-
+    user-select: none;
     text-transform: uppercase;
     font-size: 10px;
     font-weight: 700;

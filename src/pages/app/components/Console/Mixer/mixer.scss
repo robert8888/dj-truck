@@ -1,0 +1,48 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/general.scss";
+
+.mixer{
+    background: $secondary-dark;
+   // width: 300px;
+    padding: 5px;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+    "channel-a channel-b"
+    "fader fader";
+    
+    .mixer-channel{
+        width: 100%;
+
+        &.channel-A{
+            grid-area: channel-a;
+        }
+        &.channel-B{
+            grid-area: channel-b;
+        }
+    }
+
+    .mixer-fader{
+        padding: 0 25%;
+        grid-area: fader;
+    }
+
+    @media (max-width : $vertical-break-point ) {
+        grid-template-columns: 2fr 1fr 2fr ;
+        grid-template-areas: 
+        "channel-a fader  channel-b";
+        .mixer-fader{
+            padding: 0;
+            display: flex;
+            @media (max-width : $vertical-break-point-extra-small){
+                    justify-self: center;
+                    .zero-indicator{
+                        display: none;
+                    }
+            }
+
+        }
+    }
+
+}

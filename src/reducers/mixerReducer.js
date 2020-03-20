@@ -8,6 +8,8 @@ const channel = {
     mid : 100,
     high : 100,
     gain: 100,
+
+    sends : [0, 0] // for two effector channels
 }
 
 const initState = {

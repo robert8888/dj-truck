@@ -1,0 +1,39 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+.play-list {
+    margin-top: 20px;
+
+    table.play-list-table{
+         width: 100%;
+         color: $primary-text-color;
+         border-collapse: separate;
+         border-spacing: 2px;
+         th {
+             background: $tertiary-dark;
+             padding: 0 5px;
+         }
+        td {
+            background: $secondary-dark;
+            padding: 5px;
+        }
+        tr:hover td{
+            background: $tertiary-dark;
+        }
+    }
+}
+
+
+.btn-dest.btn-primary{
+    margin: 6px 6px 6px 0;
+    padding: 6px 18px;
+
+    &.dest-a{
+        @include button($deck-A-primary);
+    }
+
+    &.dest-b{
+        @include button($deck-B-primary);
+    }
+}
+

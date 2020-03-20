@@ -1,0 +1,46 @@
+
+@import "./../../../../../../css/colors.scss";
+
+$master-height: 130px;
+$slave-height: 50px;
+
+
+:export{
+    masterHeight: $master-height;
+    slaveHeight: $slave-height;
+}
+
+@mixin player($primary-color){
+    position: relative;
+    width: calc(100% - 40px);
+    .player-loading{
+        position: absolute;
+        left: 50%;
+        top: $master-height / 2;
+        transform: translate(-50%, -50%);
+        span{
+
+        }
+    }
+    .master, .slave{
+        background: $primary-dark;
+    }
+    .master{
+        height: $master-height;
+    }
+    .slave{
+        height: $slave-height;
+        border-top: 1px solid $secondary-dark;
+    }
+}
+
+
+.player{
+    &.player-A{
+        @include player($deck-A-primary)
+    }
+    &.player-B{
+        @include player($deck-B-primary)
+    }
+
+}
