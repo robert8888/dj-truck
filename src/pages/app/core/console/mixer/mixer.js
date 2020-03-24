@@ -299,7 +299,8 @@ export default class Mixer {
         let peakPower = 0;
         for (let i = 0; i < sampleBuffer.length; i++) {
             const power = sampleBuffer[i] ** 2;
-            peakPower = Math.max(power, peakPower);
+            // if statement is a litlebit faster that Math.max
+            peakPower = (power > peakPower) ? power : peakPower;
         }
         const peakPowerDecibels = 10 * Math.log10(peakPower);
 

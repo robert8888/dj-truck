@@ -40,8 +40,6 @@ class PeakLevelMater extends React.PureComponent {
         this.breakFlag = false;
     }
 
-
-
     componentDidMount() {
         let lastCall = null;
         const updateLedStates = () => {
@@ -53,25 +51,20 @@ class PeakLevelMater extends React.PureComponent {
                 return;
             }
             lastCall = now; 
-            //drawing ...
+
             if(this.breakFlag){
                 return;
             }
-            
-            for(let i = 0 ; i < this.size ; i++){
-                this.leftRefs[i].current.classList.remove("led--on");
-                this.rightRefs[i].current.classList.remove("led--on");
-            }
 
+            //drawing ...
             let peakMeter = this.mixerChannelInterface.getPeakMeter();
             let ledOn = 25 + peakMeter.peakdB / 2;
 
-            for (let i = 0; (i < ledOn && i < this.size); i++) {
-                this.leftRefs[i].current.classList.add("led--on")
-                this.rightRefs[i].current.classList.add("led--on")
+            for (let i = 0; i < this.size; i++) {
+
+                this.leftRefs[i].current.classList.toggle("led--on", (i <= ledOn))
+                this.rightRefs[i].current.classList.toggle("led--on", (i <= ledOn))
             }
-
-
         }
 
         updateLedStates();
@@ -83,7 +76,6 @@ class PeakLevelMater extends React.PureComponent {
 
     render() {
 
-        console.log("i'm render peak level meter")
         return (
             <div className="peak-level-meter">
                 <div className="meter-channel">

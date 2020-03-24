@@ -5,6 +5,10 @@
     position: relative;
     display: inline-block;
     z-index: 5;
+
+    $ratio-big-to-small : 0.70;
+    $shift : ($diameter - ( $diameter * $ratio-big-to-small )) / 2; 
+
     .knob-big-circle{
         width: $diameter;
         height: $diameter;
@@ -32,29 +36,52 @@
                 background-image: linear-gradient( 0deg, transparent 50%,  $primary-dark 50%);
             }
         }
+
+
+        &::after{
+            content: "";
+            display: block;
+            position: absolute;
+            width:  $diameter * $ratio-big-to-small * 1.15;
+            height: $diameter * $ratio-big-to-small * 1.15;
+            background: $color;
+            border-radius: 50%;
+            top : $shift  + ($shift * -0.35);
+            left: $shift  + ($shift * -0.35);
+            z-index: 4;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        &.big-circle--focus {
+            &::after{
+                opacity: 1;
+            }
+        }
     }
 
-    $ratio-big-to-small : 0.70;
-    $shift : ($diameter - ( $diameter * $ratio-big-to-small )) / 2; 
+
+
+
 
     .knob-small-circle{
         width:  $diameter * $ratio-big-to-small;
         height: $diameter * $ratio-big-to-small;
         border-radius: 50%;
         background: $secondary-dark;
-
+        z-index: 5;
         position: absolute;
         top: $shift;
         left: $shift;
-        transition: box-shadow 0.2s;
+       // transition: box-shadow 0.2s;
         $shado-size : 0.02 * $diameter;
         @if ($shado-size < 1px) {
             $shado-size : 1px;
         }
         box-shadow: 0 0 0 $shado-size $color;
-        &.small-circle--focus{
+
+   /*     &.small-circle--focus{
             box-shadow: 0 0 0 0.05 * $diameter $color;
-        }
+        }*/
     }
 
     .knob-dot{

@@ -196,10 +196,10 @@ class Knob extends React.PureComponent{
     setActive(value){
         if(value){
             this.html.value.current.classList.add("knob--focus")
-            this.html.smallCircle.current.classList.add("small-circle--focus");
+            this.html.bigCircle.current.classList.add("big-circle--focus");
         }else {
             this.html.value.current.classList.remove("knob--focus");
-            this.html.smallCircle.current.classList.remove("small-circle--focus");
+            this.html.bigCircle.current.classList.remove("big-circle--focus");
         }
     }
 
@@ -281,7 +281,7 @@ class Knob extends React.PureComponent{
 
 
     render(){
-
+        console.log("render knob")
         
         return (
             <div 
@@ -289,6 +289,8 @@ class Knob extends React.PureComponent{
                 onMouseDown={this.mouseDown.bind(this)}
                 onDragStart={ e => e.preventDefault()}
                 onDoubleClick={this.mouseDoubelClick.bind(this)}
+                onMouseEnter={ this.mouseEnter.bind(this)}
+                onMouseLeave={ this.mouseLeve.bind(this)}
                 >
                 <div 
                     className="knob-big-circle"
@@ -296,33 +298,28 @@ class Knob extends React.PureComponent{
                     <div 
                         ref = {this.html.rightHalf}
                         className="half-circle half-right"
-                        onMouseEnter={ this.mouseEnter.bind(this)}
-                        onMouseLeave={ this.mouseLeve.bind(this)}/>
+                        />
                     <div 
                         ref = {this.html.leftHalf} 
                         className="half-circle half-left "
-                        onMouseEnter={ this.mouseEnter.bind(this)}
-                        onMouseLeave={ this.mouseLeve.bind(this)}/>
+                       />
                     {( this.props.showValue && 
                         <div
                             ref={this.html.value} 
                             className={"knob-value " + ((this.props.showValue === "always") ? "knob--focus" : "")}
-                            onMouseEnter={ this.mouseEnter.bind(this)}
-                            onMouseLeave={ this.mouseLeve.bind(this)}>
+                           >
                         </div>
                     )}
                 </div>
                 <div 
                     ref={this.html.smallCircle}
                     className={"knob-small-circle "}
-                    onMouseEnter={ this.mouseEnter.bind(this) }
-                    onMouseLeave={ this.mouseLeve.bind(this) }
+       
                     />
                 <div 
                     ref={this.html.dot}
                     className="knob-dot"
-                    onMouseEnter={ this.mouseEnter.bind(this) }
-                    onMouseLeave={ this.mouseLeve.bind(this) }/>
+                  />
             </div>
         )
     }
