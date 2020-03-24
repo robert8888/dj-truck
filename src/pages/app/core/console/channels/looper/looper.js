@@ -46,7 +46,15 @@ export default class Looper {
             }
         }
 
+        channel.loop.reset = () => {
+            channel.loop.audioBufferSource = channel.master.backend.source;
+            channel.loop.audioBufferSource.loopStart = channel.loop.start;
+            channel.loop.audioBufferSource.loopEnd = channel.loop.end;
+            channel.loop.audioBufferSource.loop = true;
+        } 
+
         channel.master.on("audioprocess", channel.loop.watch);
+        channel.master.on("interaction", channel.loop.reset)
         this.drawLoop(channel);
     }
 
@@ -70,6 +78,7 @@ export default class Looper {
 
     endLoop(channel){
         channel.master.un("audioprocess", channel.loop.watch);
+        channel.master.un("interaction", channel.loop.reset);
         channel.master.backend.source.loop = false;
         this.clearDraw(channel);
         delete channel.loop;

@@ -2,8 +2,8 @@
 import { put , call} from 'redux-saga/effects';
 
 import getApi from "./../apis/apiProvider";
-import {calcBpm ,calcAccurateBpmAndOffset} from './../utils/bpm/analyzer';
-import { setBpm, setBpmAndOffset } from '../actions';
+import {calcAccurateBpmAndOffset} from './../utils/bpm/analyzer';
+import {  setBpmAndOffset } from '../actions';
 
 
 export default function* calcBpmAsync(action){

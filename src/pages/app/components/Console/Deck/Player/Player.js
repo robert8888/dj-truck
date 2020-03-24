@@ -20,6 +20,7 @@ class Player extends React.Component {
   }
 
   render() {
+
     return (
       <div className={"player player-" + this.props.name}>
         {this.props.loadingProgress < 100 && this.props.loadingProgress > 0 && (

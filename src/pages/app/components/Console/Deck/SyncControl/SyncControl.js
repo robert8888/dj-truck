@@ -15,7 +15,7 @@ const SyncControl = props =>{
     }, [props.isMaster, props.noMaster])
 
     return (
-        <div className={"sync-control " + "bar-deck-" + props.name }>
+        <div className={"sync-control bar-deck-" + props.name }>
             <Button 
                 className={"sync-btn " + ((props.syncState) ? "btn--pressed" : "")} 
                 onClick={props.toggleSyncState}>

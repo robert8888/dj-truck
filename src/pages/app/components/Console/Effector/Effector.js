@@ -1,21 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
+import { throttle } from "./../../../../../utils/functions/lodash";
+
 import "./effector-channel.scss";
 import DryWetKnob from "./DryWetKnob/DryWetKnob";
 import EffectorButton from "./EffectorButton/EffectorButton";
 import EffectorKnob from "./EffectorKnob/EffectorKnob";
 import { Dropdown, DropdownButton } from "react-bootstrap";
-import { setEffectParametr } from "./../../../../../actions";
+import { setEffectParametr, setCurrentEffect, setDryWet } from "./../../../../../actions";
+import mapComponentToParameter from "./utils/mapComponentToParameter";
 const Effector = props => {
 
-    const [currentEffect, setCurrentEffect] = useState(null);
+    const [currentEffect, setCurrentEffect] = useState(undefined);
     const [effectorParams, setEffectorParams] = useState([]);
 
 
-    const paramChangeHandle = (param, value) => {
-        //console.log(currentEffect, param, value)
+    /*const paramChangeHandle = (param, value) => {
         props.setParameter(currentEffect, param, value);
     }
+*/
+
+    const setParameterHandle = props.setParameter;
+    const paramChangeHandle = useCallback((param, value)=>{
+        setParameterHandle(currentEffect, param, value);
+    }, [setParameterHandle, currentEffect])
+
+    const setCurrentEffectHandle = props.setCurrentEffect;
+    useEffect(() => {
+        setCurrentEffectHandle(currentEffect);
+    }, [currentEffect, setCurrentEffectHandle])
+
 
     useEffect(() => {
         let currentEffectParams = props.availableEffects[currentEffect];
@@ -23,38 +37,47 @@ const Effector = props => {
             setEffectorParams([]);
             return;
         }
-        //console.log('params', currentEffectParams)
 
         setEffectorParams(Object.entries(currentEffectParams).map(([name, param]) => {
-            //   console.log(name, param)
+            //console.log("producing knobs")
             const effectState = props.channelState.effects[currentEffect];
+
             let value = param.defaultValue;
             if (effectState) {
                 value = effectState[name] || value;
             }
-            //console.log(param)
 
+            let bindData = {
+                channel: props.channel,
+                effect: currentEffect,
+                name: name
+            };
+
+            let reactElement = "";
             if (param.type === "float") {
-                return (<EffectorKnob key={name + param.description}
-                    scale={param.max - param.min}
-                    initValue={value}
-                    alt={param.description}
-                    showValue
-                    onChange={paramChangeHandle.bind(null, name)}
-                />)
+                let Knob = mapComponentToParameter(bindData, EffectorKnob);
+                reactElement = (
+                    <Knob
+                        key={name + param.description}
+                        scale={param.max - param.min}
+                        initValue={value}
+                        alt={param.description}
+                        showValue
+                        onChange={paramChangeHandle.bind(null, name)} />
+                )
             } else if (param.type === "bool") {
-                console.log(name, value)
-                return (<EffectorButton
-                    key={name + param.description}
-                    className={((value) ? "btn--pressed" : "")}
-                    onChange={paramChangeHandle.bind(null, name)}
-                
-                >
+                const Button = mapComponentToParameter(bindData, EffectorButton);
+
+                reactElement = (<Button
+                    key={currentEffect + name + param.description}
+                    onChange={paramChangeHandle.bind(null, name)}>
                     {param.description}
-                </EffectorButton>);
+                </Button>)
             }
+
+            return reactElement
         }))
-    }, [currentEffect, props.effects])
+    }, [ currentEffect])
 
 
     const availableEffects = Object.keys(props.availableEffects).map((effect, index) => {
@@ -63,13 +86,14 @@ const Effector = props => {
 
 
     return (
-        <div className="effector-channel">
+        <div className={"effector-channel effector ch-" + props.channel}>
+            <span className="label">{"FX " + props.channel}</span>
             <div className="dra-wet-knob">
-                <DryWetKnob alt="D/W" />
+                <DryWetKnob alt="D/W" onChange={props.setDryWet} />
             </div>
             <div className="effect-selector">
                 <DropdownButton title={currentEffect || "-----"} className="btn-effect-select">
-                    <Dropdown.Item key={"none"} onClick={setCurrentEffect.bind(null, null)}> ----- </Dropdown.Item>
+                    <Dropdown.Item key={"none"} onClick={setCurrentEffect.bind(null, undefined)}> ----- </Dropdown.Item>
                     {availableEffects}
                 </DropdownButton>
             </div>
@@ -85,9 +109,13 @@ const mapStateToProps = (state, ownProps) => ({
     channelState: state.effector.channels[ownProps.channel]
 })
 
-const mapDispachToProps = (dispatch, ownProps) => ({
-    setParameter: (...args) => dispatch(setEffectParametr(ownProps.channel, ...args))
-})
+const mapDispachToProps = (dispatch, ownProps) => {
+    const tdispatch = throttle(dispatch, 100);
+    return {
+    setParameter: (...args) => tdispatch(setEffectParametr(ownProps.channel, ...args)),
+    setCurrentEffect: (effect) => dispatch(setCurrentEffect(ownProps.channel, effect)),
+    setDryWet: (value) => dispatch(setDryWet(ownProps.channel, value))
+}}
 
 export default connect(mapStateToProps, mapDispachToProps)(Effector);
 

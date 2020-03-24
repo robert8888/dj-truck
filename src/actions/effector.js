@@ -1,7 +1,8 @@
 const ACTIONS = {
     SET_AVAILABLE_EFFECTS : "Set all availble current effects",
-    SET_EFFECT_PARAMETER : "Set to effector $channel parametr $name->$value"
-
+    SET_EFFECT_PARAMETER : "Set to effector $channel parametr $name->$value",
+    SET_DRY_WET : "Set $value of dry/wet to effector $channel",
+    SET_CURRENT_EFFECT : "Set current $effect to effector $channel"
 }
 
 export {ACTIONS as EFFECTOR_ACTIONS }
@@ -23,3 +24,20 @@ export function setEffectParametr(channel, effect, name, value )
         value
     }
 }
+
+export function setCurrentEffect(channel, effect){
+    return {
+        type: ACTIONS.SET_CURRENT_EFFECT,
+        effect,
+        channel
+    }
+};
+
+
+export function setDryWet(channel, value){
+    return {
+        type: ACTIONS.SET_DRY_WET,
+        channel,
+        value
+    }
+};

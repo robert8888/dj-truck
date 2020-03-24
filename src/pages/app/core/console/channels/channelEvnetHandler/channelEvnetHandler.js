@@ -17,7 +17,9 @@ export default class EventHandler {
     this.onLoad(channel);
     this.onLoading(channel);
     this.onReady(channel);
-    this.onProcess(channel);
+    this.onPlay(channel);
+    this.onStop(channel);
+
     this.onSlaveSeek(channel);
     this.onMasterSeek(channel);
     this.onFinish(channel);
@@ -49,16 +51,20 @@ export default class EventHandler {
     });
   }
 
-  onProcess(channel) {
-    let lastUpdate = new Date().getTime();
-    channel.master.on("audioprocess", () => {
-      const currentTime = new Date().getTime();
-      if (currentTime - lastUpdate >= 500) {
-        lastUpdate = currentTime;
-        const timeLeft = parseInt(channel.master.getDuration() - channel.master.getCurrentTime());
-        this.dispatch(setTimeLeft(channel.channelName, timeLeft));
-      }
-    });
+
+  onPlay(channel){
+    channel.master.on("play", ()=>{
+        channel._clockHandle = setInterval(()=>{
+          const timeLeft = parseInt(channel.master.getDuration() - channel.master.getCurrentTime());
+          this.dispatch(setTimeLeft(channel.channelName, timeLeft))
+        }, 500)
+    })
+  }
+
+  onStop(channel){
+    channel.master.on('pause', ()=>{
+      clearInterval(channel._clockHandle)
+    })
   }
 
   onSlaveSeek(channel) {
@@ -112,6 +118,7 @@ export default class EventHandler {
   onFinish(channel) {
     channel.master.on("finish", () => {
       this.dispatch(togglePlay(channel.channelName));
+      clearInterval(channel._clockHandle);
     });
   }
 

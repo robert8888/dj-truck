@@ -3,6 +3,6 @@ export function inRange(value, min, max){
 }
 
 export function toRange(value, min, max){
-    value = Math.min(value, min);
-    return Math.max(value, max);
+    value = Math.max(value, min);
+    return Math.min(value, max);
 }

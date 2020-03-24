@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { loadingBarReducer } from 'react-redux-loading-bar'
 import decksReducer from "./decksReducer";
 import mixer from "./mixerReducer";
 import effector from "./effectorReducer";
@@ -12,5 +13,7 @@ export default combineReducers({
     playList,
     mixer,
     effector,
-    configuration, 
+    configuration,
+    
+    loadingBar: loadingBarReducer,
 })

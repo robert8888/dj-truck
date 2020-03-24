@@ -18,7 +18,7 @@ import Knob from "./../Knob/Knob";
 import "./knob-described.scss"
 
 const KnobDescribed = (props) => {
-    const {alt, ... rest} = props;
+    const {alt, ...rest} = props;
     
     return (
         <div className={"knob-area " + props.className}>

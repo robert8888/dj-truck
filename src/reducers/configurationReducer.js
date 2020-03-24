@@ -1,4 +1,3 @@
-import { ACTIONS } from "../actions";
 
 const initState = {
     mixer: {
@@ -7,11 +6,11 @@ const initState = {
             frequency: 250
         },
         mid: {
-            Q: 1.04,// around 0,33db // 20log10(q)
+            Q: 1.03,// around 0,33db // 20log10(q)
             frequency: 1000
         },
         hi: {
-            frequency: 2500
+            frequency: 3000
         }
     },
 

@@ -8,7 +8,7 @@ const ResonansKnob = props =>{
     return (
         <KnobDescribed className="filter-knob "
             showValue
-            scale={100} 
+            scale={20} 
             alt={props.alt}
             quantize={1} 
             onChange={ props.onChange }

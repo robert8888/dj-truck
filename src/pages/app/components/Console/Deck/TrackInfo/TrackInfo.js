@@ -1,64 +1,38 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import "./track-info.scss";
 
 
-import { calcBpm } from "./../../../../../../utils/bpm/converter.js";
-import { stripHtml } from "./../../../../../../utils/html/htmlHelper.js";
-import { formater } from "./../../../../../../utils/time/timeFromater"
+import TrackDuration from "./TrackDuration/TrackDuration";
+import TrackTitle from "./TrackTitle/TrackTitle";
+import TimeLeft from "./TimeLeft/TimeLeft";
+import Thumbnail from "./Thumbnail/Thumbnail";
+import CurrentBpm from "./CurrentBpm/CurrentBpm";
+import Pitch from "./Pitch/Pitch";
+import Bpm from "./Bpm/Bpm";
 
 const TrackInfo = props => {
-    const track = props.track;
-    
-    let title = stripHtml(track.details.title);
-    let seprator = title.indexOf("-");
-    if(seprator !== -1){
-        title = (<Fragment><span>{title.substr(0, seprator)}</span> {title.substr(seprator, title.length)}</Fragment>);
 
-    }
  
     return (
         <div className={"track-info deck-" + props.name}>
-            <div className="track-info-thumbnail">
-                {(track.details.thumbnail?.default?.url && <img 
-                alt="track thumbnails"
-                src={track.details.thumbnail?.default?.url}></img>)}
-            </div>
+            <Thumbnail name={props.name} />
             <div className="track-info-description">
-                <p className="track-info-title">
-                    { title }
-                </p>
+                 <TrackTitle name={props.name}/>
             </div>
             <div className="track-info-time">
-                <span className="time-left">
-                    { ((track.state.timeLeft) ? formater.secondsToStr(track.state.timeLeft) : formater.ytToStr(track.details.duration)) }
-                </span>
-                <span className="track-duration">
-                    { formater.ytToStr(track.details.duration) }
-                </span>
+                <TimeLeft name={props.name}/>
+                <TrackDuration name={props.name}/>
             </div>
             <div className="track-info-bpm">
-                <span className="track-bpm-current">
-                    { track.details.bpm && calcBpm(track.details.bpm, track.state.pitch).toFixed(2) }
-                </span>
-                <span className="tarck-bpm-pitch">
-                    { track.state.pitch.toFixed(2) + "%"}
-                </span>
-                <span className="track-bpm-init">
-                    { track.details.bpm && track.details.bpm.toFixed(2) }
-                </span>
+                <CurrentBpm name={props.name}/>
+                <Pitch name={props.name}/>
+                <Bpm name={props.name}/>
             </div>
         </div>
     )
 }
 
-const mapStateToProps = (state, ownProps) => ({
-    track : {
-        details : state.console.channel[ownProps.name].track,
-        state : state.console.channel[ownProps.name].playBackState,
-    }
-})
 
 
 
-export default connect(mapStateToProps)(TrackInfo);
+export default TrackInfo;

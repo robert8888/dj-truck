@@ -4,8 +4,9 @@ import "./effector-button.scss";
 
 const EffectorButton = props => {
     const {className, ...rest} = props;
+    
     return (
-    <BinaryButton className={'effector-btn ' + className} {...rest}>{props.children}</BinaryButton>
+        <BinaryButton className={'effector-btn ' + className} {...rest}>{props.children}</BinaryButton>
     )
 }
 

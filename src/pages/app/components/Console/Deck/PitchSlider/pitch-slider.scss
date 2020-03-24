@@ -22,7 +22,7 @@
 .pitch{
     display: flex;
     .slider{
-        @include slider-vertical(50px);
+        @include slider-vertical(46px);
     }
 
     &.pitch-A{

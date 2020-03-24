@@ -4,7 +4,10 @@ const ACTIONS = {
     SET_LOW : "Set $low to $destination channel",
     SET_HI : "Set $hi to $destination channel",
     SET_MID : "Set $mid to $destination channel",
+    SET_FILTER : "Set $filter to $destination channel",
+    SET_FILTER_RES : "Set filter $resonasn to $destination channel ",
     SET_FADER : "Set $Fader to mixer",
+    SET_SEND : "Set send $number, on $channel,  to $value"
 }
 export {ACTIONS as MIXER_ACTIONS }
 
@@ -40,6 +43,23 @@ export function setLow(destination, value){
     }
 };
 
+export function setFilter(destination, value){
+    return {
+        type: ACTIONS.SET_FILTER,
+        destination,
+        value
+    }
+};
+
+
+export function setFilterResonans(destination, value){
+    return {
+        type: ACTIONS.SET_FILTER_RES,
+        destination,
+        value
+    }
+};
+
 export function setFader(value){
     return {
         type: ACTIONS.SET_FADER,
@@ -47,4 +67,11 @@ export function setFader(value){
     }
 };
 
-
+export function setSend(destination, number, value){
+    return {
+        type: ACTIONS.SET_SEND,
+        destination,
+        number,
+        value
+    }
+}

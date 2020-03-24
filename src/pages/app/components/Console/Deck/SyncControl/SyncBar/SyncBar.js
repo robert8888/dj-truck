@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Console from "./../../../../../core/console/console"
 import "./sync-bar.scss";
 

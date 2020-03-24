@@ -4,22 +4,23 @@ import EqKnob from "./EqKnob/EqKnob"
 import GainKnob from "./GainKnob/GainKnob";
 import FilterKnob from "./FilterKnob/FitlerKnob";
 import ResonansKnob from "./ResonasKnob/ResonansKnob";
-import {Button} from "react-bootstrap"
+import BinnaryButton from "./../../../common/BinnaryButton/BinnaryButton";
 import PeakLevelMeter from "./PeakLevelMeter/PeakLevelMeter";
 import {
     setGain,
     setLow,
     setMid,
-    setHi
+    setHi,
+    setSend,
+    setFilter,
+    setFilterResonans
 } from "./../../../../../../actions";
 
 import "./mixer-channel.scss";
-
+import { throttle } from "./../../../../../../utils/functions/lodash"
 
 class Channel extends React.Component{
-    state ={
-        value: 0 
-    }
+
 
     render(){
         return (
@@ -35,13 +36,31 @@ class Channel extends React.Component{
                 <div className="knobs-set-2">
                     <GainKnob className="eq-gain" onChange={ this.props.setGain }/>
                     <div className="mixer-group">
-                        <ResonansKnob alt="RES" className="resonans" onChange={ this.props.setLow } value={this.state.value}/>
-                        <FilterKnob alt="FL" className="filter" onChange={ (val)=>  this.setState({value:val}) }/>
+                        <ResonansKnob 
+                            alt="RES" 
+                            className="resonans" 
+                            value={this.props.filterResonansValue}
+                            onChange={ this.props.setFilterResonans } 
+                            />
+                        <FilterKnob 
+                            alt="FL" 
+                            className="filter" 
+                            onChange={ this.props.setFilter}/>
                     </div>
                 </div>
                 <div className="mixer-group group-fx">
-                        <Button className="btn-fx">FX 1</Button>
-                        <Button className="btn-fx">FX 2</Button>
+                        <BinnaryButton 
+                            className="btn-fx" 
+                            value={this.props.send1}
+                            onChange={this.props.setSend.bind(null, 1)}>
+                                FX 1
+                        </BinnaryButton>
+                        <BinnaryButton 
+                            className="btn-fx" 
+                            value={this.props.send2}
+                            onChange={this.props.setSend.bind(null, 2)}>
+                                FX 2
+                        </BinnaryButton>
                 </div>
             </div>
         )
@@ -49,11 +68,23 @@ class Channel extends React.Component{
 
 }
 
-const mapDispachToProps = (dispatch, ownProps) =>({
-    setGain : (value) => dispatch(setGain(ownProps.name, value)),
-    setHi : (value) => dispatch(setHi(ownProps.name, value)),
-    setMid : (value) => dispatch(setMid(ownProps.name, value)),
-    setLow : (value) => dispatch(setLow(ownProps.name, value)),
+const mapStateToProps = (state, ownProps) => ({
+    send1 : state.mixer.channels[ownProps.name].sends[0],
+    send2 : state.mixer.channels[ownProps.name].sends[1],
+
+    filterResonansValue : state.mixer.channels[ownProps.name].filterResonans,
 })
 
-export default connect(null, mapDispachToProps)(Channel);
+const mapDispachToProps = (dispatch, ownProps) =>{
+    const tdispatch = throttle(dispatch, 50);
+    return {
+    setGain : (value) =>  tdispatch(setGain(ownProps.name, value)),
+    setHi : (value) => tdispatch(setHi(ownProps.name, value)),
+    setMid : (value) => tdispatch(setMid(ownProps.name, value)),
+    setLow : (value) => tdispatch(setLow(ownProps.name, value)),
+    setSend : (number, value) => dispatch(setSend(ownProps.name, number, value)),
+    setFilter : (value) => tdispatch(setFilter(ownProps.name, value)),
+    setFilterResonans : (value) => tdispatch(setFilterResonans(ownProps.name, value)),
+}}
+
+export default connect(mapStateToProps, mapDispachToProps)(Channel);

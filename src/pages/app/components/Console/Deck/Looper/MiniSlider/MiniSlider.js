@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import withMousePosition from "./../../../../common/HOC/withMousePosition";
 import withRefSize from "./../../../../common/HOC/withRefSize";
 import "./mini-slider.scss";

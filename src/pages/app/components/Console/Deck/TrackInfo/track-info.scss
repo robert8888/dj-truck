@@ -42,13 +42,17 @@ $track-info-height : 60px;
 
 
     .track-info-time{
+        position: relative;
+        width: 40px;
 
-        display: flex;
-        flex-direction: column;
+
         height: $track-info-height;
-        justify-content: flex-start;
+
         padding: 5px 0;
         span{
+            position: absolute;
+            right: 0;
+            display: block;
             text-align: right;
             padding: 0;
             padding-bottom: 5px;
@@ -57,40 +61,39 @@ $track-info-height : 60px;
             letter-spacing: 2px;
         }
         span.time-left{
-            font-size: 18px;
             font-weight: bold;   
+            font-size: 1.1rem;
+        }
+        span.track-duration{
+            top : 25px;
         }
 
-        .track-duration{
-
-        }
     }
 
     .track-info-bpm{
-        display: flex;
-        flex-direction: column;
+        position: relative;
         height: $track-info-height;
         width: 60px;
         justify-content: space-between;
         box-sizing: border-box;
         padding: 5px 0;
         span{
-            text-align: right;
+            position: absolute;
+            right: 0;
             padding: 0;
             padding-right : 5px;
             line-height: 14px;
             font-size: 14px;
-            width: 60px;
         }
         span.track-bpm-current{
             font-size: 16px;
             font-weight: 600;
         }
         .track-bpm-pitch{
-
+            top: 22.5px;
         }
         .track-bpm-init{
-
+            top: 40px;
         }
     }
 }

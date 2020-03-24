@@ -5,6 +5,7 @@
     background: $color;
     border-color:$color;
     white-space: nowrap;
+    -webkit-box-shadow: none;
     &:visited{
         background: $color;
         border-color:$color;
@@ -13,16 +14,20 @@
     &:hover,  &:focus,  &:active {
         background: $primary-dark;
         border-color: $primary-dark;
-        -webkit-box-shadow: 0 0 0 0.2rem $color;
-        box-shadow: 0 0 0 0.2rem $color  ;
+     //   -webkit-box-shadow: 0 0 0 0.2rem $color;
+     //   box-shadow: 0 0 0 0.2rem $color  ;
+        -webkit-box-shadow: none;
+        box-shadow: none;
         color: $color;
     }
 
     &:active:hover , &:active:focus, &.active.focus, &.btn--pressed {
         background: $primary-dark;
         border-color: $primary-dark;
-        -webkit-box-shadow: 0 0 0 0.2rem $color;
-        box-shadow: 0 0 0 0.2rem $color  ;
+      //  -webkit-box-shadow: 0 0 0 0.2rem $color;
+     //   box-shadow: 0 0 0 0.2rem $color  ;
+        -webkit-box-shadow: none;
+        box-shadow: none;
         color: $color;
     }
 }
@@ -64,11 +69,14 @@
 
 @mixin drop-down-button($color) {
     @include deck-button($color);
+    user-select: none;
     font-size: 15px;
     display: block;
 
     &::first-letter{
         text-transform: capitalize;  
+        -webkit-user-select: none;
+        user-select: none;
     }
 
     & + div.dropdown-menu{

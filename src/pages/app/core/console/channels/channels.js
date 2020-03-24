@@ -103,10 +103,16 @@ export default class Channels {
   }
 
   adjustPitch(channelName, currentValue) {
-    const audioBufferSource = this.getChannel(channelName).backend.source;
-    if(audioBufferSource instanceof AudioBufferSourceNode){
-      audioBufferSource.playbackRate.value = 1 + currentValue / 100;
-    }
+    let waveSurfer= this.getChannel(channelName); 
+    waveSurfer.setPlaybackRate(1 + currentValue / 100);
+    waveSurfer.fireEvent("interaction");
+
+    /*
+    if(channel?.backend?.source instanceof AudioBufferSourceNode){
+        const rate = 1 + currentValue / 100
+        channel.backend.source.playbackRate.value = rate; 
+        channel.backend.playbackRate = rate;
+    }*/
   }
 
   sync(channelName){

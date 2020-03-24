@@ -19,23 +19,28 @@ import React from "react";
 import style from "./knob.scss";
 
 
-class Knob extends React.Component{
+class Knob extends React.PureComponent{
+
+    constructor(){
+        super();
+        this.html = {
+            bigCircle : React.createRef(),
+            leftHalf : React.createRef(),
+            rightHalf : React.createRef(),
+            value : React.createRef(),
+            smallCircle : React.createRef(),
+            dot : React.createRef()
+        }
+    }
 
     state = {
         value: 0,
-        position: 0, // form 0 to 100
-        snapShotPostion: 0,//
-
-        rightArm: 90, // form -60 to 90 - this is midle
-        leftArm: 90, // from 90 to 240 
-        dotAngle: 0,
-        reversArm: false,//for not symetri linera gradient swap
+        position: 0, 
+        snapShotPostion: 0,
 
         idDragged: false,
         isMouseOver: false,
-        isActive: false,
     }
-
 
     snap(){
         this.setState({...this.state, snapShotPostion: this.state.position})
@@ -62,7 +67,6 @@ class Knob extends React.Component{
         if(this.props.scale){
             position = value * 100 / this.props.scale;
         }
-
 
         if(this.props.unsymetric){
             if(this.props.unsymetric.positive && value > 0 ){
@@ -106,7 +110,6 @@ class Knob extends React.Component{
             } else if (typeof this.props.quantize === "number") {
                 factor = this.props.quantize;
             }
-
             const rest = value % factor;
             value = value - rest;
         }
@@ -153,10 +156,51 @@ class Knob extends React.Component{
                 leftArm =  -240 + (position - 60) * 3;
                 rightArm =  -240 ;
             }
+        }
+        this.updateStyle({rightArm, leftArm, dotAngle, reversArm});
+        this.updateValue();
+    }
 
+    updateValue(){
+        let value = ""
+        if(this.isMouseOver && !this.state.isDragged && this.props.alt){
+            value = this.props.alt.substr(0,4).toUpperCase();
+        } else {
+            if(this.props.showValue){
+                value = this.evalValue(this.state.position)
+            }
+            if(this.props.displayFormula){
+                value = this.props.displayFormula(value);
+            }
         }
 
-        this.setState({...this.state, rightArm, leftArm, dotAngle, reversArm});
+        this.html.value.current.textContent = value.toString().substr(0,6);
+    }
+
+    updateStyle({rightArm, leftArm, dotAngle, reversArm}){
+        this.html.bigCircle.current.style.backgroundImage = 
+            `linear-gradient(`+ (180 + leftArm)  +`deg, `+style.primaryDark+` 50%, transparent 50%),
+             linear-gradient(`+ (180 + rightArm) +`deg, transparent 50%, `+style.primaryDark+` 50%)`;
+
+        this.html.rightHalf.current.style.transform = `rotate(`+ leftArm +`deg)`;
+        this.html.leftHalf.current.style.transform = `rotate(`+ rightArm +`deg)`;
+        if(reversArm){
+            this.html.leftHalf.current.classList.add("half--reverse")
+        } else {
+            this.html.leftHalf.current.classList.remove("half--reverse")
+        }
+
+        this.html.dot.current.style.transform= 'rotate('+ dotAngle + 'deg)';
+    }
+
+    setActive(value){
+        if(value){
+            this.html.value.current.classList.add("knob--focus")
+            this.html.smallCircle.current.classList.add("small-circle--focus");
+        }else {
+            this.html.value.current.classList.remove("knob--focus");
+            this.html.smallCircle.current.classList.remove("small-circle--focus");
+        }
     }
 
     // -------------- events below
@@ -171,8 +215,8 @@ class Knob extends React.Component{
             document.body.removeEventListener('mouseup', removeListener);
             document.body.removeEventListener('mouseleave', removeListener);
             this.setState({...this.setState, isDragged: false}, ()=>{
-                if(!this.state.isDragged &&  !this.state.isMouseOver){
-                    this.setState({...this.state, isActive: false})
+                if(!this.state.isDragged &&  !this.isMouseOver){
+                    this.setActive(false);
                 }
             })
             
@@ -181,7 +225,8 @@ class Knob extends React.Component{
         document.body.addEventListener('mousemove', mouseMove)
         document.body.addEventListener('mouseup', removeListener);
         document.body.addEventListener('mouseleave', removeListener);
-        this.setState({...this.setState, isDragged: true, isActive:true})
+        this.setState({...this.setState, isDragged: true})
+        this.setActive(true);
     }
 
     mouseMove(startY, event){
@@ -192,26 +237,26 @@ class Knob extends React.Component{
     }
 
     mouseEnter(){
-        this.setState({...this.setState, isMouseOver: true}, ()=>{
-            if(this.state.isDragged ||  this.state.isMouseOver){
-                this.setState({...this.state, isActive: true})
-            }
-        });
+        this.isMouseOver = true;
+        if(this.state.isDragged ||  this.isMouseOver){
+            this.setActive(true);
+        }
     }
 
     mouseLeve(){
-        this.setState({...this.setState, isMouseOver: false}, ()=>{
-            if(!this.state.isDragged &&  !this.state.isMouseOver){
-                this.setState({...this.state, isActive: false})
-            }
-        });
+        this.isMouseOver = false;
+        if(!this.state.isDragged &&  !this.isMouseOver){
+            this.setActive(false)
+        }
     }
 
     mouseDoubelClick(){
         if(this.props.dobuleClickInit){
             const value = this.props.initValue || 0;
             const position = this.valueToPosition(value);
-            this.setPostion(position)
+            this.setState({...this.state, value : value}, ()=>{
+                this.setPostion(position)
+            })
         }
     }
 
@@ -225,7 +270,6 @@ class Knob extends React.Component{
         this.setState({...this.state, position : position}, ()=>{
             this.mapPostionToArms(position);
         })
-
     }
 
     componentDidUpdate(oldProps){
@@ -235,62 +279,53 @@ class Knob extends React.Component{
         }
     }
 
-    render(){
-        let value = ""
-        if(this.state.isMouseOver && !this.state.isDragged && this.props.alt){
-            value = this.props.alt.substr(0,4).toUpperCase();
-        } else {
-            if(this.props.showValue){
-                value = this.evalValue(this.state.position)
-            }
-            if(this.props.displayFormula){
-                value = this.props.displayFormula(value);
-            }
-        }
 
-        value = value.toString().substr(0,6);
+    render(){
+
         
         return (
-            <div className={"knob " + this.props.className} 
+            <div 
+                className={"knob " + this.props.className} 
                 onMouseDown={this.mouseDown.bind(this)}
                 onDragStart={ e => e.preventDefault()}
                 onDoubleClick={this.mouseDoubelClick.bind(this)}
-                data-value = {this.props.value}
                 >
-                <div className="knob-big-circle" style={{
-                    backgroundImage : `linear-gradient(`+ (180 + this.state.leftArm)  +`deg, `+style.primaryDark+` 50%, transparent 50%),
-                                       linear-gradient(`+ (180 + this.state.rightArm) +`deg, transparent 50%, `+style.primaryDark+` 50%)`
-                }}>
-                    <div className="half-circle half-right"
-                         style={{transform: `rotate(`+ this.state.leftArm +`deg)`}}
-                         onMouseEnter={ this.mouseEnter.bind(this)}
-                         onMouseLeave={ this.mouseLeve.bind(this)}/>
-                    <div className={"half-circle half-left " + ((this.state.reversArm) ?"half--reverse" : "" )}
-                         style={{transform: `rotate(`+ this.state.rightArm +`deg)`}}
-                         onMouseEnter={ this.mouseEnter.bind(this)}
-                         onMouseLeave={ this.mouseLeve.bind(this)}/>
-
-                    {( this.props.showValue && 
-                        <div className={"knob-value " + ((this.state.isActive || this.props.showValue === "always") ? "knob--focus" : "")}
+                <div 
+                    className="knob-big-circle"
+                    ref={this.html.bigCircle}>
+                    <div 
+                        ref = {this.html.rightHalf}
+                        className="half-circle half-right"
                         onMouseEnter={ this.mouseEnter.bind(this)}
-                        onMouseLeave={ this.mouseLeve.bind(this)}>
-                        { value }
-                    </div>)}
+                        onMouseLeave={ this.mouseLeve.bind(this)}/>
+                    <div 
+                        ref = {this.html.leftHalf} 
+                        className="half-circle half-left "
+                        onMouseEnter={ this.mouseEnter.bind(this)}
+                        onMouseLeave={ this.mouseLeve.bind(this)}/>
+                    {( this.props.showValue && 
+                        <div
+                            ref={this.html.value} 
+                            className={"knob-value " + ((this.props.showValue === "always") ? "knob--focus" : "")}
+                            onMouseEnter={ this.mouseEnter.bind(this)}
+                            onMouseLeave={ this.mouseLeve.bind(this)}>
+                        </div>
+                    )}
                 </div>
                 <div 
-                    className={"knob-small-circle " + ((this.state.isActive) ? "small-circle--focus" : "")}
+                    ref={this.html.smallCircle}
+                    className={"knob-small-circle "}
                     onMouseEnter={ this.mouseEnter.bind(this) }
                     onMouseLeave={ this.mouseLeve.bind(this) }
                     />
-                <div className="knob-dot"
-                    style={{transform: 'rotate('+ this.state.dotAngle + 'deg)'}}
+                <div 
+                    ref={this.html.dot}
+                    className="knob-dot"
                     onMouseEnter={ this.mouseEnter.bind(this) }
                     onMouseLeave={ this.mouseLeve.bind(this) }/>
-
             </div>
         )
     }
 }
-
 
 export default Knob;

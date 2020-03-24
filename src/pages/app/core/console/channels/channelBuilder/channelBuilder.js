@@ -5,8 +5,6 @@ import WaveSurfer from "wavesurfer";
 import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler"
 import { getBeatLength } from "./../../../../../../utils/bpm/converter";
 
-
-
 export default class ChannelBuilder {
   constructor() {
     this.eventHandler = new ChannelEvnetHandler();
@@ -14,7 +12,7 @@ export default class ChannelBuilder {
   }
 
   create(channelName, masterContainer, slaveContainer, mainAudioContext) {
-    let channel = {channelName, masterContainer, slaveContainer};
+    let channel = { channelName, masterContainer, slaveContainer };
 
     //--configs
     channel.masterConfig = config.master(masterContainer, channelName);
@@ -23,7 +21,9 @@ export default class ChannelBuilder {
     //--master waveSurfer obj
     channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
-    channel.master.__proto__.loadWithEvent = function(...args) {
+
+
+    channel.master.__proto__.loadWithEvent = function (...args) {
       this.fireEvent("load");
       this.load(...args);
     };
@@ -35,7 +35,8 @@ export default class ChannelBuilder {
     return channel;
   }
 
-  createBars(channel, {bpm, offset}){
+  createBars(channel, { bpm, offset }) {
+ 
     let wrapper = channel.master.drawer.wrapper;
     let styleApply = WaveSurfer.Drawer.style;
     let minPxPerSec = channel.master.params.minPxPerSec;
@@ -57,13 +58,30 @@ export default class ChannelBuilder {
       background: "rgba(255,255,255, 0.5)"
     });
 
+    let containerStyle = {
+      position: 'absolute',
+      lef: '0',
+      top: '0', 
+      width: '100%',
+      height: '100%',
+      zIndex: "3",
+    }
+    let container = document.createElement('div');
+    styleApply(container, containerStyle);
+    
     channel.barsElements = [];
     barPostions.forEach(position => {
       let bar = document.createElement("div");
       let style = barStyle(minPxPerSec * position);
       styleApply(bar, style);
-      wrapper.appendChild(bar);
+      container.appendChild(bar);
       channel.barsElements.push(bar);
     });
+    wrapper.appendChild(container);
+
   }
+
+ 
+
+
 }

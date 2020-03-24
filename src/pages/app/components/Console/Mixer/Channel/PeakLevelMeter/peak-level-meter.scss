@@ -26,18 +26,18 @@
             background-color: darken($mixer-level-meter, 30%);
             &:nth-last-of-type(-n+5){
                 background-color: darken($mixer-level-meter-safe, 30%);
-                &.led-on{
+                &.led--on{
                     background-color: $mixer-level-meter-safe
                 }
             }
             &:nth-last-of-type(-n+3){
                 background-color: darken($mixer-level-meter-cliping, 30%);
-                &.led-on{
+                &.led--on{
                     background-color: $mixer-level-meter-cliping
                 }
             }
     
-            &.led-on{
+            &.led--on{
                 background-color: $mixer-primary;
             }
         }

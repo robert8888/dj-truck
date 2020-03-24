@@ -12,15 +12,15 @@ const Console = props =>{
     return (
         <div className="truck-console">
             <Recorder/>
-            <div className="console-group group-deck group-deck-A">
-                <Effector channel={1}/>
-                <Deck name="A">A</Deck>
-            </div>
-                <Mixer />
-            <div className="console-group group-deck group-deck-B">
-                <Effector channel={2}/>
-                <Deck name="B">B</Deck>
-            </div>
+            
+            <Effector channel={1}/>
+            <Deck name="A">A</Deck>
+        
+            <Mixer />
+        
+            <Effector channel={2}/>
+            <Deck name="B">B</Deck>
+           
         </div>
     )
 }

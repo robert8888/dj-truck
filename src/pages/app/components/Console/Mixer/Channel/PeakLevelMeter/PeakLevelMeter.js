@@ -6,73 +6,91 @@ import "./peak-level-meter.scss";
 // scale range is between -40 dB and + 10 dB
 // this means that on led is 2.5 dB
 
-class PeakLevelMater extends React.Component{
-    constructor(...args){
+class PeakLevelMater extends React.PureComponent {
+    constructor(...args) {
         super(...args);
         this.size = 30;
+
+
+        this.rightChannel = [];
+        this.leftChannel = [];
+
+        this.leftRefs = new Array(this.size);
+        this.rightRefs = new Array(this.size);
+
+        for (let i = 0; i < this.size; i++) {
+            this.leftRefs[i] = React.createRef();
+            this.rightRefs[i] = React.createRef();
+
+            this.rightChannel.push(
+                <div
+                    ref={this.rightRefs[i]}
+                    key={'right-' + i}
+                    className={"level-meter-led right-bar led-" + i} />
+            )
+            this.leftChannel.push(
+                <div
+                    ref={this.leftRefs[i]}
+                    key={'left-' + i}
+                    className={"level-meter-led left-bar led-" + i} />
+            )
+        }
+
+        this.mixerChannelInterface =  Console.Get().getMixerChannelInterface(this.props.name);
+        this.breakFlag = false;
     }
 
-    state = {
-        ledStates : {
-            left: {
-                peak : false,
-                states : (new Array(this.size)).fill(false),
-            },
-            right: 
-            {
-                peak : false,
-                states : (new Array(this.size)).fill(false),
-            },
-        },
-        mixerChannelInterface : Console.Get().getMixerChannelInterface(this.props.name),
-    }
 
-    mouseOverHandler = (event) => {
 
-    }
+    componentDidMount() {
+        let lastCall = null;
+        const updateLedStates = () => {
 
-    componentDidMount(){
-        let updateLedStates = () =>{
-           let nextLedState = (new Array(this.size)).fill(false);
+            requestAnimationFrame(updateLedStates);
+            //throtell to 50ms
+            const now = new Date().getTime();
+            if(now - lastCall < 50){
+                return;
+            }
+            lastCall = now; 
+            //drawing ...
+            if(this.breakFlag){
+                return;
+            }
+            
+            for(let i = 0 ; i < this.size ; i++){
+                this.leftRefs[i].current.classList.remove("led--on");
+                this.rightRefs[i].current.classList.remove("led--on");
+            }
 
-            let peakMeter = this.state.mixerChannelInterface.getPeakMeter();
+            let peakMeter = this.mixerChannelInterface.getPeakMeter();
             let ledOn = 25 + peakMeter.peakdB / 2;
 
-            for(let i = 0 ; (i < ledOn && i < this.size); i++) {
-                nextLedState[i] = true;
+            for (let i = 0; (i < ledOn && i < this.size); i++) {
+                this.leftRefs[i].current.classList.add("led--on")
+                this.rightRefs[i].current.classList.add("led--on")
             }
 
-            const channelState = {
-                peak : (peakMeter.peakdB > 0),
-                states : nextLedState
-            }
 
-            this.setState({
-                ...this.state, 
-                ledStates : {
-                    left: channelState,
-                    right: channelState,
-
-                }
-            })
-            requestAnimationFrame(updateLedStates);
         }
-        
+
         updateLedStates();
     }
-    
-    render(){
+
+    componentWillUnmount(){
+        this.breakFlag = true;   
+    }
+
+    render() {
+
+        console.log("i'm render peak level meter")
         return (
             <div className="peak-level-meter">
                 <div className="meter-channel">
-                    { this.state.ledStates.left.states.map((ledState, index)=>{
-                        return (<div key={index} className={"level-meter-led led-"+ index + ((ledState) ? " led-on" : " led-off") }/>)
-                    })}
+                    {this.leftChannel}
                 </div>
                 <div className="meter-channel">
-                    { this.state.ledStates.right.states.map((ledState, index)=>{
-                        return (<div key={index} className={"level-meter-led led-"+ index + ((ledState) ? " led-on" : " led-off") }/>)
-                    })}
+                    {this.rightChannel}          
                 </div>
             </div>
         )

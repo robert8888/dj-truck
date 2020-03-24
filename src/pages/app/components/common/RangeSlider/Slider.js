@@ -11,8 +11,6 @@ class Slider extends React.Component {
   }
 
   state = {
-    //from get derived stated from props
-    sliderCurrnetPositionFromProps: null,
 
     sliderRange: null,
     sliderCurrnetPosition: null,
@@ -32,33 +30,14 @@ class Slider extends React.Component {
     };
   };
 
-  static getPostion = (value, state, props) => {
-    const { from, range } = Slider.getRange(props.from, props.to);
+  getPostion = (value) => {
+    const { from, range } = Slider.getRange(this.props.from, this.props.to);
     const progress = (value - from) / range;
-    const position = progress * state.sliderRange;
-    return position + state.thumbSize / 2;
+    const position = progress * this.state.sliderRange;
+    return position + this.state.thumbSize / 2;
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (!state.sliderRange || !state.thumbSize) return null;
-    if (props.value === undefined) {
-      return {
-        ...state,
-        sliderCurrnetPositionFromProps: state.sliderCurrnetPosition
-      };
-    }
 
-    if (props.value > props.to || props.value < props.from) {
-      return null; //dont modify state
-    }
-
-    let currentPosition = Slider.getPostion(props.value, state, props);
-
-    return {
-      ...state,
-      sliderCurrnetPositionFromProps: currentPosition
-    };
-  }
 
   evalValue = position => {
     const { from, range } = Slider.getRange(this.props.from, this.props.to);
@@ -111,7 +90,22 @@ class Slider extends React.Component {
         }
       }
     );
+
+    this.updateStyles();
   };
+
+  updateStyles(){
+
+    let position = this.stickiPostion(this.state.sliderCurrnetPosition);
+    if (this.props.horizontal) {
+      this.sliderThumbElement.current.style.left = position + "px";
+      //thumbStyle.left = position;
+    } else {
+      this.sliderThumbElement.current.style.top = position + "px";
+      //thumbStyle.top = position;
+    }
+  
+  }
 
   mouseDownHandle = event => {
     if (
@@ -124,7 +118,7 @@ class Slider extends React.Component {
       const position = this.props.horizontal
         ? event.clientX - rect.left
         : event.clientY - rect.top;
-      this.setPosition(position, this.state.sliderCurrnetPositionFromProps);
+      this.setPosition(position, this.state.sliderCurrnetPosition);
     } // dragging
     else if (event.target === this.sliderThumbElement.current) {
       this.setState({ ...this.state, isDragged: true });
@@ -231,34 +225,31 @@ class Slider extends React.Component {
     );
   }
 
-  render() {
-    const thumbStyle = {};
-    if (
-      this.state.sliderCurrnetPosition !== undefined &&
-      !isNaN(this.state.sliderCurrnetPositionFromProps)
-    ) {
-      let position = this.stickiPostion(
-        this.state.sliderCurrnetPositionFromProps
-      );
-      if (this.props.horizontal) {
-        thumbStyle.left = position;
-      } else {
-        thumbStyle.top = position;
+  componentDidUpdate(prevProbs){
+    if( this.props.value && this.props.value !== prevProbs.value){
+      let position = this.getPostion(this.props.value);
+      if(position !== this.state.sliderCurrnetPosition){
+        this.setPosition(position);
       }
     }
+  }
 
+  shouldComponentUpdate(nextProps, nextState){
+    return (this.props.value !== nextProps.value)
+  }
+
+  render() {
+    
     return (
-      <div
-        className={
-          "slider" + (this.props.className ? " " + this.props.className : "")
-        }
+      <div 
+        className={ "slider" + (this.props.className ? " " + this.props.className : "")}
       >
         <div ref={this.sliderAreaElement} className="slider-area">
           <div ref={this.sliderRangeElement} className="slider-range" />
           <div
             className="slider-thumb"
             ref={this.sliderThumbElement}
-            style={thumbStyle}
+            
           />
         </div>
       </div>

@@ -12,7 +12,8 @@ const masterConfig = (container, name) => ({ // name deck A or B
     hideScrollbar:true,
     fillParent: false,
     height: style.masterHeight.slice(0, -2) || 100,
-    minPxPerSec : 150
+    minPxPerSec : 150,
+    pixelRatio : 1,
 })
 
 const slaveConfig = (container, name) => ({

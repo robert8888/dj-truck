@@ -7,11 +7,18 @@ const STATUS = {
     EQ_HI_CHANGE : "Fire when equalization higest band was changed",
     EQ_MID_CHANGE : "Fire when equalization mid band was changed",
     EQ_LOW_CHANGE : "Fire when equalization lowest band was changed",
+    FILTER_CHANGE : "Fiter when mixer filter value change",
+    FILTER_RES_CHANGE : "Fiter mixer filter resonas value change", 
     FADER_CHANGE: "Fire when value of fader postion was chaged",
     SYNC_ACTIVATE: "When one of channels has sync on",
     BPM_AND_OFFSET_READY : "Fire when bpm and offset on channel is loaded",
     LOOP_CHANGE : "Fire when loop state is change on channel",
-    LOOP_LENGTH_CHANGE : "Fire when loopLength is changed durring a looped track"
+    LOOP_LENGTH_CHANGE : "Fire when loopLength is changed durring a looped track",
+    SEND_CHANGE : "Fire when mixer send is changed",
+
+    DRY_WET_CHANGED : "Fire when dry wet paramet was changed on effector channel",
+    CURRENT_EFFECT_CHANGED: "Fire when current effect for effector channel is changed",
+    EFFECT_PARAM_CHANGED: "Firew when parameter of effect was changed"
 }
 
 export default STATUS;

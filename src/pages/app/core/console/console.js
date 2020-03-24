@@ -59,16 +59,14 @@ export default class Console{
 
     callAction(diff){
         switch(diff.status){
+
+            //-- PLAY BACK
+
             case STATUS.TRACK_LOADED : {
                 this.channels.loadTrack(diff.channel, diff.currentValue);
                 break;
             }
 
-            case STATUS.BPM_AND_OFFSET_READY : {
-                this.channels.createBars(diff.channel, diff.currentValue);
-                break;
-            }
-            
             case STATUS.TOGGLE_PLAY : {
                 this.channels.togglePlay(diff.channel, diff.currentValue);
                 break;
@@ -77,10 +75,24 @@ export default class Console{
                 this.channels.toggleCue(diff.channel, diff.currentValue)
                 break;
             }
+
+            //----BPM AND SYNC
+            case STATUS.BPM_AND_OFFSET_READY : {
+                this.channels.createBars(diff.channel, diff.currentValue);
+                break;
+            }
+            
             case STATUS.PITCH_CHANGE : {
                 this.channels.adjustPitch(diff.channel, diff.currentValue)
                 break;
             }
+
+            case STATUS.SYNC_ACTIVATE : {
+                this.channels.sync(diff.channel);
+                break;
+            }
+
+            //---- MIXER 
             case STATUS.GAIN_CHANGE : {
                 this.mixer.setGain(diff.channel, diff.currentValue);
                 break;
@@ -97,16 +109,29 @@ export default class Console{
                 this.mixer.setEqHigh(diff.channel, diff.currentValue);
                 break;
             }
+
+            case STATUS.FILTER_CHANGE : {
+                this.mixer.setFilterFreq(diff.channel, diff.currentValue);
+                break;
+            }
+
+            case STATUS.FILTER_RES_CHANGE : {
+                this.mixer.setFiterResonas(diff.channel, diff.currentValue);
+                break;
+            }
+
+            case STATUS.SEND_CHANGE : {
+                this.mixer.setSend(diff.channel, diff.send, diff.currentValue)
+                break;
+            }
+
             case STATUS.FADER_CHANGE : {
                 this.mixer.setFader(diff.currentValue);
                 break;
             }
 
-            case STATUS.SYNC_ACTIVATE : {
-                this.channels.sync(diff.channel);
-                break;
-            }
 
+            // -- LOOPER
             case STATUS.LOOP_CHANGE : {
                 if(diff.currentValue.state){
                     this.channels.makeLoop(diff.channel, diff.currentValue);
@@ -120,6 +145,24 @@ export default class Console{
                 this.channels.updateLoop(diff.channel, diff.currentValue);
                 break;
             }
+
+
+            // -- EFFECTOR 
+            case STATUS.DRY_WET_CHANGED : {
+                this.effector.setDryWet(diff.channel, diff.currentValue);
+                break;
+            }
+
+            case STATUS.CURRENT_EFFECT_CHANGED: {
+                this.effector.setEffect(diff.channel, diff.currentValue)
+                break;
+            }
+
+            case STATUS.EFFECT_PARAM_CHANGED : {
+                this.effector.setParam(diff.channel, diff.effect, diff.param)
+                break;
+            }
+
 
             default : return; 
         }

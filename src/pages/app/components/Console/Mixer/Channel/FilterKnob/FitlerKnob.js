@@ -1,5 +1,5 @@
 import React from "react";
-import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed"
+import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed";
 import "./filter-knob.scss";
 
 
@@ -17,10 +17,10 @@ const FilterKnob = props =>{
         <KnobDescribed className="filter-knob "
             showValue={"always"} 
             symetric
-            scale={100} 
+            scale={8000} 
             alt={props.alt}
             displayFormula={ displayText }
-            quantize={1} 
+            quantize={100} 
             onChange={ props.onChange }
             value={props.value}
             dobuleClickInit/>
