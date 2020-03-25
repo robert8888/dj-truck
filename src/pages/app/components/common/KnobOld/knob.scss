@@ -1,0 +1,101 @@
+@import "./../../../../../css/colors.scss";
+
+
+@mixin knob($color, $diameter){
+    position: relative;
+    display: inline-block;
+    z-index: 5;
+    .knob-big-circle{
+        width: $diameter;
+        height: $diameter;
+        border-radius: 50%;
+        background: $color;
+        position: relative;
+
+        box-sizing: border-box;
+        .half-circle{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            top:0;
+            left: 0;
+            &.half-left{
+                background: transparent;
+                background-image: linear-gradient( 0deg,  $primary-dark 50%, transparent 50%, );
+                &.half--reverse{
+                    background-image: linear-gradient( 0deg, $color 50% ,transparent 50% );  
+                 }
+            }
+            &.half-right{
+                background: transparent;
+                background-image: linear-gradient( 0deg, transparent 50%,  $primary-dark 50%);
+            }
+        }
+    }
+
+    $ratio-big-to-small : 0.70;
+    $shift : ($diameter - ( $diameter * $ratio-big-to-small )) / 2; 
+
+    .knob-small-circle{
+        width:  $diameter * $ratio-big-to-small;
+        height: $diameter * $ratio-big-to-small;
+        border-radius: 50%;
+        background: $secondary-dark;
+
+        position: absolute;
+        top: $shift;
+        left: $shift;
+        transition: box-shadow 0.2s;
+        $shado-size : 0.02 * $diameter;
+        @if ($shado-size < 1px) {
+            $shado-size : 1px;
+        }
+        box-shadow: 0 0 0 $shado-size $color;
+        &.small-circle--focus{
+            box-shadow: 0 0 0 0.05 * $diameter $color;
+        }
+    }
+
+    .knob-dot{
+        height: $diameter * $ratio-big-to-small * 0.85;
+        width: 0.2 * $diameter;
+        position: absolute;
+        top: 1.5 * $shift;
+        //transform rotate is used by JS that is not done by
+        //left 50% and translateX - 50%
+        left: ($diameter * ($ratio-big-to-small + 0.1)) / 2;
+        &:after{
+            content: "";
+            display: block;
+            position: absolute;
+            left:50%;
+            width: 0.1 * $diameter;
+            height: 0.1 * $diameter;
+            border-radius: 50%;
+            background: $color;
+            transform: translateX(-50%);
+        }
+    }
+
+    .knob-value{
+        color: $color;
+        font-size: $diameter * 0.22;
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        user-select: none;
+        z-index: 6;
+        opacity: 0;
+        transition: opacity 0.2s;
+        &.knob--focus{
+            opacity: 1;
+        }
+    }
+}
+
+:export{
+    primaryDark: $primary-dark;
+}
+
