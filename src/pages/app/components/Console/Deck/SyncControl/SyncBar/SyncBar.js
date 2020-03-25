@@ -6,50 +6,66 @@ class SyncBar extends React.Component {
   constructor() {
     super(...arguments);
     this.channelInterface = Console.Get().getChannelInterface(this.props.name);
+    this.thumbElement = React.createRef();
+
+    this.lastCall = false;
+    this.break = true;
   }
 
-  state = {
-    position: 0
-  };
 
   update() {
-   // console.log("update", this.props.name);
-    this.setState({
-      ...this.state,
-      position: this.channelInterface.getSyncBarPosition()
-    });
+    console.log("update")
+    if(this.break){
+      return;
+    } 
 
-    if (!this.props.active) {
-      console.log("stop interval");
-      clearInterval(this.intervalHandler);
-      this.intervalHandler = null;
+    requestAnimationFrame(this.update.bind(this))
+    const now = new Date().getTime();
+
+    if (now - this.lastCall > 100) {
+      this.lastCall = now;
+      const position = this.channelInterface.getSyncBarPosition();
+      this.applyStyle(position);
     }
   }
 
-  render() {
-    const style = {};
-    style.display = "none";
+  applyStyle(position) {
 
- //   console.log(this.state.position)
-    if (this.props.active) {
-      style.display = "block";
-      style.width = Math.abs(this.state.position * 100) + "%"; //max 50 %;
-      if (this.state.position > 0) {
-        style.left = "50%";
-      } else {
-        style.left = "auto";
-        style.right = "50%";
-      }
+    let scale = 2 * position;
+    let translateX = -((1 - scale) / 2 * 100);
 
-      if (!this.intervalHandler) {
-        this.intervalHandler = setInterval(this.update.bind(this), 100);
-      }
+    if (position < 0) {
+      scale *= -1;
     }
 
+    this.thumbElement.current.style.transform = "translateX(" + translateX + "%) scaleX(" + scale + ")"
+  }
+
+  activate() {
+    this.thumbElement.current.style.opacity = "1";
+    this.break = false;
+    this.update();
+  }
+
+  deActivate() {
+    this.thumbElement.current.style.opacity = "0";
+    this.break = true;
+  }
+
+  componentDidUpdate() {
+    if (this.props.active) {
+      this.activate();
+    } else {
+      this.deActivate();
+    }
+  }
+
+
+  render() {
     return (
       <div className={this.props.className + " sync-bar-deck-" + this.props.name}>
         <div className="bar-area">
-          <div className="bar-thumb" style={style} />
+          <div ref={this.thumbElement} className="bar-thumb" />
         </div>
       </div>
     );

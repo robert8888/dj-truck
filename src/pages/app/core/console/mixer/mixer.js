@@ -1,5 +1,5 @@
 import store from "./../../../../../store";
-
+import { equalPowerFader } from "./../../../../../utils/sound/converter"
 
 export default class Mixer {
     constructor(channels) {
@@ -63,8 +63,8 @@ export default class Mixer {
             eqHiFilterNode: audioCtx.createBiquadFilter(),
             eqMidFilterNode: audioCtx.createBiquadFilter(),
             eqLowFilterNode: audioCtx.createBiquadFilter(),
-            lowPassFilterNode : audioCtx.createBiquadFilter(),
-            highPassFilterNode : audioCtx.createBiquadFilter(),
+            lowPassFilterNode: audioCtx.createBiquadFilter(),
+            highPassFilterNode: audioCtx.createBiquadFilter(),
             //
             sendNode: audioCtx.createGain(),
             sendAndReturns: Array(this.config.externalChannels).fill(1).map(() => ({
@@ -93,7 +93,7 @@ export default class Mixer {
         channelNodes.eqMidFilterNode.frequency.setValueAtTime(this.config.mid.frequency, audioCtx.currentTime);
         channelNodes.eqMidFilterNode.Q.setValueAtTime(this.config.mid.Q, audioCtx.currentTime);
         //--Filters
-        channelNodes.lowPassFilterNode.type ="lowpass";
+        channelNodes.lowPassFilterNode.type = "lowpass";
         channelNodes.lowPassFilterNode.frequency.setValueAtTime(24000, audioCtx.currentTime);
 
         channelNodes.highPassFilterNode.type = "highpass";
@@ -170,16 +170,16 @@ export default class Mixer {
 
     setFilterFreq(channelName, knobValue) {
         const channel = this.audioNodes.channels[channelName];
-        if(knobValue < 0){
-             //low pass
+        if (knobValue < 0) {
+            //low pass
             channel.lowPassFilterNode.frequency
                 .setValueAtTime(8000 + knobValue, this.mainAudioContext.currentTime);
 
             channel.highPassFilterNode.frequency
                 .setValueAtTime(0, this.mainAudioContext.currentTime);
             setFilterRes.call(this, channel, channel._fitlerResonasValue);
-        } else if(knobValue > 0){
-             // high pass filter
+        } else if (knobValue > 0) {
+            // high pass filter
             channel.lowPassFilterNode.frequency
                 .setValueAtTime(24000, this.mainAudioContext.currentTime);
 
@@ -187,7 +187,7 @@ export default class Mixer {
                 .setValueAtTime(knobValue, this.mainAudioContext.currentTime);
             setFilterRes.call(this, channel, channel._fitlerResonasValue);
         } else {
-             //0 turn of all
+            //0 turn of all
             channel.lowPassFilterNode.frequency
                 .setValueAtTime(24000, this.mainAudioContext.currentTime);
 
@@ -196,7 +196,7 @@ export default class Mixer {
             setFilterRes.call(this, channel, 0);
         }
 
-        function setFilterRes(channel, value = 0 ){
+        function setFilterRes(channel, value = 0) {
             channel.lowPassFilterNode.Q
                 .setValueAtTime(value, this.mainAudioContext.currentTime);
 
@@ -219,11 +219,11 @@ export default class Mixer {
         } else if (value === 0 && sendAndReturns._currentSends) {
             sendAndReturns._currentSends.delete(sendNumber);
         }
-        
-        let gain = 1; 
+
+        let gain = 1;
         if (sendAndReturns._currentSends && sendAndReturns._currentSends.size > 1) {
-            gain *=  0.71 ** (sendAndReturns._currentSends.size -1) ;
-        } 
+            gain *= 0.71 ** (sendAndReturns._currentSends.size - 1);
+        }
 
         sendAndReturns.forEach((channel, index) => {
             console.log("for channek " + channelName, " gain " + gain, "send nubmer " + sendNumber)
@@ -256,9 +256,7 @@ export default class Mixer {
                             .Checkout funtion setFader in mixer object`);
         }
 
-        let percent = (value + 50) / 100;
-        let volA = Math.cos(percent * 0.5 * Math.PI);
-        let volB = Math.cos((1 - percent) * 0.5 * Math.PI);
+        const { a: volA, b: volB } = equalPowerFader(value)
 
         faderVolumeNodeA.gain.setTargetAtTime(volA, audioCtxA.currentTime, 0.01);
         faderVolumeNodeB.gain.setTargetAtTime(volB, audioCtxB.currentTime, 0.01);
@@ -305,7 +303,7 @@ export default class Mixer {
         const peakPowerDecibels = 10 * Math.log10(peakPower);
 
         return {
-           // avgdB: avgPowerDecibels,
+            // avgdB: avgPowerDecibels,
             peakdB: peakPowerDecibels,
         }
     }

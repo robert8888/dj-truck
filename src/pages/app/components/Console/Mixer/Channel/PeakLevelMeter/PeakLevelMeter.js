@@ -1,4 +1,5 @@
 import React from "react"
+import { connect } from "react-redux"
 import Console from "./../../../../../core/console/console";
 import "./peak-level-meter.scss";
 // there is 20 leds indicators
@@ -36,42 +37,49 @@ class PeakLevelMater extends React.PureComponent {
             )
         }
 
-        this.mixerChannelInterface =  Console.Get().getMixerChannelInterface(this.props.name);
+        this.mixerChannelInterface = Console.Get().getMixerChannelInterface(this.props.name);
         this.breakFlag = false;
+        this.lastCall = 0;
     }
 
-    componentDidMount() {
-        let lastCall = null;
-        const updateLedStates = () => {
+  
+    updateLedStates() {
 
-            requestAnimationFrame(updateLedStates);
-            //throtell to 50ms
-            const now = new Date().getTime();
-            if(now - lastCall < 50){
-                return;
-            }
-            lastCall = now; 
-
-            if(this.breakFlag){
-                return;
-            }
-
-            //drawing ...
-            let peakMeter = this.mixerChannelInterface.getPeakMeter();
-            let ledOn = 25 + peakMeter.peakdB / 2;
-
-            for (let i = 0; i < this.size; i++) {
-
-                this.leftRefs[i].current.classList.toggle("led--on", (i <= ledOn))
-                this.rightRefs[i].current.classList.toggle("led--on", (i <= ledOn))
-            }
+        if (this.breakFlag) {
+            return;
         }
 
-        updateLedStates();
+        requestAnimationFrame(this.updateLedStates.bind(this));
+        //throtell to 50ms
+        const now = new Date().getTime();
+        if (now - this.lastCall < 50) {
+            return;
+        }
+        this.lastCall = now;
+
+        //drawing ...
+        let peakMeter = this.mixerChannelInterface.getPeakMeter();
+        let ledOn = 25 + peakMeter.peakdB / 2;
+
+        for (let i = 0; i < this.size; i++) {
+
+            this.leftRefs[i].current.classList.toggle("led--on", (i <= ledOn))
+            this.rightRefs[i].current.classList.toggle("led--on", (i <= ledOn))
+        }
     }
 
-    componentWillUnmount(){
-        this.breakFlag = true;   
+    componentDidUpdate(prevProps) {
+        if(this.props.chReady){
+            this.breakFlag = false;
+            this.updateLedStates();
+        } else {
+            this.breakFlag = true;
+        }
+    }
+
+
+    componentWillUnmount() {
+        this.breakFlag = true;
     }
 
     render() {
@@ -82,7 +90,7 @@ class PeakLevelMater extends React.PureComponent {
                     {this.leftChannel}
                 </div>
                 <div className="meter-channel">
-                    {this.rightChannel}          
+                    {this.rightChannel}
                 </div>
             </div>
         )
@@ -90,4 +98,8 @@ class PeakLevelMater extends React.PureComponent {
 
 }
 
-export default PeakLevelMater;
+const mapStateToProps = (state, ownProps) => ({
+    chReady: state.console.channel[ownProps.name].playBackState.ready
+})
+
+export default connect(mapStateToProps)(PeakLevelMater);

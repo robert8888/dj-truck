@@ -66,10 +66,9 @@ export default class Reverb extends Effect {
     }
 
     connect(input, dest) {
-        //input.connect(dest)
-        
         input.connect(this.input);
         this.output.connect(dest);
+
         if(!this._buildImpulseWorker){
             this.configWorker();
         }
@@ -85,8 +84,6 @@ export default class Reverb extends Effect {
         let rate = this._context.sampleRate;
         const length = rate * this.seconds;
 
-        console.log("this seconds" , this.seconds)
-
         const impulse = this._context.createBuffer(2, length, rate);
         const impulseR = new Float32Array(length);
         const impulseL = new Float32Array(length);
@@ -101,7 +98,6 @@ export default class Reverb extends Effect {
         }, impulseL, impulseR])
     }
 
-    
 
     get seconds() {
         return this._seconds;

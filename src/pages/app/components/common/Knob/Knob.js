@@ -206,6 +206,7 @@ class Knob extends React.PureComponent{
     // -------------- events below
 
     mouseDown(event){
+
         const startY = event.clientY;
         let mouseMove = this.mouseMove.bind(this, startY);
         this.snap();
@@ -281,8 +282,7 @@ class Knob extends React.PureComponent{
 
 
     render(){
-        console.log("render knob")
-        
+
         return (
             <div 
                 className={"knob " + this.props.className} 

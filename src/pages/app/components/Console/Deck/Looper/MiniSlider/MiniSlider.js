@@ -17,16 +17,20 @@ class MiniSlider extends React.Component {
   }
 
 
-  changeSlide() {
-      let nextSlide = this.state.currentSlide;
-      const clickSide  = (this.props.mouse.x > this.props.size.container.width / 2) ? "right" : "left";
-      if( clickSide === "right" && nextSlide < this.props.renderItems.length-1){
-             nextSlide++;
-      } else if ( clickSide === "left" && nextSlide >= 1 ){
-          nextSlide--;
-      }
-      this.setState({...this.state, currentSlide : nextSlide});
-      (this.props.onChange && this.props.onChange(nextSlide))
+  changeSlide(event) {
+    let nextSlide = this.state.currentSlide;
+    
+    let x = event.clientX  - event.target.getBoundingClientRect().left;
+
+
+    const clickSide = ( x > this.props.size.container.width / 2) ? "right" : "left";
+    if (clickSide === "right" && nextSlide < this.props.renderItems.length - 1) {
+      nextSlide++;
+    } else if (clickSide === "left" && nextSlide >= 1) {
+      nextSlide--;
+    }
+    this.setState({ ...this.state, currentSlide: nextSlide });
+    (this.props.onChange && this.props.onChange(nextSlide))
   }
 
 
@@ -40,19 +44,17 @@ class MiniSlider extends React.Component {
 
     return (
       <div
-        className={ "slider-container " + classNames }
-        onClick = { this.changeSlide.bind(this) }
-        { ...hocEvnetsHandlers }
-        ref={ this.props.exportRef.bind(this, "container") }
-      >
-        <FontAwesomeIcon icon={faCircle} className="ctr ctr-minus" />
-        <FontAwesomeIcon icon={faCircle} className="ctr ctr-plus" />
-        <ul className="slider-list" style={listStyle}>
-          {this.props.renderItems.map(item => item)}
-        </ul>
+        className={"slider-container " + classNames}
+        onClick={this.changeSlide.bind(this)}
+        ref={this.props.exportRef.bind(this, "container")}>
+          <FontAwesomeIcon icon={faCircle} className="ctr ctr-minus" />
+          <FontAwesomeIcon icon={faCircle} className="ctr ctr-plus" />
+          <ul className="slider-list" style={listStyle}>
+            {this.props.renderItems.map(item => item)}
+          </ul>
       </div>
     );
   }
 }
 
-export default withMousePosition(withRefSize(MiniSlider));
+export default withRefSize(MiniSlider);

@@ -14,7 +14,7 @@ const TrackInfo = props => {
 
  
     return (
-        <div className={"track-info deck-" + props.name}>
+        <div className={"track-info info-deck-" + props.name}>
             <Thumbnail name={props.name} />
             <div className="track-info-description">
                  <TrackTitle name={props.name}/>

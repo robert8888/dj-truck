@@ -4,7 +4,7 @@ import config from "./../../../../components/Console/Deck/Player/configuration"
 import WaveSurfer from "wavesurfer";
 import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler"
 import { getBeatLength } from "./../../../../../../utils/bpm/converter";
-import { improveWaveSurfer } from "./WaveSurrferTransitions.js";
+import { addAnimationFrame } from "./wsAnimationFrame"
 
 export default class ChannelBuilder {
   constructor() {
@@ -22,7 +22,7 @@ export default class ChannelBuilder {
     //--master waveSurfer obj
     channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
-   // improveWaveSurfer(channel.master);
+    addAnimationFrame(channel.master);
 
     channel.master.__proto__.loadWithEvent = function (...args) {
       this.fireEvent("load");
@@ -30,7 +30,7 @@ export default class ChannelBuilder {
     };
 
     channel.slave = WaveSurfer.create(channel.slaveConfig);
-    //improveWaveSurfer(channel.slave);
+   // addAnimationFrame(channel.slave);
 
     this.eventHandler.CreateEventHandling(channel)
 

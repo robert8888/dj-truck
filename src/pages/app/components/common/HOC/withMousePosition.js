@@ -27,7 +27,10 @@ export default function withMousePosition(WrappedComponent) {
     render() {
       return (
         <WrappedComponent
-          evnetsHandlers={{ onMouseMove: this.handleMousePostion.bind(this) }}
+          evnetsHandlers={{ 
+            onMouseMove: this.handleMousePostion.bind(this),
+             
+          }}
           {...this.props}
           {...this.state}
         />

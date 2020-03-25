@@ -22,7 +22,9 @@ class Slider extends React.Component {
     sliderAreaOffset: 0
   };
 
-  static getRange = (from, to) => {
+  getRange () {
+    const from = this.props.from;
+    const to = this.props.to;
     return {
       from,
       to,
@@ -31,7 +33,7 @@ class Slider extends React.Component {
   };
 
   getPostion = (value) => {
-    const { from, range } = Slider.getRange(this.props.from, this.props.to);
+    const { from, range } = this.getRange();
     const progress = (value - from) / range;
     const position = progress * this.state.sliderRange;
     return position + this.state.thumbSize / 2;
@@ -40,7 +42,7 @@ class Slider extends React.Component {
 
 
   evalValue = position => {
-    const { from, range } = Slider.getRange(this.props.from, this.props.to);
+    const { from, range } = this.getRange(this.props.from, this.props.to);
     const progress =
       (position - this.state.thumbSize / 2) / this.state.sliderRange;
 
@@ -49,7 +51,7 @@ class Slider extends React.Component {
   };
 
   setValue = value => {
-    const { from, range } = Slider.getRange(this.props.from, this.props.to);
+    const { from, range } = this.getRange();
     const progress = (value - from) / range;
     const position = progress * this.state.sliderRange;
     this.setPosition(position + this.state.thumbSize / 2);
@@ -66,7 +68,7 @@ class Slider extends React.Component {
     if (this.props.stickiZero && this.props.from * this.props.to < 0) {
       let valueFromPostion = this.evalValue(position);
       if (Math.abs(valueFromPostion) - this.props.stickiZero < 0) {
-        return Slider.getPostion(0, this.state, this.props);
+        return this.getPostion(0, this.state, this.props);
       }
     }
     return position;
@@ -148,7 +150,7 @@ class Slider extends React.Component {
         } else {
           prevVal -= step;
         }
-        this.setPosition(Slider.getPostion(prevVal, this.state, this.props));
+        this.setPosition(this.getPostion(prevVal));
       } else {
         this.setPosition(this.state.sliderPrevPosition);
       }

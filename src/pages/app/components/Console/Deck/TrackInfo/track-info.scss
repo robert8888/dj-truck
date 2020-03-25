@@ -43,8 +43,8 @@ $track-info-height : 60px;
 
     .track-info-time{
         position: relative;
-        width: 40px;
-
+        width: 60px;
+        min-width: 60px;
 
         height: $track-info-height;
 
@@ -74,6 +74,7 @@ $track-info-height : 60px;
         position: relative;
         height: $track-info-height;
         width: 60px;
+        min-width: 60px;
         justify-content: space-between;
         box-sizing: border-box;
         padding: 5px 0;
@@ -99,10 +100,10 @@ $track-info-height : 60px;
 }
 
 .track-info{
-    &.deck-A{
+    &.info-deck-A{
         @include track-info($deck-A-primary)
     }
-    &.deck-B{
+    &.info-deck-B{
         @include track-info($deck-B-primary)
     }
 }

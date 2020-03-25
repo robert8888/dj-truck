@@ -88,6 +88,7 @@
         height: $diameter * $ratio-big-to-small * 0.85;
         width: 0.2 * $diameter;
         position: absolute;
+        z-index: 6;
         top: 1.5 * $shift;
         //transform rotate is used by JS that is not done by
         //left 50% and translateX - 50%

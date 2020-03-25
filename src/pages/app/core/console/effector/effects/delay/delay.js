@@ -15,7 +15,7 @@ export default class Delay extends Effect {
                 time: {
                     min: 0,
                     max: 180,
-                    defaultValue: 0.3,
+                    defaultValue: 5,
                     type: "float",
                     description: "time"
                 },
@@ -25,15 +25,19 @@ export default class Delay extends Effect {
 
     constructor(context, params){
         super();
-        this.params = Delay.defaultParams();
-        this._time = params.time || this.params.time.defaultValue;
-        this._feedback = params.feedback || this.params.feedback.defaultValue;
+        this.dParams = Delay.defaultParams().params;
+        this._time = params.time || this.dParams.time.defaultValue;
+        this._feedback = params.feedback || this.dParams.feedback.defaultValue;
         this.context = context;
 
         this.inputNode = context.createGain();
         this.outputNode = context.createGain();
         this.feedbackGainNode = context.createGain();
         this.delayNode = context.createDelay();
+        
+        //config
+        this.feedbackGainNode.gain.value = this.feedback/100 ;
+        this.delayNode.delayTime.value = this.time;
 
         // line in to wet mix
         this.inputNode.connect(this.delayNode);
@@ -46,9 +50,11 @@ export default class Delay extends Effect {
         this.delayNode.connect(this.outputNode);
     }
 
-    connect(inputNode){
-        inputNode.connect(this.inputNode);
-        return this.outputNode;
+    connect(input, dest){
+        input.connect(this.inputNode);
+        this.outputNode.connect(dest);
+
+        console.log(this)
     }
 
     disconnect(){
@@ -60,9 +66,9 @@ export default class Delay extends Effect {
     }
 
     set time(value){
-        value = toRange(value, this.params.time.min, this.params.time.max)
+        value = toRange(value, this.dParams.time.min, this.dParams.time.max)
         this._time = value;
-        this.delayNode.delaTime.setTargetAtTime(value, this.context.currentTime, 0.01);
+        this.delayNode.delayTime.setTargetAtTime(value, this.context.currentTime, 0.01);
     }
 
     get feedback(){
@@ -70,8 +76,15 @@ export default class Delay extends Effect {
     }
 
     set feedback(value){
-        value = toRange(value, this.params.feedback.min, this.params.feedback.max)
+        value = toRange(value, this.dParams.feedback.min, this.dParams.feedback.max)
         this._feedback = value;
-        this.feedbackGainNode.gain.setTargetAtTime(value / 100, this.context.currentTime, 0.01)
+
+        this.feedbackGainNode.gain.setTargetAtTime(value / 100, this.context.currentTime, 0.01);
+       
+
+    }
+
+    get name(){
+        return "delay"
     }
 }

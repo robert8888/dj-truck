@@ -133,8 +133,8 @@ export default class EventHandler {
   startSync = channel => {
     channel.syncHandle = setInterval(() => {
       channel.slave.drawer.progress(
-        channel.master.getCurrentTime() / channel.currentDuration
+        channel.master.backend.getPlayedPercents()
       );
-    }, 100);
+    }, 500);
   };
 }

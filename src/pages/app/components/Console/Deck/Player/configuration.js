@@ -14,6 +14,7 @@ const masterConfig = (container, name) => ({ // name deck A or B
     height: style.masterHeight.slice(0, -2) || 100,
     minPxPerSec : 150,
     pixelRatio : 1,
+    renderer: "Canvas"
 })
 
 const slaveConfig = (container, name) => ({
@@ -24,6 +25,7 @@ const slaveConfig = (container, name) => ({
     scrollParent : false,
     hideScrollbar: true,
     height: style.slaveHeight.slice(0, -2),
+    renderer: "Canvas"
 })
 
 export default {
