@@ -22,7 +22,7 @@ export default class ChannelBuilder {
     //--master waveSurfer obj
     channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
-    addAnimationFrame(channel.master);
+ //   addAnimationFrame(channel.master);
 
     channel.master.__proto__.loadWithEvent = function (...args) {
       this.fireEvent("load");
