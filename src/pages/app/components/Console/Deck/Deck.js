@@ -18,7 +18,7 @@ class Deck extends React.Component {
             <div className={ "deck deck-" + this.props.name } >
                 <TrackInfo name={ this.props.name }/>
                 <SyncControl name={ this.props.name }/>
-                <div className="flex-container">
+                <div className="player-container">
                     <Player name={ this.props.name }/> 
                     <PitchSlider  name={ this.props.name }/>
                 </div>

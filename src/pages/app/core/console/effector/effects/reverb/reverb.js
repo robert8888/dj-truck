@@ -4,7 +4,6 @@
 import Effect from "./../effect";
 import worker from "./buildImpulseWebWorker";
 import WebWorker from "./workerSetup";
-import {toRange} from "./../../../../../../../utils/math/argRanges";
 
 export default class Reverb extends Effect {
     static defaultParams() {
@@ -35,16 +34,13 @@ export default class Reverb extends Effect {
         }
     }
 
-    constructor(context, opt = {}) {
+    constructor(context, params) {
         super();
-        this.input = this.output = context.createConvolver()
+        this.inputNode = this.outputNode = context.createConvolver()
         this._context = context;
+        this._default = Reverb.defaultParams().params;
 
-        const defaultParams = Reverb.defaultParams().params;
-        this._seconds = opt.seconds || defaultParams.seconds.defaultValue;
-        this._decay = opt.decay || defaultParams.decay.defaultValue;
-        this._reverse = opt.reverse || defaultParams.reverse.defaultValue;
-
+        this._initParams(params);
         this.configWorker();
         this._buildImpulse();
     }
@@ -60,27 +56,28 @@ export default class Reverb extends Effect {
                 const impulse = this._context.createBuffer(2, length, this._context.sampleRate);
                 impulse.copyToChannel(impulseL, 0, 0);
                 impulse.copyToChannel(impulseR, 1, 0);
-                this.input.buffer = impulse;
+                this.inputNode.buffer = impulse;
             }
         })
     }
 
     connect(input, dest) {
-        input.connect(this.input);
-        this.output.connect(dest);
-
+        super.connect(input, dest);
         if(!this._buildImpulseWorker){
             this.configWorker();
         }
     }
 
     disconnect() {
-        this.output.disconnect();
+        super.disconnect();
         this._buildImpulseWorker.terminate();
         delete this._buildImpulseWorker;
     }
 
     _buildImpulse(){
+        if(!this._buildImpulseWorker){
+            return;
+        }
         let rate = this._context.sampleRate;
         const length = rate * this.seconds;
 
@@ -98,14 +95,16 @@ export default class Reverb extends Effect {
         }, impulseL, impulseR])
     }
 
+    get name(){
+        return "Reverb";
+    }
 
     get seconds() {
         return this._seconds;
     }
 
     set seconds(value) {
-        let params = Reverb.defaultParams().params.seconds;
-        value = toRange(value, params.min, params.max)
+        value = this._valueToRange(value, "seconds")
         this._seconds = value;
         this._buildImpulse();
     }
@@ -115,8 +114,7 @@ export default class Reverb extends Effect {
     }
 
     set decay(value) {
-        let params = Reverb.defaultParams().params.decay;
-        value = toRange(value, params.min, params.max)
+        value = this._valueToRange(value, "decay")
         this._decay = value;
         this._buildImpulse();
     }
@@ -130,7 +128,5 @@ export default class Reverb extends Effect {
         this._buildImpulse();
     }
 
-    get name(){
-        return "reverb";
-    }
+
 }

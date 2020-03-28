@@ -1,17 +1,21 @@
 import store from "./../../../../../store";
 import { equalPowerFader } from "./../../../../../utils/sound/converter"
+import { nodeChain as audioNodeChain } from "./../../../../../utils/sound/audioNodes";
+import Mastering from "./mastering";
 
 export default class Mixer {
     constructor(channels) {
-
+        console.log("create mixer")
         this.config = store.getState().configuration.mixer;
 
         this.channels = channels;
+        this.mastering = new Mastering(this);
 
         this.initChannelContainer('audioNodes');
         this.initChannelContainer('sampleBuffers');
         this.createMainChannel();
     }
+
 
     connect(external) {
         this.external = external;
@@ -35,23 +39,45 @@ export default class Mixer {
         this.mainAudioContext = new AudioContext();
 
         let ac = this.mainAudioContext;
-        let main = this.audioNodes.channels['main'];
-        main = {};
+        let main = this.audioNodes.channels['main'] = {};
 
-        main.gainNode = ac.createGain();
-        main.analyserNode = ac.createAnalyser();
-        main.gainNode.connect(main.analyserNode);
-        main.analyserNode.connect(ac.destination);
+
+        main.preGainNode = ac.createGain();
+        main.preAnalyserNode = ac.createAnalyser();
+        main.compressorNode = ac.createDynamicsCompressor();
+        main.postAnalyserNode = ac.createAnalyser();
+        main.postGainNode = ac.createGain();
+
+        this.mastering.configCompressor();
+
+        //wiring in chain
+         audioNodeChain([
+         main.preGainNode,
+         main.preAnalyserNode, 
+         main.compressorNode, 
+         main.postAnalyserNode, 
+         main.postGainNode,
+         ac.destination])
     }
 
 
     getChannelInterface(channelName) {
         return {
-            getPeakMeter: () => this.getPeakMeter(channelName),
+            getPeakMeter: () => this.getChannelPeakMeter(channelName),
         }
     }
 
+    getMasteringInterface(){
+        return {
+            getPrePeakMeter: {
+                getPeakMeter: this.getMasterPeakMetter.bind(this, "pre")
+            },
+            getPostPeakMeter: {
+                getPeakMeter: this.getMasterPeakMetter.bind(this, "post")
+            }
 
+        }
+    }
 
     setUpChannelsAudioNodes(channelName) {
         //surfer - waveSurfer obj
@@ -130,8 +156,9 @@ export default class Mixer {
 
         //-Conect to main output mixer channel
         surfer.backend.gainNode.disconnect();
-        surfer.backend.gainNode.connect(this.mainAudioContext.destination);
-
+        surfer.backend.gainNode.connect(
+            this.audioNodes.channels['main'].preGainNode
+            );
         this.setUpSampleBuffers(channelName);
     }
 
@@ -193,6 +220,7 @@ export default class Mixer {
 
             channel.highPassFilterNode.frequency
                 .setValueAtTime(0, this.mainAudioContext.currentTime);
+                
             setFilterRes.call(this, channel, 0);
         }
 
@@ -262,13 +290,14 @@ export default class Mixer {
         faderVolumeNodeB.gain.setTargetAtTime(volB, audioCtxB.currentTime, 0.01);
     }
 
+    ///-----------------------------
 
     setUpSampleBuffers(channelName) {
         let fftSize = this.audioNodes.channels[channelName].analyserNode.fftSize;
         this.sampleBuffers.channels[channelName] = new Float32Array(fftSize);
     }
 
-    getPeakMeter(channelName) {
+    getChannelPeakMeter(channelName) {
         let analyser = this.audioNodes?.channels[channelName]?.analyserNode
         if (!analyser) {
             return [];
@@ -280,6 +309,28 @@ export default class Mixer {
         return this.getPeakData(analyser, sampleBuffer)
     }
 
+    getMasterPeakMetter(part){
+        const main = this.audioNodes.channels['main'];
+        let buffers = this.sampleBuffers.channels['main'];
+        if(!buffers){
+            buffers = this.sampleBuffers.channels["main"] = {};
+        }
+        if(part === "pre"){
+            if(!buffers.pre){
+                const fftSize = main.preAnalyserNode.fftSize;
+                buffers.pre = new Float32Array(fftSize);
+            }
+            return this.getPeakData(main.preAnalyserNode, buffers.pre);
+        } else if(part === "post"){
+            if(!buffers.post){
+                const fftSize = main.preAnalyserNode.fftSize;
+                buffers.post = new Float32Array(fftSize);
+            }
+            return this.getPeakData(main.postAnalyserNode, buffers.post);
+        }
+    }
+
+    
     getPeakData(analyser, sampleBuffer) {
         analyser.getFloatTimeDomainData(sampleBuffer);
 

@@ -2,7 +2,7 @@ import { ACTIONS } from "../../../../../actions";
 import React from "react";
 import { connect } from "react-redux";
 import { stripHtml } from "./../../../../../utils/html/htmlHelper";
-import getApi from "./../../../../../apis/apiProvider";
+import {getApi} from "./../../../../../apis/apiProvider";
 //----
 import "./search-list.scss";
 

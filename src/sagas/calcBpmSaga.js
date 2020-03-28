@@ -1,7 +1,7 @@
 
 import { put , call} from 'redux-saga/effects';
 
-import getApi from "./../apis/apiProvider";
+import {getApi} from "./../apis/apiProvider";
 import {calcAccurateBpmAndOffset} from './../utils/bpm/analyzer';
 import {  setBpmAndOffset } from '../actions';
 

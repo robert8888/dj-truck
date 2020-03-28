@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { throttle } from "./../../../../../utils/functions/lodash";
 
 import "./effector-channel.scss";
-import DryWetKnob from "./DryWetKnob/DryWetKnob";
-import EffectorButton from "./EffectorButton/EffectorButton";
-import EffectorKnob from "./EffectorKnob/EffectorKnob";
+import DryWetKnob from "./components/DryWetKnob/DryWetKnob";
+import EffectorButton from "./components/EffectorButton/EffectorButton";
+import EffectorKnob from "./components/EffectorKnob/EffectorKnob";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { setEffectParametr, setCurrentEffect, setDryWet } from "./../../../../../actions";
 import mapComponentToParameter from "./utils/mapComponentToParameter";

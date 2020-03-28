@@ -1,5 +1,4 @@
 import React from "react";
-import withMousePosition from "./../../../../common/HOC/withMousePosition";
 import withRefSize from "./../../../../common/HOC/withRefSize";
 import "./mini-slider.scss";
 

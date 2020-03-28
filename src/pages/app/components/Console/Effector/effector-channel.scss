@@ -15,16 +15,7 @@
     padding-bottom: 0;
 
     .label  {
-        position: absolute;
-        top:0;
-        left:0;
-        font-size : 9px;
-        padding: 4px;
-        border-radius: 0;
-        margin: 0;
-        background: $primary-dark;
-        color: $mixer-primary;
-        user-select: none;
+        @include label();
     }
     
 
@@ -33,10 +24,12 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding-left: 10px;
+
+        padding-left: 8px;
         .btn-effect-select{
             .btn{
                 @include drop-down-button($mixer-primary);
+                padding: 8px 6px;
             }
         };
     }

@@ -43,11 +43,17 @@ export default class EventHandler {
       channel.currentDuration = channel.master.getDuration();
       //resolution value is taken from manual test
       const resolution = 280;
-      channel.slave.load(null, channel.master.backend.getPeaks(resolution, 0, resolution) );
-      this.dispatch(setLoadingProgress(channel.channelName, 100));
+      channel.slave.load(
+          null, 
+          channel.master.backend.getPeaks(resolution, 0, resolution) 
+        );
 
+      this.dispatch(setLoadingProgress(channel.channelName, 100));
       this.dispatch(setChannelReady(true, channel.channelName));
+
       this.startSync(channel);
+
+      channel.master.drawer._measureDimensions();
     });
   }
 

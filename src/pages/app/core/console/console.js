@@ -6,9 +6,9 @@ import Channels from "./channels/channels";
 import Mixer from "./mixer/mixer";
 import Effector from "./effector/effector";
 
+let instance=null; 
 
 export default class Console{
-    static instance;
 
     constructor(){
         store.subscribe(this.handleChange.bind(this));
@@ -22,13 +22,11 @@ export default class Console{
 
     }
 
-    static Create(){
-        return Console.Get();
-    }
 
     static Get(){
         if(!Console.instance){
-            Console.instance = new Console();
+            let consol = new Console();
+            Console.instance = consol;
             return Console.instance;
         } else {
             return Console.instance;
@@ -39,10 +37,15 @@ export default class Console{
         return this.mixer.getChannelInterface(channelName);
     }
 
+    getMixerMasterInterface(){
+        return this.mixer.getMasteringInterface()
+    }
+
     getChannelInterface(channelName){
         return this.channels.getChannelInterface(channelName);
     }
 
+ 
 
     createChannel(channelName, ...args){
         args.push(this.mixer.mainAudioContext);
@@ -58,8 +61,8 @@ export default class Console{
     }
 
     callAction(diff){
-        switch(diff.status){
 
+        switch(diff.status){
             //-- PLAY BACK
 
             case STATUS.TRACK_LOADED : {
@@ -154,7 +157,7 @@ export default class Console{
             }
 
             case STATUS.CURRENT_EFFECT_CHANGED: {
-                this.effector.setEffect(diff.channel, diff.currentValue)
+                this.effector.connectEffect(diff.channel, diff.currentValue)
                 break;
             }
 
@@ -163,6 +166,11 @@ export default class Console{
                 break;
             }
 
+            //------ MASTERING
+
+            case STATUS.MASTERING : {
+                this.mixer.mastering.setMasterParam(diff.subStatus, diff.value);
+            }
 
             default : return; 
         }

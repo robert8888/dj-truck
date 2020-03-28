@@ -18,7 +18,15 @@ const STATUS = {
 
     DRY_WET_CHANGED : "Fire when dry wet paramet was changed on effector channel",
     CURRENT_EFFECT_CHANGED: "Fire when current effect for effector channel is changed",
-    EFFECT_PARAM_CHANGED: "Firew when parameter of effect was changed"
+    EFFECT_PARAM_CHANGED: "Firew when parameter of effect was changed",
+
+    MASTERING: "General status for changes in mastering  seciton",
+    MASTER_PRE_GAIN_CHANGE: "Mastering pre gain value changed",
+    MASTER_POST_GAIN_CHANGE: "Mastering post gain value changed",
+    MASTER_THRESHOLD_CHANGE: "Mastering threshold value changed",
+    MASTER_RATIO_CHANGE: "Mastering ratio value changed",
+    MASTER_ATTACK_CHANGE: "Mastering attack value changed",
+    MASTER_RELEASE_CHANGE: "Mastering release value changed"
 }
 
 export default STATUS;

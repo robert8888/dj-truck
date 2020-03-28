@@ -5,6 +5,11 @@ import { equalPower } from "./../../../../../utils/sound/converter"
 //import { throttel } from "./../../../../../utils/functions/lodash";
 import Reverb from "./effects/reverb/reverb";
 import Delay from "./effects/delay/delay";
+import Flanger from "./effects/flanger/flanger";
+import DubDelay from "./effects/dubDelay/dubDelay";
+import PingPongDelay from "./effects/PingPongDelay/PingPongDelay";
+import Distortion from "./effects/distortion/distortion";
+import Quadrafuzz from "./effects/quadrafuzz/quadrafuzz";
 
 
 
@@ -17,14 +22,37 @@ export default class Effector {
 
 
         this.effects = {
-            "reverb": {
+            "Reverb": {
                 create: Reverb,
                 params: Reverb.defaultParams().params,
             },
-            "delay": {
+            "Flanger": {
+                create: Flanger,
+                params: Flanger.defaultParams().params
+            },
+            "Delay": {
                 create: Delay,
                 params: Delay.defaultParams().params
+            },
+            "Dub Delay": {
+                create: DubDelay,
+                params: DubDelay.defaultParams().params,
+            },
+            "Ping Pong Delay": {
+                create: PingPongDelay,
+                params: PingPongDelay.defaultParams().params,
+            },
+
+            "Distortion" : {
+                create: Distortion,
+                params: Distortion.defaultParams().params,
+            },
+            "Quadra" : {
+                create : Quadrafuzz,
+                params : Quadrafuzz.defaultParams().params
             }
+
+
         }
 
         const exportEffects = {};
@@ -36,7 +64,7 @@ export default class Effector {
 
     buildChannels(channelNumber) {
         this.channels =
-            Array.from({ length: channelNumber }, ( _ , index) => ({ channelNumber: index }));
+            Array.from({ length: channelNumber }, (_, index) => ({ channelNumber: index }));
 
         for (let chNum = 0; chNum < channelNumber; chNum++) {
             const channel = this.channels[chNum];
@@ -45,27 +73,41 @@ export default class Effector {
             channel.dryNode = this.mainAC.createGain();;
             channel.wetNode = this.mainAC.createGain();
             channel.outputNode = this.mainAC.createGain();
+            channel.compressorNode = this.mainAC.createDynamicsCompressor();
+            this.configCompressor(channel.compressorNode);
 
             channel.inputNode.connect(channel.dryNode);
-            channel.inputNode.connect(channel.wetNode);
-            channel.dryNode.connect(channel.outputNode);
-            channel.wetNode.connect(channel.outputNode);
 
-            channel.wetNode.gain.setValueAtTime(0,0)
+
+            channel.dryNode.connect(channel.compressorNode);
+            channel.wetNode.connect(channel.compressorNode);
+
+            channel.compressorNode.connect(channel.outputNode);
+
+            channel.wetNode.gain.value = 0;
         }
     }
 
-    connect(inputs) {   
+    configCompressor(compressorNode){
+        compressorNode.threshold.setValueAtTime( 0, this.mainAC.currentTime);
+        compressorNode.knee.setValueAtTime(3, this.mainAC.currentTime);
+        compressorNode.ratio.setValueAtTime(12, this.mainAC.currentTime);
+        compressorNode.attack.setValueAtTime(0, this.mainAC.currentTime);
+        compressorNode.release.setValueAtTime(0.25, this.mainAC.currentTime);
+    }
+
+
+    connect(inputs) {
         const outputs = [];
-        
+
         inputs.forEach((inputNode, chNum) => {
             inputNode.connect(this.channels[chNum].inputNode);
-            
+
             const output = this.mainAC.createGain();
             this.channels[chNum].outputNode.connect(output);
             outputs.push(output)
         });
-    
+
         return outputs;
     }
 
@@ -74,17 +116,16 @@ export default class Effector {
         channelNumber--;
         const channel = this.channels[channelNumber];
 
-      //  const {a: dry, b: wet} = equalPower(value / 100);
-        let dry = (100 - value) / 100;
-        let wet = value / 100;
+        const {a: dry, b: wet} = equalPower(value / 100);
+      //  let dry = (100 - value) / 100;
+        //let wet = value / 100;
 
-        console.log("dry " + dry, "Wet "+ wet )
 
         channel.dryNode.gain.setTargetAtTime(dry, this.mainAC.currentTime, 0.01);
         channel.wetNode.gain.setTargetAtTime(wet, this.mainAC.currentTime, 0.01);
     }
 
-    setEffect(channelNumber, effectName) {
+    connectEffect(channelNumber, effectName) {
         channelNumber--;//array index
         const channel = this.channels[channelNumber];
 
@@ -92,17 +133,13 @@ export default class Effector {
             this.disconectCurrent(channel);
 
             let params = this.assingDefaultParams({}, effectName);
-
             const effectorChannel = store.getState().effector.channels;
-
             if (effectorChannel && effectorChannel[channelNumber]) {
                 params = { ...effectorChannel[channelNumber].effects[effectName] }
             }
 
             const effect = new this.effects[effectName].create(this.mainAC, params);
-
             channel.currentEffect = effect;
-            channel.inputNode.connect(channel.dryNode)
 
             effect.connect(channel.inputNode, channel.wetNode)
 
@@ -122,6 +159,7 @@ export default class Effector {
     setParam(channelNumber, effect, param) {
         channelNumber--;
         const channel = this.channels[channelNumber];
+
         if (channel.currentEffect && channel.currentEffect.name === effect) {
             Object.entries(param).forEach(([key, value]) => {
                 channel.currentEffect[key] = value;
@@ -134,7 +172,6 @@ export default class Effector {
         if (channel.currentEffect) {
             channel.inputNode.disconnect();
             channel.inputNode.connect(channel.dryNode);
-            channel.inputNode.connect(channel.wetNode);
             channel.currentEffect.disconnect();
             channel.currentEffect = null;
         }

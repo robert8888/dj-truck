@@ -1,11 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
-import EqKnob from "./EqKnob/EqKnob"
-import GainKnob from "./GainKnob/GainKnob";
-import FilterKnob from "./FilterKnob/FitlerKnob";
-import ResonansKnob from "./ResonasKnob/ResonansKnob";
+import EqKnob from "./../componets/EqKnob/EqKnob"
+import GainKnob from "./../componets/GainKnob/GainKnob";
+import FilterKnob from "./../componets/FilterKnob/FitlerKnob";
+import ResonansKnob from "./../componets/ResonasKnob/ResonansKnob";
 import BinnaryButton from "./../../../common/BinnaryButton/BinnaryButton";
-import PeakLevelMeter from "./PeakLevelMeter/PeakLevelMeter";
+import PeakLevelMeter from "./../componets/PeakLevelMeter/PeakLevelMeterV";
 import {
     setGain,
     setLow,
@@ -17,7 +17,8 @@ import {
 } from "./../../../../../../actions";
 
 import "./mixer-channel.scss";
-import { throttle } from "./../../../../../../utils/functions/lodash"
+import { throttle } from "./../../../../../../utils/functions/lodash";
+import Console from "./../../../../core/console/console";
 
 class Channel extends React.Component{
 
@@ -32,14 +33,17 @@ class Channel extends React.Component{
                     <EqKnob alt="Low" className="eq-low" onChange={ this.props.setLow }/>
 
                 </div>
-                <PeakLevelMeter name={this.props.name}/>
+                <PeakLevelMeter 
+                    name={this.props.name}
+                    active={this.props.chReady}
+                    interface={ Console.Get().getMixerChannelInterface(this.props.name) }/>
                 <div className="knobs-set-2">
                     <GainKnob className="eq-gain" onChange={ this.props.setGain }/>
                     <div className="mixer-group">
                         <ResonansKnob 
                             alt="RES" 
                             className="resonans" 
-                            value={this.props.filterResonansValue}
+                           // value={this.props.filterResonansValue}
                             onChange={ this.props.setFilterResonans } 
                             />
                         <FilterKnob 
@@ -71,8 +75,10 @@ class Channel extends React.Component{
 const mapStateToProps = (state, ownProps) => ({
     send1 : state.mixer.channels[ownProps.name].sends[0],
     send2 : state.mixer.channels[ownProps.name].sends[1],
+    chReady: state.console.channel[ownProps.name].playBackState.ready,
 
-    filterResonansValue : state.mixer.channels[ownProps.name].filterResonans,
+
+   // filterResonansValue : state.mixer.channels[ownProps.name].filterResonans,
 })
 
 const mapDispachToProps = (dispatch, ownProps) =>{

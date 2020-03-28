@@ -28,3 +28,5 @@ export { default as loopLength } from "./loopLength";
 export { default as dryWet } from "./dryWet";
 export { default as currentEffect } from "./currentEffect";
 export { default as effectParameter} from "./effectParameter";
+
+export {default as masteringParameters} from "./mastering";

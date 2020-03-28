@@ -19,7 +19,7 @@ class SyncBar extends React.Component {
       return;
     } 
 
-    requestAnimationFrame(this.update.bind(this))
+    setTimeout( () => requestAnimationFrame(this.update.bind(this), 50));
     const now = new Date().getTime();
 
     if (now - this.lastCall > 100) {

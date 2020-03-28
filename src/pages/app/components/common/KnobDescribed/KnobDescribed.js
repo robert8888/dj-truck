@@ -24,7 +24,7 @@ const KnobDescribed = (props) => {
         <div className={"knob-area " + props.className}>
              <Knob {...rest}></Knob>
              <div className="knob-ring"/>
-             <div className="knob-text">{alt.toUpperCase()}</div>
+             <div className="knob-text">{alt && alt.toUpperCase()}</div>
 
              <div className="ring-indicators">
                 <div className="ring-indicator"/>

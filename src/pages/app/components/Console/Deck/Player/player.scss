@@ -10,6 +10,8 @@ $slave-height: 50px;
     slaveHeight: $slave-height;
 }
 
+
+
 @mixin player($primary-color){
     position: relative;
     width: calc(100% - 50px);
@@ -28,7 +30,7 @@ $slave-height: 50px;
     .master{
         height: $master-height;
         overflow: hidden;
-
+     //   margin-right: 4px;
     }
     .slave{
         height: $slave-height;
@@ -36,7 +38,7 @@ $slave-height: 50px;
     }
 
     &+.pitch{
-        margin-left: 4px;
+        //margin-left: 4px;
     }
 }
 

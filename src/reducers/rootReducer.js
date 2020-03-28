@@ -6,6 +6,7 @@ import effector from "./effectorReducer";
 import searchReducer from "./searchReducer";
 import playList from "./playListReducer";
 import configuration from "./configurationReducer";
+import mastering from "./masteringReducer";
 
 export default combineReducers({
     searchReducer,
@@ -14,6 +15,7 @@ export default combineReducers({
     mixer,
     effector,
     configuration,
+    mastering,
     
     loadingBar: loadingBarReducer,
 })

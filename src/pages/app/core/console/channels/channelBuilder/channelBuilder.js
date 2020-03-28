@@ -1,5 +1,5 @@
 import store from "./../../../../../../store";
-import config from "./../../../../components/Console/Deck/Player/configuration"
+import config from "./configuration"
 
 import WaveSurfer from "wavesurfer";
 import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler"
@@ -22,7 +22,8 @@ export default class ChannelBuilder {
     //--master waveSurfer obj
     channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
- //   addAnimationFrame(channel.master);
+
+    addAnimationFrame(channel.master);
 
     channel.master.__proto__.loadWithEvent = function (...args) {
       this.fireEvent("load");

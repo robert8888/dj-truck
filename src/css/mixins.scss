@@ -1,11 +1,13 @@
 
 // std butto 
 @mixin button($color) {
+ 
     margin: auto 3px;
     background: $color;
     border-color:$color;
     white-space: nowrap;
     -webkit-box-shadow: none;
+    box-shadow: none;
     &:visited{
         background: $color;
         border-color:$color;
@@ -14,22 +16,23 @@
     &:hover,  &:focus,  &:active {
         background: $primary-dark;
         border-color: $primary-dark;
-     //   -webkit-box-shadow: 0 0 0 0.2rem $color;
-     //   box-shadow: 0 0 0 0.2rem $color  ;
+    //   -webkit-box-shadow: 0 0 0 0.2rem $color;
+    //   box-shadow: 0 0 0 0.2rem $color  ;
         -webkit-box-shadow: none;
         box-shadow: none;
         color: $color;
     }
 
-    &:active:hover , &:active:focus, &.active.focus, &.btn--pressed {
+    &:active:hover , &:active:focus, &:active:focus, &.btn--pressed {
         background: $primary-dark;
-        border-color: $primary-dark;
-      //  -webkit-box-shadow: 0 0 0 0.2rem $color;
-     //   box-shadow: 0 0 0 0.2rem $color  ;
+    //    border-color: $primary-dark;
+    //  -webkit-box-shadow: 0 0 0 0.2rem $color;
+    //   box-shadow: 0 0 0 0.2rem $color  ;
         -webkit-box-shadow: none;
         box-shadow: none;
         color: $color;
     }
+    
 }
 
 
@@ -39,10 +42,11 @@
     background: $primary-dark;
     border-color: $deck-primary;
     font-weight: 600;
-    &:hover,  &:focus,  &:active &:active:hover , &:active:focus, &.active.focus{
+    &:hover,  &:focus,  &:active &:active:hover , &:focus:active, &:active:focus{
         background: $primary-dark;
         border-color: $primary-dark;
-
+      //  -webkit-box-shadow: none;
+        box-shadow: none ;
         color:$deck-primary;
     }
     &:focus:hover:active{
@@ -67,26 +71,21 @@
     display: block;
 }
 
-@mixin drop-down-button($color) {
+@mixin drop-down-button($color : $primary) {
     @include deck-button($color);
     user-select: none;
     font-size: 15px;
     display: block;
 
-    &::first-letter{
-        text-transform: capitalize;  
-        -webkit-user-select: none;
-        user-select: none;
-    }
+
 
     & + div.dropdown-menu{
         background: $primary-dark;
-        
+        user-select: none;
         a.dropdown-item {
             color: $color;
-            &::first-letter{
-              text-transform: capitalize;  
-            }
+            user-select: none;
+
         }
     }
 }
@@ -99,6 +98,13 @@
     font-weight: 700;
     padding: 3px 10px;
     line-height: 1;
+    &.btn-primary{
+        &:focus:active, &:active:focus{
+            box-shadow: none;
+            -webkit-box-shadow: none;
+        }
+    }
+
     &.btn--pressed{
         background-color: $deck-primary;
         color: $primary-dark;
@@ -109,7 +115,7 @@
 
 }
 
-@mixin block-like-button($color){
+@mixin block-like-button($color : $primary){
     @include deck-button($color);
     &, &:hover{
         color: white;
@@ -120,4 +126,59 @@
         border-radius: 2px;
     }
 
+}
+
+
+@mixin label {
+    position: absolute;
+    top:0;
+    left:0;
+    font-size : 9px;
+    padding: 4px;
+    border-radius: 0;
+    margin: 0;
+    background: $primary-dark;
+    color: $mixer-primary;
+    user-select: none;
+}
+
+
+@mixin input($color : ""){
+    @if $color == "" {
+        $color : $primary;
+    }
+
+    @include block-like-button($color);
+    &, &:active:focus:hover, &:active ,&:focus{
+        background: $primary-dark;
+        border:none;
+        color : white;
+    }
+
+    &:active:focus:hover, &:active ,&:focus{
+        box-shadow: 0 0 8px rgba($color, 0.6),  0 0 0 1px $color;  
+    }
+
+    & {
+        color : $color;
+    }
+    
+    &:disabled {
+        border-color: $primary-dark;
+        -webkit-box-shadow : none;
+        box-shadow: none;
+        color:$color;
+        user-select: none;
+
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+          
+    }
 }
