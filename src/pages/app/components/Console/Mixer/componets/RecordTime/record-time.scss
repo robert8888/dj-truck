@@ -1,0 +1,14 @@
+@import "./../../../../../../../css/colors.scss";
+@import "./../../../../../../../css/mixins.scss";
+
+.record-time{
+    @include block-like-button();
+    height: 38px;
+    display: flex;
+
+    span{
+        font-family: monospace;
+        color: $primary;
+        font-size: 1.3rem;
+    }
+}

@@ -1,0 +1,9 @@
+@import "./../../../../common/KnobDescribed/knob-described.scss";
+@import "./../../../../../../../css/colors.scss";
+
+.filter-knob{
+    @include knob-described($mixer-knob-primary,60px);
+    &.knob-area{
+        margin: 3px 0;
+    }
+}
