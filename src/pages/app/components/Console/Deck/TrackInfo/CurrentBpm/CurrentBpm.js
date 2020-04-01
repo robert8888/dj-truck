@@ -8,7 +8,7 @@ const CurrentBpm = props => {
 
     useEffect(()=>{
         let currentBpm = "000";
-        if(props.bpm){
+        if(props.bpm && props.bpm !== "calculating"){
             currentBpm = calcBpm(props.bpm, props.pitch).toFixed(2);
         } 
         container.current.textContent = currentBpm;

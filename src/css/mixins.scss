@@ -1,5 +1,15 @@
 
-// std butto 
+@mixin button-transparent($color:""){
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    @if not ($color == "") {
+        color: $color;
+    }
+}
+
+// std button 
 @mixin button($color) {
  
     margin: auto 3px;
@@ -180,5 +190,24 @@
             height: 100%;
           }
           
+    }
+}
+
+
+@mixin scrolls {
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $primary-dark; 
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: darken($primary, 30%); 
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: $primary;
     }
 }

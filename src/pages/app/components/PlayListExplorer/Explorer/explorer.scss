@@ -1,0 +1,19 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+.explorer{
+    width: 250px;
+    height: 100%;
+    background : $primary-dark;
+    position: relative;
+    .menu-bar{
+        height: 35px;
+    }
+
+    .explorer-tree{
+        height: calc(100% - 35px);
+        position: absolute;
+        overflow: auto;
+        @include scrolls();
+    }
+}

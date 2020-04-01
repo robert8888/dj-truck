@@ -4,7 +4,7 @@ import { hexToRgb } from "./../../../../../../utils/colors/converter";
 import { getBeatLength } from "./../../../../../../utils/bpm/converter";
 
 export default class Looper {
-    makeLoop(channel, loopLength){
+    makeLoop(channel, loopLength) {
         channel.loop = {}// namespace for loop variables;
         const state = store.getState();
         const channelName = channel.channelName;
@@ -16,17 +16,16 @@ export default class Looper {
         channel.loop.audioBufferSource = audioBufferSource;
         channel.loop.beatLength = beatLength;
 
-        channel.loop.start = currentPosition 
-            + (beatLength - (currentPosition - beatOffset) % beatLength);
-        //don't quantize to whole beat
+        //starting from last whole beat start
+        channel.loop.start = currentPosition - ((currentPosition - beatOffset) % beatLength);
 
-        if(loopLength < 1){ 
-            channel.loop.start = currentPosition 
+        if (loopLength < 1) {
+            channel.loop.start = currentPosition
                 + ((beatLength * loopLength) - (currentPosition - beatOffset) % (beatLength * loopLength));
         }
         channel.loop.end = channel.loop.start + beatLength * loopLength;
 
-        if(isNaN(channel.loop.start) || isNaN(channel.loop.end)){
+        if (isNaN(channel.loop.start) || isNaN(channel.loop.end)) {
             throw new Error("invalid value of range variables")
         }
         audioBufferSource.loopStart = channel.loop.start;
@@ -34,12 +33,12 @@ export default class Looper {
         audioBufferSource.loop = true;
 
         //looping waveSurrfer and update end position if is set; 
-        channel.loop.watch = (time)=>{
-            if(time > channel.loop.end){
+        channel.loop.watch = (time) => {
+            if (time > channel.loop.end) {
                 channel.master.backend.startPosition = channel.loop.start + (time - channel.loop.end);
                 channel.master.backend.lastPlay = channel.master.backend.ac.currentTime;
                 channel.master.drawer.progress(channel.master.backend.getPlayedPercents());
-                if(channel.loop.nextEnd){
+                if (channel.loop.nextEnd) {
                     this._updateLoopEnd(channel, channel.loop.nextEnd);
                     delete channel.loop.nextEnd;
                 }
@@ -51,32 +50,32 @@ export default class Looper {
             channel.loop.audioBufferSource.loopStart = channel.loop.start;
             channel.loop.audioBufferSource.loopEnd = channel.loop.end;
             channel.loop.audioBufferSource.loop = true;
-        } 
+        }
 
         channel.master.on("audioprocess", channel.loop.watch);
         channel.master.on("interaction", channel.loop.reset)
         this.drawLoop(channel);
     }
 
-    updateLoop(channel, loopLength){
+    updateLoop(channel, loopLength) {
         const { start, beatLength } = channel.loop;
         const newEnd = start + beatLength * loopLength;
         const currentPosition = channel.master.getCurrentTime();
-        if(newEnd < currentPosition ){
+        if (newEnd < currentPosition) {
             channel.loop.nextEnd = newEnd;
         } else {
             this._updateLoopEnd(channel, newEnd)
         }
     }
 
-    _updateLoopEnd(channel, newEnd){
+    _updateLoopEnd(channel, newEnd) {
         channel.loop.end = newEnd;
         channel.loop.audioBufferSource.loopEnd = newEnd;
         this.clearDraw(channel);
         this.drawLoop(channel);
     }
 
-    endLoop(channel){
+    endLoop(channel) {
         channel.master.un("audioprocess", channel.loop.watch);
         channel.master.un("interaction", channel.loop.reset);
         channel.master.backend.source.loop = false;
@@ -84,8 +83,8 @@ export default class Looper {
         delete channel.loop;
     }
 
-    drawLoop(channel){
-        let {start, end} = channel.loop;
+    drawLoop(channel) {
+        let { start, end } = channel.loop;
         const wrapper = channel.master.drawer.wrapper;
         const styleApply = WaveSurfer.Drawer.style;
         const minPxPerSec = channel.master.params.minPxPerSec;
@@ -99,15 +98,15 @@ export default class Looper {
         };
 
         const region = document.createElement("div");
-        regionStyle.left =   start * minPxPerSec  + "px";
-        regionStyle.width = (end - start) * minPxPerSec  + "px";
+        regionStyle.left = start * minPxPerSec + "px";
+        regionStyle.width = (end - start) * minPxPerSec + "px";
 
         styleApply(region, regionStyle);
         wrapper.appendChild(region);
         channel.loop.region = region;
     }
 
-    clearDraw(channel){
+    clearDraw(channel) {
         channel.loop.region.remove();
     }
 }

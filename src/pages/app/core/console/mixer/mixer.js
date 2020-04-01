@@ -5,7 +5,6 @@ import Mastering from "./mastering";
 
 export default class Mixer {
     constructor(channels) {
-        console.log("create mixer")
         this.config = store.getState().configuration.mixer;
 
         this.channels = channels;
@@ -55,8 +54,8 @@ export default class Mixer {
          main.preGainNode,
          main.preAnalyserNode, 
          main.compressorNode, 
-         main.postAnalyserNode, 
          main.postGainNode,
+         main.postAnalyserNode, 
          ac.destination])
     }
 

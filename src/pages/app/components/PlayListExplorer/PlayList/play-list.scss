@@ -1,0 +1,80 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+.playlist {
+    height: 100%;
+    background: $primary-dark;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%; 
+    @include  scrolls();
+
+    table.playlist-table{
+        
+         width: 100%;
+         color: $primary-text-color;
+         border-collapse: separate;
+         border-spacing: 2px;
+
+         th {
+             background: $tertiary-dark;
+             padding: 0 5px;
+             position: sticky;
+             top: 0;
+            border-top: 1px solid $primary-dark;
+            border-bottom: 1px solid $primary-dark;
+
+             
+         }
+        td {
+            background: $secondary-dark;
+            padding: 5px;
+            max-height: 25px;
+            line-height: 25px;
+            &.title{
+                max-width: 0;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            &>.playlist-loader{
+                --rl-spin-size: 10px !important;
+                --rl-spin-color: #{darken($primary, 30)} !important;
+                --rl-spin-scale: 0.3 !important;
+                --rl-spin-translate: 20px !important;
+                --rl-spin-speed: 1s !important;
+                --rl-spin-border: 25px !important;
+                transform: translate(-10px, -20px) scale(0.2);
+            }
+            
+        }
+        tr:hover td{
+            background: $tertiary-dark;
+        }
+        
+    }
+
+    .playlist-text-info{
+        margin-top: 50px;
+        text-align: center;
+    }
+
+
+}
+
+
+.btn-dest.btn-primary{
+    margin: 6px 6px 6px 0;
+    padding: 6px 18px;
+
+    &.dest-a{
+        @include button($deck-A-primary);
+    }
+
+    &.dest-b{
+        @include button($deck-B-primary);
+    }
+}
+

@@ -1,0 +1,56 @@
+@import "./../../../../../../css/colors.scss";
+@import "./../../../../../../css/mixins.scss";
+
+.menu-bar{
+    position: relative;
+    width: 100%;
+    background : $secondary-dark;
+    border: 1px solid $primary-dark;
+
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+
+    .title{
+        margin: 0;
+        user-select: none;
+    }
+
+    .file-name-input{
+        @include input();
+        height: 25px;
+        width: 140px;
+        position: absolute;
+        margin: 0;
+        opacity: 0;
+        pointer-events: none;
+        &:focus{
+            opacity: 1;
+            pointer-events: all;
+        }
+    }
+
+    .flex-spacer{
+        flex-grow: 1;
+    }
+
+
+    .btn-transparent{
+        @include button-transparent($primary-text-color);
+        padding: 2px 10px;
+        &:hover, &:focus{
+            color : $primary
+        }
+    }
+
+    // .icon{
+    //     color: $primary-text-color;
+    //     margin-right: 10px;
+    //     &:not(:last-of-type){
+    //         margin-right: 20px;
+    //     }
+    //     &:hover{
+    //         color: $primary;
+    //     }
+    // }
+}

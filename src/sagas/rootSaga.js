@@ -7,6 +7,7 @@ import calcBpmAsync from "./calcBpmSaga";
 
 function* rootSaga(){
     yield takeEvery(ACTIONS.SEARCH_START, ytSearchAsync);
+    yield takeEvery(ACTIONS.CALC_BPM, calcBpmAsync);
     yield takeEvery(ACTIONS.PUSH_TRACK, calcBpmAsync);
 }
 
