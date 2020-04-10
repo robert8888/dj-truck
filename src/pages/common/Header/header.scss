@@ -4,8 +4,11 @@ header{
     height: 50px;
 
     .loading-bar{
-        position: absolute;
+        position: fixed;
+        top:0;
+        left: 0;
         height: 5px;
+        z-index: 1000;
         background-color: $primary;
     }
 }

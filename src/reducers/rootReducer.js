@@ -1,12 +1,14 @@
 import { combineReducers } from "redux";
 import { loadingBarReducer } from 'react-redux-loading-bar'
-import decksReducer from "./decksReducer";
-import mixer from "./mixerReducer";
-import effector from "./effectorReducer";
-import searchReducer from "./searchReducer";
-import playList from "./playListReducer";
-import configuration from "./configurationReducer";
-import mastering from "./masteringReducer";
+import decksReducer from "./console/decksReducer";
+import mixer from "./console/mixerReducer";
+import effector from "./console/effectorReducer";
+import searchReducer from "./console/searchReducer";
+import playList from "./console/playlist/playlistReducer";
+import configuration from "./console/configurationReducer";
+import mastering from "./console/masteringReducer";
+
+import user from "./user/userReducer";
 
 export default combineReducers({
     searchReducer,
@@ -16,6 +18,9 @@ export default combineReducers({
     effector,
     configuration,
     mastering,
-    
+    //--------------
+    user,
+
+    //-----------------
     loadingBar: loadingBarReducer,
 })

@@ -1,22 +1,53 @@
 import youTubeApi from "./yt/ytApi";
+import userAssetsApi from "./userAssets/userApi";
 
-const availableApis = [
-    "YouTube",
-    "SoundCloud"
-]
-
-export function getApi(apiName){
-        switch(apiName){
-            case "YouTube": return youTubeApi;
-    
-            default : return null;
-        }
+export const API_TYPES = {
+    MIUSIC_SOURCE: "Source of miusic",
+    DATA_SOURCE: {
+        GRAPHQL: "GraphQl api",
+        REST: "Rest api"
+    }
 }
 
-export function getAvailableApis(){
-    return availableApis;
+
+const apisMap = {
+    "YouTube": {
+        type: API_TYPES.MIUSIC_SOURCE,
+        api: youTubeApi,
+        default: true
+    },
+    "SoundCloud": {
+        type: API_TYPES.MIUSIC_SOURCE,
+        api: null,
+    },
+
+    "UserAssets": {
+        type: API_TYPES.DATA_SOURCE.GRAPHQL,
+        api: userAssetsApi,
+    }
 }
 
-export function getDeafultApi(){
-    return "YouTube"
+export function getApi(apiName) {
+    return apisMap[apiName].api;
+}
+
+export function getApisName(type, param) {
+    if (!type && !param) {
+        return Object.keys(apisMap)
+    } else if (type) {
+        return Object.entries(apisMap)
+            .filter(([_, api]) => {
+                const typeCorrent = (api.type === type)
+                if (!param) {
+                    return typeCorrent
+                } else {
+                    const paramCorrect =
+                        Object.entries(param).every(([key, value]) =>
+                            api[key] === value
+                        )
+                    return (typeCorrent && paramCorrect);
+                }
+            })
+            .map(([name, _]) => name)
+    }
 }
