@@ -1,0 +1,6 @@
+@import "./../../../../../../../css/colors.scss";
+@import "./../../../../../../../css/mixins.scss";
+
+.effector-btn{
+    @include mixer-button($mixer-primary);
+}

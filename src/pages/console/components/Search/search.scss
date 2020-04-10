@@ -1,0 +1,45 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+.search{
+    margin-top: 20px;
+
+    .search-controls{
+        background-color: $secondary-dark;
+        padding: 10px 5px;
+        &>*{
+            display: inline-block;
+        }
+        .btn-api-select, .btn-max-result-select {
+            .btn{
+                @include drop-down-button();
+                &:after{
+                    margin-left: .5em;
+                }
+                margin-right: 10px;
+                width: 130px;
+            }
+        }
+        .btn-max-result-select {
+            float: right;
+            .btn {
+                width: 80px;
+                & + div.dropdown-menu{
+                    min-width: 100px;
+                }
+
+            }
+        }
+        
+
+        .search-control{
+            @include input();
+
+            width: calc(100% - 250px);
+            max-width: 450px;
+            margin: 0;
+            margin-bottom: 2px;
+        }
+    }
+
+}

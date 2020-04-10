@@ -1,0 +1,64 @@
+@import "./../../../../../../css/colors.scss";
+@import "./../../../../../../css/mixins.scss";
+
+.explorer-tree{
+    width: 100%;
+    height: 100%;
+
+    ul.list-dir{
+        padding-left: 10px;
+        margin: 0;
+        list-style-type: none;
+        color: darken($primary, 20%);
+        user-select: none;
+        .list-item{
+            display: flex;
+            align-items: center;
+            list-style: none;
+            .btn-dir{
+                @include button-transparent();
+                font-size: 14px;
+                width: 14px;
+                padding:0;
+            };
+            .icon-dir, .icon-file{
+                margin: 0 5px;
+            }
+            .icon-file{
+                width: 16px;
+            }
+
+            &:hover{
+                color: $primary;
+                .icon{
+                    color: $primary;
+                }
+            }
+
+            &.item-dir--empty, &.item-file{
+                padding-left: 11px;
+            }
+
+            &.item--selected{
+                color: $secondary;
+                .icon{
+                    color: $secondary;
+                }
+            }
+
+            .rename-input{
+                background: transparent;
+                border:none;
+                outline:none;
+                box-shadow: none;
+                color: $secondary;
+                border-bottom: 2px solid $secondary;
+            }
+        }
+        .icon{
+            color: darken($primary, 20%);
+        }
+        
+
+    }
+}

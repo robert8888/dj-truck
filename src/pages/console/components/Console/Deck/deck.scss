@@ -1,0 +1,26 @@
+@import "./../../../../../css/colors.scss";
+
+@mixin deck($primary-color){
+    box-shadow: 0 0 8px 1px rgba(255, 255, 255, .05) inset;
+}
+
+.deck{
+    padding: 5px;
+    padding-bottom: 0;
+    background: $secondary-dark;
+    border: 1px solid;
+    &.deck-A{
+        @include deck($deck-A-primary);
+    }
+    &.deck-B{
+        @include deck($deck-B-primary);
+    }
+
+    .player-container{
+        position: relative;
+    }
+    
+    .control-area{
+        padding: 5px 0;
+    }
+}

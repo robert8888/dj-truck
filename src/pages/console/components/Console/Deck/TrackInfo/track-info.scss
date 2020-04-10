@@ -1,0 +1,109 @@
+@import "./../../../../../../css/colors.scss";
+
+$track-info-height : 60px;
+
+@mixin spans {
+
+};
+
+@mixin track-info($deck-primary-color){
+    height: $track-info-height;
+    display: flex;
+    background: $primary-dark;
+
+    * {
+        user-select: none;
+    }
+    
+    .track-info-thumbnail{
+
+        height: $track-info-height;
+        width: 80px;
+        font-size: 10px;
+        margin-right: 10px;
+        img{
+            height: inherit;
+            width: inherit;
+        }
+    }
+
+    .track-info-description{
+        flex-grow: 5;
+        padding-right: 5px;
+        height: $track-info-height - 10px;
+        overflow: hidden;
+        span{
+            font-weight: bold;
+        }
+        .track-info-title{
+
+        }
+    }
+
+
+    .track-info-time{
+        position: relative;
+        width: 60px;
+        min-width: 60px;
+
+        height: $track-info-height;
+
+        padding: 5px 0;
+        span{
+            position: absolute;
+            right: 0;
+            display: block;
+            text-align: right;
+            padding: 0;
+            padding-bottom: 5px;
+            line-height: 16px;
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+        span.time-left{
+            font-weight: bold;   
+            font-size: 1.1rem;
+        }
+        span.track-duration{
+            top : 25px;
+        }
+
+    }
+
+    .track-info-bpm{
+        position: relative;
+        height: $track-info-height;
+        width: 60px;
+        min-width: 60px;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 5px 0;
+        span{
+            position: absolute;
+            right: 0;
+            padding: 0;
+            padding-right : 5px;
+            line-height: 14px;
+            font-size: 14px;
+        }
+        span.track-bpm-current{
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .track-bpm-pitch{
+            top: 22.5px;
+        }
+        .track-bpm-init{
+            top: 40px;
+        }
+    }
+}
+
+.track-info{
+    &.info-deck-A{
+        @include track-info($deck-A-primary)
+    }
+    &.info-deck-B{
+        @include track-info($deck-B-primary)
+    }
+}
