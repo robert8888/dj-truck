@@ -36,15 +36,17 @@ const secondsToObj = (seconds) => {
 }
 
 export const formater = {
-    ytToStr : (ytTime) => {
+    ptToStr : (ytTime) => {
         const objTime = ytToObj(ytTime);
         return objToStr(objTime);
     },
 
-    ytToSeconds : (ytTime) => {
+
+    ptToSeconds : (ytTime) => {
         const objTime = ytToObj(ytTime)
         return objToSeconds(objTime);
     },
+
 
     secondsToStr : (seconds) => {
         const objTime = secondsToObj(seconds);

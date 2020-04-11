@@ -10,7 +10,7 @@ import {
     faAngleDown
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { moveTo } from "./../../../../../../../actions";
+import {  moveToRequest } from "./../../../../../../../actions";
 
 const DirElement = props => {
     const { name, path, open, empty, renameMode, renameInput, moveTo:moveToHandler } = props;
@@ -80,7 +80,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>({
-    moveTo : (pathFrom, pathTo) => dispatch(moveTo(pathFrom, pathTo))
+    moveTo : (pathFrom, pathTo) => dispatch(moveToRequest(pathFrom, pathTo))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DirElement);

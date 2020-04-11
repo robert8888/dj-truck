@@ -5,7 +5,7 @@ import { calcAccurateBpmAndOffset } from './../utils/bpm/analyzer';
 import { setBpmAndOffset } from '../actions';
 
 export default function* watcher() {
-    yield takeEvery(ACTIONS.CALC_BPM, calcBpmAsync);
+    yield takeEvery(ACTIONS.PL_INIT_CALC_BPM, calcBpmAsync);
    // yield takeEvery(ACTIONS.PUSH_TRACK, calcBpmAsync);
 }
 

@@ -11,7 +11,11 @@ const TimeLeft = props => {
         if(props.timeLeft){
             timeLeft = formater.secondsToStr(props.timeLeft);
         } else {
-            timeLeft = formater.ytToStr(props.trackDuration);
+            if(typeof props.trackDuration === "string"){
+                timeLeft = formater.ptToStr(props.trackDuration);
+            } else {
+                timeLeft = formater.secondsToStr(props.trackDuration);
+            }
         }
         container.current.textContent = timeLeft;
     }, [props.timeLeft, container, props.trackDuration])

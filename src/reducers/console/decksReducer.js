@@ -183,7 +183,10 @@ function consoleReducer(state = initState, action) {
         }
 
 
-        case ACTIONS.SET_BPM_AND_OFFSET: {
+        case ACTIONS.PL_SET_BPM_AND_OFFSET: {
+            if(action.bpm === undefined || action.offset === undefined){
+                return state;
+            }
             let channels = [];
             for (let channelName of Object.keys(state.channel)) {
                 if (state.channel[channelName].track.id === action.id) {

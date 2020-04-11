@@ -1,21 +1,28 @@
 import { pushDirContent, ACTIONS } from "../../actions";
-import {takeEvery, select , put} from "redux-saga/effects"
+import { takeEvery, select, put } from "redux-saga/effects"
 import { getApi } from "./../../apis/apiProvider";
-import query from "./../../qlQueries/requestRootDir";
 
-export default function *rootDirRequestSaga(){
+
+export default function* rootDirRequestSaga() {
     yield takeEvery(ACTIONS.PL_ROOT_REQUEST, callApi)
 }
 
-const getToken = state => state.user.token
+const getToken = state => state.user.token;
 
-function *callApi(){
-    const {callQuery} = getApi("UserAssets");
+function* callApi() {
     const token = yield select(getToken);
+    if (!token) {
+        return;
+    }
+    try {
+        const { callQuery, queries } = getApi("UserAssets");
+        let result = yield callQuery(queries.loadRootContentQl, token);
+        const isRoot = true;
+        yield put(pushDirContent(result.data.root, isRoot));
+    } catch (err) {
+        console.log("connection to api problem");
+        console.log(err);
+    }
 
-    let result = yield callQuery(query, token);
-
-    const isRoot = true;
-    yield put(pushDirContent(result.data.root, isRoot));
 }
 

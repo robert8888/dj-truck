@@ -46,6 +46,12 @@
                 }
             }
 
+            &.item--curently-open {
+                .icon{
+                    color: $secondary;
+                }
+            }
+
             .rename-input{
                 background: transparent;
                 border:none;

@@ -1,6 +1,7 @@
 import React from "react"
 import { stripHtml } from "./../../../../../../utils/html/htmlHelper";
 import {getApi} from "./../../../../../../apis/apiProvider";
+import {formater} from "./../../../../../../utils/time/timeFromater";
 import UUID from "uuidjs"
 
 const SearchListItem = ( props ) => {
@@ -24,6 +25,9 @@ const SearchListItem = ( props ) => {
         const track = {
             ...props.item,
             //_id: UUID.genV1().toString(),
+        }
+        if(track.source === "YouTube" && typeof track.duration === "string"){
+            track.duration = formater.ptToSeconds(track.duration);
         }
         props.addToListHandle(track);
         props.closeListHandle();

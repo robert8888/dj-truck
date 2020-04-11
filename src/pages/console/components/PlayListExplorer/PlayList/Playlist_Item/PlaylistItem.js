@@ -6,6 +6,7 @@ import PlaylistContext from "./../PlaylistContext";
 import { useDrag, useDrop } from "react-dnd";
 import ItemTypes from "./../../../../appItemTypes";
 import { Spin } from "react-loading-io";
+import { formater } from "./../../../../../../utils/time/timeFromater";
 
 const PlaylistItem = props => {
   const ref = useRef(null)
@@ -25,7 +26,15 @@ const PlaylistItem = props => {
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging()
-    })
+    }),
+    begin: props.dragStart,
+    end: (_, monitor) => {
+      if (monitor.didDrop() && monitor.getDropResult().target === "playlist") {
+        props.endWithin()
+      } else {
+        props.endOutside()
+      }
+    }
   })
 
   const [_, drop] = useDrop({
@@ -59,6 +68,11 @@ const PlaylistItem = props => {
       props.swapItems(dragIndex, hoverIndex)
 
       item.index = hoverIndex
+    },
+    drop: () => {
+      return {
+        target: "playlist"
+      }
     }
   })
 
@@ -69,13 +83,13 @@ const PlaylistItem = props => {
   }
 
   ///--------- formatingg
-  const timeFormating = time => time.substr(2, time.length).toLowerCase();
+  const timeFormating = time => formater.secondsToStr(time);
 
   const bpmFromating = bpm => {
     if (!bpm) {
       return null;
     } else if (bpm === "calculating") {
-      return (<Spin className="playlist-loader"/>)
+      return (<Spin className="playlist-loader" />)
     } else {
       return bpm.toFixed(2)
     }

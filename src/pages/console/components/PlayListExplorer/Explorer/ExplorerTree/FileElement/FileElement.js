@@ -5,38 +5,47 @@ import ClassName from "classnames";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ItemTypes from "../../../../../appItemTypes";
-import {useDrag, useDrop} from "react-dnd";
-import { addTrackToList } from "./../../../../../../../actions";
+import { useDrag, useDrop } from "react-dnd";
+import { copyTrackToList } from "./../../../../../../../actions";
 
 const FileElement = props => {
-    const { name, path, renameMode, renameInput, addTrackToList } = props;
+    const {
+        name,
+        path,
+        renameMode,
+        renameInput,
+        addTrackToList,
+    } = props;
+
     const fullPath = [...path, name]
     const ref = useRef(null)
 
-    const handleDrop = useCallback((item)=>{
+    const handleDrop = useCallback((item) => {
         addTrackToList(item.track, fullPath)
     }, [addTrackToList])
 
-    const [ , drag] = useDrag({
-        item: { 
-             type: ItemTypes.FILE,
-             fullPath: fullPath
-            },
+    const [, drag] = useDrag({
+        item: {
+            type: ItemTypes.FILE,
+            fullPath: fullPath
+        },
     })
 
-    const [ , drop] = useDrop({
-        accept : ItemTypes.TRACK,
+    const [, drop] = useDrop({
+        accept: ItemTypes.TRACK,
         drop: handleDrop
     })
 
-    let currentSelected = false;
-    if (fullPath.join("") === props.currentSelection.join("")) {
-        currentSelected = true;
-    }
+    let currentSelected = (fullPath.join("") === props.currentSelection.join(""));
+    let currentlyOpen = (fullPath.join("") === props.currentPlaylist.join(""));
+
+
     const liClassList = ClassName(
         "list-item item-file",
-        { "item--selected": currentSelected }
+        { "item--selected": currentSelected },
+        { "item--curently-open" : currentlyOpen }
     )
+    
     let content = name;
     if (currentSelected && renameMode) {
         content = renameInput(name)
@@ -58,11 +67,12 @@ const FileElement = props => {
 }
 
 const mapStateToProps = state => ({
-    currentSelection: state.playList.currentSelection
+    currentSelection: state.playList.currentSelection,
+    currentPlaylist: state.playList.currentPlaylist
 })
 
-const mapDispatchToProps = dispatch =>({
-    addTrackToList : (track, path) => dispatch(addTrackToList(track, path))
+const mapDispatchToProps = dispatch => ({
+    addTrackToList: (track, path) => dispatch(copyTrackToList(track, path))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FileElement);

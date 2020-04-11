@@ -7,7 +7,12 @@ const TrackDuration = props => {
     const container = useRef(null);
 
     useEffect(()=>{
-        container.current.textContent = formater.ytToStr(props.trackDuration);
+        if(typeof props.trackDuration === "string"){
+            container.current.textContent = formater.ptToStr(props.trackDuration);
+        } else {
+            container.current.textContent = formater.secondsToStr(props.trackDuration);
+        }
+
     }, [ container, props.trackDuration])
 
     return (

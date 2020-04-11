@@ -1,42 +1,46 @@
-import { ACTIONS, openCurrentPlaylist, setCurretPlaylistContent } from "../../actions";
+import { ACTIONS, openCurrentPlaylist, setPlaylistContent } from "../../actions";
 import { takeEvery, select, put, call } from "redux-saga/effects"
 import { getApi } from "./../../apis/apiProvider";
-import loadPlaylist from "./../../qlQueries/loadPlaylist";
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { get } from "lodash/object";
 
 export default function* loadPlaylistRequest() {
-    yield takeEvery(ACTIONS.PL_LOAD_CURRENT_PLAYLIST_REQUEST, handel)
+    yield takeEvery(ACTIONS.PL_LOAD_PLAYLIST_REQUEST, handel)
 }
 
 const getToken = state => state.user.token;
 
-const getCurrentPlaylistId = state => {
+const getCurrentPlaylist = state => {
     const path = state.playList.currentSelection;
     return get(state.playList, path);
 }
 
-const getCurrent = (state, path) => get(state.playList, path);
-
 export function* handel(action) {
-    const { callQuery } = getApi("UserAssets");
     const token = yield select(getToken);
-    const playlist = yield select(getCurrentPlaylistId);
+    const playlist = yield select(getCurrentPlaylist);
 
-
-
-    if (playlist._loaded) {
-        return yield put(openCurrentPlaylist())
+    if (playlist._loaded || !token) {
+        return yield put(openCurrentPlaylist(action.path))
     } else {
-        console.log("query", loadPlaylist(playlist._id))
-        const result = yield call(function* fetch() {
-            return yield callQuery(loadPlaylist(playlist._id), token)
-        });
+        try {
+            yield put(showLoading());
+            const { callQuery, queries } = getApi("UserAssets");
+            const result = yield call(function* fetch() {
+                return yield callQuery(queries.loadPlaylistQl(playlist._id), token)
+            });
 
-        if (result?.data?.playlist?.tracks?.length) {
-            console.log("we have some tracks")
-            yield put(setCurretPlaylistContent(result.data.playlist));
+            if (!result.errors && result?.data?.playlist?.tracks?.length) {
+                yield put(setPlaylistContent(result.data.playlist, action.path));
+            } else if (result.errors) {
+                throw new Error(JSON.stringify(result.errors));
+            }
+            yield put(openCurrentPlaylist(action.path));
+        } catch (err) {
+            console.log("connectin to api problem");
+            console.log(err.message);
+        } finally {
+            yield put(hideLoading())
         }
-        yield put(openCurrentPlaylist());
     }
 }
 

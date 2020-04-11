@@ -6,7 +6,7 @@ import { ContextMenuTrigger } from "react-contextmenu";
 import {
     toggleDirRequest,
     setSelection,
-    openCurrentPlaylistRequest,
+    openPlaylistRequest,
     renameSelectedRequest,
     deleteSelectedRequest,
     createDirRequest,
@@ -88,7 +88,7 @@ const ExplorerTree = props => {
 
     const renderDirElements = useCallback((name, content, path) => {
         content = sortObj(content);
-        if (content instanceof Array) {
+        if (content._type === "playlist"){//} instanceof Array) {
             return getFileElement(name, path)
         } else {
             if (content._open === true) {
@@ -157,7 +157,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     toggleDir: path => dispatch(toggleDirRequest(path)),//
     setSelection: path => dispatch(setSelection(path)),
-    openSelected: path => dispatch(openCurrentPlaylistRequest(path)),//to request
+    openSelected: path => dispatch(openPlaylistRequest(path)),//to request
     renameSelected: newName => dispatch(renameSelectedRequest(newName)),//
     deleteSelected: () => dispatch(deleteSelectedRequest()),//
     createDir: () => dispatch(createDirRequest(null)),//

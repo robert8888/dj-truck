@@ -1,3 +1,4 @@
+import * as graphQlQueries from "./qlQueries";
 
 const url = process.env.REACT_APP_USER_ASSETS_API;
 
@@ -20,5 +21,6 @@ export async function callQuery(query, token, variables) {
 }
 
 export default {
-    callQuery
+    callQuery,
+    queries: graphQlQueries
 }

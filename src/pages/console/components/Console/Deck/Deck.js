@@ -17,6 +17,9 @@ const Deck = props => {
 
     const dropResult = (item) => {
         props.loadTrack(item.track, props.name);
+        return {
+            target: "deck"
+        }
     }
 
     const [ _ , drop] = useDrop({

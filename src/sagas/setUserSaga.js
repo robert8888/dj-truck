@@ -6,6 +6,7 @@ import {getToken} from "./../utils/auth/token";
 const getLogged = state => state.user.logged;
 
 export default function* watcher(){
+    //action dispatched in auth0/react-auth0-spa.js
     yield takeEvery(ACTIONS.SET_USER_PROFILE, setUserProfile);
 }
 
@@ -14,7 +15,6 @@ function *setUserProfile(action){
     if(logged){
         return
     }
-  //  console.log("Set user profil")
    const token = yield call(getToken);
 
    yield put(setUserProfileWithToken(action.user, token))
