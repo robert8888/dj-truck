@@ -31,8 +31,8 @@ function* handle(action) {
         yield put(showLoading());
         const { callQuery, queries } = getApi("UserAssets");
         const currentPlaylist = yield select(getCurrent);
-        let playlistId = currentPlaylist._id;
-        let playlistLength = currentPlaylist._content.length;
+        let playlistId = currentPlaylist?._id;
+        let playlistLength = currentPlaylist?._content?.length;
 
         if (!playlistId) {
             playlistId = yield call(createNewPlaylist, { setCurrent: true, renameMode: false });
