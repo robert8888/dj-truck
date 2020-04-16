@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import BinnaryButton from "../../../../common/BinnaryButton/BinnaryButton";
+import BinnaryButton from "../../../../../../common/components/BinnaryButton/BinnaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faSquare } from "@fortawesome/free-solid-svg-icons";
 import "./record-button.scss"

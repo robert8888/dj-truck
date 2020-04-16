@@ -1,5 +1,5 @@
 import React from "react";
-import BinaryButton from "./../../../../common/BinnaryButton/BinnaryButton";
+import BinaryButton from "./../../../../../../common/components/BinnaryButton/BinnaryButton";
 import "./effector-button.scss";
 
 const EffectorButton = props => {

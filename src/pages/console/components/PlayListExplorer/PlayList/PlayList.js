@@ -6,7 +6,7 @@ import { ContextMenuTrigger } from "react-contextmenu"
 import PlaylistTable from "./PlaylistTable/PlaylistTable";
 import EmptyListInfo from "./EmptList/EmptyList";
 import PlaylistItem from "./Playlist_Item/PlaylistItem";
-import CtxMenu from "../../common/ContextMenu/ContextMenu";
+import CtxMenu from "../../../../common/components/ContextMenu/ContextMenu";
 import {
     loadTrack,
     deleteTrackRequest,

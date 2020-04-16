@@ -4,7 +4,7 @@ import EqKnob from "./../componets/EqKnob/EqKnob"
 import GainKnob from "./../componets/GainKnob/GainKnob";
 import FilterKnob from "./../componets/FilterKnob/FitlerKnob";
 import ResonansKnob from "./../componets/ResonasKnob/ResonansKnob";
-import BinnaryButton from "./../../../common/BinnaryButton/BinnaryButton";
+import BinnaryButton from "./../../../../../common/components/BinnaryButton/BinnaryButton";
 import PeakLevelMeter from "./../componets/PeakLevelMeter/PeakLevelMeterV";
 import {
     setGain,

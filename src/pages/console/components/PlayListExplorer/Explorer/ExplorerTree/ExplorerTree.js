@@ -1,7 +1,7 @@
 import React, { useCallback, useState, Fragment, useEffect } from "react";
 import UUID from "uuidjs";
 import { connect } from "react-redux";
-import ExplorerContextMenu from "./../../../common/ContextMenu/ContextMenu";
+import ExplorerContextMenu from "./../../../../../common/components/ContextMenu/ContextMenu";
 import { ContextMenuTrigger } from "react-contextmenu";
 import {
     toggleDirRequest,

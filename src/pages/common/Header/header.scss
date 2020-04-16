@@ -1,14 +1,26 @@
 @import "./../../../css/colors.scss";
 
-header{
-    height: 50px;
+.loading-bar{
+    position: fixed;
+    top:0;
+    left: 0;
+    height: 5px;
+    z-index: 1000;
+    background-color: $primary;
+}
 
-    .loading-bar{
-        position: fixed;
+.top-bar{
+    background: $secondary-dark;
+    border-bottom: 1px solid $primary-dark;
+    box-shadow: 0 0 3px 1px darken($secondary-dark, 10%);
+    margin-bottom: 25px;
+    z-index: 2000;
+   // transition: transform 0.3s;
+    &.bar--sticki{
+        position: sticky;
         top:0;
-        left: 0;
-        height: 5px;
-        z-index: 1000;
-        background-color: $primary;
+    }
+    header{
+        margin-top: 10px;
     }
 }

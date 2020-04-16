@@ -1,5 +1,5 @@
 import React from "react";
-import withRefSize from "./../../../../common/HOC/withRefSize";
+import withRefSize from "./../../../../../../common/components/HOC/withRefSize";
 import "./mini-slider.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
