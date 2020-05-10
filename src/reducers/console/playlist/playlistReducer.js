@@ -13,49 +13,49 @@ const initState = {
     renameMode: false,
 
     //mock
-    root: {
-        _type: "dir",
-        "Techno": {
-            _open: true,
-            "ZetTempo": {
-                _type: "playlist",
-                _content: [],
-            },
-            "empty dir": {
-                _type: "dir"
-            },
-            "HardCore": {
-                _type: "playlist",
-                _content: [],
-            },
-            "Special": {
-                _type: "dir",
-                _open: true,
-                "DubTechno": {
-                    _type: "playlist",
-                    _content: [],
-                },
-                "Clasic 90": {
-                    _type: "playlist",
-                    _content: [],
-                },
-            }
-        },
-        "Mini mal": {
-            _type: "dir",
-            "HighTech": {
-                _type: "playlist",
-                _content: [],
-            },
-            "Classic": {
-                _type: "playlist",
-                _content: [],
-            },
-            "EmptyFolder": {
-                _type: "dir",
-            },
-        }
-    }
+    // root: {
+    //     _type: "dir",
+    //     "Techno": {
+    //         _open: true,
+    //         "ZetTempo": {
+    //             _type: "playlist",
+    //             _content: [],
+    //         },
+    //         "empty dir": {
+    //             _type: "dir"
+    //         },
+    //         "HardCore": {
+    //             _type: "playlist",
+    //             _content: [],
+    //         },
+    //         "Special": {
+    //             _type: "dir",
+    //             _open: true,
+    //             "DubTechno": {
+    //                 _type: "playlist",
+    //                 _content: [],
+    //             },
+    //             "Clasic 90": {
+    //                 _type: "playlist",
+    //                 _content: [],
+    //             },
+    //         }
+    //     },
+    //     "Mini mal": {
+    //         _type: "dir",
+    //         "HighTech": {
+    //             _type: "playlist",
+    //             _content: [],
+    //         },
+    //         "Classic": {
+    //             _type: "playlist",
+    //             _content: [],
+    //         },
+    //         "EmptyFolder": {
+    //             _type: "dir",
+    //         },
+    //     }
+    // }
 
 }
 
@@ -67,7 +67,7 @@ function playListReducer(state = initState, action) {
             const dbPlaylists = action.dirContent.playlists || [];
 
             const dirs = {};
-            dbDirs.map((dir) => {
+            dbDirs.forEach((dir) => {
                 dirs[dir.name] = {
                     _type: "dir",
                     _id: dir.id
@@ -75,7 +75,7 @@ function playListReducer(state = initState, action) {
             })
 
             const playlists = {};
-            dbPlaylists.map((pl) => {
+            dbPlaylists.forEach((pl) => {
                 playlists[pl.name] = {
                     _id: pl.id,
                     _type: "playlist",
@@ -108,7 +108,7 @@ function playListReducer(state = initState, action) {
         }
 
         case ACTIONS.PL_CREATE_DIR: {
-            const { id, name, renameMode } = action;
+            let { id, name, renameMode } = action;
             const pathToDir = findClosesDir(state, state.currentSelection);
             if (!name) {
                 name = generateTemplateName(state, pathToDir, "New folder")
@@ -134,7 +134,7 @@ function playListReducer(state = initState, action) {
         // ------ playlist section -------------------------------   
 
         case ACTIONS.PL_CREATE_PLAYLIST: {
-            const { name, id, renameMode, setCurrent } = action;
+            let { name, id, renameMode, setCurrent } = action;
             const pathToDir = findClosesDir(state, state.currentSelection);
             if (!name) {
                 name = generateTemplateName(state, pathToDir, "New Playlist")

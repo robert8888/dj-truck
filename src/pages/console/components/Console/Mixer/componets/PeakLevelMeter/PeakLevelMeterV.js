@@ -34,7 +34,7 @@ class PeakLevelMater extends React.PureComponent {
             )
         }
 
-        this.mixerChannelInterface = this.props.interface; 
+       // this.mixerChannelInterface = this.props.interface; 
         this.breakFlag = false;
         this.lastCall = 0;
 
@@ -54,7 +54,7 @@ class PeakLevelMater extends React.PureComponent {
         this.lastCall = now;
 
         //drawing ...
-        let peakMeter = this.mixerChannelInterface.getPeakMeter();
+        let peakMeter = this.props.interface.getPeakMeter();
         let ledOn = 25 + peakMeter.peakdB / 2;
 
 
@@ -67,9 +67,9 @@ class PeakLevelMater extends React.PureComponent {
 
     checkActive(){
 
-        if(this.props.active){
+        if(this.props.active && this.props.interface){
             this.breakFlag = false;
-            this.updateLedStates();
+            setTimeout(this.updateLedStates.bind(this), 100);
         } else {
             this.breakFlag = true;
         }

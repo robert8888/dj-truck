@@ -42,18 +42,24 @@ export default class EventHandler {
     channel.master.on("ready", () => {
       channel.currentDuration = channel.master.getDuration();
       //resolution value is taken from manual test
+      // const resolution = 280;
+      // channel.slave.load(
+      //     null, 
+      //     channel.master.backend.getPeaks(resolution, 0, resolution) 
+      //   );
       const resolution = 280;
-      channel.slave.load(
-          null, 
-          channel.master.backend.getPeaks(resolution, 0, resolution) 
-        );
+      const peaks = channel.master.backend.getPeaks(resolution, 0 , resolution);
+      const start = 0;
+      const end = peaks.length / 2;
+      const width = channel.slave.params.container.getBoundingClientRect().width
+      channel.slave.drawer.drawPeaks(peaks, width, start, end);
+      
 
       this.dispatch(setLoadingProgress(channel.channelName, 100));
       this.dispatch(setChannelReady(true, channel.channelName));
 
       this.startSync(channel);
 
-      channel.master.drawer._measureDimensions();
     });
   }
 
@@ -130,7 +136,7 @@ export default class EventHandler {
 
   //---------------------------------------
   clearState(channel) {
-    channel.slave.load(null, []);
+    channel.slave.drawer.drawPeaks([], 0, 0, 0);
     if (channel.barsElements) {
       channel.barsElements.forEach(htmlElement => htmlElement.remove());
     }

@@ -1,0 +1,13 @@
+@import "./../../../../../css/colors.scss";
+
+.ws-player-container{
+    border-top: 3px solid white ;
+    width: 100%;
+    padding-left: 20px;
+    box-sizing: content-box;
+}
+
+:export{
+    waveColor : $primary;
+    progressColor: $secondary;
+}

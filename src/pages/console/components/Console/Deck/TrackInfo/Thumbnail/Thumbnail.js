@@ -19,7 +19,7 @@ const Thumbnail = props => {
 }
 
 const mapsStateToProps = (state, ownProps) => ({
-    thumbnailURL : state.console.channel[ownProps.name]?.track?.thumbnail?.default?.url,
+    thumbnailURL : state.console.channel[ownProps.name]?.track?.thumbnails?.default?.url,
 })
 
 export default connect(mapsStateToProps)(Thumbnail);

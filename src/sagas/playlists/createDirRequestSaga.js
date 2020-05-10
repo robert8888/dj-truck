@@ -1,4 +1,4 @@
-import { createDir, ACTIONS, loadDirRequest } from "../../actions";
+import { createDir, ACTIONS } from "../../actions";
 import { takeEvery, select, put, call } from "redux-saga/effects"
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 import { getApi } from "./../../apis/apiProvider";

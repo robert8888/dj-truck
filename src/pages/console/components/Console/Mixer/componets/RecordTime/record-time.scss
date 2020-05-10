@@ -11,4 +11,22 @@
         color: $primary;
         font-size: 1.3rem;
     }
+
+    &.record-time--prepering:after{
+        top:0;
+        left:0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        content: "";
+        border-radius: 2px;
+        box-shadow: 0 0 0 1px  red;
+        animation: blinking 0.5s infinite alternate ease-in-out;
+    }
+    
+    @keyframes blinking {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+    
 }

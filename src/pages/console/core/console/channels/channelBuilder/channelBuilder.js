@@ -23,7 +23,7 @@ export default class ChannelBuilder {
     channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
 
-    addAnimationFrame(channel.master);
+    // addAnimationFrame(channel.master);
 
     channel.master.__proto__.loadWithEvent = function (...args) {
       this.fireEvent("load");
@@ -31,7 +31,7 @@ export default class ChannelBuilder {
     };
 
     channel.slave = WaveSurfer.create(channel.slaveConfig);
-   // addAnimationFrame(channel.slave);
+    // addAnimationFrame(channel.slave);
 
     this.eventHandler.CreateEventHandling(channel)
 
@@ -39,7 +39,7 @@ export default class ChannelBuilder {
   }
 
   createBars(channel, { bpm, offset }) {
- 
+
     let wrapper = channel.master.drawer.wrapper;
     let styleApply = WaveSurfer.Drawer.style;
     let minPxPerSec = channel.master.params.minPxPerSec;
@@ -64,14 +64,14 @@ export default class ChannelBuilder {
     let containerStyle = {
       position: 'absolute',
       lef: '0',
-      top: '0', 
+      top: '0',
       width: '100%',
       height: '100%',
       zIndex: "3",
     }
     let container = document.createElement('div');
     styleApply(container, containerStyle);
-    
+
     channel.barsElements = [];
     barPostions.forEach(position => {
       let bar = document.createElement("div");
@@ -80,11 +80,7 @@ export default class ChannelBuilder {
       container.appendChild(bar);
       channel.barsElements.push(bar);
     });
+
     wrapper.appendChild(container);
-
   }
-
- 
-
-
 }

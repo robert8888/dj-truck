@@ -28,7 +28,7 @@ function* handel(action) {
         const id = current._id;
 
         let query;
-        if (current._type = "playlist") {
+        if (current._type === "playlist") {
             query = queries.deleteQl.deletePlaylist([id], action.name)
         } else { // dir
             query = queries.deleteQl.deleteDir([id], action.name)
@@ -38,7 +38,7 @@ function* handel(action) {
         console.log(res)
         if (!res.errors) {
             let deletedRows = 0;
-            if (current._type = "playlist") {
+            if (current._type === "playlist") {
                 deletedRows = res.data.deletePlaylist;
             } else {
                 deletedRows = res.data.deleteDir;

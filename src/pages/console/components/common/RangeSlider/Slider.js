@@ -1,7 +1,21 @@
 import React from "react";
+import debounce from "lodash/debounce";
 import "./slider.scss";
 
+//props
+//from - down boundry
+//to  - up boundry value
+//onChange - handler for change
+//value - value to make external control
+//step - for quntize value
+//stick-zero - stick zero to sticki behaviore of slider like on fader
+//vertival or horizontal - vertiacl or horizonal position
+
+
 class Slider extends React.Component {
+  //helper
+  preventDrag(e){ e.preventDefault() }
+
   constructor() {
     super();
 
@@ -97,17 +111,15 @@ class Slider extends React.Component {
   };
 
   updateStyles(){
-
     let position = this.stickiPostion(this.state.sliderCurrnetPosition);
     if (this.props.horizontal) {
       this.sliderThumbElement.current.style.left = position + "px";
-      //thumbStyle.left = position;
     } else {
       this.sliderThumbElement.current.style.top = position + "px";
-      //thumbStyle.top = position;
     }
-  
   }
+
+
 
   mouseDownHandle = event => {
     if (
@@ -120,7 +132,9 @@ class Slider extends React.Component {
       const position = this.props.horizontal
         ? event.clientX - rect.left
         : event.clientY - rect.top;
-      this.setPosition(position, this.state.sliderCurrnetPosition);
+      
+      const current = this.state.sliderCurrnetPosition || this.getPostion(this.props.initValue || 0) 
+      this.setPosition(position, current);
     } // dragging
     else if (event.target === this.sliderThumbElement.current) {
       this.setState({ ...this.state, isDragged: true });
@@ -130,7 +144,7 @@ class Slider extends React.Component {
       document.addEventListener("mousemove", e =>
         this.mouseMoveHandler.call(this, e, shiftY, shiftX)
       );
-      document.addEventListener("dragstart", e => e.preventDefault());
+      document.addEventListener("dragstart", this.preventDrag);
     }
 
     document.addEventListener("mouseup", this.mouseUpHandler);
@@ -159,6 +173,7 @@ class Slider extends React.Component {
     document.removeEventListener("mousemove", this.mouseMoveHandler.bind(this));
     document.removeEventListener("mouseup", this.mouseUpHandler);
     document.removeEventListener("dragend", this.mouseUpHandler);
+    document.removeEventListener("dragstart", this.preventDrag);
   };
 
   mouseMoveHandler = (event, shiftY, shiftX) => {
@@ -180,51 +195,46 @@ class Slider extends React.Component {
     this.setPosition(position);
   };
 
-  componentDidMount() {
-    const updateState = () => {
-      const thumbRect = this.sliderThumbElement.current.getBoundingClientRect();
-      const areaRect = this.sliderAreaElement.current.getBoundingClientRect();
-      const computedStyleThumbElement = window.getComputedStyle(
-        this.sliderThumbElement.current
-      );
-      const computedStyleRangeElement = window.getComputedStyle(
-        this.sliderRangeElement.current
-      );
+  updateState(){
+    const thumbRect = this.sliderThumbElement.current.getBoundingClientRect();
+    const areaRect = this.sliderAreaElement.current.getBoundingClientRect();
+    const rangeRect = this.sliderRangeElement.current.getBoundingClientRect();
 
-      this.setState(
-        state => {
-          const _state = { ...state };
-          if (this.props.horizontal) {
-            _state.sliderCurrnetPosition = parseInt(
-              computedStyleThumbElement.left
-            );
-            _state.sliderRange = parseInt(computedStyleRangeElement.width);
-            _state.sliderAreaOffset = areaRect.left;
-            _state.thumbSize = thumbRect.width;
-          } else {
-            _state.sliderCurrnetPosition = parseInt(
-              computedStyleThumbElement.top
-            );
-            _state.sliderRange = parseInt(computedStyleRangeElement.height);
-            _state.sliderAreaOffset = areaRect.top;
-            _state.thumbSize = thumbRect.height;
-          }
-          return _state;
-        },
-        () => {
-          if (this.props.value !== undefined) {
-            this.setValue(this.props.value);
-          }
+    this.setState(
+      state => {
+        const _state = { ...state };
+        if (this.props.horizontal) {
+          _state.sliderRange = rangeRect.width;
+          _state.sliderAreaOffset = areaRect.left;
+          _state.thumbSize = thumbRect.width;
+        } else {
+          _state.sliderRange = rangeRect.height;
+          _state.sliderAreaOffset = areaRect.top;
+          _state.thumbSize = thumbRect.height;
         }
-      );
-    };
-    updateState();
-    window.addEventListener("resize", updateState.bind(this));
-
-    this.sliderAreaElement.current.addEventListener(
-      "mousedown",
-      this.mouseDownHandle.bind(this)
+        return _state;
+      },
+      () => {
+        if (this.props.value !== undefined) {
+          this.setValue(this.props.value);
+        }
+      }
     );
+  };
+
+  componentDidMount() {
+
+    setTimeout(this.updateState.bind(this), 100) ;
+
+    this.updateStateDebounced = debounce(this.updateState.bind(this), 300)
+    window.addEventListener("resize", this.updateStateDebounced);
+
+    this.sliderAreaElement.current
+      .addEventListener("mousedown",this.mouseDownHandle.bind(this));
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('resize', this.updateStateDebounced);
   }
 
   componentDidUpdate(prevProbs){

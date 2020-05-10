@@ -1,17 +1,45 @@
-import React , { Fragment } from "react";
-import { Route } from "react-router-dom";
+import React, { Fragment, Suspense } from "react";
+import { Route, Redirect } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
-import Console from "./../pages/console/Console";
-import Profile from "./../pages/profile/Profile";
+//import Console from "./../pages/console/Console";
+//import Profile from "./../pages/profile/Profile";
+//import UserRecords from "./../pages/userRecords/UserRecords";
+import Loading from "./../pages/common/components/Loading/Loding";
 
-const Routes = props =>{
+const Console = React.lazy(() => import("./../pages/console/Console"));
+const Playlist = React.lazy(() => import("./../pages/playlist/Playlist"));
+const Profile = React.lazy(()=> import("./../pages/profile/Profile"));
+const UserRecords = React.lazy(()=> import("./../pages/userRecords/UserRecords"));
+const UserRecord = React.lazy(() => import("./../pages/userRecord/UserRecord"));
+const Explorer = React.lazy(() => import("./../pages/explore/Explorer"));
+
+const Routes = props => {
     return (
-        <Fragment>
-            <Route path="/" exact component={Console}/>
-            <PrivateRoute path="/profile" exact component={Profile}/>
-            <Route path="/test" exact render={()=><h1>Test</h1>} />
-        </Fragment>
+        <Suspense fallback={<Loading/>}>
+            <Fragment>
+                <Route path="/console" exact component={Console} />
+                <Route path="/exploring" exact component={Explorer} />
+                <PrivateRoute path="/my/playlist" exact component={Playlist}/>
+                <PrivateRoute path="/my/profile" exact component={Profile} />
+                <PrivateRoute path="/my/records" render={ props => <UserRecords {...props} isCurrentUser/>}/>
+                
+                <Route path="/records" exact component={UserRecords} />
+                <Route path="/records/:user" exact component={UserRecords} />
+                <Route path="/records/generes/:generes" exact component={UserRecords}/>
+                <Route path="/records/search/:query" exact 
+                    render={ props => (
+                            <UserRecords searchQuery={props.match.params.query} {...props}/>
+                        )}/>
+                <Route exact path="/record/:user" render={ props => 
+                        <Redirect to={"/records/"+ props.match.params.user}/>
+                    }/>
+                <Route path="/record/:user/:title/:id?" exact component={UserRecord} />
+                
+                <Route path="/test" exact render={() => <h1>Test</h1>} />
+            </Fragment>
+        </Suspense>
+
     )
 }
 

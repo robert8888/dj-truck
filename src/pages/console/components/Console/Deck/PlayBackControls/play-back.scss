@@ -7,10 +7,10 @@
         @include deck-button($deck-primary);
         
         
-        &.btn-play{
+        &.play-btn{
             margin-left: 2px;
         }
-        &.btn-cue{
+        &.cue-btn{
             font-weight: bold;
             &.btn--pressed{
                 background: $deck-primary;

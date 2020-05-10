@@ -20,12 +20,6 @@ export function addAnimationFrame(waveSurfer){
         }
     }
 
-    // waveSurfer.drawer._mainWS = waveSurfer.drawer.container.firstChild;
-    // waveSurfer.drawer._mainWS.style.position = "absolute";
-    // waveSurfer.drawer._mainWS.style.willChange = "transform";
-
-
-   // waveSurfer.drawer.container.firstChild.style.position = "absolute";
 
     waveSurfer.drawer._measureDimensions = function(){
         console.log("dimension measured")
@@ -40,7 +34,7 @@ export function addAnimationFrame(waveSurfer){
         var offset = target - scrollLeft;
         var maxScroll = this.wrapper._scrollWidth - this.wrapper._clientWidth;
 
-        if (maxScroll == 0) {
+        if (maxScroll === 0) {
             // no need to continue if scrollbar is not there
             return;
         }
@@ -56,7 +50,7 @@ export function addAnimationFrame(waveSurfer){
         // limit target to valid range (0 to maxScroll)
         target = Math.max(0, Math.min(maxScroll, target));
         // no use attempting to scroll if we're not moving
-        if (target != scrollLeft) {
+        if (target !== scrollLeft) {
             this.wrapper.scrollLeft = target;
           //this.wrapper.style.left = -target+"px";
             this.wrapper._scrollLeft = target;

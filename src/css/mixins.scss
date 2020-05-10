@@ -1,9 +1,24 @@
+@mixin clearfix() {
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+}
+
+@mixin reset(){
+    margin: 0;
+    padding: 0;
+}
 
 @mixin button-transparent($color:""){
     background: transparent;
     border: none;
     box-shadow: none;
     outline: none;
+    &:focus{
+        outline: none;
+    }
     @if not ($color == "") {
         color: $color;
     }
@@ -45,27 +60,26 @@
     
 }
 
-
-@mixin deck-button($deck-primary){
-    @include button($deck-primary);
+@mixin dark-button($color){
+    @include button($color);
     padding: 8px 12px;
     background: $primary-dark;
-    border-color: $deck-primary;
+    border-color: $color;
     font-weight: 600;
     &:hover,  &:focus,  &:active &:active:hover , &:focus:active, &:active:focus{
         background: $primary-dark;
         border-color: $primary-dark;
       //  -webkit-box-shadow: none;
         box-shadow: none ;
-        color:$deck-primary;
+        color:$color;
     }
     &:focus:hover:active{
-        background: $deck-primary;
+        background: $color;
         color: $primary-dark;
     }
 
     &.btn--pressed-filed{
-        background-color: $deck-primary;
+        background-color: $color;
         color: $primary-dark;
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -75,10 +89,26 @@
     }
 }
 
-@mixin mixer-button($color) {
+@mixin deck-button($color){
+    @include dark-button($color);
+
+}
+
+@mixin std-button($color : $primary){
     @include deck-button($color);
+    &:hover,  &:focus,  &:active &:active:hover , &:focus:active, &:active:focus{
+        border-color: white;
+    }
+    &.btn--active {
+        border-color: $secondary;
+    }
     font-size: 15px;
     display: block;
+}
+
+@mixin mixer-button($color) {
+    @include std-button($color);
+
 }
 
 @mixin drop-down-button($color : $primary) {
@@ -100,8 +130,8 @@
     }
 }
 
-@mixin deck-sync-button($deck-primary){
-    @include deck-button($deck-primary);
+@mixin deck-sync-button($color){
+    @include deck-button($color);
     user-select: none;
     text-transform: uppercase;
     font-size: 10px;
@@ -116,7 +146,7 @@
     }
 
     &.btn--pressed{
-        background-color: $deck-primary;
+        background-color: $color;
         color: $primary-dark;
         -webkit-box-shadow: none;
         box-shadow: none;
@@ -159,6 +189,11 @@
     }
 
     @include block-like-button($color);
+
+    // &:-webkit-autofill,
+    // &:-webkit-autofill:hover, 
+    // &:-webkit-autofill:focus,
+
     &, &:active:focus:hover, &:active ,&:focus{
         background: $primary-dark;
         border:none;
@@ -191,7 +226,125 @@
           }
           
     }
+
+    &:-webkit-autofill,
+     &:-webkit-autofill:hover, 
+     &:-webkit-autofill:focus{
+        border: 1px solid $color;
+        -webkit-text-fill-color: $color;
+        -webkit-box-shadow: 0 0 0px 1000px $secondary-dark inset;
+        font-size: inherit;
+        background: $secondary-dark;
+    }
 }
+
+@mixin textarea($color: $primary){
+    &, &:disabled{
+        &, &:active, &:hover, &:focus{
+            box-shadow: none;
+            color: $primary;
+            background: transparent;
+            border-radius: 1px;
+            border-color: $color;   
+        }
+    }
+
+
+}
+
+@mixin checkBox($color: $primary, $text-color: $primary-text-color){
+        
+        input[type="checkbox"]{
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: relative;
+            &, &:hover, &:active, &:focus{
+                box-shadow: none;
+                outline: none;
+            }
+
+            &::before{
+                content: "";
+                display: block;
+                opacity: 1;
+                width: 20px;
+                height: 20px;
+                border: 1px solid $color;
+                border-radius: 2px;
+                background: transparent;
+            }
+             &:checked:after{
+                 content: "";
+                 position: absolute;
+                 top:1px;
+                 left: 6px;
+                 display: block;
+                 border-style: none solid solid none;
+                 border-width: 2px;
+                 border-color: $color;
+                 width: 8px;
+                 height: 12px;
+                 transform: rotate(45deg);
+             }
+        }
+
+        label{
+            color: $primary-text-color
+        }
+}
+
+
+@mixin bootstrap-switch($color){
+    label{
+        border: none;
+        color: $primary;
+        
+    }
+    .custom-control-input:checked~.custom-control-label::before{
+        border-color: $color;
+        background-color: $color;
+    };
+    .custom-control-input:focus~.custom-control-label::before{
+        box-shadow: 0 0 4px rgba($color , 0.6), 0 0 0 1px darken($color, 20%);
+    }
+}
+
+@mixin table-std(){
+    width: 100%;
+    color: $primary-text-color;
+    border-collapse: separate;
+    border-spacing: 2px;
+
+    th {
+        background: $tertiary-dark;
+        padding: 0 5px;
+        position: sticky;
+        top: 0;
+       border-top: 1px solid $primary-dark;
+       border-bottom: 1px solid $primary-dark;
+
+        
+    }
+   td {
+       background: $secondary-dark;
+       padding: 5px;
+       max-height: 25px;
+       line-height: 25px;
+       &.overflow{
+           max-width: 0;
+           width: 100%;
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
+       }
+   }
+
+   tr:hover td{
+       background: $tertiary-dark;
+   }
+}
+
 
 
 @mixin scrolls {
@@ -210,4 +363,46 @@
     &::-webkit-scrollbar-thumb:hover {
         background: $primary;
     }
+}
+
+@mixin panel{
+    background: $secondary-dark;
+    padding: 10px;
+    color: $primary-text-color;
+    border-radius: 3x;
+}
+
+@mixin  panel-border ($amount : 0.3){
+    border:1px solid rgba($primary, $amount);
+}
+
+@mixin panel-with-border() {
+    @include panel();
+    @include panel-border();
+}
+
+@mixin tooltip(){
+    position: relative;
+    &:hover:before{
+        content: attr(data-tooltip);
+        display: block;
+        position: absolute;
+        top: -100%;
+        left: 100%;
+        background: white;
+        color: $primary;
+        font-size: 0.8em;
+        line-height: 1.0em;
+        padding: 5px 8px;
+    }
+}
+
+@mixin  loading-io-spin {
+    --rl-spin-size: 10px !important;
+    --rl-spin-color: #{darken($primary, 30)} !important;
+    --rl-spin-scale: 0.3 !important;
+    --rl-spin-translate: 20px !important;
+    --rl-spin-speed: 1s !important;
+    --rl-spin-border: 25px !important;
+    transform: translate(-10px, -20px) scale(0.2);
 }

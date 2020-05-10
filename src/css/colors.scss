@@ -32,3 +32,19 @@ $mixer-knob-primary: #4dbcd0;
 $mixer-level-meter: #4dbcd0;
 $mixer-level-meter-cliping: #ee000c;
 $mixer-level-meter-safe: #ee8700;
+
+// ----
+
+$light-red : #C21D17; 
+
+@mixin background-primary-gradient() {
+    background: #0F2027;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #123b42, #123b42, #06191d);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #123b42, #123b42, #06191d); 
+}
+
+@mixin backgorund-secondary-gradient() {
+    background: #0F2027;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #123b42, #123b42, #06191d);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #e6781f, #e6781f, #8f460b); 
+}

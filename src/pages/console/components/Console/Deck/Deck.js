@@ -9,11 +9,10 @@ import PitchSlider from "./PitchSlider/PitchSlider";
 import PitchButtons from "./PitchButtons/PitchButtons";
 import Looper from "./Looper/Looper";
 import { useDrop } from 'react-dnd'
-import ItemTypes from "./../../../appItemTypes";
+import ItemTypes from "./../../../../common/appItemTypes"
 import { loadTrack } from "./../../../../../actions";
 
 const Deck = props => {
-
 
     const dropResult = (item) => {
         props.loadTrack(item.track, props.name);
@@ -22,11 +21,10 @@ const Deck = props => {
         }
     }
 
-    const [ _ , drop] = useDrop({
+    const [ , drop] = useDrop({
         accept : ItemTypes.TRACK,
         drop: dropResult,
     })
-
 
     return (
         <div className={"deck deck-" + props.name} ref={drop}>

@@ -1,0 +1,28 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+.record-player-controls .playback-button-container{
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .playback-button{
+        &.btn-primary {
+            @include button($primary);
+            background: transparent;
+            &:hover, 
+            &:active, 
+            &:focus, 
+            &:hover:active, 
+            &:focus, 
+            &:focus:active, 
+            &:not(:disabled):active:focus,
+            &.playback-button--active{
+                background: $secondary;
+                border-color: white;
+                color:white;
+                box-shadow: none;
+            }
+        }
+    }
+}

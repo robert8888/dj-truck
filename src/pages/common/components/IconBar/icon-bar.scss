@@ -1,0 +1,25 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+
+.icon-bar{
+    ul.icon-list{
+        @include reset();
+        list-style: none;
+        li{
+            @include tooltip();
+            display: inline-block;
+            margin: 0 6px;
+            .icon{
+                color: $primary;
+                &:hover{
+                    color: $secondary;
+                }
+                &.icon-delete:hover{
+                    color: $light-red;
+                }
+            }
+        }
+
+    }
+}

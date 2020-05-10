@@ -38,7 +38,6 @@ class MiniSlider extends React.Component {
       transform: "translateX(-" + this.state.currentSlide + "00%)",
     };
 
-    const hocEvnetsHandlers = this.props.evnetsHandlers || {};
     const classNames = this.props.className || "";
 
     return (

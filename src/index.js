@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -9,15 +8,9 @@ import history from "./utils/history/history";
 import "default-passive-events";
 
 
-//....
-
 const domain = process.env.REACT_APP_AUTH0_DOMAIN ;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
-
-// console.log(domain)
-// console.log(clientId)
-// console.log( audience);
 
 const onRedirectCallback = appState => {
     history.push(
@@ -43,4 +36,4 @@ const onRedirectCallback = appState => {
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

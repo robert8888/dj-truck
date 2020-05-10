@@ -31,7 +31,6 @@ export const Auth0Provider= ({
       const auth0FromHook = await createAuth0Client(initOptions);
       setAuth0(auth0FromHook);
       clientExternalResolver(auth0FromHook);
-      console.log("expor auth external client ")
       if (window.location.search.includes("code=") &&
           window.location.search.includes("state=")) {
         const { appState } = await auth0FromHook.handleRedirectCallback();

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { connect } from "react-redux";
-import { throttle } from "./../../../../../utils/functions/lodash";
+// import { throttle } from "./../../../../../utils/functions/lodash";
+import throttle from "lodash/throttle";
 
 import "./effector-channel.scss";
 import DryWetKnob from "./components/DryWetKnob/DryWetKnob";
@@ -9,30 +10,34 @@ import EffectorKnob from "./components/EffectorKnob/EffectorKnob";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { setEffectParametr, setCurrentEffect, setDryWet } from "./../../../../../actions";
 import mapComponentToParameter from "./utils/mapComponentToParameter";
-const Effector = props => {
 
+const Effector = ({ setParameter, availableEffects: getAvailableEffects, channel, channelState, setDryWet, setEffect }) => {
     const [currentEffect, setCurrentEffect] = useState(undefined);
     const [effectorParams, setEffectorParams] = useState([]);
+    const currentChannelState = useRef();
 
+    useEffect(()=>{
+        currentChannelState.current = channelState;
+    }, [channelState])
 
-    /*const paramChangeHandle = (param, value) => {
-        props.setParameter(currentEffect, param, value);
-    }
-*/
-
-    const setParameterHandle = props.setParameter;
-    const paramChangeHandle = useCallback((param, value)=>{
-        setParameterHandle(currentEffect, param, value);
-    }, [setParameterHandle, currentEffect])
-
-    const setCurrentEffectHandle = props.setCurrentEffect;
-    useEffect(() => {
-        setCurrentEffectHandle(currentEffect);
-    }, [currentEffect, setCurrentEffectHandle])
+    const paramChangeHandle = useCallback((param, value) => {
+        setParameter(currentEffect, param, value);
+    }, [setParameter, currentEffect])
 
 
     useEffect(() => {
-        let currentEffectParams = props.availableEffects[currentEffect];
+        setEffect(currentEffect);
+    }, [currentEffect, setEffect])
+
+    
+    const availableEffects = useMemo(() => Object.keys(getAvailableEffects).map((effect, index) => {
+        return (<Dropdown.Item key={effect + "-" + index} onClick={setCurrentEffect.bind(null, effect)}>{effect}</Dropdown.Item>)
+    }), [getAvailableEffects, setCurrentEffect])
+
+
+    useEffect(() => {
+        channelState = currentChannelState.current;
+        let currentEffectParams = getAvailableEffects[currentEffect];
         if (!currentEffectParams) {
             setEffectorParams([]);
             return;
@@ -40,7 +45,7 @@ const Effector = props => {
 
         setEffectorParams(Object.entries(currentEffectParams).map(([name, param]) => {
             //console.log("producing knobs")
-            const effectState = props.channelState.effects[currentEffect];
+            const effectState = channelState.effects[currentEffect];
 
             let value = param.defaultValue;
             if (effectState) {
@@ -48,7 +53,7 @@ const Effector = props => {
             }
 
             let bindData = {
-                channel: props.channel,
+                channel: channel,
                 effect: currentEffect,
                 name: name
             };
@@ -77,19 +82,20 @@ const Effector = props => {
 
             return reactElement
         }))
-    }, [ currentEffect])
+    }, [currentEffect, 
+        paramChangeHandle, 
+        getAvailableEffects,
+        channel, 
+        currentChannelState, 
+        setEffectorParams])
 
-
-    const availableEffects = Object.keys(props.availableEffects).map((effect, index) => {
-        return (<Dropdown.Item key={effect + "-" + index} onClick={setCurrentEffect.bind(null, effect)}>{effect}</Dropdown.Item>)
-    })
 
 
     return (
-        <div className={"effector-channel effector ch-" + props.channel}>
-            <span className="label">{"FX " + props.channel}</span>
+        <div className={"effector-channel effector ch-" + channel}>
+            <span className="label">{"FX " + channel}</span>
             <div className="dra-wet-knob">
-                <DryWetKnob alt="D/W" onChange={props.setDryWet} />
+                <DryWetKnob alt="D/W" onChange={setDryWet} />
             </div>
             <div className="effect-selector">
                 <DropdownButton title={currentEffect || "-----"} className="btn-effect-select">
@@ -112,10 +118,11 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispachToProps = (dispatch, ownProps) => {
     const tdispatch = throttle(dispatch, 100);
     return {
-    setParameter: (...args) => tdispatch(setEffectParametr(ownProps.channel, ...args)),
-    setCurrentEffect: (effect) => dispatch(setCurrentEffect(ownProps.channel, effect)),
-    setDryWet: (value) => dispatch(setDryWet(ownProps.channel, value))
-}}
+        setParameter: (...args) => tdispatch(setEffectParametr(ownProps.channel, ...args)),
+        setEffect: (effect) => dispatch(setCurrentEffect(ownProps.channel, effect)),
+        setDryWet: (value) => dispatch(setDryWet(ownProps.channel, value))
+    }
+}
 
 export default connect(mapStateToProps, mapDispachToProps)(Effector);
 

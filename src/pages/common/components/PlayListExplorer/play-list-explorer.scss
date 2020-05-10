@@ -1,0 +1,23 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+.play-list-explorer{
+    @include panel-border();
+    margin-top: 25px;
+    background: $secondary-dark;
+    padding: 5px;
+    width: 100%;
+    height: calc(100vh  - 200px);
+
+
+
+    display: flex;
+
+    .explorer{
+        margin-right: 5px;
+    }
+
+    .playlist{
+       flex-grow: 1;
+    }
+}

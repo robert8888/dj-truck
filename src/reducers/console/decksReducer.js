@@ -1,7 +1,7 @@
 import { ACTIONS } from "./../../actions";
 import { produce } from "imer";
 
-const deck = {
+const initDeckState = {
     track: {
         title: "",
         bpm: 0,
@@ -35,10 +35,10 @@ const initState = {
     master: null,//A, B ....
     channel: {
         A: {
-            ...deck
+            ...initDeckState
         },
         B: {
-            ...deck
+            ...initDeckState
         }
     },
 }
@@ -81,8 +81,18 @@ const nextDeckState = nextState('deckState');
 
 function consoleReducer(state = initState, action) {
     switch (action.type) {
-        case ACTIONS.LOAD_TRACK: {
+        case ACTIONS.CONSOLE_RESET : {
+            console.log('reset')
+            let channels = Object.keys(state.channel);
+            return produce(state, draftState=>{
+                for(let channel of channels){
+                    draftState.channel[channel].playBackState = initDeckState.playBackState;
+                    draftState.channel[channel].track = initDeckState.track;
+                }
+            })
+        }
 
+        case ACTIONS.LOAD_TRACK: {
             const nextTrack = action.track;
             if (state.channel[action.destination].track.id === nextTrack.id) {
                 return state;
@@ -97,7 +107,7 @@ function consoleReducer(state = initState, action) {
                     source: nextTrack.source,
                     id: nextTrack.id,
                     sourceId: nextTrack.sourceId,
-                    thumbnail: nextTrack.thumbnail,
+                    thumbnails: nextTrack.thumbnails,
                 }
                 //reseting  play back state
                 draftState.channel[action.destination].playBackState = {
@@ -184,7 +194,8 @@ function consoleReducer(state = initState, action) {
 
 
         case ACTIONS.PL_SET_BPM_AND_OFFSET: {
-            if(action.bpm === undefined || action.offset === undefined){
+            if(action.bpm === undefined || action.bpm === null ||
+               action.offset === undefined || action.offset === null){
                 return state;
             }
             let channels = [];

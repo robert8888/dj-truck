@@ -1,0 +1,27 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+.pagin {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    .pagin-btn.btn {
+        @include std-button();
+        display: inline-block;
+    }
+    .pagin-separator{
+        //height: 100%;
+        width: 25px;
+        position: relative;
+        &:after{
+            content: "...";
+            position: absolute;
+            display: inline-block;
+            left:50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            letter-spacing: 2px;
+            color: $primary;
+        }
+    }
+}

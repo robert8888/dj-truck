@@ -1,20 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/main.scss';
 
-
-
 import store from "./store";
-import {getCurrentUser} from "./actions";
+
 
 import Router from "./Router/Router";
 import Routes from "./Router/Routes";
 
 
-function App(props) {
-
+function App() {
 
   return (
       <div className="main-container">

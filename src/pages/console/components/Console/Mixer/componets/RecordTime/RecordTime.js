@@ -1,39 +1,49 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {formater as timeFormater }from "./../../../../../../../utils/time/timeFromater";
+import classNames from "classnames";
 import "./record-time.scss"
 
-const RecordTime = props => {
+const RecordTime = ({runing, prepering, clearHandler}) => {
     const [time, setTime] = useState(0);
     const [timerInterval, setIntervalHandler] = useState(null);
 
     useEffect(()=>{
-        if(props.runing && !timerInterval){
+        if(runing && !timerInterval){
             setIntervalHandler(setInterval(()=>{
                 setTime(time => ++time);
             }, 1000))
-        } else if(!props.runing && timerInterval) {
+        } else if(!runing && timerInterval) {
             clearInterval(timerInterval);
             setIntervalHandler(null);
         }
 
-    },[ props.runing, 
+    },[ runing, 
         setTime, 
         setIntervalHandler,
         timerInterval
     ])
 
-    const clearHandler = useCallback(()=>{
+    const clear = useCallback(()=>{
         setTime(0)
     }, [setTime])
 
     useEffect(()=>{
-        if(props.clearHandler instanceof Function){
-            props.clearHandler(clearHandler)
+        if(clearHandler instanceof Function){
+            clearHandler(clear)
         }
-    }, [])
+    }, [clearHandler, clear])
+
+    const containerClassNames = useMemo(()=>{
+        return classNames(
+            "record-time",
+            {
+                "record-time--prepering": prepering
+            }
+        )
+    }, [prepering])
 
     return(
-        <div className="record-time">
+        <div className={containerClassNames}>
             <span>{ timeFormater.secondsToStr(time) }</span>
         </div>
     )

@@ -6,7 +6,6 @@ import Channels from "./channels/channels";
 import Mixer from "./mixer/mixer";
 import Effector from "./effector/effector";
 
-let instance=null; 
 
 export default class Console{
 
@@ -48,9 +47,14 @@ export default class Console{
  
 
     createChannel(channelName, ...args){
-        args.push(this.mixer.mainAudioContext);
-        this.channels.createChannel(channelName, ...args);
-        this.mixer.setUpChannelsAudioNodes(channelName);
+        const buildChannel = () => {
+            args.push(this.mixer.mainAudioContext);
+            this.channels.createChannel(channelName, ...args);
+            this.mixer.setUpChannelsAudioNodes(channelName);
+        }
+    
+        setTimeout(buildChannel.bind(this), 0);
+
     }
 
     handleChange(){
@@ -170,6 +174,13 @@ export default class Console{
 
             case STATUS.MASTERING : {
                 this.mixer.mastering.setMasterParam(diff.subStatus, diff.value);
+                break;
+            }
+
+            //----- Recorder 
+            case STATUS.RECORDER : {
+                this.mixer.recorder.action(diff.subStatus, diff.recParam);
+                break;
             }
 
             default : return; 

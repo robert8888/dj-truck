@@ -1,0 +1,103 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+
+@mixin volume-slider($width, $height) {
+    display: none;
+    &.expand{
+        display: block;
+    };
+    width: $width;
+    height: $height;
+    background: $secondary-dark;
+    position: absolute;
+    bottom: 40px;
+    box-shadow: 0px 0px 4px 0.5px rgba(white, 0.2);
+    border-radius: 2px;
+    border: 1px solid $primary;
+    overflow: visible;
+    padding: 15px 5px 10px 5px;
+
+    &::before{
+        $size : 0.4 * $width;
+        content: "";
+        display: block;
+        width: $size;
+        height: $size;
+        position: absolute;
+        left: 50%;
+        background: transparent;
+        bottom: 0;
+        border-color: transparent transparent $primary $primary;
+        transform: translate(-50%, 50%) rotate(-45deg);
+        border-width: 6px;
+        border-style: solid;
+        box-shadow: -3px 3px 3px 0  rgba(white, 0.05);
+    }
+    &::after{
+        $size : 0.4 * $width;
+        content: "";
+        display: block;
+        width: $size;
+        height: $size;
+        position: absolute;
+        left: 50%;
+        background: linear-gradient(0.625turn, transparent 0 50%, $secondary-dark 50% 100%);
+        background-position: 0px -2px;
+        background-size: 140% 180%;
+        bottom: 0;
+        border-color: transparent transparent $primary $primary;
+        transform: translate(-50%, 50%) rotate(-45deg);
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    $guide-width: 3px;
+
+    .volume-slider-guide{
+        left: 0;
+        width: calc(50% - #{$guide-width / 2});
+        height: 100%;
+        box-sizing: content-box;
+        border-right: $guide-width solid $primary-dark;
+    }
+
+    .volume-slider-progress{
+        position: absolute;
+        left: 0;
+        bottom: 10px;
+        width: calc(50% - #{$guide-width / 2});
+        height: 1px;
+        box-sizing: content-box;
+        border-right: $guide-width solid $secondary;
+        transform: scaleY(103) translateY(-50%);
+    }
+
+    $thumb-diameter: 0.4 * $width;
+    .volume-slider-thumb{
+        position: absolute;
+        width: $thumb-diameter;
+        height: $thumb-diameter;
+        border-radius: 50%;
+        border: solid white 2px;
+        background: $secondary;
+        bottom: 5px;
+        left: calc(50% - #{$thumb-diameter / 2});
+    }
+
+}
+
+.volume{
+    position: relative;
+    .volume-btn{
+        @include button-transparent();
+        height: 100%;
+        color: $primary;
+        width: 30px;
+    }
+    
+    .volume-slider{
+        @include volume-slider(30px, 130px)
+    }
+}
+

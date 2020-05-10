@@ -1,6 +1,4 @@
-.layout.container {
-  padding: 0;
-}
+
 
 @media (min-width: 1450px) {
   .container-xl {
@@ -8,28 +6,34 @@
   }
 }
 
-@media (max-width: 772px) {
-  .container-xl {
-    min-width: 90%;
-    div.row{
-      margin: 0;
-      min-width: 576px;
-      .col{
-        padding: 0;
-      }
-    }
+@media (min-width: 1200px) and (max-width:1450px){
+  .layout.container {
+    padding: 0;
   }
 }
 
-@media (max-width: 576px) {
-  .container-xl {
-    min-width: 95%;
-    div.row{
-      margin: 0;
-      min-width: 576px;
-      .col{
-        padding: 0;
-      }
-    }
-  }
-}
+// @media (max-width: 772px) {
+//   .container-xl {
+//     min-width: 90%;
+//     div.row{
+//       margin: 0;
+//       min-width: 576px;
+//       .col{
+//         padding: 0;
+//       }
+//     }
+//   }
+// }
+
+// @media (max-width: 576px) {
+//   .container-xl {
+//     min-width: 95%;
+//     div.row{
+//       margin: 0;
+//       min-width: 576px;
+//       .col{
+//         padding: 0;
+//       }
+//     }
+//   }
+// }

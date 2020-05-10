@@ -14,8 +14,8 @@ export default class DubDelay extends Effect{
                 },
                 time: {
                     min: 0,
-                    max: 180,
-                    defaultValue: 5,
+                    max: 1,
+                    defaultValue: .5,
                     type: "float",
                     description: "time"
                 },

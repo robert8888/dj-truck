@@ -17,10 +17,10 @@ const FilterKnob = props =>{
         <KnobDescribed className="filter-knob "
             showValue={"always"} 
             symetric
-            scale={8000} 
+            scale={10} 
             alt={props.alt}
             displayFormula={ displayText }
-            quantize={100} 
+            quantize={0.01} 
             onChange={ props.onChange }
             value={props.value}
             dobuleClickInit/>

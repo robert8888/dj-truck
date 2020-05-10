@@ -1,0 +1,18 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+.record-comments{
+    @include panel();
+    @include clearfix();
+    h6{
+        font-size: 1.1em;
+        border-bottom: 1px solid $secondary;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        margin-top: 10px;
+        letter-spacing: 1px;
+    }
+    h6:nth-of-type(2){
+        margin: 25px 0;
+    }
+}

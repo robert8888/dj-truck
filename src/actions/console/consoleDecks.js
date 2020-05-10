@@ -15,7 +15,10 @@ const  ACTIONS = {
     SET_MASTER: "set $master valeu to $destynation channel",
     SET_SYNC: "set sync $value to $destination channel ",
     SET_LOOP: "set $value to loop variable on $destination channel",
-    SET_LOOP_LENGTH : "set $loopLenght to $destination channel"
+    SET_LOOP_LENGTH : "set $loopLenght to $destination channel",
+
+    CONSOLE_STOP_ALL: "stop playback clear deck stop recording",
+    CONSOLE_RESET : 'stop playing track and clear track from channel',
 
 }
 export {ACTIONS as CONSOLE_ACTIONS}
@@ -144,4 +147,13 @@ export function setLoopLength(destination, value){
         destination,
         value
     }
+}
+
+
+export function consoleStopAll(){
+    return {type: ACTIONS.CONSOLE_STOP_ALL};
+}
+
+export function consoleResetChannels(){
+    return {type: ACTIONS.CONSOLE_RESET}
 }

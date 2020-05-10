@@ -1,0 +1,85 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+
+.record-details{
+    @include panel();
+    position: relative;
+
+    .record-details-icons{
+        float:right;
+    }
+
+    .form-group{
+        margin: 15px 0;
+    }
+
+
+    .switch-edit-mode{
+        @include bootstrap-switch($primary);
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+
+    label:not([for="switch-edit-mode"]){
+        padding:  0 15px;
+        margin-bottom: 0.2em;
+    }
+
+    @mixin  border {
+        border-top-style: solid;
+        border-top-width: 1px;
+        border-color: $primary;
+        border-radius: 1px;
+    }
+
+    input{
+        @include input();
+        border-radius: 1px;
+        margin: 0;
+        &, &:disabled{
+            background: transparent;
+            //border-top: 1px solid $primary;
+            @include border();
+
+            &:active:focus , &:focus:active:hover, &:focus, &:active, &:hover{
+                background: transparent;
+            }
+        }
+    }
+    textarea{
+        overflow: hidden;
+        resize: none;
+        &,&:disabled{
+            @include textarea();
+
+        }
+        &:disabled{
+            &, &:active, &:hover, &:focus{
+                border:none;
+                @include border();
+                border-radius: 1px;
+            }
+        }
+
+    }
+
+    button {
+        @include std-button();
+        float: right;
+
+        &.delete-record-btn{
+            @include std-button($light-red);
+            float:left;
+        }
+    }
+
+
+
+    &:after{
+        content:"";
+        display: block;
+        clear: both;;
+    }
+}

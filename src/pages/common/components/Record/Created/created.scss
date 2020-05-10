@@ -1,0 +1,11 @@
+@import "./../../../../../css/colors.scss";
+.record-created{
+    position: absolute;
+    right: 0;
+    background: $secondary-dark;
+    z-index: 3;
+    opacity: 0.9;
+    padding: 0 10px;
+    font-size: 0.9em;
+    top: 3px;
+}

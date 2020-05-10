@@ -1,0 +1,65 @@
+@import "./../../../../css/colors.scss";
+
+.record{
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    color: white;
+ 
+    header{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        padding: 3px 0;
+        nav{
+            display: flex;
+            width: 60%;
+            h6.record-title,  h6.record-owner{
+                height: 1.2em;
+                line-height: 1.2em;
+                font-size: 1.2em;
+                vertical-align: middle;
+                margin: 0;
+
+                overflow: hidden;
+                white-space: nowrap;
+           //     min-width: 100px;
+               // max-width: 100px;
+                max-width: 100%;
+                padding-right: 15px;
+                text-overflow: ellipsis;
+                
+            }
+            a:last-of-type{
+                //width: 60%;
+                display: flex;
+                width: 55%;
+            }
+            h6.record-owner {
+                margin-left: 100px;
+                padding: 0;
+                white-space: nowrap;
+                padding-right: 5px;
+                &:after{
+                    content: "\00B7";
+                    font-weight: 800;
+                }
+            }
+        }
+        aside {
+            max-width: 35%;
+
+            &, ul > li {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+        }
+
+    }
+    &>main{
+        display: flex;
+        position: relative;
+    }
+}

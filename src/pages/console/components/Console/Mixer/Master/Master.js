@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import {connect} from "react-redux";
 import "./master.scss";
 import Console from "./../../../../core/console/console";
@@ -18,7 +18,15 @@ import {
     } from "../../../../../../actions";
 
 const Mastering = props => {
+    const [_interface, setInterface] = useState();
+    
+    const mixerInterface = useMemo(() => {
+        return _interface;
+    }, [_interface])
 
+    useEffect(() => {
+        setInterface(Console.Get().getMixerMasterInterface())
+    }, [setInterface])
 
     return (
         <div className="mastering">
@@ -27,7 +35,7 @@ const Mastering = props => {
             <PeakLevelMeterH
                 mastering 
                 active={true}
-                interface={ Console.Get().getMixerMasterInterface().getPrePeakMeter } />
+                interface={mixerInterface?.getPrePeakMeter} />
             <ThresholdKnob onChange={props.setThreshold}/>
             <RatioKnob onChange={props.setRatio}/>
             <AttackKnob onChange={props.setAttack}/>
@@ -35,7 +43,7 @@ const Mastering = props => {
             <GainKnob onChange={props.setPostGain}/>
             <PeakLevelMeterH 
                active={true}
-               interface={ Console.Get().getMixerMasterInterface().getPostPeakMeter }/>
+               interface={ mixerInterface?.getPostPeakMeter}/>
         </div>
     )
 }

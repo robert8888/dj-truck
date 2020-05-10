@@ -4,7 +4,7 @@
 
 @mixin pitch-button($deck-color){
     float : right;
-    button{
+    button.btn.btn-primary{
         @include deck-button($deck-color);
         &.btn.pitch-btn{
             height: 20px;

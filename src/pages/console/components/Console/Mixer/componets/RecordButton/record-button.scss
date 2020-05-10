@@ -6,13 +6,13 @@
     &.btn.btn-primary{
         @include mixer-button($mixer-primary);
         &, &:hover, &:active , &:focus{
-            color:#C21D17;
+            color:$light-red;
         } 
 
         &.btn--pressed-filed{
             &, &:hover, &:active{
                 color:$primary-dark;
-                background-color: #C21D17;
+                background-color: $light-red;
                 border: 0;
             }
             
@@ -20,5 +20,29 @@
 
         width: 40px;
         margin-left: 10px;
+
+        &:disabled:hover{
+            opacity: 1;
+            &:after{
+                display: block;
+                content: attr(data-tooltip);
+                white-space: normal;
+                text-align: center;
+                width: 250px;
+                padding: 10px;
+                background: white;
+                color: $primary;
+                opacity: 1;
+                position: absolute;
+                top:3px;
+                left: 85px;
+                border: 2px solid $primary-dark;
+                border-radius: 2px;
+            }
+        }
+        &:disabled:hover:active::after{
+            color: $light-red 
+        }
+
     }
 }

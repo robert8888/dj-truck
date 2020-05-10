@@ -1,7 +1,10 @@
 import store from "./../../../../../store";
-import { equalPowerFader } from "./../../../../../utils/sound/converter"
 import { nodeChain as audioNodeChain } from "./../../../../../utils/sound/audioNodes";
 import Mastering from "./mastering";
+import Recorder from "./recorder/recorder";
+import Equaliztion from "./equalization";
+import Fader from "./fader";
+import PeakMeters from "./peakMeters";
 
 export default class Mixer {
     constructor(channels) {
@@ -10,12 +13,20 @@ export default class Mixer {
         this.channels = channels;
         this.mastering = new Mastering(this);
 
+        
+        Object.assign(this, Equaliztion);
+        Object.assign(this, Fader);
+        Object.assign(this, PeakMeters)
+
         this.initChannelContainer('audioNodes');
         this.initChannelContainer('sampleBuffers');
         this.createMainChannel();
+
+        this.recorder = new Recorder(this);
     }
 
 
+    //connecting extrnal (effector)
     connect(external) {
         this.external = external;
     }
@@ -40,12 +51,14 @@ export default class Mixer {
         let ac = this.mainAudioContext;
         let main = this.audioNodes.channels['main'] = {};
 
-
         main.preGainNode = ac.createGain();
         main.preAnalyserNode = ac.createAnalyser();
         main.compressorNode = ac.createDynamicsCompressor();
         main.postAnalyserNode = ac.createAnalyser();
         main.postGainNode = ac.createGain();
+
+        main.recorderStremDestination = ac.createMediaStreamDestination();
+        main.postGainNode.connect(main.recorderStremDestination)
 
         this.mastering.configCompressor();
 
@@ -163,80 +176,6 @@ export default class Mixer {
 
 
 
-    setGainValue(channelName, knobValue, nodeName) {
-        let gain = 1 + knobValue / 100;
-        let audioCtx = this.channels.getChannel(channelName).backend.ac;
-
-        let channel = this.audioNodes.channels[channelName];
-        channel[nodeName].gain.setTargetAtTime(parseFloat(gain), audioCtx.currentTime, 0.01);
-    }
-
-    setFilterValue(channelName, knobValue, nodeName) {
-        let audioCtx = this.channels.getChannel(channelName).backend.ac;
-
-        let channel = this.audioNodes.channels[channelName];
-        channel[nodeName].gain.setValueAtTime(knobValue, audioCtx.currentTime);
-    }
-
-    setGain(channelName, knobValue) {
-        this.setGainValue(channelName, knobValue, 'mainGainNode');
-    }
-
-    setEqHigh(channelName, knobValue) {
-        this.setFilterValue(channelName, knobValue, 'eqHiFilterNode');
-    }
-
-    setEqMid(channelName, knobValue) {
-        this.setFilterValue(channelName, knobValue, 'eqMidFilterNode');
-    }
-
-    setEqLow(channelName, knobValue) {
-        this.setFilterValue(channelName, knobValue, 'eqLowFilterNode');
-    }
-
-    setFilterFreq(channelName, knobValue) {
-        const channel = this.audioNodes.channels[channelName];
-        if (knobValue < 0) {
-            //low pass
-            channel.lowPassFilterNode.frequency
-                .setValueAtTime(8000 + knobValue, this.mainAudioContext.currentTime);
-
-            channel.highPassFilterNode.frequency
-                .setValueAtTime(0, this.mainAudioContext.currentTime);
-            setFilterRes.call(this, channel, channel._fitlerResonasValue);
-        } else if (knobValue > 0) {
-            // high pass filter
-            channel.lowPassFilterNode.frequency
-                .setValueAtTime(24000, this.mainAudioContext.currentTime);
-
-            channel.highPassFilterNode.frequency
-                .setValueAtTime(knobValue, this.mainAudioContext.currentTime);
-            setFilterRes.call(this, channel, channel._fitlerResonasValue);
-        } else {
-            //0 turn of all
-            channel.lowPassFilterNode.frequency
-                .setValueAtTime(24000, this.mainAudioContext.currentTime);
-
-            channel.highPassFilterNode.frequency
-                .setValueAtTime(0, this.mainAudioContext.currentTime);
-                
-            setFilterRes.call(this, channel, 0);
-        }
-
-        function setFilterRes(channel, value = 0) {
-            channel.lowPassFilterNode.Q
-                .setValueAtTime(value, this.mainAudioContext.currentTime);
-
-            channel.highPassFilterNode.Q
-                .setValueAtTime(value, this.mainAudioContext.currentTime);
-        }
-    }
-
-    setFiterResonas(channelName, knobValue) {
-        const channel = this.audioNodes.channels[channelName];
-        channel._fitlerResonasValue = knobValue;
-    }
-
 
     setSend(channelName, sendNumber, value) {
         const sendAndReturns = this.audioNodes.channels[channelName].sendAndReturns;
@@ -272,91 +211,9 @@ export default class Mixer {
     }
 
 
-    setFader(value) {//in procent from -50%  to + 50% (not 0.01) but 1
-        let faderVolumeNodeA = this.audioNodes.channels["A"].faderVolumeNode;
-        let faderVolumeNodeB = this.audioNodes.channels["B"].faderVolumeNode;
-        let audioCtxA = this.channels.getChannel("A").backend.ac;
-        let audioCtxB = this.channels.getChannel("B").backend.ac;
 
-        if (!faderVolumeNodeA || !faderVolumeNodeB || !audioCtxA || !audioCtxB) {
-            throw new Error(`Fader value not set. Mising auiodContext or AudioNode ref
-                            .Checkout funtion setFader in mixer object`);
-        }
 
-        const { a: volA, b: volB } = equalPowerFader(value)
 
-        faderVolumeNodeA.gain.setTargetAtTime(volA, audioCtxA.currentTime, 0.01);
-        faderVolumeNodeB.gain.setTargetAtTime(volB, audioCtxB.currentTime, 0.01);
-    }
-
-    ///-----------------------------
-
-    setUpSampleBuffers(channelName) {
-        let fftSize = this.audioNodes.channels[channelName].analyserNode.fftSize;
-        this.sampleBuffers.channels[channelName] = new Float32Array(fftSize);
-    }
-
-    getChannelPeakMeter(channelName) {
-        let analyser = this.audioNodes?.channels[channelName]?.analyserNode
-        if (!analyser) {
-            return [];
-        }
-        let sampleBuffer = this.sampleBuffers.channels[channelName];
-        if (!sampleBuffer) {
-            return [];
-        }
-        return this.getPeakData(analyser, sampleBuffer)
-    }
-
-    getMasterPeakMetter(part){
-        const main = this.audioNodes.channels['main'];
-        let buffers = this.sampleBuffers.channels['main'];
-        if(!buffers){
-            buffers = this.sampleBuffers.channels["main"] = {};
-        }
-        if(part === "pre"){
-            if(!buffers.pre){
-                const fftSize = main.preAnalyserNode.fftSize;
-                buffers.pre = new Float32Array(fftSize);
-            }
-            return this.getPeakData(main.preAnalyserNode, buffers.pre);
-        } else if(part === "post"){
-            if(!buffers.post){
-                const fftSize = main.preAnalyserNode.fftSize;
-                buffers.post = new Float32Array(fftSize);
-            }
-            return this.getPeakData(main.postAnalyserNode, buffers.post);
-        }
-    }
-
-    
-    getPeakData(analyser, sampleBuffer) {
-        analyser.getFloatTimeDomainData(sampleBuffer);
-
-        /*
-        //average 
-        let sumOfSquares = 0;
-        for (let i = 0; i < sampleBuffer.length; i++) {
-            sumOfSquares += sampleBuffer[i] ** 2;
-        }
-
-        const avgPowerDecibels = 10 * Math.log10(sumOfSquares / sampleBuffer.length);
-*/
-        //peak 
-
-        let peakPower = 0;
-        for (let i = 0; i < sampleBuffer.length; i++) {
-            const power = sampleBuffer[i] ** 2;
-            // if statement is a litlebit faster that Math.max
-            peakPower = (power > peakPower) ? power : peakPower;
-        }
-        const peakPowerDecibels = 10 * Math.log10(peakPower);
-
-        return {
-            // avgdB: avgPowerDecibels,
-            peakdB: peakPowerDecibels,
-        }
-    }
 
 }
 

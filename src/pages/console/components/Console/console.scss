@@ -1,7 +1,11 @@
 @import "./../../../../css/general.scss";
 @import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
 
 .truck-console {
+  @include panel-border(0.2);
+
   display: grid;
   grid-template-rows: auto auto auto;
   grid-template-columns: calc(50% - 150px) 300px calc(50% - 150px);
@@ -87,29 +91,3 @@
 
 }
 
-
-/*.truck-console {
-    display: flex;
-    align-items: flex-start;
-    .console-group.group-deck{
-      width:100%;
-    }
-    .deck {
-      width: 100%
-    }
-  }
-
- /* @media (max-width: $vertical-break-point) {
-    
-    .truck-console {
-      flex-wrap: wrap;
-      .deck {
-        width: 100%;
-      }
-
-      .mixer {
-        order: 2;
-        width: 100%;
-      }
-    }
-  }*/

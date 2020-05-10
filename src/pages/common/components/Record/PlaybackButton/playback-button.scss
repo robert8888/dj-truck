@@ -1,0 +1,46 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+
+.record .playback-button-container{
+    
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .playback-button{
+        &.btn-primary {
+            @include button($primary);
+            border-radius: 50%;
+            border: .2em solid white;
+    
+            width: 90px;
+            height: 90px;
+            font-size: 1.5em;
+            &:hover, 
+            &:active, 
+            &:focus, 
+            &:hover:active, 
+            &:focus, 
+            &:focus:active, 
+            &:not(:disabled):active:focus,
+            &.playback-button--active{
+                background: $secondary;
+                border-color: white;
+                color:white;
+                box-shadow: none;
+            }
+        }
+    }
+    &:after{
+        content: "";
+        width: 28px;
+        border-top: 3px solid white;
+
+        position: absolute;
+        display: block;
+        right: -6px;
+        top: 9px;
+        transform: rotate(-45deg);
+    }
+}

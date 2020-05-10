@@ -5,8 +5,11 @@
 
 
 
+
 .main-container{
     background: $primary-dark;
-    min-width: 592px;
+    min-width: 550px;
+    min-height: 100vh;
+    
+    @include background-primary-gradient()
 }
-

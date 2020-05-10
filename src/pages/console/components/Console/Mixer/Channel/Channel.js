@@ -17,7 +17,8 @@ import {
 } from "./../../../../../../actions";
 
 import "./mixer-channel.scss";
-import { throttle } from "./../../../../../../utils/functions/lodash";
+//import { throttle } from "./../../../../../../utils/functions/lodash";
+import throttle from 'lodash/throttle';
 import Console from "./../../../../core/console/console";
 
 class Channel extends React.Component{

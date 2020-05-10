@@ -2,7 +2,7 @@
 import store from "./../../../../../store";
 import { setAvailableEffects } from "./../../../../../actions";
 import { equalPower } from "./../../../../../utils/sound/converter"
-//import { throttel } from "./../../../../../utils/functions/lodash";
+
 import Reverb from "./effects/reverb/reverb";
 import Delay from "./effects/delay/delay";
 import Flanger from "./effects/flanger/flanger";

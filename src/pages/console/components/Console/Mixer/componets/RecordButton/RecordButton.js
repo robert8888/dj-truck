@@ -20,8 +20,11 @@ const RecordButton = props =>{
     }
 
     return (
-        <BinnaryButton className="record-btn"
-            onChange={handleChangeState}> 
+        <BinnaryButton 
+            className="record-btn"
+            onChange={handleChangeState}
+            disabled={props.disabled}
+            data-tooltip="Sorry you have to be logged to have ability to record your sets"> 
                 <FontAwesomeIcon 
                     icon={icon} 
                     className="icon icon-record"/>

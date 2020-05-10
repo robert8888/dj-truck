@@ -12,8 +12,11 @@ import searchReducer from "./console/searchReducer";
 import playList from "./console/playlist/playlistReducer";
 import configuration from "./console/configurationReducer";
 import mastering from "./console/masteringReducer";
+import recorder from "./console/recorder/recorderReducer";
 
 import user from "./user/userReducer";
+
+import records from "./records/recordsReducer";
 
 export default combineReducers({
     searchReducer,
@@ -23,9 +26,11 @@ export default combineReducers({
     effector,
     configuration,
     mastering,
+    recorder,
+    //------
+    records,
     //--------------
     user,
-
     //-----------------
     loadingBar: loadingBarReducer,
     header,

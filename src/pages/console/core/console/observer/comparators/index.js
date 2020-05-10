@@ -24,9 +24,12 @@ export { default as bpmAndOffset } from "./bpmAndOffset";
 export { default as loop } from "./loop";
 export { default as loopLength } from "./loopLength";
 
-// effecto
+// effector
 export { default as dryWet } from "./dryWet";
 export { default as currentEffect } from "./currentEffect";
 export { default as effectParameter} from "./effectParameter";
 
 export {default as masteringParameters} from "./mastering";
+
+// recorder 
+export {default as recorder} from "./recorder"

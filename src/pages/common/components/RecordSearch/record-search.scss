@@ -1,0 +1,40 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+.record-search{
+    padding: 50px 0;
+    .record-search-container{
+        width: 100%;
+        text-align: center;
+        h4{
+            margin: 20px 0;
+        }
+        input.record-search-control{
+            @include input();
+            // &, :active, :hover{
+            //     background: transparent;
+            // }
+
+            
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        .record-search-options{
+            margin: 10px 0;
+            h5{
+                font-size: 1.0em;
+                display: inline-block;
+                vertical-align: top;
+                margin-bottom: 0;
+                line-height: 1.5rem;
+                margin-right: 15px;
+                font-weight: normal;
+            }
+            .search-option{
+                @include checkBox();
+            }
+
+        }
+    }
+}

@@ -32,13 +32,14 @@ function* handle(action) {
             throw new Error("Internal error - playlist id not found")
         }
 
+        
         const result = yield callQuery(queries.createTrackQl, token, {
             playlist: playlistId,
             title: action.track.title,
             source: action.track.source,
             sourceId: action.track.sourceId,
             quality: action.track.quality,
-            bpm: action.track.bpm,
+            bpm: (action.bpm === 'calculating') ? 0 : action.track.bpm,
             offset: action.track.offset,
             duration: (typeof action.track.duration === "string") ?
                 formater.ytToSeconds(action.track.duration) :
@@ -46,6 +47,8 @@ function* handle(action) {
             thumbnails: action.track.thumbnails,
             position: playlistLength,
         });
+
+        
 
         console.log(result)
         if (result.errors){

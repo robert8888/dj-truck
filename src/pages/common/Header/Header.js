@@ -33,7 +33,7 @@ class Header extends React.Component {
     window.removeEventListener('scroll', this.scrollWatching.bind(this))
   }
 
-  scrollWatching(event) {
+  scrollWatching(_) {
     const setTranslate = setTranslateFun.bind(this);
     const changeStickiClass = changeStickiClassFun.bind(this)
 
@@ -43,20 +43,28 @@ class Header extends React.Component {
     if (scrollDirection !== this.scrollState.prevScrollDirection) {
       this.scrollState.snapPosition = window.scrollY;
       this.barState.shiftTranslateY = this.barState.translateY;
-      if(scrollDirection === "up"){
+      // 
+      if ((scrollDirection === "up") && (window.scrollY > this.barState.barElementHeight)) {
         changeStickiClass("add");
-        this.barState.shiftTranslateY = - 53;
+        // this has to be set afater refreshing so is added simply flag that is used only in this place
+        if(!this.firstFlag){
+          this.barState.shiftTranslateY = -this.barState.barElementHeight;
+          this.firstFlag = true;
+        }
       }
     }
 
+    this.scrollState.prevScrollPosition = window.scrollY;
+    this.scrollState.prevScrollDirection = scrollDirection;
+
     if (window.scrollY === 0) {
-       changeStickiClass("remove");
-       setTranslate(0);
-    } else {
+      console.log("set on int")
+      setTranslate(0);
+    } else if (this.barState.stickiState) {
       if (scrollDirection === "up") {
         let y = this.scrollState.snapPosition - window.scrollY + this.barState.shiftTranslateY;
         setTranslate(y);
-      } else if (scrollDirection === "down"){
+      } else if (scrollDirection === "down") {
         let y = window.scrollY - this.scrollState.snapPosition - this.barState.shiftTranslateY;
         if (y < 1.5 * this.barState.barElementHeight) {
           setTranslate(-y);
@@ -66,13 +74,10 @@ class Header extends React.Component {
       }
     }
 
-    this.scrollState.prevScrollPosition = window.scrollY;
-    this.scrollState.prevScrollDirection = scrollDirection;
+
 
     function setTranslateFun(tY) {
-      if(!this.barState.stickiState){
-        return;
-      }
+      changeStickiClassFun.call(this, "add")
       tY = toRange(tY, -this.barState.barElementHeight, 0);
       this.barState.barElement.current.style.transform = `translateY(${tY}px)`;
       this.barState.translateY = tY;

@@ -18,7 +18,6 @@ function userReducer(state = initState, action){
                 return {
                     ...state, 
                     ...action.user,
-                    id: action.user.sub,
                     token: action.token
                 }
             }

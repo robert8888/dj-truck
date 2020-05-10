@@ -28,8 +28,7 @@ export default class Channels {
   }
 
   createChannel( channelName, ...args ){
-    this.channels[channelName] = 
-      this.channelBuilder.create( channelName, ...args); 
+      this.channels[channelName] = this.channelBuilder.create( channelName, ...args);
   }
 
   createBars( channelName, values ){
@@ -54,6 +53,8 @@ export default class Channels {
   //--------------------------------------------
 
   loadTrack(channelName, track) {
+    if(!track || !track.source || !track.sourceId) return;
+
     let api = getApi(track.source);
     let url = (api && api.getUrl(track.sourceId)) || null;
 

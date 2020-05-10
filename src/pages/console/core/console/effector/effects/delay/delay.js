@@ -1,5 +1,4 @@
 import Effect from "./../effect";
-import {toRange} from "./../../../../../../../utils/math/argRanges";
 
 export default class Delay extends Effect {
     static defaultParams(){
@@ -14,8 +13,8 @@ export default class Delay extends Effect {
                 },
                 time: {
                     min: 0,
-                    max: 180,
-                    defaultValue: 5,
+                    max: 1,
+                    defaultValue: .1,
                     type: "float",
                     description: "time"
                 },
@@ -37,7 +36,7 @@ export default class Delay extends Effect {
         this.inputNode = this._context.createGain();
         this.outputNode = this._context.createGain();
         this.feedbackGainNode = this._context.createGain();
-        this.delayNode = this._context.createDelay();
+        this.delayNode = this._context.createDelay(this._default.time.max);
 
         // line in to wet mix
         this.inputNode.connect(this.delayNode);

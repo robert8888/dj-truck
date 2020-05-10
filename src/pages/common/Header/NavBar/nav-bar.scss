@@ -1,6 +1,42 @@
 @import "./../../../../css/colors.scss";
 @import "./../../../../css/mixins.scss";
 
+@mixin sub-menu(){
+    position: absolute;
+    display: none;
+    top:51px;
+    right: 0px;
+    z-index: 1000;
+    background: $secondary-dark;
+    border-top: 1px solid $primary;
+
+    list-style: none;
+    padding: 0;
+
+    box-shadow: 1px 3px 4px 2px darken($secondary-dark, 5%);
+    
+    .sub-menu-item{
+        &:not(:last-of-type){
+            border-bottom: 1px solid darken($secondary-dark, 5%);
+        }
+
+        padding: 10px 15px;
+        display: flex;
+        border-left: 3px solid transparent;
+        &>* {
+            line-height: 1rem;
+        }
+        &:hover > * {
+            color: $primary;
+        }
+        &:hover{
+            background: $primary-dark;
+            border-left: 3px solid $primary;
+        }
+    }
+}
+
+
 .nav-bar{
     width: 100%;
     //border-bottom: 1px solid $primary;
@@ -8,9 +44,7 @@
     display: flex;
     justify-content: space-between;
 
-
-
-    .main-nav{
+    .main-nav, .sub-menu-main{
         padding: 0;
         margin: 0;
         list-style: none;
@@ -38,7 +72,7 @@
             position: relative;
             border-right: 1px solid $primary-dark;
             cursor: pointer;
-            &:hover {
+            &:hover:not(.item-user):not(.item-logo) {
                 border-bottom: 1px solid $primary;
                 &>*{
                     color: $primary;
@@ -46,40 +80,10 @@
             }
         }
 
-        .sub-menu{
-            position: absolute;
-            display: none;
-            top:51px;
-            right: 0px;
-            z-index: 1000;
-            background: $secondary-dark;
-            border-top: 1px solid $primary;
-
-            list-style: none;
-            padding: 0;
-
-            box-shadow: 1px 3px 4px 2px darken($secondary-dark, 5%);
-            
-            .sub-menu-item{
-                &:not(:last-of-type){
-                    border-bottom: 1px solid darken($secondary-dark, 5%);
-                }
-
-                padding: 10px 15px;
-                display: flex;
-                border-left: 3px solid transparent;
-                &>* {
-                    line-height: 1rem;
-                }
-                &:hover > * {
-                    color: $primary;
-                }
-                &:hover{
-                    background: $primary-dark;
-                    border-left: 3px solid $primary;
-                }
-            }
+        .sub-menu-user{
+            @include sub-menu();
         }
+
 
 
         &.nav-left{
@@ -87,10 +91,10 @@
                 &.item-logo{
                     img{
                         height: 50px;
-                        padding: 5px 0;
+                        padding: 5px;
                     }
-                    &:hover{
-                        border-bottom: none;
+                    & > a:first-of-type{
+                        display: none;
                     }
                 }
             }
@@ -123,7 +127,7 @@
                         .icon-container .icon{
                             color: $primary;
                         }
-                        .sub-menu{
+                        .sub-menu-user{
                             display: block;
                         }
                     }
@@ -143,7 +147,34 @@
                 }
             }
         }
-    }
 
+
+        @media screen and (max-width: 768px){
+            .sub-menu-main{
+                @include sub-menu();
+                right: auto;
+                left: 15px;
+
+               
+            }
+
+            &.nav-left{
+                .nav-left-item{
+                    &.item-logo{
+                        &>a:first-of-type {
+                            display: block;
+                        }
+                        &>a:last-of-type {
+                            display: none;
+                        }
+    
+                    }
+                }
+                &:hover .sub-menu-main{
+                    display: block;
+                }
+            }
+        }
+    }
 
 }

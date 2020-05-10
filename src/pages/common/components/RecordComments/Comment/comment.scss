@@ -1,0 +1,81 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+
+.record-comments{
+    form{
+        @include clearfix();
+        header{
+            display: flex;
+            justify-content: space-between;
+            aside{
+                position: relative;
+                .icon-bar{
+                    display: none;
+                    position: absolute;
+                    right: 0;
+                    top:0;
+                } 
+            }
+        }
+
+        &:hover header aside{
+            .comment-publish-date {
+                opacity: 0;
+            }
+            .icon-bar{
+                display: block;
+            } 
+        }
+
+        // .form-group:not(:first-of-type){
+        //     margin-top: 15px;
+        //     margin-bottom: 10px;
+        // }
+
+        label{
+            padding:  0 15px;
+            margin-bottom: 0.2em;
+        }
+        textarea{
+            @include textarea();
+            @include scrolls();
+            &:focus{
+                background: white;
+            }
+            &:disabled{
+                resize: none;
+                border-bottom: none;
+                border-right: none;
+                border-left: none;
+            }
+            margin-bottom: 10px;
+            &:first-of-type{
+                height: 120px;
+            }
+        }
+        &>div>button{
+            @include std-button();
+            margin-bottom: 10px;
+            float: right;
+        }
+        .emoticon{
+            float:right;
+            .emoticon-btn{
+                @include std-button();
+            }
+            .emoticons-container{
+                background: $primary-dark;
+                border: $primary solid 1px;
+                border-radius: 4px;
+            }
+            .emoticons-nav-btn{
+                @include button-transparent();
+                color: $primary
+            } 
+            .emoticons-slider section{
+                background: $primary-dark;
+            }
+        }
+    }
+}

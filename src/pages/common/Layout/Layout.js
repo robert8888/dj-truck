@@ -1,9 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Header from "./../Header/Header";
 import Footer from "./../Footer/Footer";
-import { Col, Row, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+
+import LayoutContext from "./LayoutContext";
 
 const Layout = props => {
+    const context = useContext(LayoutContext);
+    const [footer, setFooter] = useState(true);
+    useEffect(()=>{
+        context.setFooter = setFooter;
+    }, [context])
 
     return (
         <Fragment>
@@ -11,7 +18,7 @@ const Layout = props => {
             <Container className="app layout container-xl" >
                 {props.children}
             </Container>
-            <Footer />
+            { footer && <Footer />}
         </Fragment>
     )
 }

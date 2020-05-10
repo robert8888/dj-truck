@@ -3,7 +3,7 @@
  */
 import Effect from "./../effect";
 import worker from "./buildImpulseWebWorker";
-import WebWorker from "./workerSetup";
+import WebWorker from "./../../../../../../../utils/worker/workerSetup";
 
 export default class Reverb extends Effect {
     static defaultParams() {

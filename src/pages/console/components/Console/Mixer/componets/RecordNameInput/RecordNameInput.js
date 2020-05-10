@@ -2,15 +2,16 @@ import React from "react"
 import { Form } from "react-bootstrap"
 
 
-const RecordNameInput = props =>{
+const RecordNameInput = props => {
 
-    return(
-        <Form.Control 
-            className="record-name-input" 
-            placeholder="Name of your set" 
-            type="text" 
+    return (
+        <Form.Control
+            className="record-name-input"
+            placeholder="Record 1"
+            type="text"
             disabled={props.disabled}
-            onChange={v=>console.log(v)}/>
+            value={props.value}
+            onChange={e => props.onChange(e.target.value)} />
     )
 }
 

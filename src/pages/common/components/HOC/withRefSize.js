@@ -16,15 +16,22 @@ const withRefSize = (WrappedComponent) => {
         }
 
         componentDidMount() {
-            let size = {};
-            for(let [name, element] of Object.entries(this.references)){
-                const {width, height} = element.getBoundingClientRect();
-                size[name] = {
-                    width,
-                    height
+            const updateSize = () => {
+                let size = {};
+                for(let [name, element] of Object.entries(this.references)){
+                    const {width, height} = element.getBoundingClientRect();
+                    size[name] = {
+                        width,
+                        height
+                    }
                 }
+                this.setState(produce(this.state, draft => draft.size = size))
             }
-            this.setState(produce(this.state, draft => draft.size = size))
+            if(window.requestIdleCallback){
+                window.requestIdleCallback(updateSize)
+            } else {
+                updateSize();
+            }
         }
 
         importRef = ( name, ref) => {

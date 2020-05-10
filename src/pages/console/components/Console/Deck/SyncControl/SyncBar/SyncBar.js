@@ -5,7 +5,6 @@ import "./sync-bar.scss";
 class SyncBar extends React.Component {
   constructor() {
     super(...arguments);
-    this.channelInterface = Console.Get().getChannelInterface(this.props.name);
     this.thumbElement = React.createRef();
 
     this.lastCall = false;
@@ -14,7 +13,6 @@ class SyncBar extends React.Component {
 
 
   update() {
-    console.log("update")
     if(this.break){
       return;
     } 
@@ -59,7 +57,13 @@ class SyncBar extends React.Component {
       this.deActivate();
     }
   }
+  componentWillUnmount(){
+    this.deActivate();
+  }
 
+  componentDidMount(){
+    this.channelInterface = Console.Get().getChannelInterface(this.props.name);
+  }
 
   render() {
     return (

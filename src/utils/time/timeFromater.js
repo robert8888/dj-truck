@@ -31,7 +31,7 @@ const secondsToObj = (seconds) => {
     seconds -= h * 3600;
     let m = Math.floor(seconds / 60);
     seconds -= m * 60;
-    let s = seconds;
+    let s = ~~seconds;
     return { h, m , s }; 
 }
 
@@ -52,4 +52,5 @@ export const formater = {
         const objTime = secondsToObj(seconds);
         return objToStr(objTime);
     } 
-}
+};
+

@@ -26,7 +26,11 @@ const STATUS = {
     MASTER_THRESHOLD_CHANGE: "Mastering threshold value changed",
     MASTER_RATIO_CHANGE: "Mastering ratio value changed",
     MASTER_ATTACK_CHANGE: "Mastering attack value changed",
-    MASTER_RELEASE_CHANGE: "Mastering release value changed"
+    MASTER_RELEASE_CHANGE: "Mastering release value changed",
+
+    RECORDER : "General status for chagnes in recorder reducer",
+    RECORD_START: "Record started with id and recname",
+    RECORD_END: "Record was stoped with id and name",
 }
 
 export default STATUS;

@@ -1,11 +1,13 @@
 import youTubeApi from "./yt/ytApi";
 import userAssetsApi from "./userAssets/userApi";
+import recordStoreApi from "./recordsStore/recStoreApi";
 
 export const API_TYPES = {
     MIUSIC_SOURCE: "Source of miusic",
     DATA_SOURCE: {
         GRAPHQL: "GraphQl api",
-        REST: "Rest api"
+        REST: "Rest api",
+        WEB_SOCKET: "Api with web socket connection"
     }
 }
 
@@ -24,6 +26,14 @@ const apisMap = {
     "UserAssets": {
         type: API_TYPES.DATA_SOURCE.GRAPHQL,
         api: userAssetsApi,
+    },
+
+    "RecordsStore": {
+        type: [
+            API_TYPES.DATA_SOURCE.WEB_SOCKET, 
+            API_TYPES.DATA_SOURCE.REST
+        ],
+        api: recordStoreApi,
     }
 }
 

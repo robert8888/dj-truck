@@ -10,9 +10,11 @@ const Fader = props => {
     const [, runUpdate] = useState(1);
 
     useEffect(()=>{
-        window.addEventListener('resize', ()=>{
-            runUpdate(Math.random());
-        })
+        const forceUpdate = () => runUpdate(Math.random());
+        window.addEventListener('resize', forceUpdate);
+        return () => {
+            window.removeEventListener('resize', forceUpdate)
+        }
     }, [])
 
     const sliderChangeHandle = (value, isTemp) =>{
