@@ -1,4 +1,4 @@
-import React, { useMemo, Fragment, useCallback } from "react";
+import React, { useMemo, Fragment, useCallback, useEffect } from "react";
 import PlaybackButton from "./PlaybackButton/PlaybackButton";
 import LikeButton from "./LikeButton/LikeButton";
 import GenereList from "./GenereList/GenereList";
@@ -19,7 +19,7 @@ const Record = ({ record, controls: { seek, playback }, player, simple }) => {
         return (
             <Fragment>
                 <nav>
-                    <Link to={`/records/${record.user.nickname}`} >
+                    <Link to={`/records/user/${record.user.nickname}`} >
                         <h6 className="record-owner">{record.user.nickname} </h6>
                     </Link>
                     <Link to={`/record/${record.user.nickname}/${escapeSpace(record.title)}/${record.id}`} >
@@ -32,6 +32,7 @@ const Record = ({ record, controls: { seek, playback }, player, simple }) => {
             </Fragment>
         )
     }, [record])
+
 
     return (
         <div className="record" key={UUID.genV1()}>

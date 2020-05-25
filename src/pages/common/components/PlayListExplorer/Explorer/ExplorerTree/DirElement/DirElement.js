@@ -1,16 +1,12 @@
-import React, { useRef, useCallback } from "react";
-import { connect } from "react-redux";
-import ItemTypes from "./../../../../../appItemTypes";
-import { useDrag, useDrop } from "react-dnd";
-import UUID from "uuidjs";
-import ClassName from "classnames"
-import {
-    faFolder,
-    faAngleRight,
-    faAngleDown
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleRight, faFolder } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {  moveToRequest } from "./../../../../../../../actions";
+import ClassName from "classnames";
+import React, { useCallback, useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { connect } from "react-redux";
+import UUID from "uuidjs";
+import { moveToRequest } from "./../../../../../../../actions";
+import ItemTypes from "./../../../../../DndItemTypes";
 
 const DirElement = props => {
     const { name, path, open, empty, renameMode, renameInput, moveTo:moveToHandler } = props;

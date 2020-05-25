@@ -9,7 +9,7 @@ import UUID from 'uuidjs';
 
 const TrackTable = ({ cols, items, className, onClickRow = idle => null }) => {
 
-    console.log("items", items)
+
     return (
         <Table className={"track-table " + className}>
             <THead cols={cols} />

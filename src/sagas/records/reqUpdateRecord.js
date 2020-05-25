@@ -1,10 +1,12 @@
 
-import { ACTIONS, updateRec, updateRecFail } from "../../actions";
-import { takeEvery, select, put, } from "redux-saga/effects";
+import { put, select, takeEvery } from "redux-saga/effects";
+import { ACTIONS, pushLog, updateRec, updateRecFail } from "../../actions";
 import { getApi } from "./../../apis/apiProvider";
+import { Log } from "./../../utils/logger/logger";
+import errorParser from "./../../utils/serverErrorParser/errorParser";
 
 export default function* requestRecordUpdate() {
-    console.log("handle request")
+
     yield takeEvery(ACTIONS.RECS_REQ_UPDATE, handel)
 }
 
@@ -17,21 +19,32 @@ function* handel(action) {
         try {
             const { callQuery, queries } = getApi("UserAssets");
             const {recordId: id, recordChanges:data} = action;
-            const vars = data;
-            vars.id = id;
+            const variables = data;
+            variables.id = id;
 
-            console.log("var", vars)
             const query = queries.updateRecordMetaQl;
-            const result = yield callQuery(query, token, vars);
-            console.log(result)
-            const success = result?.data;
-            if (!result.errors && success) {
-                yield put(updateRec(id, data))
-            } else {
-                throw new Error("Can't load reacords from database")
+            const response = yield callQuery(query, token, variables);
+
+            const success = response?.data;
+
+            if(response.errors){
+                throw new Error("Server response contains errors" +  errorParser(response.errors));
             }
-        } catch (e) {
-            yield put(updateRecFail(action.recordChanges.title, e.message))
+            if(!success){
+                throw new Error("Can't update record in database")
+            }
+   
+            yield put(updateRec(id, data))
+
+
+            yield put(pushLog(new Log(`records variables: ${JSON.stringify(variables)}`)))
+        } catch (error) {
+            yield put(updateRecFail(action.recordChanges.title, error.message))
+            yield pushLog(Log.Error(
+                ['saga', 'records', 'reques update record'],
+                "Can't update records in database",
+                error
+            ))
         }
 
     }

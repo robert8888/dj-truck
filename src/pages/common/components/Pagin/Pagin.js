@@ -46,8 +46,6 @@ const Pagin = ({ current, all, wide = 2, call }) => {
         return [...pre, curr, ...next]
     }, [current, all, wide, button, separator])
 
-    console.log("all", all)
-
     return (
         <div className="pagin">{buttons && buttons.length > 1 && buttons}</div>
     )

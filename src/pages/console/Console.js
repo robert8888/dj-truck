@@ -13,7 +13,7 @@ const Console = props => {
         <Row>
           <Col>
             <Search />
-            <PlayListExplorer />
+            <PlayListExplorer console/>
           </Col>
         </Row>
       </DndProvider>

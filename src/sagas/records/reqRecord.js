@@ -1,9 +1,11 @@
-import { ACTIONS, setRecData } from "../../actions";
-import { takeEvery, select, put, } from "redux-saga/effects";
+import { put, select, takeEvery } from "redux-saga/effects";
+import { ACTIONS, pushLog, setRecData } from "../../actions";
 import { getApi } from "./../../apis/apiProvider";
+import { Log } from "./../../utils/logger/logger";
+import errorParser from "./../../utils/serverErrorParser/errorParser";
 
 export default function* requestUserRecord() {
-    console.log("handle request")
+
     yield takeEvery(ACTIONS.RECS_REQ_DATA, handel)
 }
 
@@ -16,16 +18,24 @@ function* handel(action) {
         const { callQuery, queries } = getApi("UserAssets");
 
         const query = queries.recordQl(action.recId);
-        const result = yield callQuery(query, token);
-        console.log(result)
-        const recordData = result?.data?.record;
+        const response = yield callQuery(query, token);
+        const recordData = response?.data?.record;
         
-        if (!result.errors && recordData) {
-            yield put(setRecData(recordData))
-        } else {
-            throw new Error("Can't load record data from database")
+        if (response.errors) {
+            throw new Error("Server response contains errors " + errorParser(response.errors));
         }
-    } catch (e) {
-        console.log(e.message)
+        if (!recordData){
+            throw new Error("Can't load record data from database, server response don't contain recorcd data")
+        }
+
+        yield put(setRecData(recordData))
+
+        yield put(pushLog(new Log(`Record successfully downloaded from database record id : ${action.recId}`)))
+    } catch (error) {
+        yield pushLog(Log.Error(
+            ['saga', 'record', 'request record'],
+            "Can't load record from database",
+            error
+        ))
     }
 }

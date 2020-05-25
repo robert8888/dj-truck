@@ -1,11 +1,11 @@
 import React, { useContext, useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { Spin } from "react-loading-io";
 import { connect } from "react-redux";
 import { loadTrack } from "../../../../../../actions";
-import PlaylistContext from "./../PlaylistContext";
-import { useDrag, useDrop } from "react-dnd";
-import ItemTypes from "./../../../../appItemTypes";
-import { Spin } from "react-loading-io";
 import { formater } from "./../../../../../../utils/time/timeFromater";
+import ItemTypes from "./../../../../DndItemTypes";
+import PlaylistContext from "./../PlaylistContext";
 
 const PlaylistItem = props => {
   const ref = useRef(null)

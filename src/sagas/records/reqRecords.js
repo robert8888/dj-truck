@@ -1,9 +1,11 @@
-import { ACTIONS, loadRecords, recReqFails } from "../../actions";
-import { takeEvery, select, put, } from "redux-saga/effects";
+import { put, select, takeEvery } from "redux-saga/effects";
+import { ACTIONS, loadRecords, pushLog, recReqFails } from "../../actions";
 import { getApi } from "./../../apis/apiProvider";
+import { Log } from "./../../utils/logger/logger";
+import errorParser from "./../../utils/serverErrorParser/errorParser";
 
 export default function* requestUserRecords() {
-    console.log("handle request")
+
     yield takeEvery(ACTIONS.RECS_REQ_RECS, handel)
 }
 
@@ -14,22 +16,30 @@ function* handel(action) {
 
     try {
         const { callQuery, queries } = getApi("UserAssets");
-        const vars = {...action.where};
-        vars.pageSize = action.pageSize;
-        vars.page = action.page;
-
-        console.log("var", vars)
+        const variables = { ...action.where };
+        variables.pageSize = action.pageSize;
+        variables.page = action.page;
         const query = queries.recordsQl;
-        const result = yield callQuery(query, token, vars);
-        console.log(result)
-        const records = result?.data?.records?.records;
-        const countAll = result?.data?.records?.countAll;
-        if (!result.errors && records) {
-            yield put(loadRecords(records, countAll))
-        } else {
-            throw new Error("Can't load reacords from database")
+        const response = yield callQuery(query, token, variables);
+        const records = response?.data?.records?.records;
+        const countAll = response?.data?.records?.countAll;
+
+        if (response.errors) {
+            throw new Error("Server response contains errors" + errorParser(response.errors));
         }
-    } catch (e) {
-        yield put(recReqFails(e.message))
+        if (!records) {
+            throw new Error("Can't load reacords from database, response don't contains records object")
+        }
+
+        yield put(loadRecords(records, countAll))
+
+        yield put(pushLog(new Log(`Records successfully downloaded from database parameters: \n ${JSON.stringify(variables)}`)))
+    } catch (error) {
+        yield put(recReqFails(error.message))
+        yield pushLog(Log.Error(
+            ['saga', 'records', 'request records'],
+            "Can't load records from database " + error.message,
+            error
+        ))
     }
 }

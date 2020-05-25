@@ -1,11 +1,11 @@
-import React, { useRef, useCallback } from "react";
-import { connect } from "react-redux"
-import UUID from "uuidjs";
-import ClassName from "classnames";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ItemTypes from "../../../../../appItemTypes";
+import ClassName from "classnames";
+import React, { useCallback, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { connect } from "react-redux";
+import UUID from "uuidjs";
+import ItemTypes from "../../../../../DndItemTypes";
 import { copyTrackToList } from "./../../../../../../../actions";
 
 const FileElement = props => {

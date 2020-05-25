@@ -1,16 +1,16 @@
 import React from "react";
-import {connect} from "react-redux";
-import "./deck.scss";
-import Player from "./Player/Player";
-import TrackInfo from "./TrackInfo/TrackInfo";
-import SyncControl from "./SyncControl/SyncControl";
-import PlayBackControls from "./PlayBackControls/PlayBackControls";
-import PitchSlider from "./PitchSlider/PitchSlider";
-import PitchButtons from "./PitchButtons/PitchButtons";
-import Looper from "./Looper/Looper";
-import { useDrop } from 'react-dnd'
-import ItemTypes from "./../../../../common/appItemTypes"
+import { useDrop } from 'react-dnd';
+import { connect } from "react-redux";
 import { loadTrack } from "./../../../../../actions";
+import ItemTypes from "./../../../../common/DndItemTypes";
+import "./deck.scss";
+import Looper from "./Looper/Looper";
+import PitchButtons from "./PitchButtons/PitchButtons";
+import PitchSlider from "./PitchSlider/PitchSlider";
+import PlayBackControls from "./PlayBackControls/PlayBackControls";
+import Player from "./Player/Player";
+import SyncControl from "./SyncControl/SyncControl";
+import TrackInfo from "./TrackInfo/TrackInfo";
 
 const Deck = props => {
 

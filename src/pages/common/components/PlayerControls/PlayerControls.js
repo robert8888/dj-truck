@@ -16,6 +16,10 @@ const PlayerControls = ({controls, player,  list:recordList}) => {
             return;
         }
         player.subscribeCurrent(setCurrentRecrod);
+
+        return ()=>{
+            player.unSubscribeCurrent(setCurrentRecrod)
+        }
     }, [player, setCurrentRecrod])
 
     useEffect(()=>{

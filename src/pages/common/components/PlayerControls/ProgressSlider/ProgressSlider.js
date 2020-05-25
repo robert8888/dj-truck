@@ -114,19 +114,19 @@ const ProgressSlider = ({ player, seek}) => {
         if(!player){
             return;
         }
-       // console.log('progres slider')
+
         player.subscribeProgress('#', setProgressHandler);
         player.subscribeCurrent(setCurrentRecord);
         player.subscribeBuffred(setBuffred);
         player.addProgressProvider("#", getProgress)
-
+        setCurrentRecord(player.getCurrent());
         return () => {
+            console.log("unmouting slider")
             player.unSubscribeProgress('#', setProgressHandler);
             player.unSubscribeCurrent(setCurrentRecord);
             player.unSubscribeBuffered(setBuffred);
             player.removeProgressProvider("#", getProgress)
         }
-
     }, [player, setProgressHandler, getProgress])
 
     const thumbDraging = useCallback( (areaRect, e) => {

@@ -88,6 +88,21 @@ class PlayList extends React.Component {
         }
     }
 
+    getContextMenuItems(){
+        let items =  {
+            "Calc BPM": this.reCalcBpm.bind(this),
+            "Delete": this.deleteTrack.bind(this)
+        }
+        if(this.props.console){
+            items = {
+                ...items,
+                "Send to A": this.loadTrack.bind(this, "A"),
+                "Send to B": this.loadTrack.bind(this, "B"),
+            }
+        }
+        return items;
+    }
+
     render() {
         return (
             <Fragment>
@@ -115,12 +130,7 @@ class PlayList extends React.Component {
                 </div>
                 <CtxMenu
                     id="playlist_ctx_menu"
-                    items={{
-                        "Send to A": this.loadTrack.bind(this, "A"),
-                        "Send to B": this.loadTrack.bind(this, "B"),
-                        "Calc BPM": this.reCalcBpm.bind(this),
-                        "Delete": this.deleteTrack.bind(this)
-                    }}
+                    items={this.getContextMenuItems()}
                     handlers={{
                         onShow: () => this.menuVisible = true,
                         onHide: () => this.menuVisible = false,

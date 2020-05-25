@@ -3,7 +3,7 @@ $primary-dark : #1b1b1b;
 $secondary-dark : #313131;
 $tertiary-dark : #616161;
 $primary-light : #999999;
-$primary-white : #d4d4d4;
+$primary-white : #fafafa;
 
 $primary: #4dbcd0;
 $secondary: #e6781f;
@@ -36,6 +36,11 @@ $mixer-level-meter-safe: #ee8700;
 // ----
 
 $light-red : #C21D17; 
+
+$error:  #ee000c;
+$warning: #e6781f;
+
+
 
 @mixin background-primary-gradient() {
     background: #0F2027;  /* fallback for old browsers */

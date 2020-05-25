@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { reqRecs } from "./../../actions"
 import RecordsList from "./../common/components/RecordList/RecordList";
 import RecordSearch from "./../common/components/RecordSearch/RecordSearch";
+import UserProfile from "./../common/components/UserProfile/UserProfile";
 import { useRecordPlayer } from "./../common/Hooks/useRecordPlayer";
 import useRecordSearchUrl from "./../common/Hooks/useRecordSearchURL";
 import PlayerControls from "./../common/components/PlayerControls/PlayerControls";
@@ -36,7 +37,7 @@ const UserRecords = React.memo(({
     const [displaySearch, setSearchDisplaing] = useState(false);
     const [getSerachUrl] = useRecordSearchUrl();
     const history = useHistory();
-    const { user, generes } = useParams();
+    const { user: nickname, generes } = useParams();
 
 
     const queryStr = useLocation().search;
@@ -58,11 +59,9 @@ const UserRecords = React.memo(({
 
 
     useEffect(() => {
-        console.log("call")
         if (preloaded && recordsList.length > 0 || loading) { return }
 
         if (isAuthenticated && !userId) { return }
-        console.log("get in")
         let pg = page || 0;
         let pgSize = pageSize || _pageSize;
 
@@ -76,24 +75,28 @@ const UserRecords = React.memo(({
                 where.queryOpt = opt;
             }
             setPageTitle("Search: " + searchQuery)
-            if (_generes) {//from search params
-                where.genereNames = _generes.split(",")
-            }
+
         }
 
         if (generes) {
             where.genereNames = generes.split(",");
-        } else {
-            if (user) {
-                where.nickname = user;
-                setPageTitle(user + " user records")
-                searchConsole = false;
-            } else if (userId && isCurrentUser) {
-                where.userId = userId;
-                setPageTitle("Your records")
-                searchConsole = false;
-            }
         }
+         
+        if(_generes){
+            where.genereNames = _generes.split(",")
+        }
+
+        if (nickname) {
+            where.nickname = nickname;
+            setPageTitle(nickname + " user records")
+            searchConsole = false;
+        } else if (userId && isCurrentUser) {
+            where.userId = userId;
+            setPageTitle("Your records")
+            searchConsole = false;
+        }
+        
+
         setSearchDisplaing(searchConsole);
 
         requestList(pgSize, pg, where);
@@ -109,6 +112,7 @@ const UserRecords = React.memo(({
         setPageTitle,
         searchQuery,
         generes,
+        _generes,
         loading,
     ])
 
@@ -145,10 +149,11 @@ const UserRecords = React.memo(({
         history.push(url);
     }, [history, getSerachUrl])
 
-    console.log("coutn all", countAll)
-    return (
+    
+    const render = useMemo(()=> (
         <div className="user-records">
-            {displaySearch && <RecordSearch title="Dj Trucks Records" onSearch={onSearch} />}
+            {nickname && <UserProfile nickname={nickname} withGeneres/>}
+            {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
             <div className="user-records-top-bar">
                 <h2 className="title">{pageTitle}</h2>
                 <DropdownButton
@@ -177,7 +182,10 @@ const UserRecords = React.memo(({
                 controls={controls}
                 player={player} />
         </div>
-    )
+        )
+    , [  recordsList ])
+
+    return render;
 })
 
 const mapStateToProps = state => ({

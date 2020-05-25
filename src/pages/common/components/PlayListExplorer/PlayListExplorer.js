@@ -5,7 +5,7 @@ import Explorer from "./Explorer/Explorer";
 import PlayList from "./PlayList/PlayList";
 import {rootDirRequest} from "./../../../../actions";
 
-const PlayListExplorer = ({logged, rootDirRequest}) => {
+const PlayListExplorer = ({logged, rootDirRequest, console}) => {
     useEffect(()=>{
         if(logged){
             rootDirRequest();
@@ -15,7 +15,7 @@ const PlayListExplorer = ({logged, rootDirRequest}) => {
     return (
         <div className="play-list-explorer">
             <Explorer/>
-            <PlayList/>
+            <PlayList console={console}/>
         </div>
     )
 }

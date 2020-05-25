@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import "./utils/viewHeight";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/main.scss';

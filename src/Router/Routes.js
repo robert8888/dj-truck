@@ -25,7 +25,7 @@ const Routes = props => {
                 <PrivateRoute path="/my/records" render={ props => <UserRecords {...props} isCurrentUser/>}/>
                 
                 <Route path="/records" exact component={UserRecords} />
-                <Route path="/records/:user" exact component={UserRecords} />
+                <Route path="/records/user/:user" exact component={UserRecords} />
                 <Route path="/records/generes/:generes" exact component={UserRecords}/>
                 <Route path="/records/search/:query" exact 
                     render={ props => (

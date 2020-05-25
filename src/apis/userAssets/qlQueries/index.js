@@ -1,5 +1,11 @@
 //-------------user
 export {default as myIdQl} from "./user/myId";
+export {default as updateUserPictureQl} from "./user/updatePicture";
+export {default as updateUserDescriptionQl} from "./user/updateDescription";
+export {default as updateNicknameQl} from "./user/updateNickname"
+//------------profiles
+export {default as getProfileQl} from "./profile/getProfile";
+
 // ------------playlist ------
 export {default as createDirQl } from "./playlist/createDir";
 export {default as createPlaylistQl} from "./playlist/createPlaylist";

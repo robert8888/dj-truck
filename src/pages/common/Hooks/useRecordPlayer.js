@@ -37,6 +37,7 @@ class Player {
 
     subscribeCurrent(handler) {
         this.currentSubscribers.push(handler)
+        handler(this.current)
     }
 
     unSubscribeCurrent(handler) {
@@ -45,7 +46,7 @@ class Player {
 
     spreadCurrentChange() {
         for (let handler of this.currentSubscribers) {
-            handler(this.current);
+           handler(this.current);
         }
     }
 
@@ -89,10 +90,10 @@ class Player {
     spreadProgressChanges(){
         const {id, progress} = this.current;
         for (let handler of this.progressSubscribers[id]) {
-            handler(progress)
+            handler(progress);
         }
         for (let handler of this.progressSubscribers['#'] || []) {
-            handler(progress)
+            handler(progress);
         }
     }
 
@@ -158,10 +159,9 @@ export function useRecordPlayer() {
                 const end = bufferdTimeRanges.end(bufferdTimeRanges.length - 1);
                 player.setBuffered(end / (player.current.duration / 1000))
             }
-            //console.log(mediaEl.currentTime);
-            //console.log(mediaEl.duration)
-        }, 200)
+        }, 400)
         player.progressUpdaterHandler = handler;
+        
     }, [player])
 
     const stopUpdateProg = useCallback(() => {

@@ -1,66 +1,63 @@
 
-import { all} from "redux-saga/effects"
-import ytSearchAsyncSaga from "./ytSearchSaga";
+import { all } from "redux-saga/effects";
 import calcBpmAsyncSaga from "./calcBpmSaga";
-import setUserSaga from "./setUserSaga";
-
 import stopAllSaga from "./onStopAllSaga";
-
-import getRootDirSaga from "./playlists/rootDirRequestSaga";
-import loadDirRequestSaga from "./playlists/loadDirRequestSaga";
-import createDirSaga from "./playlists/createDirRequestSaga";
-import createPlaylistSaga from "./playlists/createPlaylistRequestSaga";
-import renameSelectedSaga from "./playlists/renameSelectedSaga";
-import deleteSelectedSaga from "./playlists/deleteSelectedSaga";
-import moveElementToSaga from "./playlists/moveElementToRequestSaga";
-import toogleDir from "./playlists/toogleDir";
-import loadPlalistSaga from "./playlists/loadPlaylistRequestSaga";
-
-import pushTrackToList from "./playlists/pushTrackToListRequestSaga";
-import setBpmRequestSaga from "./playlists/setBpmRequestSaga";
-import copyTrackToPlaylistSaga from"./playlists/copyTrackToPlaylistRequestSaga";
-import updateTracksPositionsSaga from "./playlists/updateTrackPositioRequestSaga";
-import deleteTrackSaga from "./playlists/deleteTrackRequestSaga";
-
+import requestAddTrack from "./playlists/reqAddTrackSaga";
+import requestCopyTrackSaga from "./playlists/reqCopySaga";
+import requestCreateDirSaga from "./playlists/reqCreateDirSaga";
+import requestCreatePlaylistSaga from "./playlists/reqCreatePlaylistSaga";
+import requestDeleteSelectedSaga from "./playlists/reqDeleteSelectedSaga";
+import requestDeleteTrackSaga from "./playlists/reqDeleteTrackSaga";
+import requestMoveToSaga from "./playlists/reqMoveToSaga";
+import reqReadDirSaga from "./playlists/reqReadDirSaga";
+import requestReadPlaylistSaga from "./playlists/reqReadPlaylistSaga";
+import requestRenameSelectedSaga from "./playlists/reqRenameSelectedSaga";
+import requestRootDirSaga from "./playlists/reqRootDirSaga";
+import requestUpdateBpmSaga from "./playlists/reqUpdateBpmSaga";
+import requestUpdateTrackPositionSaga from "./playlists/reqUpdateTrackPositionSaga";
+import toogleDirSaga from "./playlists/toogleDirSaga";
+import requestUserProfileSaga from "./profile/reqProfileSaqa";
 import requestCreatedRecordSaga from "./recorder/reqCreateRecord";
-//"final" after finish of recording
-import requestUpdateRecordSaga from "./recorder/reqUpdateRecord"; 
-import tracklistRoot  from './recorder/tracklist/tracklistRootSaga';
-
-import requestRecordsSaga from "./records/reqRecords";
-import requestRecordSaga from "./records/reqRecord";
-import requestRecordUpdateSaga from "./records/reqUpdateRecord";
-import requestRecordDelete from "./records/reqDeleteRecord";
-
+import requestUpdateRecordSaga from "./recorder/reqUpdateRecord";
+import tracklistRoot from './recorder/tracklist/tracklistRootSaga';
 import requestCreateCommentSaga from "./records/comments/reqCreateComment";
-import requestUpdateCommentSaga from "./records/comments/reqUpdateComment";
 import reuqestDeleteCommentSaga from "./records/comments/reqDeleteComment";
-
+import requestUpdateCommentSaga from "./records/comments/reqUpdateComment";
 import requestFavoriteSaga from "./records/favorite/reqFavorite";
+import requestRecordDelete from "./records/reqDeleteRecord";
+import requestRecordSaga from "./records/reqRecord";
+import requestRecordsSaga from "./records/reqRecords";
+import requestRecordUpdateSaga from "./records/reqUpdateRecord";
+import currentUserSaga from "./user/currentUserSaga";
+import requestUpdateUserDescriptionSaga from "./user/reqUpdateDescription";
+import requestUpdateUserNicknameSaga from "./user/reqUpdateNickname";
+import requestUpdateUserPictureSaga from "./user/reqUpdatePicture";
+import ytSearchAsyncSaga from "./ytSearchSaga";
+
 
 function* rootSaga(){
     yield all([
         ytSearchAsyncSaga(),
         calcBpmAsyncSaga(),
-        setUserSaga(),
+
 
         stopAllSaga(),
 
         //playlist - dirs - traks
-        getRootDirSaga(),
-        loadDirRequestSaga(),
-        createDirSaga(),
-        createPlaylistSaga(),
-        renameSelectedSaga(),
-        deleteSelectedSaga(),
-        moveElementToSaga(),
-        toogleDir(),
-        loadPlalistSaga(),
-        pushTrackToList(),
-        setBpmRequestSaga(),
-        copyTrackToPlaylistSaga(),
-        updateTracksPositionsSaga(),
-        deleteTrackSaga(),
+        requestRootDirSaga(),
+        reqReadDirSaga(),
+        requestCreateDirSaga(),
+        requestCreatePlaylistSaga(),
+        requestRenameSelectedSaga(),
+        requestDeleteSelectedSaga(),
+        requestMoveToSaga(),
+        requestReadPlaylistSaga(),
+        requestAddTrack(),
+        requestUpdateBpmSaga(),
+        requestCopyTrackSaga(),
+        requestUpdateTrackPositionSaga(),
+        requestDeleteTrackSaga(),
+        toogleDirSaga(),
 
         //-- recorder
         requestCreatedRecordSaga(),
@@ -71,12 +68,19 @@ function* rootSaga(){
         requestRecordSaga(),
         requestRecordUpdateSaga(),
         requestRecordDelete(),
-
         requestCreateCommentSaga(),
         requestUpdateCommentSaga(),
         reuqestDeleteCommentSaga(),
-
         requestFavoriteSaga(),
+
+        //----profiles
+        requestUserProfileSaga(),
+
+        currentUserSaga(),
+        requestUpdateUserPictureSaga(),
+        requestUpdateUserNicknameSaga(),
+        requestUpdateUserDescriptionSaga(),
+
     ])
 }
 
