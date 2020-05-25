@@ -1,0 +1,50 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+
+.relative{
+    position: relative;
+}
+
+.edit-btn{
+    @include button-transparent();  
+    color: $secondary;
+    &.edit-btn-before{
+        margin: 0 10px 10px 0;
+        vertical-align: top;
+
+    }
+    &.edit-btn-over{
+        position: absolute;
+        left: 5px;
+        top: 5px;
+    }
+}
+
+.edit-text-control{
+
+
+    &[type="text"]{
+        @include input();
+        &, &:hover, &:active{
+            background: transparent;
+        }
+        width: calc(100% - 45px);
+        margin: 0;
+        margin-bottom: 15px;
+    };
+
+    &[type="textarea"]{
+        @include textarea();
+        @include scrolls();
+        resize: vertical;
+        margin-bottom: 20px;
+    }
+    
+}
+
+.edit-btn-save, .edit-btn-cancel{
+    @include std-button();
+    float: right;
+    @include clearfix();
+}
