@@ -47,7 +47,8 @@
     "web-audio-beat-detector": "^8.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -d -l 80 build",
+    "start:dev" : "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
