@@ -1,6 +1,7 @@
 
 import { all } from "redux-saga/effects";
 import calcBpmAsyncSaga from "./calcBpmSaga";
+import SearchAsyncSaga from "./externalSearch/SearchSaga";
 import stopAllSaga from "./onStopAllSaga";
 import requestAddTrack from "./playlists/reqAddTrackSaga";
 import requestCopyTrackSaga from "./playlists/reqCopySaga";
@@ -32,12 +33,11 @@ import currentUserSaga from "./user/currentUserSaga";
 import requestUpdateUserDescriptionSaga from "./user/reqUpdateDescription";
 import requestUpdateUserNicknameSaga from "./user/reqUpdateNickname";
 import requestUpdateUserPictureSaga from "./user/reqUpdatePicture";
-import ytSearchAsyncSaga from "./ytSearchSaga";
 
 
 function* rootSaga(){
     yield all([
-        ytSearchAsyncSaga(),
+        SearchAsyncSaga(),
         calcBpmAsyncSaga(),
 
 

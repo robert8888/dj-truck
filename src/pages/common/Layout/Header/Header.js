@@ -1,11 +1,11 @@
+import classNames from "classnames";
 import React, { Fragment } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import LoadingBar from 'react-redux-loading-bar';
-import NavBar from "./NavBar/NabBar"
-import { Col, Row, Container } from "react-bootstrap";
-import { toRange } from "./../../../utils/math/argRanges"
-import classNames from "classnames";
+import { toRange } from "./../../../../utils/math/argRanges";
 import "./header.scss";
+import NavBar from "./NavBar/NabBar";
 
 class Header extends React.Component {
   constructor() {
@@ -58,7 +58,7 @@ class Header extends React.Component {
     this.scrollState.prevScrollDirection = scrollDirection;
 
     if (window.scrollY === 0) {
-      console.log("set on int")
+    //  console.log("set on int")
       setTranslate(0);
     } else if (this.barState.stickiState) {
       if (scrollDirection === "up") {
@@ -135,9 +135,9 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  sticki: state.header.sticki,
-  hidden: state.header.hidden,
-  disabled: state.header.disabled,
+  sticki: state.layout.header.sticki,
+  hidden: state.layout.header.hidden,
+  disabled: state.layout.header.disabled,
 })
 
 export default connect(mapStateToProps)(Header);

@@ -46,7 +46,7 @@ function* handle(action) {
             playlist: playlistId,
             title: action.track.title,
             source: action.track.source,
-            sourceId: action.track.sourceId,
+            sourceId: action.track.sourceId.toString(),
             quality: action.track.quality,
             duration: (typeof action.track.duration === "string") ?
                 formater.ytToSeconds(action.track.duration) :
@@ -77,7 +77,7 @@ function* handle(action) {
         yield put(pushLog(Log.Error(
             path,
             "Can't track to playlist " + error.message,
-            "Sorry. During process of coping track to playlist occurred a problem",
+            "Sorry. During process of adding track to playlist occurred a problem",
             error
         )))
     } finally {

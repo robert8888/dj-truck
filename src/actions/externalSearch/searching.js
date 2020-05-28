@@ -2,12 +2,12 @@
 //--------- Serching----------------
 
 const ACTIONS = {
-    SEARCH_INPUT : "Tap in to Search component",
-    SET_SEARCH_RESULTS : "Set YT(or oteher source) search results",
-    SEARCH_START : "Fire seraching",
-    CLEAR_SERACH : "Clear search string and serach result set"
+    SEARCH_INPUT : "Update query text from serach component",
+    CLEAR_SERACH : "Clear search string and serach result set",
+    SEARCH_START : "Fire seraching request",
+    SET_SEARCH_RESULTS : "Update search results in store",
 }
-export {ACTIONS as SEARCHING_ACTIONS};
+export { ACTIONS as SEARCHING_ACTIONS };
 
 export function searchInput(text){
     return {
@@ -16,10 +16,12 @@ export function searchInput(text){
     }
 }
 
-export function searchStart(text){
+export function searchStart(text, source, limit){
     return { 
         type : ACTIONS.SEARCH_START,
-        text : text
+        text,
+        source,
+        limit
     }
 }
 

@@ -1,6 +1,6 @@
-import React from "react"
-import { stripHtml } from "./../../../../../../utils/html/htmlHelper";
+import React from "react";
 import { getApi } from "./../../../../../../apis/apiProvider";
+import { stripHtml } from "./../../../../../../utils/html/htmlHelper";
 import { formater } from "./../../../../../../utils/time/timeFromater";
 
 const SearchListItem = (props) => {
@@ -18,7 +18,15 @@ const SearchListItem = (props) => {
 
     const sourceUrl = api.getUrlToExternall(id);
 
-    const formatTime = time => (time && time.substr(2, time.length).toLowerCase());
+    const formatTime = time => {
+        if(!time) return null;
+
+        if(typeof time === "number"){
+            return formater.secondsToStr(time);
+        } else if(typeof time === "string" && time.startsWith("PT")){
+            return time.substr(2, time.length).toLowerCase()
+        }
+    }
 
     const handleClick = () => {
         const track = {

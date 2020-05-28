@@ -1,28 +1,27 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import { Container } from "react-bootstrap";
+import { connect } from "react-redux";
 import Logger from "./../components/Logger/Logger";
-import Footer from "./../Footer/Footer";
-import Header from "./../Header/Header";
-import LayoutContext from "./LayoutContext";
+import Footer from "./Footer/Footer";
+import Header from "./Header/Header";
 
 
-const Layout = props => {
-    const context = useContext(LayoutContext);
-    const [footer, setFooter] = useState(true);
-    useEffect(()=>{
-        context.setFooter = setFooter;
-    }, [context])
+const Layout = ({ footerType, children }) => {
 
     return (
         <Fragment>
             <Header />
             <Logger />
             <Container className="app layout container-xl" >
-                {props.children}
+                {children}
             </Container>
-            { footer && <Footer />}
+            {footerType === "default" && <Footer />}
         </Fragment>
     )
 }
 
-export default Layout;
+const mapStateToProps = state => ({
+    footerType: state.layout.footer.type,
+})
+
+export default connect(mapStateToProps)(Layout);

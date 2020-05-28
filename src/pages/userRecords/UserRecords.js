@@ -1,21 +1,21 @@
-import React, { useEffect, useContext, useState, useRef, useCallback, useMemo } from "react";
-import { useAuth0 } from "./../../auth0/react-auth0-spa";
+import queryString from "query-string";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { connect } from "react-redux";
-import { reqRecs } from "./../../actions"
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import { reqRecs, setFooterType } from "./../../actions";
+import { useAuth0 } from "./../../auth0/react-auth0-spa";
+import Pagin from "./../common/components/Pagin/Pagin";
+import PlayerControls from "./../common/components/PlayerControls/PlayerControls";
 import RecordsList from "./../common/components/RecordList/RecordList";
 import RecordSearch from "./../common/components/RecordSearch/RecordSearch";
 import UserProfile from "./../common/components/UserProfile/UserProfile";
 import { useRecordPlayer } from "./../common/Hooks/useRecordPlayer";
 import useRecordSearchUrl from "./../common/Hooks/useRecordSearchURL";
-import PlayerControls from "./../common/components/PlayerControls/PlayerControls";
-import LayoutContext from "./../common/Layout/LayoutContext";
-import Pagin from "./../common/components/Pagin/Pagin";
-import { DropdownButton, Dropdown } from "react-bootstrap";
-import { useParams, useHistory, useLocation } from "react-router-dom";
-import queryString from "query-string";
-import "./user-records.scss"
+import "./user-records.scss";
 
 const UserRecords = React.memo(({
+    setFooter,
     requestList,
     userId,
     isCurrentUser,
@@ -23,11 +23,10 @@ const UserRecords = React.memo(({
     recordsList,
     countAll }) => {
     ///-----------Turn of footer--------------------
-    const layoutContext = useContext(LayoutContext);
 
     useEffect(() => {
-        layoutContext.setFooter(false);
-    }, [layoutContext])
+        setFooter("player")
+    }, [setFooter])
     //--------------------------------
 
     const [controls, player] = useRecordPlayer();
@@ -196,7 +195,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    requestList: (pageSize, page, where) => dispatch(reqRecs(pageSize, page, where))
+    requestList: (pageSize, page, where) => dispatch(reqRecs(pageSize, page, where)),
+    setFooter : (type) => dispatch(setFooterType(type))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRecords)

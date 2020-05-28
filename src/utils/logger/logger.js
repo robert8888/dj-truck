@@ -41,8 +41,13 @@ export class Log{
 
         switch(args.length){
             case 1 : {
-                [priv] = args;
-                break;
+                if([args[0] instanceof String]){
+                    [priv] = args;
+                    break;
+                } else if(typeof args[0] === "object"){
+                    ({path, priv, public: pub, error} = args[0])
+                }
+                
             }
             case 2: {
                 if(args[0] instanceof Array){

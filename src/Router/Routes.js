@@ -1,11 +1,11 @@
 import React, { Fragment, Suspense } from "react";
-import { Route, Redirect } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
-
+import { Redirect, Route } from "react-router-dom";
 //import Console from "./../pages/console/Console";
 //import Profile from "./../pages/profile/Profile";
 //import UserRecords from "./../pages/userRecords/UserRecords";
 import Loading from "./../pages/common/components/Loading/Loding";
+import PrivateRoute from "./PrivateRoute";
+
 
 const Console = React.lazy(() => import("./../pages/console/Console"));
 const Playlist = React.lazy(() => import("./../pages/playlist/Playlist"));
@@ -18,8 +18,8 @@ const Routes = props => {
     return (
         <Suspense fallback={<Loading/>}>
             <Fragment>
-                <Route path="/console" exact component={Console} />
                 <Route path="/exploring" exact component={Explorer} />
+                <PrivateRoute path="/console" exact component={Console} />
                 <PrivateRoute path="/my/playlist" exact component={Playlist}/>
                 <PrivateRoute path="/my/profile" exact component={Profile} />
                 <PrivateRoute path="/my/records" render={ props => <UserRecords {...props} isCurrentUser/>}/>

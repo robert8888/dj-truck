@@ -1,10 +1,10 @@
-import { pushTrackToListRequest } from "../../../../../actions";
 import React from "react";
 import { connect } from "react-redux";
-import SearchListItem from "./SearchListItem/SearchListItem";
+import { pushTrackToListRequest } from "../../../../../actions";
 import "./search-list.scss";
+import SearchListItem from "./SearchListItem/SearchListItem";
 
-class SearchList extends React.Component {
+class SearchResults extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -51,4 +51,4 @@ const mapDispachToProps = dispach => {
     }
 }
 
-export default connect(mapStateToProps, mapDispachToProps)(SearchList);
+export default connect(mapStateToProps, mapDispachToProps)(SearchResults);

@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useCallback , useRef, useMemo} from "react";
-import { reqRecs, loadRecords, reqRecData } from "./../../actions"
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
-import { useRecordPlayer } from "./../common/Hooks/useRecordPlayer";
-import Record from "../common/components/Record/Record";
-import RecordDetails from "./../common/components/RecordDetails/RecordDetails";
-import RecordComments from "./../common/components/RecordComments/RecordComments";
-import RecordTracklist from "./../common/components/RecordTracklist/RecordTracklist";
+import { useHistory, useParams } from "react-router-dom";
 import PlayerControls from "../common/components/PlayerControls/PlayerControls";
-import {getApi} from "./../../apis/apiProvider";
-import {Row, Col} from "react-bootstrap";
-import "./user-record.scss"
+import Record from "../common/components/Record/Record";
+import { loadRecords, reqRecData, reqRecs, setFooterType } from "./../../actions";
+import RecordComments from "./../common/components/RecordComments/RecordComments";
+import RecordDetails from "./../common/components/RecordDetails/RecordDetails";
+import RecordTracklist from "./../common/components/RecordTracklist/RecordTracklist";
+import { useRecordPlayer } from "./../common/Hooks/useRecordPlayer";
+import "./user-record.scss";
 
 const UserRecord = ({ 
+        setFooter,
         requestRecordList, 
         recordsList,
         requestRecordData, 
@@ -28,6 +28,10 @@ const UserRecord = ({
     const reqFlag = useRef();
 
     const escapeUnderdash = useCallback(str => str.split("_").join(" "), []);
+
+    useEffect(()=>{
+        setFooter("player")
+    },[setFooter])
 
     useEffect(() => {
         if (!title && !user) { 
@@ -134,7 +138,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     requestRecordList: (pageSize, page, where) => dispatch(reqRecs(pageSize, page, where)),
     requestRecordData: (id) => dispatch(reqRecData(id)),
-    setRecordsList: (list) => dispatch(loadRecords(list))
+    setRecordsList: (list) => dispatch(loadRecords(list)),
+    setFooter: (type) => dispatch(setFooterType(type))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRecord)

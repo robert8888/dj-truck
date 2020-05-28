@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
-import Search from "./../common/components/Search/Search";
+import ExternalSearch from "./../common/components/ExternalSearch/Search";
 import PlayListExplorer from "./../common/components/PlayListExplorer/PlayListExplorer";
 import "./playlist.scss";
 
@@ -13,7 +13,7 @@ const Playlist = ({}) => {
             <DndProvider backend={Backend}>
                 <Row>
                     <Col>
-                        <Search />
+                        <ExternalSearch />
                         <PlayListExplorer />
                     </Col>
                 </Row>

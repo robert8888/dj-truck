@@ -1,6 +1,7 @@
-import youTubeApi from "./yt/ytApi";
-import userAssetsApi from "./userAssets/userApi";
 import recordStoreApi from "./recordsStore/recStoreApi";
+import soundCloudApi from "./sc/scApi";
+import userAssetsApi from "./userAssets/userApi";
+import youTubeApi from "./yt/ytApi";
 
 export const API_TYPES = {
     MIUSIC_SOURCE: "Source of miusic",
@@ -20,7 +21,7 @@ const apisMap = {
     },
     "SoundCloud": {
         type: API_TYPES.MIUSIC_SOURCE,
-        api: null,
+        api: soundCloudApi,
     },
 
     "UserAssets": {

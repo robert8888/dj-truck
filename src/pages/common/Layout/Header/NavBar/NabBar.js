@@ -1,10 +1,10 @@
-import React from "react";
-import { useAuth0 } from "./../../../../auth0/react-auth0-spa";
-import { Link } from "react-router-dom";
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 //import { FormControl } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import "./nav-bar.scss"
+import React from "react";
+import { Link } from "react-router-dom";
+import { useAuth0 } from "./../../../../../auth0/react-auth0-spa";
+import "./nav-bar.scss";
 
 const NavBar = (props) => {
   const { isAuthenticated, loginWithRedirect, logout , user } = useAuth0();
@@ -29,9 +29,9 @@ const NavBar = (props) => {
           <li className="sub-menu-item main-nav-item nav-left-item nav-item">
             <Link to="/introduction" >Become a DJ</Link>
           </li>
-          <li className="sub-menu-item main-nav-item nav-left-item nav-item">
+          { isAuthenticated && <li className="sub-menu-item main-nav-item nav-left-item nav-item">
             <Link to="/console" >Console</Link>
-          </li>
+          </li>}
         </ul>
       </ul>
 

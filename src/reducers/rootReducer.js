@@ -8,7 +8,7 @@ import mixer from "./console/mixerReducer";
 import playList from "./console/playlist/playlistReducer";
 import recorder from "./console/recorder/recorderReducer";
 import searchReducer from "./console/searchReducer";
-import header from "./layoutState/headerStateReducer";
+import layout from "./layout/layoutReducer";
 import logger from "./logger/loggerReducer";
 import profile from "./profile/profileReducer";
 import records from "./records/recordsReducer";
@@ -32,5 +32,5 @@ export default combineReducers({
     profile,
     //-----------------
     loadingBar: loadingBarReducer,
-    header,
+    layout
 })
