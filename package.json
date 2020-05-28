@@ -39,6 +39,7 @@
     "react-spinners": "^0.8.1",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
+    "serve": "^11.3.1",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "uuidjs": "^4.2.5",
@@ -48,7 +49,7 @@
   },
   "scripts": {
     "start": "serve -d -l 80 build",
-    "start:dev" : "react-scripts start",
+    "start:dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
