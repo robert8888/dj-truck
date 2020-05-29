@@ -14,9 +14,7 @@ export default {
     search,
 
     getUrl: (id) => {
-        console.log("api url", apiUrl);
-        const slash = (!apiUrl.endsWith("/")) ? "/" : "";
-        return apiUrl + `${slash}download?id=` + id;
+        return apiUrl + `/download?id=` + id;
     },
 
     getUrlToExternall: (id) => {
