@@ -19,6 +19,6 @@ export default {
     },
 
     getUrlToExternall: (id) => {
-        return "https://www.youtube.com/watch?v=" + id;
+        return "";
     }
 } 
