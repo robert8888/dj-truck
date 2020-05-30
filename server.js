@@ -9,8 +9,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(expressStaticGzip(path.join(__dirname, 'build'), {
-    enableBrotli :true,
-    index: "index.html"
+  //  enableBrotli :true,
+    index: "index.html",
+    orderPreference: ['gz'],
+    serveStatic: {
+        maxAge: 234,            // will be kept 
+        cacheControl: false     // will be kept as well
+    }
 }))
 
 
