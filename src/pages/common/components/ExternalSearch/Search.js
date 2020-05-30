@@ -25,7 +25,7 @@ const Search = ({
     useEffect(()=>{
         const defaultSource = getApisName(API_TYPES.MIUSIC_SOURCE, { default: true })
         setSource(defaultSource)
-    }, [API_TYPES, getApisName, setSource])
+    }, [setSource])
 
     const selectedHandel = () => {
         clearSearch();
@@ -36,13 +36,12 @@ const Search = ({
         return getApisName(API_TYPES.MIUSIC_SOURCE).map(api => {
             return (<Dropdown.Item key={api} onClick={setSource.bind(null, api)}>  {api} </Dropdown.Item>)
         })
-    }, [API_TYPES.MIUSIC_SOURCE, getApisName])
+    }, [])
 
     const controlKeyPress = useCallback((event) => {
         if (event.key !== "Enter") return
-        console.log("soruce in coimponet", source)
         searchStart(queryString, source, limit)
-    }, [queryString, source, limit])
+    }, [queryString, source, limit, searchStart])
 
     return (
         <div className="search">

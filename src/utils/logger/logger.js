@@ -47,7 +47,7 @@ export class Log{
                 } else if(typeof args[0] === "object"){
                     ({path, priv, public: pub, error} = args[0])
                 }
-                
+                break;
             }
             case 2: {
                 if(args[0] instanceof Array){
@@ -71,6 +71,7 @@ export class Log{
                 [path, priv, pub, error] = args;
                 break;
             }
+            default: return null;
         }
 
         return Log.Create(LOG_TYPES.ERROR, path, priv, pub, error)

@@ -19,7 +19,7 @@ export default function headerState(state = initState, action) {
     switch (action.type) {
 
         case ACTIONS.LAYOUT_SET_FOOTER_TYPE: {
-            const {type} = action;
+            let {type} = action;
             if(!type){
                 type = FOOTER_TYPES[0]
             }

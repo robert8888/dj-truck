@@ -1,13 +1,13 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { consoleStopAll} from "./../../../../actions";
-import Deck from "./Deck/Deck";
-import Mixer from "./Mixer/Mixer";
+import { consoleStopAll } from "./../../../../actions";
+import { useRecordPlayer } from "./../../../common/Hooks/useRecordPlayer";
 import "./console.scss";
-import Mastering from "./Mixer/Master/Master";
+import Deck from "./Deck/Deck";
 import Effector from "./Effector/Effector";
+import Mastering from "./Mixer/Master/Master";
+import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
-import {useRecordPlayer} from "./../../../common/Hooks/useRecordPlayer";
 
 const Console = ({dispatch}) => {
     const [control] = useRecordPlayer();
@@ -16,7 +16,7 @@ const Console = ({dispatch}) => {
          return () => {
             dispatch(consoleStopAll())
         }   
-    }, [control, dispatch, consoleStopAll])
+    }, [control, dispatch])
 
     return (
         <div className="truck-console">

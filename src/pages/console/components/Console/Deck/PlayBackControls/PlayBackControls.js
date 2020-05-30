@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback } from "react";
-import { connect } from "react-redux";
-import { togglePlay, toggleCue, canelCueAndPlay } from "./../../../../../../actions";
-import { Button } from "react-bootstrap";
+import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import { Button } from "react-bootstrap";
+import { connect } from "react-redux";
+import { canelCueAndPlay, toggleCue, togglePlay } from "./../../../../../../actions";
 import "./play-back.scss";
 
 const PlayBackControls = ({ name, toggleCue, togglePalay, cuePlay, paused, cueActive }) => {

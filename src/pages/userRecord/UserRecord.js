@@ -23,7 +23,6 @@ const UserRecord = ({
     const { user, title, id } = useParams();
     const history = useHistory()
     const [record, setRecord] = useState();
-    const [tracklist, setTracklist] = useState(null);
 
     const reqFlag = useRef();
 
@@ -56,7 +55,7 @@ const UserRecord = ({
             return;
         }
         //if there is none record request it
-        if ((recs && recs.length === 0 || !recs) && !reqFlag.current) {
+        if (((recs && recs.length === 0 ) || !recs) && !reqFlag.current) {
 
             const where = { title: _title}
             if (id) {
@@ -85,22 +84,25 @@ const UserRecord = ({
             history.replace('/404')
         }
 
-    }, [recordsList, 
-        setRecord, 
-        title, 
+    }, [
         id, 
+        title, 
+        user,
         userId,
-        user, 
+        recordsList, 
+        setRecord, 
         setRecordsList, 
         escapeUnderdash, 
         reqFlag,
-        history, 
+        history,
+        countAll,
+        requestRecordList, 
     ])
 
     useEffect(() => {
         if(!record) return;
         requestRecordData(record.id);
-    }, [record])
+    }, [record, requestRecordData])
 
     const seekToTrack = useCallback((time)=>{
         if(!controls || !player || !record || time === undefined) return;
@@ -116,10 +118,10 @@ const UserRecord = ({
         <div className="user-record">
             <Record record={record} controls={controls} player={player} simple />
             <Row>
-                <Col xs={12} xs={{order: 2}}  md={6} md={{order:1}}>
+                <Col xs={{span: 12, order: 2}} md={{span: 6, order:1}}>
                     <RecordComments/>
                 </Col>
-                <Col xs={12} md={6}  md={{order:2}}>
+                <Col xs={12}  md={{span: 6, order:2}}>
                     <RecordDetails record={record} />
                     <RecordTracklist onSeek={seekToTrack}/>
                 </Col> 

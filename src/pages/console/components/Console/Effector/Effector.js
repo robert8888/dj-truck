@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { connect } from "react-redux";
 // import { throttle } from "./../../../../../utils/functions/lodash";
 import throttle from "lodash/throttle";
-
-import "./effector-channel.scss";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Dropdown, DropdownButton } from "react-bootstrap";
+import { connect } from "react-redux";
+import { setCurrentEffect, setDryWet, setEffectParametr } from "./../../../../../actions";
 import DryWetKnob from "./components/DryWetKnob/DryWetKnob";
 import EffectorButton from "./components/EffectorButton/EffectorButton";
 import EffectorKnob from "./components/EffectorKnob/EffectorKnob";
-import { Dropdown, DropdownButton } from "react-bootstrap";
-import { setEffectParametr, setCurrentEffect, setDryWet } from "./../../../../../actions";
+import "./effector-channel.scss";
 import mapComponentToParameter from "./utils/mapComponentToParameter";
+
 
 const Effector = ({ setParameter, availableEffects: getAvailableEffects, channel, channelState, setDryWet, setEffect }) => {
     const [currentEffect, setCurrentEffect] = useState(undefined);
     const [effectorParams, setEffectorParams] = useState([]);
     const currentChannelState = useRef();
 
-    useEffect(()=>{
+    useEffect(() => {
         currentChannelState.current = channelState;
     }, [channelState])
 
@@ -29,14 +29,13 @@ const Effector = ({ setParameter, availableEffects: getAvailableEffects, channel
         setEffect(currentEffect);
     }, [currentEffect, setEffect])
 
-    
+
     const availableEffects = useMemo(() => Object.keys(getAvailableEffects).map((effect, index) => {
         return (<Dropdown.Item key={effect + "-" + index} onClick={setCurrentEffect.bind(null, effect)}>{effect}</Dropdown.Item>)
     }), [getAvailableEffects, setCurrentEffect])
 
 
     useEffect(() => {
-        channelState = currentChannelState.current;
         let currentEffectParams = getAvailableEffects[currentEffect];
         if (!currentEffectParams) {
             setEffectorParams([]);
@@ -44,9 +43,7 @@ const Effector = ({ setParameter, availableEffects: getAvailableEffects, channel
         }
 
         setEffectorParams(Object.entries(currentEffectParams).map(([name, param]) => {
-            //console.log("producing knobs")
-            const effectState = channelState.effects[currentEffect];
-
+            const effectState = currentChannelState.current.effects[currentEffect];
             let value = param.defaultValue;
             if (effectState) {
                 value = effectState[name] || value;
@@ -82,11 +79,11 @@ const Effector = ({ setParameter, availableEffects: getAvailableEffects, channel
 
             return reactElement
         }))
-    }, [currentEffect, 
-        paramChangeHandle, 
+    }, [currentEffect,
+        paramChangeHandle,
         getAvailableEffects,
-        channel, 
-        currentChannelState, 
+        channel,
+        currentChannelState,
         setEffectorParams])
 
 

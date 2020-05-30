@@ -1,8 +1,8 @@
-import React , {useEffect, useCallback} from "react";
-import "./explorer.scss";
-import RecordSearch from "../common/components/RecordSearch/RecordSearch";
+import React, { useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import RecordSearch from "../common/components/RecordSearch/RecordSearch";
 import useRecordSearchUrl from "../common/Hooks/useRecordSearchURL";
+import "./explorer.scss";
 
 const Explorer = props =>{
     const history = useHistory();
@@ -18,7 +18,8 @@ const Explorer = props =>{
     const onSearch = useCallback((queryStr, serachOpt)=>{
         const url = getSearchUrl(queryStr, {serachOpt});
         history.push(url);
-    }, )
+    }, [getSearchUrl, history] )
+    
     return (
         <div className="explor">
             <RecordSearch title="Dj Trucks" onSearch={onSearch}/>

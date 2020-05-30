@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import {formater} from "./../../../../../utils/time/timeFromater";
-import {toRange} from "./../../../../../utils/math/argRanges";
-import useWindowSize from "./../../../Hooks/useWindowSize"
-import "./progress-slider.scss"
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { toRange } from "./../../../../../utils/math/argRanges";
+import { formater } from "./../../../../../utils/time/timeFromater";
+import useWindowSize from "./../../../Hooks/useWindowSize";
+import "./progress-slider.scss";
 
 //horizontal
 const ProgressSlider = ({ player, seek}) => {
@@ -41,10 +41,10 @@ const ProgressSlider = ({ player, seek}) => {
         return thumbAreaRectCached.current;
     }, [sliderThumb, thumbAreaRectCached])
 
-    const refrehsRects = useCallback(()=>{
-        sliderAreaRectCached.current = null;
-        thumbAreaRectCached.current = null;
-    },[ sliderAreaRectCached, thumbAreaRectCached])
+    // const refrehsRects = useCallback(()=>{
+    //     sliderAreaRectCached.current = null;
+    //     thumbAreaRectCached.current = null;
+    // },[ sliderAreaRectCached, thumbAreaRectCached])
 
     const setThumbPosition = useCallback((progress)=>{
         let position = 0;
@@ -54,7 +54,7 @@ const ProgressSlider = ({ player, seek}) => {
         sliderProgress.current.style.transform = `scaleX(${position}) translateX(50%)`;
         position -= (thumbRect.width / 2) ;  
         sliderThumb.current.style.transform = `translateX(${position}px)`;
-    }, [sliderArea, sliderThumb])
+    }, [sliderThumb, getSliderAreaRect, getThumbAreaRect])
 
     const setBuffredPosition = useCallback((buffered) => {
         const sliderAreaRect = getSliderAreaRect();
@@ -63,7 +63,7 @@ const ProgressSlider = ({ player, seek}) => {
         }
         const position = sliderAreaRect.width * buffered;
         sliderBufferd.current.style.transform = `scaleX(${position}) translateX(50%)`;
-    }, [sliderBufferd, sliderArea])
+    }, [sliderBufferd, getSliderAreaRect])
 
     useEffect(()=>{
         setBuffredPosition(buffered)
@@ -154,11 +154,12 @@ const ProgressSlider = ({ player, seek}) => {
         window.addEventListener('mousemove', thumbDragingWithArgs)
         window.addEventListener('mouseup', mouseup)
     }, [thumbDraging, 
-        sliderArea, 
         isDragged,
         seek, 
         seekTarget, 
-        currentDuration])
+        currentDuration,
+        getSliderAreaRect
+    ])
 
     const areaMouseDown = useCallback((e)=>{
         const sliderAreaRect = getSliderAreaRect();
@@ -170,7 +171,7 @@ const ProgressSlider = ({ player, seek}) => {
         let progress = x / sliderAreaRect.width  ;
         progress = toRange(progress, 0 , 1)
         seek({progress})
-    }, [seek, sliderArea])
+    }, [seek, getSliderAreaRect, getThumbAreaRect])
 
     const areaMouseMove = useCallback( e =>{
         const sliderAreaRect = getSliderAreaRect();
@@ -182,7 +183,7 @@ const ProgressSlider = ({ player, seek}) => {
         const str = formater.secondsToStr(time / 1000);
         sliderTimePreview.current.dataset.value = time ? str : "";
         sliderTimePreview.current.style.transform = `translateX(${x}px)`
-    }, [currentDuration , sliderTimePreview])
+    }, [currentDuration , sliderTimePreview, getSliderAreaRect, getThumbAreaRect])
 
     const areaMouseEnter = useCallback( e => {
         sliderTimePreview.current.classList.add("preview--visible")

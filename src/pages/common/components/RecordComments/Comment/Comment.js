@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useMemo, Fragment, useEffect, useRef } from "react";
-import IconBar from "./../../IconBar/IconBar"
-import { useFormatRelative } from "./../../../Hooks/useFormatDate";
-import "./comment.scss";
-import { Form, Button } from "react-bootstrap";
+import React, { Fragment, useCallback, useMemo, useRef, useState } from "react";
+import { Button, Form } from "react-bootstrap";
 import useAutoHeightTextarea from "../../../Hooks/useAutoHeightTextarea";
 import useEmoticons from "../../../Hooks/useEmoticons";
+import { useFormatRelative } from "./../../../Hooks/useFormatDate";
+import IconBar from "./../../IconBar/IconBar";
+import "./comment.scss";
 
 const CommentContent = ({
     header,
@@ -40,12 +40,12 @@ const CommentContent = ({
         if(!creationMode){
             autoHeight(ref)
         }
-    }, [text, content])
+    }, [text, content, autoHeight, creationMode, emotiControl])
 
 
-    const onBlur = useCallback(() => {
-         //(content.current.value === "") ? setEditMode(false) : setEditMode(true);
-    }, [content, setEditMode])
+    // const onBlur = useCallback(() => {
+    //      (content.current.value === "") ? setEditMode(false) : setEditMode(true);
+    // }, [content, setEditMode])
 
 
     const onSubmit = useCallback((e) => {
@@ -56,12 +56,13 @@ const CommentContent = ({
         if (creationMode) {
             content.current.value = "";
         }
-    }, [content, onChange, setEditMode])
+    }, [content, onChange, setEditMode, creationMode])
 
     return (
         <Form onSubmit={onSubmit}
             onFocus={setEditMode.bind(null, true)}
-            onBlur={onBlur}>
+            // onBlur={onBlur}
+            >
             <Form.Group>
                 <header>
                     <Form.Label>

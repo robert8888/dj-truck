@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { reqUpdateRec, reqDeleteRec, setRecDeleteStatus } from "./../../../../actions";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import useAutoHeightTextarea from "../../Hooks/useAutoHeightTextarea";
+import { reqDeleteRec, reqUpdateRec, setRecDeleteStatus } from "./../../../../actions";
 import { getApi } from "./.././../../../apis/apiProvider";
-import { Form, Button } from "react-bootstrap";
 import IconBar from "./../IconBar/IconBar";
 import "./record-details.scss";
-import useAutoHeightTextarea from "../../Hooks/useAutoHeightTextarea";
 
 const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteStatus, resetDeleteStatus }) => {
-    const getDownloadLink = useMemo(() => getApi('RecordsStore').getDownloadLink, [getApi])
+    const getDownloadLink = useMemo(() => getApi('RecordsStore').getDownloadLink, [])
     const history = useHistory();
     const [editMode, setEditMode] = useState(false);
     const [editable, setEditable] = useState(false);
@@ -51,7 +51,7 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
             setFromRecord(record)
         }
 
-    }, [record, editMode, setEditMode])
+    }, [record, editMode, setEditMode, setFromRecord])
 
     const updateTitle = useCallback((event) => {
         if (event.target.value.indexOf("_") !== -1) {
@@ -96,15 +96,14 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
         a.href = getDownloadLink(record?.id, record?.title);
         a.setAttribute('download', record?.title);
         a.click();
-    }, [record])
+    }, [record, getDownloadLink])
 
     useEffect(() => {
-        console.log(deleteStatus)
         if (deleteStatus === "SUCCESS") {
             history.goBack();
             resetDeleteStatus();
         }
-    }, [deleteStatus, resetDeleteStatus])
+    }, [deleteStatus, resetDeleteStatus, history])
 
     return (
 

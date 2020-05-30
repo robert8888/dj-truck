@@ -1,18 +1,18 @@
-import React, { useMemo, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { reqUserProfile } from "./../../../../actions";
-import {useFormatRelative} from "./../../Hooks/useFormatDate"
-import Edit from "./Edit/Edit";
-import "./user-profile.scss"
 import UUIDClass from "uuidjs";
+import { reqUserProfile } from "./../../../../actions";
+import { useFormatRelative } from "./../../Hooks/useFormatDate";
+import Edit from "./Edit/Edit";
+import "./user-profile.scss";
 
 const UserProfile = ({ nickname, profile, reqProfile, withGeneres, editable , onChange = ifEmpty => null }) => {
     const location = useLocation();
     const [formatRelative] = useFormatRelative();
 
     useEffect(() => {
-        if (nickname && !profile || profile.user.nickname !== nickname) {
+        if ((nickname && !profile) || profile.user.nickname !== nickname) {
             reqProfile(nickname);
         }
     }, [nickname, profile, reqProfile])
@@ -27,7 +27,7 @@ const UserProfile = ({ nickname, profile, reqProfile, withGeneres, editable , on
 
     const linkToGenere = useCallback((genere)=>{
         let {pathname, search} = location;
-        search = search.replace(/\??\&?generes=[^&]+/g, "")
+        search = search.replace(/\??&?generes=[^&]+/g, "")
         return pathname + search + ((search) ? "&" : "?") + "generes=" + genere;
     },[location])
 
@@ -40,7 +40,7 @@ const UserProfile = ({ nickname, profile, reqProfile, withGeneres, editable , on
             <main>
             <div className="user-picture">
                 <Edit active={editable} type="image" onChange={onChange.bind(null, 'picture')}>
-                    <img src={parsePirctureUrl(profile.user.picture)} alt="User picture" />
+                    <img src={parsePirctureUrl(profile.user.picture)} alt="user avatar" />
                 </Edit>
             </div>
             <section>

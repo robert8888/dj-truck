@@ -1,8 +1,7 @@
 
 import { all } from "redux-saga/effects";
-import calcBpmAsyncSaga from "./calcBpmSaga";
-import SearchAsyncSaga from "./externalSearch/SearchSaga";
-import stopAllSaga from "./onStopAllSaga";
+import requestSearchResultsSaga from "./externalSearch/reqSearchResultSaga";
+import calcBpmSaga from "./playlists/calcBpmSaga";
 import requestAddTrack from "./playlists/reqAddTrackSaga";
 import requestCopyTrackSaga from "./playlists/reqCopySaga";
 import requestCreateDirSaga from "./playlists/reqCreateDirSaga";
@@ -18,6 +17,7 @@ import requestUpdateBpmSaga from "./playlists/reqUpdateBpmSaga";
 import requestUpdateTrackPositionSaga from "./playlists/reqUpdateTrackPositionSaga";
 import toogleDirSaga from "./playlists/toogleDirSaga";
 import requestUserProfileSaga from "./profile/reqProfileSaqa";
+import stopAllSaga from "./recorder/onStopAllSaga";
 import requestCreatedRecordSaga from "./recorder/reqCreateRecord";
 import requestUpdateRecordSaga from "./recorder/reqUpdateRecord";
 import tracklistRoot from './recorder/tracklist/tracklistRootSaga';
@@ -37,13 +37,10 @@ import requestUpdateUserPictureSaga from "./user/reqUpdatePicture";
 
 function* rootSaga(){
     yield all([
-        SearchAsyncSaga(),
-        calcBpmAsyncSaga(),
+        //--- external search
+        requestSearchResultsSaga(),
 
-
-        stopAllSaga(),
-
-        //playlist - dirs - traks
+        //--- playlist - dirs - traks
         requestRootDirSaga(),
         reqReadDirSaga(),
         requestCreateDirSaga(),
@@ -58,11 +55,14 @@ function* rootSaga(){
         requestUpdateTrackPositionSaga(),
         requestDeleteTrackSaga(),
         toogleDirSaga(),
+        calcBpmSaga(),
 
-        //-- recorder
+        //--- recorder
         requestCreatedRecordSaga(),
         requestUpdateRecordSaga(),
-        tracklistRoot(),
+        tracklistRoot(), // recorder intercept adding track to record
+        stopAllSaga(),
+
         //--- records
         requestRecordsSaga(),
         requestRecordSaga(),
@@ -73,14 +73,13 @@ function* rootSaga(){
         reuqestDeleteCommentSaga(),
         requestFavoriteSaga(),
 
-        //----profiles
+        //--- profiles
         requestUserProfileSaga(),
-
+        //--- user
         currentUserSaga(),
         requestUpdateUserPictureSaga(),
         requestUpdateUserNicknameSaga(),
         requestUpdateUserDescriptionSaga(),
-
     ])
 }
 

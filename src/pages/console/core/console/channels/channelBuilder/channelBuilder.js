@@ -1,10 +1,10 @@
-import store from "./../../../../../../store";
-import config from "./configuration"
-
 import WaveSurfer from "wavesurfer";
-import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler"
+import store from "./../../../../../../store";
 import { getBeatLength } from "./../../../../../../utils/bpm/converter";
-import { addAnimationFrame } from "./wsAnimationFrame"
+import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler";
+import config from "./configuration";
+
+
 
 export default class ChannelBuilder {
   constructor() {

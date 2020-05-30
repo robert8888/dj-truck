@@ -1,6 +1,6 @@
-import React, {useMemo, useCallback} from "react"
-import { toDate, formatRelative as DateFormatRelative } from "date-fns";
+import { formatRelative as DateFormatRelative, toDate } from "date-fns";
 import * as locales from 'date-fns/locale';
+import { useCallback, useMemo } from "react";
 
 export function useFormatRelative() {
 
@@ -11,7 +11,7 @@ export function useFormatRelative() {
     const getLocal = useCallback(() => {
         let lang = "";
 
-        if (navigator.languages != undefined){
+        if (navigator.languages !== undefined){
             lang =  navigator.languages[0];
         }
         else{
@@ -20,7 +20,7 @@ export function useFormatRelative() {
         
         lang = lang.substr(0,2);
         return locales[lang];
-    })
+    }, [])
 
     const formatRelative = useCallback((timestamp, { timezone, local } = {}) => {
         const time = timezone ? timestamp - timezoneOffset : timestamp;

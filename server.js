@@ -13,9 +13,6 @@ app.use(expressStaticGzip(path.join(__dirname, 'build'), {
     index: "index.html"
 }))
 
-// app.get('/', function (req, res) {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html.br'));
-// });
 
 app.listen(PORT, ()=>{
     console.log("Server started on port: " + PORT)

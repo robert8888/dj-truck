@@ -1,14 +1,12 @@
-import React, { useMemo, useCallback, useState, useRef } from "react";
-import classNames from "classnames";
-import { Form } from "react-bootstrap";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faThLarge } from "@fortawesome/free-solid-svg-icons";
-import {Button} from "react-bootstrap";
+import classNames from "classnames";
+import React, { useCallback, useMemo, useState } from "react";
+import { Button, Form } from "react-bootstrap";
 import "./edit.scss";
 
 const Edit = ({ active, type, children, onChange = ifEmpty => null }) => {
     const [editMode, setEditMode] = useState(false);
-    const controlRef = useRef();
 
     const buttonClasses = useMemo(() => classNames(
         'edit-btn',
@@ -17,7 +15,7 @@ const Edit = ({ active, type, children, onChange = ifEmpty => null }) => {
             "edit-btn-before": (type.startsWith("text")),
             "edit-btn-over": (type === "image"),
         }
-    ), [active])
+    ), [active, type])
 
     const catchBtnRef = useCallback((ref) => {
         if (!ref) {
@@ -95,11 +93,20 @@ const Edit = ({ active, type, children, onChange = ifEmpty => null }) => {
                             </Button>
                         </>
                     )
+                default: return null;
 
             }
 
         }
-    }, [children, editMode, onChange, setEditMode])
+    }, [
+        children, 
+        editMode, 
+        onChange, 
+        setEditMode,
+        buttonClasses,
+        catchBtnRef,
+        type
+    ])
 
     return (
         <>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {Row, Col, Container} from "react-bootstrap"
+import { Col, Container, Row } from "react-bootstrap";
 import PlaybackButton from "./PlaybackButton/PlaybackButton";
-import ProgressSlider from "./ProgressSlider/ProgressSlider";
-import Volume from "./Volume/Volume";
-import RecordDetails from "./RecordDetails/RecordDetails";
-
 import "./player-controls.scss";
+import ProgressSlider from "./ProgressSlider/ProgressSlider";
+import RecordDetails from "./RecordDetails/RecordDetails";
+import Volume from "./Volume/Volume";
+
 
 const PlayerControls = ({controls, player,  list:recordList}) => {
     const [currentRecord , setCurrentRecrod] = useState(null);
@@ -38,7 +38,7 @@ const PlayerControls = ({controls, player,  list:recordList}) => {
         
         setCurrentRecrodDails(current)
         
-    }, [recordList, currentRecord, setCurrentRecrodDails])
+    }, [player, recordList, currentRecord, setCurrentRecrodDails])
 
     return (
         <div className="record-player-controls_container">

@@ -58,7 +58,7 @@ const UserRecords = React.memo(({
 
 
     useEffect(() => {
-        if (preloaded && recordsList.length > 0 || loading) { return }
+        if ((preloaded && recordsList.length > 0) || loading) { return }
 
         if (isAuthenticated && !userId) { return }
         let pg = page || 0;
@@ -113,6 +113,11 @@ const UserRecords = React.memo(({
         generes,
         _generes,
         loading,
+        isAuthenticated,
+        isCurrentUser,
+        nickname,
+        searchOpt,
+        recordsList.length,
     ])
 
     const getNextPageUrl = useCallback((page, pageSize) => {
@@ -146,10 +151,10 @@ const UserRecords = React.memo(({
         })
 
         history.push(url);
-    }, [history, getSerachUrl])
+    }, [history, getSerachUrl, _generes, generes])
 
     
-    const render = useMemo(()=> (
+    return (
         <div className="user-records">
             {nickname && <UserProfile nickname={nickname} withGeneres/>}
             {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
@@ -181,10 +186,10 @@ const UserRecords = React.memo(({
                 controls={controls}
                 player={player} />
         </div>
-        )
-    , [  recordsList ])
+    )
+    
 
-    return render;
+
 })
 
 const mapStateToProps = state => ({

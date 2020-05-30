@@ -1,16 +1,16 @@
-import React, { useMemo, Fragment, useCallback, useEffect } from "react";
-import PlaybackButton from "./PlaybackButton/PlaybackButton";
-import LikeButton from "./LikeButton/LikeButton";
-import GenereList from "./GenereList/GenereList";
-import WaveSurrferPlayer from "./WaveSurrferPlayer/WaveSurferPlayer";
-import Time from "./Time/Time";
-import Created from "./Created/Created";
+import React, { Fragment, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import UUID from "uuidjs"
-import "./record.scss"
+import UUID from "uuidjs";
+import Created from "./Created/Created";
+import GenereList from "./GenereList/GenereList";
+import LikeButton from "./LikeButton/LikeButton";
+import PlaybackButton from "./PlaybackButton/PlaybackButton";
+import "./record.scss";
+import Time from "./Time/Time";
+import WaveSurrferPlayer from "./WaveSurrferPlayer/WaveSurferPlayer";
 
 const Record = ({ record, controls: { seek, playback }, player, simple }) => {
-    const escapeSpace = useCallback(str => str.split(" ").join("_"))
+    const escapeSpace = useCallback(str => str.split(" ").join("_"), [])
 
     const header = useMemo(() => {
         if (!record || simple) {
@@ -31,7 +31,7 @@ const Record = ({ record, controls: { seek, playback }, player, simple }) => {
                 </aside>
             </Fragment>
         )
-    }, [record])
+    }, [record, escapeSpace, simple])
 
 
     return (

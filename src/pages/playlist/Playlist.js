@@ -6,7 +6,7 @@ import ExternalSearch from "./../common/components/ExternalSearch/Search";
 import PlayListExplorer from "./../common/components/PlayListExplorer/PlayListExplorer";
 import "./playlist.scss";
 
-const Playlist = ({}) => {
+const Playlist = () => {
 
     return (
         <div className="page-playlist-container">

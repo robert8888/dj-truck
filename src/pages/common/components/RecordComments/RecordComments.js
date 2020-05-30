@@ -1,10 +1,10 @@
-import React, { useState, useCallback, Fragment } from "react";
-import {reqPostComment, reqUpdateComment, reqDeleteComment} from "./../../../../actions";
-import {connect} from "react-redux";
+import React, { Fragment, useCallback } from "react";
+import { connect } from "react-redux";
+import { reqDeleteComment, reqPostComment, reqUpdateComment } from "./../../../../actions";
+import { useRecordPlayer } from "./../../Hooks/useRecordPlayer";
 import CommentContent from "./Comment/Comment";
-
-import {useRecordPlayer} from "./../../Hooks/useRecordPlayer";
 import "./record-comments.scss";
+
 
 
 const RecordComments = ({
@@ -32,7 +32,7 @@ const RecordComments = ({
             time: timeOfComment,
         }
         postComment(commentData)
-    },[postComment, record, userId])
+    },[postComment, record, userId, player])
 
     const update = useCallback((id, text) => {
         if(!userId || !record) return;

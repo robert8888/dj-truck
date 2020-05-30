@@ -1,5 +1,5 @@
-import React, { useMemo , useCallback, useRef, useState} from 'react';
-import {Button} from "react-bootstrap";
+import React, { useCallback, useMemo, useRef } from 'react';
+import { Button } from "react-bootstrap";
 import Emoticons from "./../../common/components/Emoticons/Emoticons";
 
 export default function(){
@@ -25,13 +25,12 @@ export default function(){
 
     const component = useMemo(() => () => (
                 <div className="emoticon" style={{position: 'relative', display:'inline-block',  zIndex:'5000'}}>
-                    <Button  onClick={ () => toggleRef.current() } className='emoticon-btn'>😀</Button>
+                    <Button  onClick={ () => toggleRef.current() } className='emoticon-btn'>
+                        <span role="img" aria-label="emotiicon">😀</span>
+                    </Button>
                     <Emoticons toggle={toggleRef} onSelect={onSelectIcon}/>
                 </div>)
-    , [toggleRef])
-
-
-
+    , [toggleRef, onSelectIcon])
 
     return [textarea, component]
 }

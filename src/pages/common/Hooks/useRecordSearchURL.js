@@ -1,4 +1,4 @@
-import React from "react";
+
 
 export default function useRecordSearchUrl(){
     const getUrl = (queryStr, opt) =>{
@@ -21,16 +21,20 @@ export default function useRecordSearchUrl(){
             const value =  searchParams[paramName];
             switch(typeof value){
                 case "boolean": {
-                    search.push(paramName + "=" + value.toString()) 
+                    search.push(paramName + "=" + value.toString())
+                    break; 
                 }
                 case "string" : {
                     search.push(paramName + '=' + value)
+                    break;
                 }
                 case "object" :{
                     if(value instanceof Array && value.length && value.some( item => (item))){
                         search.push( paramName + "=" + value.join(","));
                     }
+                    break;
                 }
+                default: return null;
             } 
         }
         

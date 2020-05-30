@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import {reqUpdatePicture, reqUpdateDescription, reqUpdateNickname} from "./../../actions";
-import {connect} from "react-redux";
-import { useAuth0 } from "./../../auth0/react-auth0-spa";
-import "./profile.scss"
+import { connect } from "react-redux";
 import UserProfile from "../common/components/UserProfile/UserProfile";
+import { reqUpdateDescription, reqUpdateNickname, reqUpdatePicture } from "./../../actions";
+import { useAuth0 } from "./../../auth0/react-auth0-spa";
+import "./profile.scss";
 
 const Profile = ({
   nickname,
@@ -27,8 +27,13 @@ const Profile = ({
         updateDescription(data);
         break;
       }
+      default: return;
     }
-  },[])
+  },[
+    updateDescription,
+    updateNickname,
+    updatePicture
+  ])
 
   if (loading || !user) {
     return <div>Loading...</div>;

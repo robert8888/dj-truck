@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
-import WaveSurfer from "wavesurfer";
-import style from "./wave-surfer-player.scss";
-import useWindowSize from "../../../Hooks/useWindowSize";
 import debounce from "lodash/debounce";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import WaveSurfer from "wavesurfer";
+import useWindowSize from "../../../Hooks/useWindowSize";
+import style from "./wave-surfer-player.scss";
 
 const WaveSurferPlayer = ({ record: { peaks, id, duration },  seek , player }) => {
     const [container, setContainer] = useState(null);
@@ -97,6 +97,7 @@ const WaveSurferPlayer = ({ record: { peaks, id, duration },  seek , player }) =
         id, 
         seek,
         peaks,
+        player,
         duration, 
         container,
         setProgressMiddleware, 
@@ -147,7 +148,7 @@ const WaveSurferPlayer = ({ record: { peaks, id, duration },  seek , player }) =
         if(loaded && container && isMounted){
             //debouncedUpdate();
         }
-    }, [windowWidth, loaded, debouncedUpdate, isMounted])
+    }, [windowWidth, loaded, debouncedUpdate, isMounted, container])
 
     return (
         <div key={"ws" + id} className="ws-player-container" ref={setContainerRef} />

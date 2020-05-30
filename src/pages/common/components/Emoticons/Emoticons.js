@@ -1,6 +1,6 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDoubleLeft, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import icons from "./emoji.json";
 import "./emoticons.scss";
 const perPanel = 30;
@@ -35,7 +35,7 @@ const Emoticons = ({ onSelect, toggle }) => {
         }
         panelsLen.current += panels.length;
         return panels;
-    }, [])
+    }, [onSelect])
 
     const createNext = useCallback(()=>{
         setPanels( panels => [...panels, createPanels(panelsLen.current)])
@@ -71,7 +71,7 @@ const Emoticons = ({ onSelect, toggle }) => {
 
     useEffect(() => {
         toggle.current = toggleHandler
-    }, [toggle])
+    }, [toggle, toggleHandler])
 
     const hide = useCallback(event => {
         if (!event.target.closest('.emoticons-container') &&
