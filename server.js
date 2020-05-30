@@ -10,10 +10,10 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(expressStaticGzip(path.join(__dirname, 'build'), {
   //  enableBrotli :true,
-    index: "index.html",
     orderPreference: ['gz'],
+    maxAge: 0,
     serveStatic: {
-        maxAge: 234,            // will be kept 
+        maxAge: 0,            // will be kept 
         cacheControl: false     // will be kept as well
     }
 }))
