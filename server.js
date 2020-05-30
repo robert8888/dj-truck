@@ -13,7 +13,6 @@ app.use(expressStaticGzip(path.join(__dirname, 'build'), {
     maxAge: 10,
     serveStatic: {
         maxAge: 10,            // will be kept 
-        cacheControl: false     // will be kept as well
     }
 }))
 
