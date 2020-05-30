@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { pushTrackToListRequest } from "../../../../../actions";
-import "./search-list.scss";
-import SearchListItem from "./SearchListItem/SearchListItem";
+import "./search-results.scss";
+import SearchItem from "./SearchItem/SearchItem";
 
 class SearchResults extends React.Component {
     constructor() {
@@ -11,7 +11,6 @@ class SearchResults extends React.Component {
             open: true,
         }
     }
-
 
     render() {
         return (
@@ -22,8 +21,10 @@ class SearchResults extends React.Component {
                 <ul className="search-result-list">
                     {
                         (this.props.searchList && !this.props.searchList[0]?.error && this.props.searchList.map(item =>
-                            <SearchListItem
+                            <SearchItem
                                 item={item}
+                                playback={this.props.playback}
+                                player={this.props.player}
                                 addToListHandle={
                                     this.props.addToListHandle.bind(null, [...this.props.currentPlaylist])
                                 }

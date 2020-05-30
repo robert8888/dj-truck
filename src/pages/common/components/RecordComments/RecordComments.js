@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback } from "react";
 import { connect } from "react-redux";
 import { reqDeleteComment, reqPostComment, reqUpdateComment } from "./../../../../actions";
-import { useRecordPlayer } from "./../../Hooks/useRecordPlayer";
+import { usePlayer } from "./../../Hooks/usePlayer";
 import CommentContent from "./Comment/Comment";
 import "./record-comments.scss";
 
@@ -14,7 +14,7 @@ const RecordComments = ({
         updateComment,
         deleteComment, 
     }) =>{
-    const [, player] = useRecordPlayer();
+    const [, player] = usePlayer();
 
     const post = useCallback((text) => {
         if(!postComment || !record || !userId) return;

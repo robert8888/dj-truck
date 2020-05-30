@@ -1,10 +1,10 @@
 import React, { Fragment, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import UUID from "uuidjs";
+import PlaybackButton from "./../PlaybackButton/PlaybackButton";
 import Created from "./Created/Created";
 import GenereList from "./GenereList/GenereList";
 import LikeButton from "./LikeButton/LikeButton";
-import PlaybackButton from "./PlaybackButton/PlaybackButton";
 import "./record.scss";
 import Time from "./Time/Time";
 import WaveSurrferPlayer from "./WaveSurrferPlayer/WaveSurferPlayer";

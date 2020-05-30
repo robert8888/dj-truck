@@ -32,6 +32,16 @@
             }
         }
         
+        .btn.btn-search-clear{
+            @include std-button();
+            &.btn{
+                display: inline-block;
+                margin: 0;
+                margin-left: 15px;
+                vertical-align: top;
+            }
+
+        }
 
         .search-control{
             @include input();

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import "./utils/logger/loggger-configuration";
 
   ReactDOM.render(
       <App />,

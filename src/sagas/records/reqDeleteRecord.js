@@ -6,7 +6,6 @@ import errorParser from "./../../utils/serverErrorParser/errorParser";
 
 
 export default function* requestDeleteRecord() {
-    console.log("handle request")
     yield takeEvery(ACTIONS.RECS_REQ_DELETE, handel)
 }
 

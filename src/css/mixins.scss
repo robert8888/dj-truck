@@ -343,6 +343,20 @@
    tr:hover td{
        background: $tertiary-dark;
    }
+
+   .btn.btn-primary{
+       @include std-button();
+       width: 1.5em;
+       height: 1.5em;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       padding: 0.1em;
+       &>svg{
+           max-height: 0.5em;
+           max-width: 0.5em;
+       }
+   }
 }
 
 

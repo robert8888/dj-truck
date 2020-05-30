@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Dropdown, DropdownButton, FormControl } from "react-bootstrap";
+import { Button, Dropdown, DropdownButton, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
 import { clearSearch, searchInput, searchStart } from "../../../../actions";
 import { API_TYPES, getApisName } from "./../../../../apis/apiProvider";
 import "./search.scss";
-import SearchResults from './SerachList/SearchList.js';
-
-
-
+import SearchResults from './SerachResults/SearchResults.js';
 
 
 const Search = ({
@@ -15,6 +12,8 @@ const Search = ({
     searchStart,
     setQuery,
     queryString,
+    controls,
+    player,
 }) => {
     const [resultOpen, setResultOpen] = useState(false);
     const [source, setSource] = useState(null);
@@ -22,7 +21,7 @@ const Search = ({
 
     const openList = () => setResultOpen(true);
 
-    useEffect(()=>{
+    useEffect(() => {
         const defaultSource = getApisName(API_TYPES.MIUSIC_SOURCE, { default: true })
         setSource(defaultSource)
     }, [setSource])
@@ -32,7 +31,7 @@ const Search = ({
         setResultOpen(false);
     }
 
-    const apiList = useMemo(()=>{
+    const apiList = useMemo(() => {
         return getApisName(API_TYPES.MIUSIC_SOURCE).map(api => {
             return (<Dropdown.Item key={api} onClick={setSource.bind(null, api)}>  {api} </Dropdown.Item>)
         })
@@ -42,6 +41,11 @@ const Search = ({
         if (event.key !== "Enter") return
         searchStart(queryString, source, limit)
     }, [queryString, source, limit, searchStart])
+
+    const clear = useCallback(()=>{
+        clearSearch();
+        setResultOpen(false);
+    },[clearSearch, setResultOpen])
 
     return (
         <div className="search">
@@ -59,6 +63,10 @@ const Search = ({
                     onKeyPress={controlKeyPress}
                     onFocus={openList}
                     value={queryString} />
+                {resultOpen && 
+                    <Button className="btn-search-clear" onClick={clear}> 
+                        Clear 
+                    </Button>}
                 <DropdownButton
                     className="btn-max-result-select"
                     title={limit}>
@@ -66,11 +74,11 @@ const Search = ({
                     <Dropdown.Item onClick={() => setLimit(25)}> 25 </Dropdown.Item>
                     <Dropdown.Item onClick={() => setLimit(50)}> 50 </Dropdown.Item>
                 </DropdownButton>
-
-
             </div>
 
             <SearchResults
+                playback={controls.playback}
+                player={player}
                 open={resultOpen}
                 selectedHandle={selectedHandel} />
         </div>

@@ -13,7 +13,7 @@ const Console = props => {
         <Row>
           <Col>
             <ExternalSearch />
-            <PlayListExplorer console/>
+            <PlayListExplorer page="console"/>
           </Col>
         </Row>
       </DndProvider>

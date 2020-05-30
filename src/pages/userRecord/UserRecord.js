@@ -8,7 +8,7 @@ import { loadRecords, reqRecData, reqRecs, setFooterType } from "./../../actions
 import RecordComments from "./../common/components/RecordComments/RecordComments";
 import RecordDetails from "./../common/components/RecordDetails/RecordDetails";
 import RecordTracklist from "./../common/components/RecordTracklist/RecordTracklist";
-import { useRecordPlayer } from "./../common/Hooks/useRecordPlayer";
+import { usePlayer } from "./../common/Hooks/usePlayer";
 import "./user-record.scss";
 
 const UserRecord = ({ 
@@ -19,7 +19,7 @@ const UserRecord = ({
         userId, 
         setRecordsList, 
         countAll }) => {
-    const [controls, player] = useRecordPlayer();
+    const [controls, player] = usePlayer();
     const { user, title, id } = useParams();
     const history = useHistory()
     const [record, setRecord] = useState();

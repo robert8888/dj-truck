@@ -1,5 +1,8 @@
 @import "./../../css/colors.scss";
 .page-playlist-container{
     background: transparent;
+    .play-list-explorer{
+        height: calc(var(--vh)*100  - 250px);
+    }
     
 }

@@ -8,11 +8,10 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(expressStaticGzip(path.join(__dirname, 'build'), {
-  //  enableBrotli :true,
     orderPreference: ['gzip'],
     maxAge: 10,
     serveStatic: {
-        maxAge: 10,            // will be kept 
+        maxAge: 10,            
     }
 }))
 

@@ -1,22 +1,24 @@
-import { useMemo, useState, useEffect, useCallback } from "react"
+import { useCallback, useEffect, useState } from "react";
+import { Log, Logger } from "../../../utils/logger/logger";
 import { getApi } from "./../../../apis/apiProvider";
 import { PLAYBACK_STATE } from "./usePlabackState";
 
 //getRecordUrl
-class Player {
-    constructor(){
-        if(!Player.instance){
-            Player.instance = this;
-        } 
-            
-        return Player.instance;
+class PlayerBus {
+    constructor() {
+        if (!PlayerBus.instance) {
+            PlayerBus.instance = this;
+        }
+
+        return PlayerBus.instance;
     }
-    
+
 
     progressUpdaterHandler = null;
 
     current = {
         id: null,
+        source: "RecordsStore",
         start: 0,
         duration: 0,
         progress: 0,
@@ -24,7 +26,7 @@ class Player {
         buffered: 0,
     };
 
-    btnStateHandlers = {}
+    playbackSubscirbers = {}
     progressSubscribers = {}
     bufferedSubscribers = []
     progressProviders = {};
@@ -46,25 +48,25 @@ class Player {
 
     spreadCurrentChange() {
         for (let handler of this.currentSubscribers) {
-           handler(this.current);
+            handler(this.current);
         }
     }
 
-    getCurrent(){
+    getCurrent() {
         return this.current;
     }
 
-    addBtnCtrlHandler(id, handler) {
-        this.btnStateHandlers[id] = handler;
+    subscribePlayback(id, handler) {
+        this.playbackSubscirbers[id] = handler;
     }
 
-    removeBtnCtrlHandler(id){
-        delete this.btnStateHandlers[id]
+    unSubscribePlayback(id) {
+        delete this.playbackSubscirbers[id]
     }
 
-    setBtnState(id, state) {
-        if(this.btnStateHandlers[id]){
-            this.btnStateHandlers[id](state)
+    setPlaybackState(id, state) {
+        if (this.playbackSubscirbers[id]) {
+            this.playbackSubscirbers[id](state)
         }
     }
 
@@ -87,12 +89,15 @@ class Player {
         this.spreadProgressChanges();
     }
 
-    spreadProgressChanges(){
-        const {id, progress} = this.current;
-        for (let handler of this.progressSubscribers[id]) {
+    spreadProgressChanges() {
+        const { id, progress } = this.current;
+
+        for (let handler of this.progressSubscribers['#'] || []) {
             handler(progress);
         }
-        for (let handler of this.progressSubscribers['#'] || []) {
+
+        if(!this.progressSubscribers[id]) return;
+        for (let handler of this.progressSubscribers[id]) {
             handler(progress);
         }
     }
@@ -109,6 +114,11 @@ class Player {
         if (!id) {
             return this.getProgress(this.current.id);
         }
+
+        if(!id || !this.progressProviders[id]){
+            return this.current.progress;
+        }
+
         return this.progressProviders[id]();
     }
 
@@ -136,21 +146,28 @@ class Player {
     }
 }
 
-export function useRecordPlayer() {
-    const [player,] = useState(new Player())
+export function usePlayer() {
+    const [player,] = useState(new PlayerBus())
 
-    const api = useMemo(() => {
-        return getApi('RecordsStore');
-    }, [])
 
     useEffect(() => {
         player.mediaElement = player.mediaElement || document.createElement('audio');
-       // player.mediaElement.type = "audio/mp3";
+        // player.mediaElement.type = "audio/mp3";
     }, [player])
 
     const startUpdateProg = useCallback(() => {
-        const handler = setInterval(() => {
+        const handler = setInterval(() => window.requestIdleCallback( () => {
+            
+            if(player.current.state === PLAYBACK_STATE.PAUSE){
+                clearInterval(handler);
+            }
             const mediaEl = player.mediaElement;
+            if(!player.current.duration) {
+                player.setCurrent({
+                    ...player.current,
+                    duration : mediaEl.duration * 1000
+                })
+            }
             const progress = mediaEl.currentTime / (player.current.duration / 1000);
             player.setProgress(progress);
             //--
@@ -159,9 +176,9 @@ export function useRecordPlayer() {
                 const end = bufferdTimeRanges.end(bufferdTimeRanges.length - 1);
                 player.setBuffered(end / (player.current.duration / 1000))
             }
-        }, 400)
+        }, {timeout: 20}), 400)
         player.progressUpdaterHandler = handler;
-        
+
     }, [player])
 
     const stopUpdateProg = useCallback(() => {
@@ -177,10 +194,9 @@ export function useRecordPlayer() {
                         ...player.current,
                         state: PLAYBACK_STATE.PAUSE,
                     })
-                    player.setBtnState(player.current.id, PLAYBACK_STATE.PAUSE)
+                    player.setPlaybackState(player.current.id, PLAYBACK_STATE.PAUSE)
                 }
                 stopUpdateProg();
-                console.log("media element ended event")
             })
             media.addEventListener('progress', () => {
                 const bufferdTimeRanges = media.buffered;
@@ -192,35 +208,52 @@ export function useRecordPlayer() {
         }
     }, [player, stopUpdateProg])
 
-    const playback = useCallback((id, pbState) => {
-        const media = player.mediaElement;
-        const current = (id) ? false : true;
+    const playback = useCallback((id, pbState, source) => {
         id = id || player.current.id;
+        source = source || player.current.source || "RecordsStore";
+        const api = getApi(source);
+        const media = player.mediaElement;
+        const isCurrent = id === player.current.id;
+        
         if (!id) {
             return;
         }
 
+        console.log("playback", id, pbState, source)
         if (pbState === PLAYBACK_STATE.PLAY) {
-            let  progress, duration; 
-            if(current) {
-                ({progress, duration } = player.getProgress("#"));
+            let progress, duration;
+            if (isCurrent) {
+                ({ progress, duration } = player.getProgress("#"));
             } else {
-                ({progress, duration } = player.getProgress(id));
+                ({ progress, duration } = player.getProgress(id));
             }
             const position = (duration / 1000) * progress;
-            media.src = api.getRecordUrl(id);
-            media.currentTime = position;
-            media.play().catch(err => console.log('Play action was aborded' + err));
-            if (player.current.id && !current) {
-                player.setBtnState(player.current.id, PLAYBACK_STATE.PAUSE)
+            media.src = api.getStreamUrl(id);
+            
+            if(!isNaN(position)){
+                media.currentTime = position;
             }
+            
+            media.play().catch(error => {
+                Logger.push(Log.Error(
+                    ['usePlayer', 'playback method'], 
+                    'Media element play method error' + error.message,
+                    error))
+            });
+
+            if (player.current.id && !isCurrent) {
+                player.setPlaybackState(player.current.id, PLAYBACK_STATE.PAUSE)
+            }
+
             player.setCurrent({
                 id,
+                source,
                 duration,
-                progress: progress,
+                progress,
                 buffered: 0,
                 state: PLAYBACK_STATE.PLAY,
             })
+
             startUpdateProg()
         } else if (pbState === PLAYBACK_STATE.PAUSE) {
             if (media.readyState >= 2) {
@@ -235,11 +268,12 @@ export function useRecordPlayer() {
             })
             stopUpdateProg();
         }
-        if (current) {
-            player.setBtnState(id, pbState)
+
+        if (isCurrent) {
+            player.setPlaybackState(id, pbState)
         }
-    }, [api,
-        player,
+
+    }, [player,
         stopUpdateProg,
         startUpdateProg,
     ])
@@ -247,19 +281,19 @@ export function useRecordPlayer() {
     const seek = useCallback(({
         id = player.current.id,
         progress,
-        duration = player.current.duration
+        duration = player.current.duration,
+        source = 'RecordsStore',
     }) => {
-
+        
         const mediaEl = player.mediaElement;
+        const api = getApi(source);
 
         if (!id || !duration) {
             return;
         }
 
-
-
         if (player.current.id && player.current.id !== id) {
-            player.setBtnState(player.current.id, PLAYBACK_STATE.PAUSE);
+            player.setPlaybackState(player.current.id, PLAYBACK_STATE.PAUSE);
         }
         const position = (duration / 1000) * progress;
 
@@ -270,12 +304,13 @@ export function useRecordPlayer() {
         stopUpdateProg();
 
         if (player.current.id !== id) {
-            mediaEl.src = api.getRecordUrl(id);
+            mediaEl.src = api.getStreamUrl(id);
             mediaEl.currentTime = position;
-            player.setBtnState(id, PLAYBACK_STATE.PLAY);
+            player.setPlaybackState(id, PLAYBACK_STATE.PLAY);
             player.setCurrent({
                 ...player.current,
                 id,
+                source,
                 duration,
                 state: PLAYBACK_STATE.PLAY
             })
@@ -285,17 +320,17 @@ export function useRecordPlayer() {
         mediaEl.currentTime = position;
         if (mediaEl.pause) {
             mediaEl.play().catch(err => console.log('Play action was aborded' + err));
-            player.setBtnState(player.current.id, PLAYBACK_STATE.PLAY);
+            player.setPlaybackState(player.current.id, PLAYBACK_STATE.PLAY);
             player.setCurrent({
                 ...player.current,
                 state: PLAYBACK_STATE.PLAY
             })
         }
         startUpdateProg();
-    }, [player, api, stopUpdateProg, startUpdateProg])
+    }, [player, stopUpdateProg, startUpdateProg])
 
     const setVolume = useCallback((level) => {
-        const mediaElement =  player.mediaElement;
+        const mediaElement = player.mediaElement;
         if (!mediaElement) {
             return;
         }
@@ -303,8 +338,12 @@ export function useRecordPlayer() {
     }, [player])
 
     const stop = useCallback(() => {
-        const mediaElement =  player.mediaElement;
+        const mediaElement = player.mediaElement;
         mediaElement.load();
+        player.setCurrent({
+            ...player.current,
+            state:PLAYBACK_STATE.PAUSE,
+        })
     }, [player])
 
     const controls = {

@@ -4,9 +4,12 @@ const getSocketUrl = ()=>{
     return recorder_api_url.replace('http', 'ws').replace('https', 'wss')
 }
 
-const getRecordUrl = (id, from = 0 ) =>{
-    return recorder_api_url + "/records/" + id // + "/" + from ;
+const getRecordUrl = (id) =>{
+    return recorder_api_url + "/records/" + id 
 }
+
+const getStreamUrl = id => getRecordUrl(id);
+
 const deleteRecord = async (id) => {
     const res = await fetch(getRecordUrl(id), {
         method: 'DELETE',
@@ -21,6 +24,7 @@ const getDownloadLink = (id, title) => {
 export default {
     getSocketUrl,
     getRecordUrl,
+    getStreamUrl,
     deleteRecord,
     getDownloadLink,
 }

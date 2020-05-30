@@ -78,6 +78,7 @@ const ProgressSlider = ({ player, seek}) => {
             () => setBuffredPosition(buffered), 
             [buffered, setBuffredPosition]
         );
+        
     const refreshProgress = useCallback(
             () => setThumbPosition(progress), 
             [progress, setThumbPosition]
@@ -121,7 +122,6 @@ const ProgressSlider = ({ player, seek}) => {
         player.addProgressProvider("#", getProgress)
         setCurrentRecord(player.getCurrent());
         return () => {
-            console.log("unmouting slider")
             player.unSubscribeProgress('#', setProgressHandler);
             player.unSubscribeCurrent(setCurrentRecord);
             player.unSubscribeBuffered(setBuffred);

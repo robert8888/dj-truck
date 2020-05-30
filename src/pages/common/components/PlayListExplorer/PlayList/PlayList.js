@@ -1,28 +1,28 @@
 import React, { Fragment } from "react";
+import { ContextMenuTrigger } from "react-contextmenu";
 import { connect } from "react-redux";
-import PlaylistCtx from "./PlaylistContext";
-import { ContextMenuTrigger } from "react-contextmenu"
-import PlaylistTable from "./PlaylistTable/PlaylistTable";
-import EmptyListInfo from "./EmptList/EmptyList";
-import PlaylistItem from "./Playlist_Item/PlaylistItem";
 import CtxMenu from "../../../../common/components/ContextMenu/ContextMenu";
-import {
-    loadTrack,
-    deleteTrackRequest,
-    swapTrackOnList,
-    startCalcBpm,
-    resetCurrentPlaylistContent,
-    updateTrackPositionRequest,
-} from "./../../../../../actions";
+import { deleteTrackRequest, loadTrack, resetCurrentPlaylistContent, startCalcBpm, swapTrackOnList, updateTrackPositionRequest } from "./../../../../../actions";
+import EmptyListInfo from "./EmptList/EmptyList";
 import "./play-list.scss";
+import PlaylistCtx from "./PlaylistContext";
+import PlaylistTable from "./PlaylistTable/PlaylistTable";
+import PlaylistItem from "./Playlist_Item/PlaylistItem";
 
 
 
 class PlayList extends React.Component {
-    currentHoverElement = -1;
-    playlistSnapshot = null;
-
-    headers = ['#', 'Source', 'Title', 'Quality', 'Time', 'Bpm'];
+    constructor(...args){
+        super(...args);
+        this.currentHoverElement = -1;
+        this.playlistSnapshot = null;
+    
+        this.headers = ['#', 'Source', 'Title', 'Quality', 'Time', 'Bpm'];
+       
+        if(this.props.player){
+            this.headers.unshift("");
+        }
+    }
 
     setCurrentHover(index) {
         if (!this.menuVisible) {
@@ -69,7 +69,7 @@ class PlayList extends React.Component {
     acceptListOrder() {
         const prev = this.playlistSnapshot;
         const current = this.props.playlist;
-        //find difretces and call to api
+        //find differences in tracks order and call to api
         const tracksPositionsMap = [];
         current.forEach((_, index) => {
             if (prev[index].id !== current[index].id) {
@@ -93,7 +93,7 @@ class PlayList extends React.Component {
             "Calc BPM": this.reCalcBpm.bind(this),
             "Delete": this.deleteTrack.bind(this)
         }
-        if(this.props.console){
+        if(this.props.page === "console"){
             items = {
                 ...items,
                 "Send to A": this.loadTrack.bind(this, "A"),
@@ -113,6 +113,8 @@ class PlayList extends React.Component {
                                 <PlaylistTable headers={this.headers}>
                                     {this.props.playlist && this.props.playlist.map((item, index) =>
                                         <PlaylistItem
+                                            player={this.props.player}
+                                            controls={this.props.controls}
                                             item={item}
                                             listIndex={index}
                                             swapItems={this.props.swapTrack}

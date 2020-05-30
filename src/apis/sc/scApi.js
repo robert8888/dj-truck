@@ -17,6 +17,10 @@ export default {
         return apiUrl + `/download?id=` + id;
     },
 
+    getStreamUrl: (id) => {
+        return apiUrl + `/download?id=` + id;
+    },
+
     getUrlToExternall: (id) => {
         return "";
     }

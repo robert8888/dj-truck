@@ -1,5 +1,5 @@
 import React from "react";
-import { getApi } from "./../../../../../../apis/apiProvider";
+import PlaybackButton from "../../../PlaybackButton/PlaybackButton";
 import { stripHtml } from "./../../../../../../utils/html/htmlHelper";
 import { formater } from "./../../../../../../utils/time/timeFromater";
 
@@ -8,16 +8,13 @@ const SearchListItem = (props) => {
     const {
         title,
         description,
-        sourceId: id,
+        sourceId,
         thumbnails,
         duration,
-        source
+        source,
+        sourceUrl,
     } = props.item;
-
-    const api = getApi(source);
-
-    const sourceUrl = api.getUrlToExternall(id);
-
+    
     const formatTime = time => {
         if(!time) return null;
 
@@ -31,7 +28,6 @@ const SearchListItem = (props) => {
     const handleClick = () => {
         const track = {
             ...props.item,
-            //_id: UUID.genV1().toString(),
         }
         if (track.source === "YouTube" && typeof track.duration === "string") {
             track.duration = formater.ptToSeconds(track.duration);
@@ -45,11 +41,19 @@ const SearchListItem = (props) => {
             <div className="list-item-thumbnails">
                 <img alt="youtube thumbnail" className="thumbnail-img" src={thumbnails?.default?.url} />
                 <span className="thumbnail-time">{formatTime(duration)}</span>
+                { props.player && 
+                    <PlaybackButton 
+                        className="search-result"
+                        playback={props.playback} 
+                        player={props.player}
+                        id={sourceId} 
+                        source={source}/>
+                }
             </div>
             <div className="list-item-details">
                 <h5>{stripHtml(title)}</h5>
                 <p>{stripHtml(description)}</p>
-                <a href={sourceUrl}> {sourceUrl} </a>
+                <a href={sourceUrl} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}> {sourceUrl} </a>
             </div>
         </li>
     )

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import React, { useContext, useEffect, useState } from "react";
+import { removeUser, setUserProfile } from "./../actions";
 import store from "./../store";
-import {setUserProfile, removeUser} from "./../actions"
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
@@ -44,8 +44,7 @@ export const Auth0Provider= ({
       if (isAuthenticated) {
         const user = await auth0FromHook.getUser();
         setUser(user);
-        console.log("user auth0 ", user);
-
+        
         dispatch(setUserProfile({
           logged: true,
           ...user,

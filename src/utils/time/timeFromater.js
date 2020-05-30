@@ -49,6 +49,10 @@ export const formater = {
 
 
     secondsToStr : (seconds) => {
+        if(isNaN(seconds) || seconds === null || seconds === undefined){
+            seconds = 0;
+        }
+        
         const objTime = secondsToObj(seconds);
         return objToStr(objTime);
     } 

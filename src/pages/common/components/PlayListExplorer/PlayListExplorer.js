@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
-import {connect} from "react-redux"
-import "./play-list-explorer.scss"
+import { connect } from "react-redux";
+import { rootDirRequest } from "./../../../../actions";
 import Explorer from "./Explorer/Explorer";
+import "./play-list-explorer.scss";
 import PlayList from "./PlayList/PlayList";
-import {rootDirRequest} from "./../../../../actions";
 
-const PlayListExplorer = ({logged, rootDirRequest, console}) => {
+const PlayListExplorer = ({logged, rootDirRequest, page, player, controls}) => {
     useEffect(()=>{
         if(logged){
             rootDirRequest();
         }
     }, [logged, rootDirRequest])
 
+
     return (
         <div className="play-list-explorer">
             <Explorer/>
-            <PlayList console={console}/>
+            <PlayList page={page} player={player} controls={controls}/>
         </div>
     )
 }

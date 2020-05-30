@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { consoleStopAll } from "./../../../../actions";
-import { useRecordPlayer } from "./../../../common/Hooks/useRecordPlayer";
+import { usePlayer } from "./../../../common/Hooks/usePlayer";
 import "./console.scss";
 import Deck from "./Deck/Deck";
 import Effector from "./Effector/Effector";
@@ -10,7 +10,7 @@ import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
 
 const Console = ({dispatch}) => {
-    const [control] = useRecordPlayer();
+    const [control] = usePlayer();
     useEffect(() =>{
         control.stop();
          return () => {

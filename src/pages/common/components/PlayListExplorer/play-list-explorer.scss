@@ -7,7 +7,7 @@
     background: $secondary-dark;
     padding: 5px;
     width: 100%;
-    height: calc(100vh  - 200px);
+    height: calc(100 * var(--vh)  - 300px);
 
 
 

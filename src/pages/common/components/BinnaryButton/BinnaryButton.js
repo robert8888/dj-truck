@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from "react";
-import {Button} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 
 
 const BinnaryButton = props => {
     const [state, setState] = useState( props.initValue || 0);
     const {onChange, className, dispatch, ...rest} = props;
 
-    const clickHandle = ()=> {
+    const clickHandle = (event)=> {
+        event.stopPropagation();
         let nextState;
         if(props.value !== null && props.value !== undefined){
             nextState = props.value ? 0 : 1;
@@ -25,7 +26,7 @@ const BinnaryButton = props => {
 
     return (
         <Button 
-            className={ className + ((state === 1 ) ? " btn--pressed-filed" : "")} 
+            className={ className + ((!!state) ? " btn--pressed-filed" : "")} 
             onClick = {clickHandle}
             {...rest}>
                 {props.children}

@@ -10,7 +10,7 @@ import PlayerControls from "./../common/components/PlayerControls/PlayerControls
 import RecordsList from "./../common/components/RecordList/RecordList";
 import RecordSearch from "./../common/components/RecordSearch/RecordSearch";
 import UserProfile from "./../common/components/UserProfile/UserProfile";
-import { useRecordPlayer } from "./../common/Hooks/useRecordPlayer";
+import { usePlayer } from "./../common/Hooks/usePlayer";
 import useRecordSearchUrl from "./../common/Hooks/useRecordSearchURL";
 import "./user-records.scss";
 
@@ -29,7 +29,7 @@ const UserRecords = React.memo(({
     }, [setFooter])
     //--------------------------------
 
-    const [controls, player] = useRecordPlayer();
+    const [controls, player] = usePlayer();
     //-------------------------
     const { loading, isAuthenticated } = useAuth0();
     const [pageTitle, setPageTitle] = useState("Records");

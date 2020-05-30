@@ -18,6 +18,10 @@ export default {
         return apiUrl + "/download?url=https://www.youtube.com/watch?v=" + id ; 
     },
 
+    getStreamUrl: (id) => {
+        return apiUrl + "/download?url=https://www.youtube.com/watch?v=" + id ; 
+    },
+
     getUrlToExternall : (id) => {
         return "https://www.youtube.com/watch?v=" + id;
     }

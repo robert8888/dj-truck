@@ -1,5 +1,5 @@
-import { ACTIONS } from "./../../actions";
 import { produce } from "imer";
+import { ACTIONS } from "./../../actions";
 
 const initDeckState = {
     track: {
@@ -82,7 +82,6 @@ const nextDeckState = nextState('deckState');
 function consoleReducer(state = initState, action) {
     switch (action.type) {
         case ACTIONS.CONSOLE_RESET : {
-            console.log('reset')
             let channels = Object.keys(state.channel);
             return produce(state, draftState=>{
                 for(let channel of channels){

@@ -5,11 +5,11 @@ import { connect } from "react-redux";
 import { loadTrack } from "../../../../../../actions";
 import { formater } from "./../../../../../../utils/time/timeFromater";
 import ItemTypes from "./../../../../DndItemTypes";
+import PlaybackButton from "./../../../PlaybackButton/PlaybackButton";
 import PlaylistContext from "./../PlaylistContext";
 
 const PlaylistItem = props => {
   const ref = useRef(null)
-
   const ctx = useContext(PlaylistContext);
 
   let track = {
@@ -80,7 +80,6 @@ const PlaylistItem = props => {
     opacity: (isDragging) ? 0 : 1
   }
 
-  ///--------- formatingg
   const timeFormating = time => formater.secondsToStr(time);
 
   const bpmFromating = bpm => {
@@ -99,6 +98,16 @@ const PlaylistItem = props => {
       className="track-list-table-row"
       style={style}
       onMouseEnter={ctx.setHover.bind(null, props.listIndex)}>
+        {props.player && 
+          <td className="track-list-table-col btn-playback">
+            <PlaybackButton 
+              playback={props.controls.playback}
+              player={props.player}
+              id={track.sourceId}
+              source={track.source}
+            />
+          </td>
+        }
         <td className="track-list-table-col source">{props.listIndex + 1}</td>
         <td className="track-list-table-col source">{track.source}</td>
         <td className="track-list-table-col title overflow">{track.title}</td>
