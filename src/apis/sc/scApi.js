@@ -14,11 +14,11 @@ export default {
     search,
 
     getUrl: (id) => {
-        return apiUrl + `/download?id=` + id;
+        return apiUrl + `/api/download?id=` + id;
     },
 
     getStreamUrl: (id) => {
-        return apiUrl + `/download?id=` + id;
+        return apiUrl + `/api/stream?id=` + id;
     },
 
     getUrlToExternall: (id) => {

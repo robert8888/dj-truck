@@ -77,7 +77,7 @@ const Search = ({
             </div>
 
             <SearchResults
-                playback={controls.playback}
+                playback={controls?.playback}
                 player={player}
                 open={resultOpen}
                 selectedHandle={selectedHandel} />
