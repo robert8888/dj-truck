@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(expressStaticGzip(path.join(__dirname, 'build'), {
     orderPreference: ['gzip'],
-    maxAge: 10,
+    maxAge: 0,
     serveStatic: {
-        maxAge: 10,            
+        maxAge: 0,            
     }
 }))
 
