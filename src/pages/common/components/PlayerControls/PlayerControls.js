@@ -7,7 +7,7 @@ import RecordDetails from "./RecordDetails/RecordDetails";
 import Volume from "./Volume/Volume";
 
 
-const PlayerControls = ({controls, player,  list:recordList}) => {
+const PlayerControls = ({controls, player,  list}) => {
     const [currentRecord , setCurrentRecrod] = useState(null);
     const [currentRecordDetails, setCurrentRecrodDails] = useState(null);
 
@@ -23,22 +23,22 @@ const PlayerControls = ({controls, player,  list:recordList}) => {
     }, [player, setCurrentRecrod])
 
     useEffect(()=>{
-        if(!recordList) {return; }
+        if(!list) {return; }
         let currentId = currentRecord?.id;
         
         if(!currentId){
             currentId = player.getCurrent().id;
         }
 
-        const list = (recordList instanceof Array) ? recordList : [recordList];
+        list = (list instanceof Array) ? list : [list];
 
-        const current = list.find( record => record.id === currentId)
+        const current = list.find( item => (item.id === currentId || item?.sourceId === currentId))
        
         if(!current) return; 
         
         setCurrentRecrodDails(current)
         
-    }, [player, recordList, currentRecord, setCurrentRecrodDails])
+    }, [player, list, currentRecord, setCurrentRecrodDails])
 
     return (
         <div className="record-player-controls_container">

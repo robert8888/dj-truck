@@ -219,7 +219,6 @@ export function usePlayer() {
             return;
         }
 
-        console.log("playback", id, pbState, source)
         if (pbState === PLAYBACK_STATE.PLAY) {
             let progress, duration;
             if (isCurrent) {

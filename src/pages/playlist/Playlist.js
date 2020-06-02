@@ -1,4 +1,5 @@
 import React from "react";
+import {connect} from "react-redux"
 import { Col, Row } from "react-bootstrap";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
@@ -8,7 +9,7 @@ import PlayListExplorer from "./../common/components/PlayListExplorer/PlayListEx
 import { usePlayer } from "./../common/Hooks/usePlayer";
 import "./playlist.scss";
 
-const Playlist = () => {
+const Playlist = ({currentPlalistContent}) => {
     const [controls, player] = usePlayer();
 
     return (
@@ -23,9 +24,13 @@ const Playlist = () => {
                 </Row>
             </DndProvider>
         </div>
-        <PlayerControls player={player} controls={controls} />
+        <PlayerControls player={player} controls={controls} list={currentPlalistContent}/>
         </>        
     )
 }
 
-export default Playlist;
+const mapStateToProps  = state => ({
+    currentPlalistContent : state.playList.list,
+})
+
+export default connect(mapStateToProps)(Playlist);

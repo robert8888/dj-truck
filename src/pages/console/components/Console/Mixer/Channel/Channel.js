@@ -1,5 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
+import throttle from 'lodash/throttle';
+import Console from "./../../../../core/console/console";
 import EqKnob from "./../componets/EqKnob/EqKnob"
 import GainKnob from "./../componets/GainKnob/GainKnob";
 import FilterKnob from "./../componets/FilterKnob/FitlerKnob";
@@ -18,11 +20,7 @@ import {
 } from "./../../../../../../actions";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHeadphones} from "@fortawesome/free-solid-svg-icons"
-
 import "./mixer-channel.scss";
-//import { throttle } from "./../../../../../../utils/functions/lodash";
-import throttle from 'lodash/throttle';
-import Console from "./../../../../core/console/console";
 
 class Channel extends React.Component{
     cueNotSupportedMsg = `Sorry your device not support this`;
