@@ -55,13 +55,13 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
             grid-column:2;
         }
     }
-    .knobs-set-2{
-        grid-column: 2;
-        grid-row:1;
-        @if $side == "left"{
-            grid-column: 1;
-        }
-    }
+    // .knobs-set-2{
+    //     grid-column: 2;
+    //     grid-row:1;
+    //     @if $side == "left"{
+    //         grid-column: 1;
+    //     }
+    // }
     
 
 
