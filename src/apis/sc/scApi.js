@@ -1,13 +1,26 @@
+import { Log, Logger } from "./../../utils/logger/logger";
+
 const apiUrl = process.env.REACT_APP_SC_API_URL;
 const maxResults = 10
 
-export async function search(query = "", limit = maxResults) {
 
+export async function search(query = "", limit = maxResults) {
+    const publicErrorMsg =  `Sorry during conectig to soundcloud api occured problem. Searching the soundlcoud database is not posible in this moment`
+   
     const comand = "/search?q=";
     const options = '&maxResults=' + limit;
     const url = apiUrl + comand + encodeURI(query) + options;
-    let response = await fetch(url);
-    return await response.json();
+
+    let data = await fetch(url).then(res => res.json()).catch( error => {
+        Logger.push(Log.Error(
+            ['api', 'soundcloud', 'search'],
+            "Can't recive search data from soundcloud" + error.message,
+            publicErrorMsg,
+            error
+        ))
+    });
+
+    return data;
 }
 
 export default {
@@ -21,7 +34,10 @@ export default {
         return apiUrl + `/api/stream?id=` + id;
     },
 
-    getUrlToExternall: (id) => {
-        return "";
+    getUrlToExternall: async (id) => {
+        const trackData = await fetch(apiUrl + "/api/resolve").then( res => res.json());
+        if(!trackData) return "www.soundcloud.com";
+
+        return trackData?.permalink_url;
     }
 } 

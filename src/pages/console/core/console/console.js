@@ -1,10 +1,10 @@
 import store from "./../../../../store";
+import Channels from "./channels/channels";
+import Effector from "./effector/effector";
+import Mixer from "./mixer/mixer";
 import Observer from "./observer/observer";
 import STATUS from "./observer/STATUS";
 
-import Channels from "./channels/channels";
-import Mixer from "./mixer/mixer";
-import Effector from "./effector/effector";
 
 
 export default class Console{
@@ -134,6 +134,11 @@ export default class Console{
 
             case STATUS.FADER_CHANGE : {
                 this.mixer.setFader(diff.currentValue);
+                break;
+            }
+
+            case STATUS.CUE_CHANGE : {
+                this.mixer.setCue(diff.channel, diff.currentValue)
                 break;
             }
 

@@ -1,10 +1,13 @@
+import { setCueEnable } from "./../../../../../actions";
 import store from "./../../../../../store";
 import { nodeChain as audioNodeChain } from "./../../../../../utils/sound/audioNodes";
-import Mastering from "./mastering";
-import Recorder from "./recorder/recorder";
+import Cue from "./cue";
 import Equaliztion from "./equalization";
 import Fader from "./fader";
+import Mastering from "./mastering";
 import PeakMeters from "./peakMeters";
+import Recorder from "./recorder/recorder";
+
 
 export default class Mixer {
     constructor(channels) {
@@ -13,10 +16,11 @@ export default class Mixer {
         this.channels = channels;
         this.mastering = new Mastering(this);
 
-        
+
         Object.assign(this, Equaliztion);
         Object.assign(this, Fader);
-        Object.assign(this, PeakMeters)
+        Object.assign(this, PeakMeters);
+        Object.assign(this, Cue);
 
         this.initChannelContainer('audioNodes');
         this.initChannelContainer('sampleBuffers');
@@ -24,7 +28,6 @@ export default class Mixer {
 
         this.recorder = new Recorder(this);
     }
-
 
     //connecting extrnal (effector)
     connect(external) {
@@ -51,27 +54,49 @@ export default class Mixer {
         let ac = this.mainAudioContext;
         let main = this.audioNodes.channels['main'] = {};
 
+        ac.destination.channelCount = Math.min(4, ac.destination.maxChannelCount);
+
+        if (ac.destination.channelCount === 4) {
+            this.isCueEnable = true;
+            setTimeout(() => {
+                store.dispatch(setCueEnable(true))
+            }, 0)
+        }
+
         main.preGainNode = ac.createGain();
         main.preAnalyserNode = ac.createAnalyser();
         main.compressorNode = ac.createDynamicsCompressor();
-        main.postAnalyserNode = ac.createAnalyser();
         main.postGainNode = ac.createGain();
+        main.postAnalyserNode = ac.createAnalyser();
+
+        //cue
+        main.cueInput = ac.createGain();
+        if (this.isCueEnable) {
+            main.cueChannelMerger = ac.createChannelMerger(ac.destination.channelCount);
+
+            main.cueChannelMerger.channelCountMode = "explicit";
+            main.cueInput.channelCountMode = "explicit";
+            main.cueInput.channelCount = ac.destination.channelCount;
+
+            main.cueChannelMerger.connect(main.cueInput);
+        }
 
         main.recorderStremDestination = ac.createMediaStreamDestination();
         main.postGainNode.connect(main.recorderStremDestination)
 
+
         this.mastering.configCompressor();
 
         //wiring in chain
-         audioNodeChain([
-         main.preGainNode,
-         main.preAnalyserNode, 
-         main.compressorNode, 
-         main.postGainNode,
-         main.postAnalyserNode, 
-         ac.destination])
+        audioNodeChain([
+            main.preGainNode,
+            main.preAnalyserNode,
+            main.compressorNode,
+            main.postGainNode,
+            main.postAnalyserNode,
+            main.cueInput,
+            ac.destination])
     }
-
 
     getChannelInterface(channelName) {
         return {
@@ -79,7 +104,7 @@ export default class Mixer {
         }
     }
 
-    getMasteringInterface(){
+    getMasteringInterface() {
         return {
             getPrePeakMeter: {
                 getPeakMeter: this.getMasterPeakMetter.bind(this, "pre")
@@ -96,8 +121,13 @@ export default class Mixer {
         let surfer = this.channels.getChannel(channelName)
         let audioCtx = surfer.backend.ac;
 
-        //chained from up to down 
+        //build aduio nodes after, below chain in this order
         this.audioNodes.channels[channelName] = {
+            outputCueNode: audioCtx.createGain(),
+            cue: {
+                cueGainNode: audioCtx.createGain(),
+                cueChannelSpliterNode: audioCtx.createChannelSplitter(2),
+            },
             eqHiFilterNode: audioCtx.createBiquadFilter(),
             eqMidFilterNode: audioCtx.createBiquadFilter(),
             eqLowFilterNode: audioCtx.createBiquadFilter(),
@@ -118,6 +148,15 @@ export default class Mixer {
 
         //--Confign
         const channelNodes = this.audioNodes.channels[channelName];
+        //-- Cue
+        channelNodes.outputCueNode.connect(channelNodes.cue.cueGainNode);
+        channelNodes.cue.cueGainNode.connect(channelNodes.cue.cueChannelSpliterNode);
+        //connecting to main chanel
+        if (this.isCueEnable) {
+            const mainChannelNodes = this.audioNodes.channels['main']
+            channelNodes.cue.cueChannelSpliterNode.connect(mainChannelNodes.cueChannelMerger, 0, 2);
+            channelNodes.cue.cueChannelSpliterNode.connect(mainChannelNodes.cueChannelMerger, 1, 3);
+        }
         //
         channelNodes.analyserNode.fftSize = 256;
         //--EQ filters
@@ -154,6 +193,7 @@ export default class Mixer {
 
         //Assign in chain 
         this.channels.getChannel(channelName).backend.setFilters([
+            channelNodes.outputCueNode,
             channelNodes.eqLowFilterNode,
             channelNodes.eqHiFilterNode,
             channelNodes.eqMidFilterNode,
@@ -170,12 +210,9 @@ export default class Mixer {
         surfer.backend.gainNode.disconnect();
         surfer.backend.gainNode.connect(
             this.audioNodes.channels['main'].preGainNode
-            );
+        );
         this.setUpSampleBuffers(channelName);
     }
-
-
-
 
     setSend(channelName, sendNumber, value) {
         const sendAndReturns = this.audioNodes.channels[channelName].sendAndReturns;
@@ -192,7 +229,6 @@ export default class Mixer {
         }
 
         sendAndReturns.forEach((channel, index) => {
-            console.log("for channek " + channelName, " gain " + gain, "send nubmer " + sendNumber)
             const { send, return: returns } = channel;
             //current sending
             if (sendAndReturns._currentSends.has(index)) {
@@ -209,11 +245,6 @@ export default class Mixer {
         this.audioNodes.channels[channelName].bypassNode
             .gain.setTargetAtTime(bypass, this.mainAudioContext.currentTime, 0.01);
     }
-
-
-
-
-
 
 }
 

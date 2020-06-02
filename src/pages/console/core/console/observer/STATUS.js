@@ -15,6 +15,7 @@ const STATUS = {
     LOOP_CHANGE : "Fire when loop state is change on channel",
     LOOP_LENGTH_CHANGE : "Fire when loopLength is changed durring a looped track",
     SEND_CHANGE : "Fire when mixer send is changed",
+    CUE_CHANGE: "Fire whre cue value on mixer channel was changed",
 
     DRY_WET_CHANGED : "Fire when dry wet paramet was changed on effector channel",
     CURRENT_EFFECT_CHANGED: "Fire when current effect for effector channel is changed",

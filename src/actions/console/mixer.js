@@ -7,9 +7,12 @@ const ACTIONS = {
     SET_FILTER : "Set $filter to $destination channel",
     SET_FILTER_RES : "Set filter $resonasn to $destination channel ",
     SET_FADER : "Set $Fader to mixer",
-    SET_SEND : "Set send $number, on $channel,  to $value"
+    SET_SEND : "Set send $number, on $channel,  to $value",
+    SET_CUE: "Set value of cue state on $channel, to $value",
+
+    SET_CUE_ENABLED: "Set value of flag cue enabled"
 }
-export {ACTIONS as MIXER_ACTIONS }
+export { ACTIONS as MIXER_ACTIONS }
 
 export function setGain(destination, value){
     return {
@@ -73,5 +76,20 @@ export function setSend(destination, number, value){
         destination,
         number,
         value
+    }
+}
+
+export function setCue(destination, value){
+    return {
+        type: ACTIONS.SET_CUE,
+        destination,
+        value
+    }
+}
+
+export function setCueEnable(value){
+    return {
+        type: ACTIONS.SET_CUE_ENABLED,
+        value,
     }
 }

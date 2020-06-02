@@ -1,5 +1,5 @@
-import { ACTIONS } from "./../../actions";
 import { produce } from "imer";
+import { ACTIONS } from "./../../actions";
 
 const channel = {
     volume: 100,
@@ -10,11 +10,12 @@ const channel = {
     gain: 100,
     filter: 0,
     filterResonans: 0,
-
+    cue: false,
     sends: [0, 0]
 }
 
 const initState = {
+    cueEnabled: false,
     channels: {
         A: {
             ...channel,
@@ -68,6 +69,20 @@ export default function mixerReducer(state = initState, action) {
                 draftSate.channels[action.destination].sends[action.number - 1] = action.value
             )
         }
+
+        case ACTIONS.SET_CUE_ENABLED : {
+            return produce(state, draftSate =>
+                    draftSate.cueEnabled = action.value
+                )
+        }
+
+        case ACTIONS.SET_CUE : {
+            if(!state.cueEnabled) return state;
+            return produce(state, draftSate=>
+                    draftSate.channels[action.destination].cue = action.value
+                )
+        }
+
         default: return state;
     }
 }

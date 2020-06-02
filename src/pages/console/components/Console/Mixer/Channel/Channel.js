@@ -13,8 +13,11 @@ import {
     setHi,
     setSend,
     setFilter,
-    setFilterResonans
+    setFilterResonans,
+    setCue,
 } from "./../../../../../../actions";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faHeadphones} from "@fortawesome/free-solid-svg-icons"
 
 import "./mixer-channel.scss";
 //import { throttle } from "./../../../../../../utils/functions/lodash";
@@ -22,7 +25,7 @@ import throttle from 'lodash/throttle';
 import Console from "./../../../../core/console/console";
 
 class Channel extends React.Component{
-
+    cueNotSupportedMsg = `Sorry your device not support this`;
 
     render(){
         return (
@@ -53,6 +56,15 @@ class Channel extends React.Component{
                             onChange={ this.props.setFilter}/>
                     </div>
                 </div>
+                <BinnaryButton 
+                            className="btn-cue" 
+                            //value={}
+                            disabled= {!this.props.cueEnabled}
+                            {...((!this.props.cueEnabled ) ? { "data-tooltip" : this.cueNotSupportedMsg } : {})}
+                            onChange={this.props.setCue.bind(null)}>
+                                <FontAwesomeIcon icon={faHeadphones}/>
+                </BinnaryButton>
+
                 <div className="mixer-group group-fx">
                         <BinnaryButton 
                             className="btn-fx" 
@@ -74,6 +86,7 @@ class Channel extends React.Component{
 }
 
 const mapStateToProps = (state, ownProps) => ({
+    cueEnabled : state.mixer.cueEnabled,
     send1 : state.mixer.channels[ownProps.name].sends[0],
     send2 : state.mixer.channels[ownProps.name].sends[1],
     chReady: state.console.channel[ownProps.name].playBackState.ready,
@@ -92,6 +105,7 @@ const mapDispachToProps = (dispatch, ownProps) =>{
     setSend : (number, value) => dispatch(setSend(ownProps.name, number, value)),
     setFilter : (value) => tdispatch(setFilter(ownProps.name, value)),
     setFilterResonans : (value) => tdispatch(setFilterResonans(ownProps.name, value)),
+    setCue : (value) => tdispatch(setCue(ownProps.name, value))
 }}
 
 export default connect(mapStateToProps, mapDispachToProps)(Channel);

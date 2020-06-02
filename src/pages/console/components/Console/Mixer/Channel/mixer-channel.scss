@@ -8,7 +8,7 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
     padding: 0 5px;
     display: grid;
     grid-template-columns: 2fr 2fr;
-    grid-template-rows: 3fr 2fr;
+    grid-template-rows: 3fr 1fr 1fr;
     gap: 0 5px;
 
     @if $side == "left"{
@@ -20,6 +20,31 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
         padding: 6px 6px;
         margin: 5px auto;
         width: 45px;
+    }
+
+    .btn-cue{
+        @include button--small($secondary);
+        @include tooltip(true);
+        &:before{
+            font-size: 1em;
+        }
+        &:disabled{
+            opacity: 1;
+        }
+        
+        padding: 0.8em;
+        width: 3em;
+        
+        margin:  5px 0 0 0;
+
+        grid-row:2;
+        align-self: self-start;
+        justify-self: center;
+      //  display: none;
+        grid-column:2;
+        @if $side == "left"{
+            grid-column: 1;
+        }
     }
     
     .mixer-group{
@@ -43,7 +68,7 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
     }
 
     .peak-level-meter{
-        grid-row: 2/2;
+        grid-row: 2 / 4;
         margin: 0 auto;
         margin-top: 3px;
         @if $side == "left"{
@@ -52,7 +77,11 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
     }
 
     .group-fx{
-        grid-row: 2;
+        grid-column : 2;
+        @if $side == "left"{
+            grid-column: 1;
+        }
+        grid-row: 2 / 4;
         align-self: self-end;
     }
 }
@@ -80,6 +109,8 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
             grid-row: 2;
         }
 
+
+
         .peak-level-meter{
             grid-column: 1;
             grid-row: 1 / span 2;
@@ -88,17 +119,33 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
             }
         }
 
+        .btn-cue{
+            grid-column: 3;
+            grid-row: 1;
+            justify-self: self-start;
+            
+ 
+            @if $side == "left"{
+                justify-self: self-end;
+                grid-column:1;
+                margin-right: 15px;
+            } 
+            @else {
+                margin-left: 15px;
+            }
+        }
+
         .group-fx{
             display: block;
             grid-row: 1 / span 2;
             grid-column: 3;
             justify-self: self-start;
+            align-self: self-end;
             @if $side == "left"{
                 grid-column: 1;
                 justify-self: self-end;
             }
             padding: 5px;
-            align-self: center;
         }
     }
     @media screen and (max-width : $vertical-break-point-extra-small) {
@@ -122,6 +169,12 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
             grid-column: 1;
             grid-row: 1;
             @if $side == "left"{
+                grid-column: 4;
+            }
+        }
+
+        .btn-cue{
+            @if $side == "right"{
                 grid-column: 4;
             }
         }

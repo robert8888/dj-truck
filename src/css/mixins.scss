@@ -130,7 +130,7 @@
     }
 }
 
-@mixin deck-sync-button($color){
+@mixin button--small($color){
     @include deck-button($color);
     user-select: none;
     text-transform: uppercase;
@@ -152,7 +152,10 @@
         box-shadow: none;
 
     }
+}
 
+@mixin deck-sync-button($color){
+    @include button--small($color)
 }
 
 @mixin block-like-button($color : $primary){
@@ -395,19 +398,35 @@
     @include panel-border();
 }
 
-@mixin tooltip(){
+@mixin tooltip($onClick:false){
     position: relative;
-    &:hover:before{
-        content: attr(data-tooltip);
-        display: block;
-        position: absolute;
-        top: -100%;
-        left: 100%;
-        background: white;
-        color: $primary;
-        font-size: 0.8em;
-        line-height: 1.0em;
-        padding: 5px 8px;
+
+    &[data-tooltip]{
+        &:before{
+            content: attr(data-tooltip);
+            display: none;
+            position: absolute;
+            top: -100%;
+            left: 100%;
+            background: white;
+            color: $primary;
+            font-size: 0.8em;
+            line-height: 1.0em;
+            padding: 5px 8px;
+            z-index: 5000;
+
+        }
+    
+        @if $onClick{
+            &:hover:active::before{
+                display: block;
+            }
+        } 
+        @else {
+            &:hover::before{
+                display: block;
+            }
+        }
     }
 }
 
