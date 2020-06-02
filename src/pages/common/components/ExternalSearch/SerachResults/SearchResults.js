@@ -13,14 +13,18 @@ class SearchResults extends React.Component {
     }
 
     render() {
+        if(!this.props.searchList){
+            return null;
+        }
+
         return (
             (this.props.open && <div className="search-results">
-                {this.props.searchList[0]?.error &&
+                { (!this.props.searchList || this.props?.searchList[0]?.error) &&
                     <div> Connect to youtube problem: <pre>{JSON.stringify(this.props.searchList[0]?.error.errors)}</pre></div>
                 }
                 <ul className="search-result-list">
                     {
-                        (this.props.searchList && !this.props.searchList[0]?.error && this.props.searchList.map(item =>
+                        (this.props.searchList && !this.props?.searchList[0]?.error && this.props?.searchList.map(item =>
                             <SearchItem
                                 item={item}
                                 playback={this.props.playback}

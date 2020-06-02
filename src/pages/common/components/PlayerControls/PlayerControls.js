@@ -30,9 +30,9 @@ const PlayerControls = ({controls, player,  list}) => {
             currentId = player.getCurrent().id;
         }
 
-        list = (list instanceof Array) ? list : [list];
+        const itemList = (list instanceof Array) ? list : [list];
 
-        const current = list.find( item => (item.id === currentId || item?.sourceId === currentId))
+        const current = itemList.find( item => (item.id === currentId || item?.sourceId === currentId))
        
         if(!current) return; 
         
