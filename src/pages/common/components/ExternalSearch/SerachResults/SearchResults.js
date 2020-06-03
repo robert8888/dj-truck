@@ -19,9 +19,6 @@ class SearchResults extends React.Component {
 
         return (
             (this.props.open && <div className="search-results">
-                { (!this.props.searchList || this.props?.searchList[0]?.error) &&
-                    <div> Connect to youtube problem: <pre>{JSON.stringify(this.props.searchList[0]?.error.errors)}</pre></div>
-                }
                 <ul className="search-result-list">
                     {
                         (this.props.searchList && !this.props?.searchList[0]?.error && this.props?.searchList.map(item =>
@@ -49,11 +46,8 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispachToProps = dispach => {
-    return {
-        addToListHandle: (playlist, track) => dispach(pushTrackToListRequest(track, playlist))
-        
-    }
-}
+const mapDispachToProps = dispach => ({
+    addToListHandle: (playlist, track) => dispach(pushTrackToListRequest(track, playlist)),
+})
 
 export default connect(mapStateToProps, mapDispachToProps)(SearchResults);

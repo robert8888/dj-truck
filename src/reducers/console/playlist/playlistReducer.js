@@ -229,6 +229,9 @@ function playListReducer(state = initState, action) {
             return produce(state, draftState => {
                 unset(draftState, state.currentSelection);
                 draftState.currentSelection = ['root'];
+                if(state.currentSelection.every((el, i) => el === state.currentPlaylist[i])){
+                    draftState.list  = [];
+                }
             })
         }
 

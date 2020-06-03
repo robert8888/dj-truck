@@ -16,9 +16,10 @@ const PlayBackControls = ({ name, toggleCue, togglePalay, cuePlay, paused, cueAc
     const mouseUp = (event) => {
         document.elementFromPoint(event.clientX, event.clientY)
         const buttonUnderMouse = document.elementFromPoint(event.clientX, event.clientY).closest('button')
+        console.log(buttonUnderMouse)
         if (buttonUnderMouse) {
             if (buttonUnderMouse.closest('div').classList.contains("play-back-controls-" + name)
-                && buttonUnderMouse.classList.contains('btn-play')) {
+                && buttonUnderMouse.classList.contains('play-btn')) {
                 cuePlay();
             } else {
                 toggleCue()

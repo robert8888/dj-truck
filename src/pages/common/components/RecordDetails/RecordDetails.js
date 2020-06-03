@@ -17,7 +17,7 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
     const [userNickname, setUserNickname] = useState("")
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [generes, setGeneres] = useState([]);
+    const [genres, setGenres] = useState([]);
 
     const descriptionTextArea = useRef();
     const [autoResizeTextArea] = useAutoHeightTextarea();
@@ -30,12 +30,12 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
         setUserNickname(record.user.nickname || "");
         setTitle(record.title || "")
         setDescription(record.description || "")
-        setGeneres(record.generes.map(genere => genere.name).join(", ") || []);
+        setGenres(record.genres.map(genre => genre.name).join(", ") || []);
     }, [userId,
         setEditable,
         setTitle,
         setDescription,
-        setGeneres,
+        setGenres,
         setUserNickname])
 
     useEffect(() => {
@@ -69,20 +69,20 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
     }, [setDescription])
 
 
-    const updateGeneres = useCallback(event => {
-        setGeneres(event.target.value)
-    }, [setGeneres])
+    const updateGenres = useCallback(event => {
+        setGenres(event.target.value)
+    }, [setGenres])
 
     const updateRecordDetails = useCallback(event => {
         event.preventDefault();
         const title = event.target.elements.title.value;
         const description = event.target.elements.description.value;
-        const generes = event.target.elements.generes.value || "";
-        const generesArr = generes.split(",").filter(str => str !== "").map(str => str.trim().toLowerCase());
+        const genres = event.target.elements.genres.value || "";
+        const genresArr = genres.split(",").filter(str => str !== "").map(str => str.trim().toLowerCase());
         requestUpdate(record.id, {
             title,
             description,
-            generes: generesArr
+            genres: genresArr
         })
         setEditMode(false)
     }, [record, setEditMode, requestUpdate])
@@ -138,13 +138,13 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
                     onChange={updateDescription}
                     disabled={!editMode} />
             </Form.Group>
-            <Form.Group className="genere-list">
-                <Form.Label>Generes: </Form.Label>
+            <Form.Group className="genre-list">
+                <Form.Label>Genres: </Form.Label>
                 <Form.Control
                     type="text"
-                    name="generes"
-                    value={generes}
-                    onChange={updateGeneres}
+                    name="genres"
+                    value={genres}
+                    onChange={updateGenres}
                     pattern="^(?:[A-Za-z&]{1,25}(?:,\s*)?)+$"
                     disabled={!editMode} />
             </Form.Group>

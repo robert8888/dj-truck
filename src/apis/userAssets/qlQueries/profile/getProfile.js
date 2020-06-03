@@ -12,9 +12,9 @@ export default `
             description
             records
             recordsTime
-            generes {
+            genres {
                 occurrence
-                genere {
+                genre {
                     name
                 }
             }

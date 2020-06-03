@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import UUID from "uuidjs";
 import PlaybackButton from "./../PlaybackButton/PlaybackButton";
 import Created from "./Created/Created";
-import GenereList from "./GenereList/GenereList";
+import GenreList from "./GenreList/GenreList";
 import LikeButton from "./LikeButton/LikeButton";
 import "./record.scss";
 import Time from "./Time/Time";
@@ -27,7 +27,7 @@ const Record = ({ record, controls: { seek, playback }, player, simple }) => {
                     </Link>
                 </nav>
                 <aside>
-                        <GenereList list={record.generes} />
+                        <GenreList list={record.genres} />
                 </aside>
             </Fragment>
         )

@@ -17,6 +17,11 @@ function* searchAsync(action) {
         yield put(showLoading());
         const api = getApi(source);
         const results = yield call(api.search, query, limit);
+        
+        if(results.error){
+            throw new Error(JSON.stringify(results.error));
+        }
+
         yield put(setSearchResults(results));
 
         yield put(pushLog(

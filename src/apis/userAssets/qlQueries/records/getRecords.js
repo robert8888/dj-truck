@@ -4,7 +4,7 @@ export default `
         $nickname: String
         $pageSize: Int!
         $page: Int!
-        $genereNames: [String]
+        $genreNames: [String]
         $title: String
         $id: Int
         $query: String
@@ -15,7 +15,7 @@ export default `
             nickname: $nickname
             title: $title
             id: $id
-            genereNames: $genereNames
+            genreNames: $genreNames
             query: $query
             queryOpt: $queryOpt
             pagin: {
@@ -28,7 +28,7 @@ export default `
                 title
                 description
                 createdAt,
-                generes  {
+                genres  {
                     name
                 }
                 user {

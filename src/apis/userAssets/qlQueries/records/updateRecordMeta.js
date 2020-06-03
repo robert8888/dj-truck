@@ -3,12 +3,12 @@ export default  `
         $id : Int!
         $title: String
         $description: String
-        $generes: [String]
+        $genres: [String]
         ){
         updateRecord(id: $id input : {
             title: $title
             description: $description
-            generes: $generes
+            genres: $genres
         }) 
     }
 `

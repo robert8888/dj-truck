@@ -36,11 +36,11 @@ const UserRecords = React.memo(({
     const [displaySearch, setSearchDisplaing] = useState(false);
     const [getSerachUrl] = useRecordSearchUrl();
     const history = useHistory();
-    const { user: nickname, generes } = useParams();
+    const { user: nickname, genres } = useParams();
 
 
     const queryStr = useLocation().search;
-    let { pageSize, page, preloaded, searchOpt, _generes , search:searchQuery} = useMemo(() => {
+    let { pageSize, page, preloaded, searchOpt, _genres , search:searchQuery} = useMemo(() => {
         const values = queryString.parse(queryStr)
         return {
             pageSize: +values.pageSize,
@@ -48,7 +48,7 @@ const UserRecords = React.memo(({
             preloaded: values.preloaded,
             current: values.current,
             searchOpt: values.searchOpt,
-            _generes: values.generes,
+            _genres: values.genres,
             search: values.search
         }
     }, [queryStr])
@@ -77,12 +77,12 @@ const UserRecords = React.memo(({
 
         }
 
-        if (generes) {
-            where.genereNames = generes.split(",");
+        if (genres) {
+            where.genreNames = genres.split(",");
         }
          
-        if(_generes){
-            where.genereNames = _generes.split(",")
+        if(_genres){
+            where.genreNames = _genres.split(",")
         }
 
         if (nickname) {
@@ -110,8 +110,8 @@ const UserRecords = React.memo(({
         preloaded,
         setPageTitle,
         searchQuery,
-        generes,
-        _generes,
+        genres,
+        _genres,
         loading,
         isAuthenticated,
         isCurrentUser,
@@ -147,16 +147,16 @@ const UserRecords = React.memo(({
         }
         const url = getSerachUrl(queryStr, {
             searchOpt,
-            searchParams: { generes: [generes, _generes] }
+            searchParams: { genres: [genres, _genres] }
         })
 
         history.push(url);
-    }, [history, getSerachUrl, _generes, generes])
+    }, [history, getSerachUrl, _genres, genres])
 
     
     return (
         <div className="user-records">
-            {nickname && <UserProfile nickname={nickname} withGeneres/>}
+            {nickname && <UserProfile nickname={nickname} withGenres/>}
             {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
             <div className="user-records-top-bar">
                 <h2 className="title">{pageTitle}</h2>

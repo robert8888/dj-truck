@@ -26,7 +26,7 @@ const Routes = props => {
                 
                 <Route path="/records" exact component={UserRecords} />
                 <Route path="/records/user/:user" exact component={UserRecords} />
-                <Route path="/records/generes/:generes" exact component={UserRecords}/>
+                <Route path="/records/genres/:genres" exact component={UserRecords}/>
                 <Route path="/records/search/:query" exact 
                     render={ props => (
                             <UserRecords searchQuery={props.match.params.query} {...props}/>

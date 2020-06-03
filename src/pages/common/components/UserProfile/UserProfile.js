@@ -7,7 +7,7 @@ import { useFormatRelative } from "./../../Hooks/useFormatDate";
 import Edit from "./Edit/Edit";
 import "./user-profile.scss";
 
-const UserProfile = ({ nickname, profile, reqProfile, withGeneres, editable , onChange = ifEmpty => null }) => {
+const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onChange = ifEmpty => null }) => {
     const location = useLocation();
     const [formatRelative] = useFormatRelative();
 
@@ -25,10 +25,10 @@ const UserProfile = ({ nickname, profile, reqProfile, withGeneres, editable , on
         return url
     }, [])
 
-    const linkToGenere = useCallback((genere)=>{
+    const linkToGenre = useCallback((genre)=>{
         let {pathname, search} = location;
-        search = search.replace(/\??&?generes=[^&]+/g, "")
-        return pathname + search + ((search) ? "&" : "?") + "generes=" + genere;
+        search = search.replace(/\??&?genres=[^&]+/g, "")
+        return pathname + search + ((search) ? "&" : "?") + "genres=" + genre;
     },[location])
 
     if (!profile || !nickname) {
@@ -64,14 +64,14 @@ const UserProfile = ({ nickname, profile, reqProfile, withGeneres, editable , on
                     <p>{profile.description}</p>
                 </Edit>
             </div>
-           {withGeneres && 
-           <div className="generes">
+           {withGenres && 
+           <div className="genres">
                     <ul>
-                        {profile.generes && profile.generes.length &&
-                            profile.generes.map( genereWrapper => (
+                        {profile.genres && profile.genres.length &&
+                            profile.genres.map( genreWrapper => (
                                 <li key={UUIDClass.genV1()}>
-                                    <Link to={linkToGenere(genereWrapper.genere.name)}>
-                                        {`${genereWrapper.genere.name} - ${genereWrapper.occurrence}`}
+                                    <Link to={linkToGenre(genreWrapper.genre.name)}>
+                                        {`${genreWrapper.genre.name} - ${genreWrapper.occurrence}`}
                                     </Link>
                                 </li>
                             ))
