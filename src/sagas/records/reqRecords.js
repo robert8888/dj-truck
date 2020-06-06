@@ -36,10 +36,10 @@ function* handel(action) {
         yield put(pushLog(new Log(`Records successfully downloaded from database parameters: \n ${JSON.stringify(variables)}`)))
     } catch (error) {
         yield put(recReqFails(error.message))
-        yield pushLog(Log.Error(
+        yield put(pushLog(Log.Error(
             ['saga', 'records', 'request records'],
             "Can't load records from database " + error.message,
             error
-        ))
+        )))
     }
 }

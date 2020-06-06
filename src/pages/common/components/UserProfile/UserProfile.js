@@ -6,6 +6,7 @@ import { reqUserProfile } from "./../../../../actions";
 import { useFormatRelative } from "./../../Hooks/useFormatDate";
 import Edit from "./Edit/Edit";
 import "./user-profile.scss";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onChange = ifEmpty => null }) => {
     const location = useLocation();
@@ -36,51 +37,52 @@ const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onC
     }
 
     return (
-        <div className="user-profile">
-            <main>
-            <div className="user-picture">
-                <Edit active={editable} type="image" onChange={onChange.bind(null, 'picture')}>
-                    <img src={parsePirctureUrl(profile.user.picture)} alt="user avatar" />
-                </Edit>
-            </div>
-            <section>
-                <div className="user-nickname" >
-                    <Edit active={editable} type="text" onChange={onChange.bind(null, 'nickname')} >
-                        <h4>{profile.user.nickname}</h4>
+        <ErrorBoundary>
+            <div className="user-profile">
+                <main>
+                <div className="user-picture">
+                    <Edit active={editable} type="image" onChange={onChange.bind(null, 'picture')}>
+                        <img src={parsePirctureUrl(profile.user.picture)} alt="user avatar" />
                     </Edit>
                 </div>
-                <div className="user-joined">
-                        <h5>{formatRelative(profile.user.createdAt, {timezone :true})}</h5>
+                <section>
+                    <div className="user-nickname" >
+                        <Edit active={editable} type="text" onChange={onChange.bind(null, 'nickname')} >
+                            <h4>{profile.user.nickname}</h4>
+                        </Edit>
+                    </div>
+                    <div className="user-joined">
+                            <h5>{formatRelative(profile.user.createdAt, {timezone :true})}</h5>
+                    </div>
+                    <div className="user-record-stat">
+                        <span>{`${profile.records} records`}</span>
+                        <span>{`${~~(profile.recordsTime / (60 * 1000)) } min`}</span>
+                    </div>
+                </section>
+                </main>
+                <aside>
+                <div className="user-description">
+                    <Edit active={editable} type="textarea" onChange={onChange.bind(null, 'description')}>
+                        <p>{profile.description}</p>
+                    </Edit>
                 </div>
-                <div className="user-record-stat">
-                    <span>{`${profile.records} records`}</span>
-                    <span>{`${~~(profile.recordsTime / (60 * 1000)) } min`}</span>
-                </div>
-            </section>
-            </main>
-            <aside>
-            <div className="user-description">
-                <Edit active={editable} type="textarea" onChange={onChange.bind(null, 'description')}>
-                    <p>{profile.description}</p>
-                </Edit>
+            {withGenres && 
+            <div className="genres">
+                        <ul>
+                            {profile.genres && profile.genres.length &&
+                                profile.genres.map( genreWrapper => (
+                                    <li key={UUIDClass.genV1()}>
+                                        <Link to={linkToGenre(genreWrapper.genre.name)}>
+                                            {`${genreWrapper.genre.name} - ${genreWrapper.occurrence}`}
+                                        </Link>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                </div>	}
+                </aside>
             </div>
-           {withGenres && 
-           <div className="genres">
-                    <ul>
-                        {profile.genres && profile.genres.length &&
-                            profile.genres.map( genreWrapper => (
-                                <li key={UUIDClass.genV1()}>
-                                    <Link to={linkToGenre(genreWrapper.genre.name)}>
-                                        {`${genreWrapper.genre.name} - ${genreWrapper.occurrence}`}
-                                    </Link>
-                                </li>
-                            ))
-                        }
-                    </ul>
-            </div>	}
-            </aside>
-
-        </div>
+        </ErrorBoundary>
     )
 }
 

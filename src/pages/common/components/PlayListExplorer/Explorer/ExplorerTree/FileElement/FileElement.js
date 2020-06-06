@@ -46,7 +46,7 @@ const FileElement = props => {
         { "item--curently-open" : currentlyOpen }
     )
     
-    let content = name;
+    let content = name
     if (currentSelected && renameMode) {
         content = renameInput(name)
     }
@@ -60,7 +60,7 @@ const FileElement = props => {
             onContextMenu={props.onContextMenu}
             data-path={path.join("/")}
             key={UUID.genV1()}>
-            <FontAwesomeIcon className="icon icon-file" icon={faFile} />
+                <FontAwesomeIcon className="icon icon-file" icon={faFile} />
             {content}
         </li>
     );

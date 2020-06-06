@@ -1,24 +1,42 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useState} from "react"
 import { formater } from "./../../../../../../../utils/time/timeFromater";
 import { connect } from "react-redux";
+import Console from "./../../../../../core/console/console";
 
-
-const TimeLeft = props => {
+const TimeLeft = ({duration, playback, name}) => {
     const container = useRef(null);
+    const intervalHandler = useRef(null)
+
+    const [channelInterface, setChannelInterface] =  useState(null);
+
+    useEffect(()=>{ 
+        setChannelInterface(Console.Get().getChannelInterface(name));
+    }, [setChannelInterface, name])
 
     useEffect(()=>{
-        let timeLeft;
-        if(props.timeLeft){
-            timeLeft = formater.secondsToStr(props.timeLeft);
+        if(!channelInterface || !container.current) return;
+
+        if(playback){
+            intervalHandler.current = setInterval(()=>{
+                let left = channelInterface.getCurrentTime().left;
+                left = formater.secondsToStr(left);
+                if(!container.textContent) return;
+                container.current.textContent = left;
+            }, 500)
         } else {
-            if(typeof props.trackDuration === "string"){
-                timeLeft = formater.ptToStr(props.trackDuration);
-            } else {
-                timeLeft = formater.secondsToStr(props.trackDuration);
-            }
+            clearInterval(intervalHandler.current);
         }
-        container.current.textContent = timeLeft;
-    }, [props.timeLeft, container, props.trackDuration])
+    }, [playback,
+        duration,
+        container,
+        intervalHandler,
+        channelInterface])
+
+    useEffect(()=>()=> {
+        if(intervalHandler.current){
+            clearInterval(intervalHandler.current)
+        }
+    }, [intervalHandler]);
 
     return (
         <span className="time-left" ref={container}/>
@@ -26,8 +44,8 @@ const TimeLeft = props => {
 }
 
 const mapsStateToProps = (state, ownProps) => ({
-    trackDuration : state.console.channel[ownProps.name].track.duration,
-    timeLeft :  state.console.channel[ownProps.name].playBackState.timeLeft,
+    duration: state.console.channel[ownProps.name].track.duration,
+    playback: state.console.channel[ownProps.name].playBackState.paused,
 })
 
 export default connect(mapsStateToProps)(TimeLeft);

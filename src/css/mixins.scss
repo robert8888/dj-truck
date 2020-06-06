@@ -60,7 +60,7 @@
     
 }
 
-@mixin dark-button($color){
+@mixin dark-button($color: $primary){
     @include button($color);
     padding: 8px 12px;
     background: $primary-dark;
@@ -130,7 +130,7 @@
     }
 }
 
-@mixin button--small($color){
+@mixin button--small($color:$primary){
     @include deck-button($color);
     user-select: none;
     text-transform: uppercase;

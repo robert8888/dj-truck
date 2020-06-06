@@ -1,4 +1,4 @@
-import React, { useCallback, useState, Fragment, useEffect, useMemo } from "react";
+import React, { useCallback, useState, Fragment, useEffect} from "react";
 import UUID from "uuidjs";
 import { connect } from "react-redux";
 import ExplorerContextMenu from "./../../../../../common/components/ContextMenu/ContextMenu";
@@ -37,7 +37,7 @@ const ExplorerTree = ({
         setRenameMode(renameMode)
     }, [renameMode, setRenameMode])
 
-    const renameInput = useMemo(name => {
+    const renameInput = useCallback(name => {
         return (
             <RenameInput name={name} onChange={value => {
                 renameSelected(value);

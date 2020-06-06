@@ -55,12 +55,12 @@ function* handel({
 
         yield put(pushLog(new Log(`Record favorite action : ${successMessage}`)))
     } catch (error) {
-        yield pushLog(Log.Error(
+        yield put(pushLog(Log.Error(
             ['saga', 'record', 'request favorite'],
             error.message,
             "Can't remove record from favorite collection",
             error
-        ))
+        )))
     }
 
 }

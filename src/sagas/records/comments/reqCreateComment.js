@@ -36,11 +36,11 @@ function* handel(action) {
         yield put(pushLog(new Log(`Comment created in database id: ${comment.id}`)))
         
     } catch (error) {
-        yield pushLog(Log.Error(
+        yield put(pushLog(Log.Error(
             ['saga', 'record', 'comments', 'request craeted comment'],
             "Can't create comment in database. "  + error.message,
             "Sorry. During creating comment in database occurred problem",
             error
-        ))
+        )))
     }
 }

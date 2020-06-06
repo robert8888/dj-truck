@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from "react"
 import { Button } from "react-bootstrap";
+import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 import UUDI from "uuidjs"
 import "./pagin.scss";
 
@@ -47,7 +48,9 @@ const Pagin = ({ current, all, wide = 2, call }) => {
     }, [current, all, wide, button, separator])
 
     return (
-        <div className="pagin">{buttons && buttons.length > 1 && buttons}</div>
+        <ErrorBoundary>
+            <div className="pagin">{buttons && buttons.length > 1 && buttons}</div>
+        </ErrorBoundary>
     )
 }
 

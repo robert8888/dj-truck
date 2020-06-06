@@ -3,6 +3,7 @@ import { Button, Dropdown, DropdownButton, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
 import { clearSearch, searchInput, searchStart } from "../../../../actions";
 import { API_TYPES, getApisName } from "./../../../../apis/apiProvider";
+import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 import "./search.scss";
 import SearchResults from './SerachResults/SearchResults.js';
 
@@ -48,40 +49,42 @@ const Search = ({
     },[clearSearch, setResultOpen])
 
     return (
-        <div className="search">
-            <div className="search-controls">
-                <DropdownButton
-                    className="btn-api-select"
-                    title={source || ""}>
-                    {apiList}
-                </DropdownButton>
-                <FormControl
-                    className="search-control"
-                    type="text"
-                    placeholder="Tap in to serach on youtube"
-                    onChange={event => setQuery(event.target.value)}
-                    onKeyPress={controlKeyPress}
-                    onFocus={openList}
-                    value={queryString} />
-                {resultOpen && 
-                    <Button className="btn-search-clear" onClick={clear}> 
-                        Clear 
-                    </Button>}
-                <DropdownButton
-                    className="btn-max-result-select"
-                    title={limit}>
-                    <Dropdown.Item onClick={() => setLimit(10)}> 10 </Dropdown.Item>
-                    <Dropdown.Item onClick={() => setLimit(25)}> 25 </Dropdown.Item>
-                    <Dropdown.Item onClick={() => setLimit(50)}> 50 </Dropdown.Item>
-                </DropdownButton>
-            </div>
+        <ErrorBoundary>
+            <div className="search">
+                <div className="search-controls">
+                    <DropdownButton
+                        className="btn-api-select"
+                        title={source || ""}>
+                        {apiList}
+                    </DropdownButton>
+                    <FormControl
+                        className="search-control"
+                        type="text"
+                        placeholder="Tap in to serach on youtube"
+                        onChange={event => setQuery(event.target.value)}
+                        onKeyPress={controlKeyPress}
+                        onFocus={openList}
+                        value={queryString} />
+                    {resultOpen && 
+                        <Button className="btn-search-clear" onClick={clear}> 
+                            Clear 
+                        </Button>}
+                    <DropdownButton
+                        className="btn-max-result-select"
+                        title={limit}>
+                        <Dropdown.Item onClick={() => setLimit(10)}> 10 </Dropdown.Item>
+                        <Dropdown.Item onClick={() => setLimit(25)}> 25 </Dropdown.Item>
+                        <Dropdown.Item onClick={() => setLimit(50)}> 50 </Dropdown.Item>
+                    </DropdownButton>
+                </div>
 
-            <SearchResults
-                playback={controls?.playback}
-                player={player}
-                open={resultOpen}
-                selectedHandle={selectedHandel} />
-        </div>
+                <SearchResults
+                    playback={controls?.playback}
+                    player={player}
+                    open={resultOpen}
+                    selectedHandle={selectedHandel} />
+            </div>
+        </ErrorBoundary>
     );
 }
 

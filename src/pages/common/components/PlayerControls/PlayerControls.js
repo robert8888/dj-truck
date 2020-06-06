@@ -5,7 +5,7 @@ import "./player-controls.scss";
 import ProgressSlider from "./ProgressSlider/ProgressSlider";
 import RecordDetails from "./RecordDetails/RecordDetails";
 import Volume from "./Volume/Volume";
-
+import ErrorBoundary from './../ErrorBoundary/ErrorBoundary'
 
 const PlayerControls = ({controls, player,  list}) => {
     const [currentRecord , setCurrentRecrod] = useState(null);
@@ -41,21 +41,22 @@ const PlayerControls = ({controls, player,  list}) => {
     }, [player, list, currentRecord, setCurrentRecrodDails])
 
     return (
-        <div className="record-player-controls_container">
-            <Container>
-                <Row>
-                    <Col>
-                        <div className="record-player-controls">
-                            <PlaybackButton playback={controls.playback} player={player}/>
-                            <ProgressSlider seek={controls.seek} player={player} />
-                            <Volume setVolume = {controls.setVolume}/>
-                            <RecordDetails {...currentRecordDetails}/>
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
-
-        </div>
+        <ErrorBoundary>
+            <div className="record-player-controls_container">
+                <Container>
+                    <Row>
+                        <Col>
+                            <div className="record-player-controls">
+                                <PlaybackButton playback={controls.playback} player={player}/>
+                                <ProgressSlider seek={controls.seek} player={player} />
+                                <Volume setVolume = {controls.setVolume}/>
+                                <RecordDetails {...currentRecordDetails}/>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
+        </ErrorBoundary>
     )
 }
 

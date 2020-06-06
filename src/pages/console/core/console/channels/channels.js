@@ -46,9 +46,12 @@ export default class Channels {
   getChannelInterface(channelName) {
     return {
       getSyncBarPosition: () => 
-        this.synchronizer.getSyncBarPostion.call(this.synchronizer,channelName)
+        this.synchronizer.getSyncBarPostion.call(this.synchronizer,channelName), 
+      getCurrentTime: () => this.getCurrentTime(channelName),
     };
   }
+
+
 
   //--------------------------------------------
 
@@ -137,4 +140,12 @@ export default class Channels {
     this.looper.updateLoop(this.getFullChannel(channelName), loopLength);
   }
 
+  getCurrentTime(channelName){
+    const channel = this.getChannel(channelName)
+    return {
+      time: channel.getCurrentTime(),
+      left: channel.getDuration() - channel.getCurrentTime()
+    }
+    
+  }
 }

@@ -40,11 +40,11 @@ function* handel(action) {
             yield put(pushLog(new Log(`records variables: ${JSON.stringify(variables)}`)))
         } catch (error) {
             yield put(updateRecFail(action.recordChanges.title, error.message))
-            yield pushLog(Log.Error(
+            yield put(pushLog(Log.Error(
                 ['saga', 'records', 'reques update record'],
                 "Can't update records in database",
                 error
-            ))
+            )))
         }
 
     }

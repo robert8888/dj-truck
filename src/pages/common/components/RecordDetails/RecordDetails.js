@@ -6,6 +6,7 @@ import useAutoHeightTextarea from "../../Hooks/useAutoHeightTextarea";
 import { reqDeleteRec, reqUpdateRec, setRecDeleteStatus } from "./../../../../actions";
 import { getApi } from "./.././../../../apis/apiProvider";
 import IconBar from "./../IconBar/IconBar";
+import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary"
 import "./record-details.scss";
 
 const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteStatus, resetDeleteStatus }) => {
@@ -106,50 +107,51 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
     }, [deleteStatus, resetDeleteStatus, history])
 
     return (
+        <ErrorBoundary>
+            <Form className="record-details" onSubmit={updateRecordDetails}>
+                {editable && <IconBar className="record-details-icons" items={{
+                    edit: toggleMode,
+                    download: downloadCurrent,
+                    delete: deleteCurrent,
 
-        <Form className="record-details" onSubmit={updateRecordDetails}>
-            {editable && <IconBar className="record-details-icons" items={{
-                edit: toggleMode,
-                download: downloadCurrent,
-                delete: deleteCurrent,
+                }} />}
+                <Form.Group className="record-title">
+                    <Form.Label>User: </Form.Label>
+                    <Form.Control name="user" type="text" value={userNickname} disabled />
+                </Form.Group>
 
-            }} />}
-            <Form.Group className="record-title">
-                <Form.Label>User: </Form.Label>
-                <Form.Control name="user" type="text" value={userNickname} disabled />
-            </Form.Group>
-
-            <Form.Group className="record-title">
-                <Form.Label>Title: </Form.Label>
-                <Form.Control
-                    name="title"
-                    type="text"
-                    value={title}
-                    onChange={updateTitle}
-                    disabled={!editMode} />
-            </Form.Group>
-            <Form.Group className="record-description">
-                <Form.Label>Description: </Form.Label>
-                <Form.Control
-                    name="description"
-                    as="textarea"
-                    ref={ref => descriptionTextArea.current = autoResizeTextArea(ref)}
-                    value={description}
-                    onChange={updateDescription}
-                    disabled={!editMode} />
-            </Form.Group>
-            <Form.Group className="genre-list">
-                <Form.Label>Genres: </Form.Label>
-                <Form.Control
-                    type="text"
-                    name="genres"
-                    value={genres}
-                    onChange={updateGenres}
-                    pattern="^(?:[A-Za-z&]{1,25}(?:,\s*)?)+$"
-                    disabled={!editMode} />
-            </Form.Group>
-            {editMode && <Button type="submit"> Save </Button>}
-        </Form>
+                <Form.Group className="record-title">
+                    <Form.Label>Title: </Form.Label>
+                    <Form.Control
+                        name="title"
+                        type="text"
+                        value={title}
+                        onChange={updateTitle}
+                        disabled={!editMode} />
+                </Form.Group>
+                <Form.Group className="record-description">
+                    <Form.Label>Description: </Form.Label>
+                    <Form.Control
+                        name="description"
+                        as="textarea"
+                        ref={ref => descriptionTextArea.current = autoResizeTextArea(ref)}
+                        value={description}
+                        onChange={updateDescription}
+                        disabled={!editMode} />
+                </Form.Group>
+                <Form.Group className="genre-list">
+                    <Form.Label>Genres: </Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="genres"
+                        value={genres}
+                        onChange={updateGenres}
+                        pattern="^(?:[A-Za-z&]{1,25}(?:,\s*)?)+$"
+                        disabled={!editMode} />
+                </Form.Group>
+                {editMode && <Button type="submit"> Save </Button>}
+            </Form>
+        </ErrorBoundary>
     )
 }
 

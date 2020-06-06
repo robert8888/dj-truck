@@ -1,5 +1,10 @@
 @import "./../../css/colors.scss";
 
 .user-record{
-
+    position: relative;
+    .social-btn{
+        position: relative;
+        float: right;
+        z-index: 5000;
+    }
 }

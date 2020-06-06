@@ -34,11 +34,11 @@ function* handel(action) {
         
         yield put(pushLog(new Log(`Comment id: ${action.commentId} deleted from database`)))
     } catch (error) {
-        yield pushLog(Log.Error(
+        yield put(pushLog(Log.Error(
             ['saga', 'record', 'comments', 'request delete comment'],
             "Can't delete comment from database"+ error.message,
             "Sorry. During process of deleting comment in database occurred problem",
             error
-        ))
+        )))
     }
 }

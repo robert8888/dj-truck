@@ -8,6 +8,7 @@ import Effector from "./Effector/Effector";
 import Mastering from "./Mixer/Master/Master";
 import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
+import ErrorBoundary from "./../../../common/components/ErrorBoundary/ErrorBoundary";
 
 const Console = ({dispatch}) => {
     const [control] = usePlayer();
@@ -19,19 +20,20 @@ const Console = ({dispatch}) => {
     }, [control, dispatch])
 
     return (
-        <div className="truck-console">
-            <Mastering />
-            <Recorder />
+        <ErrorBoundary>
+            <div className="truck-console">
+                <Mastering />
+                <Recorder />
 
-            <Effector channel={1} />
-            <Deck name="A">A</Deck>
+                <Effector channel={1} />
+                <Deck name="A">A</Deck>
 
-            <Mixer />
+                <Mixer />
 
-            <Effector channel={2} />
-            <Deck name="B">B</Deck>
-
-        </div>
+                <Effector channel={2} />
+                <Deck name="B">B</Deck>
+            </div>
+        </ErrorBoundary>
     )
 }
 

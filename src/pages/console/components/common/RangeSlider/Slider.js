@@ -196,6 +196,8 @@ class Slider extends React.Component {
   };
 
   updateState(){
+    if(!this.sliderThumbElement.current || !this.sliderAreaElement) return;
+    
     const thumbRect = this.sliderThumbElement.current.getBoundingClientRect();
     const areaRect = this.sliderAreaElement.current.getBoundingClientRect();
     const rangeRect = this.sliderRangeElement.current.getBoundingClientRect();

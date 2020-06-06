@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 import { connect } from "react-redux";
 import { LOG_TYPES } from "./../../../../utils/logger/logger";
 import "./logger.scss";
@@ -14,9 +15,10 @@ const Logger = ({ log }) => {
 
     useEffect(()=>{
         if(!log){
-            return;
+            setHidden(true)
+        } else {
+            setHidden(false);
         }
-        setHidden(false);
     },[log])
 
     const createHeader = useCallback((text, className = "") => {
@@ -85,18 +87,20 @@ const Logger = ({ log }) => {
     }, [hidden])
     
     return (
-        <Container className="app layout container-xl" >
-            <Row><Col>
-                <div className={loggerClasses}>
-                    <Button className="btn-close" onClick={setHidden.bind(null, true)}>
-                        <FontAwesomeIcon icon={faTimesCircle}/>
-                    </Button>
-                    {header}
-                    {content}
-                    {path}
-                </div>
-            </Col></Row>
-        </Container>
+        <ErrorBoundary>
+            <Container className="app layout container-xl" >
+                <Row><Col>
+                    <div className={loggerClasses}>
+                        <Button className="btn-close" onClick={setHidden.bind(null, true)}>
+                            <FontAwesomeIcon icon={faTimesCircle}/>
+                        </Button>
+                        {header}
+                        {content}
+                        {path}
+                    </div>
+                </Col></Row>
+            </Container>
+        </ErrorBoundary>
     )
 }
 

@@ -17,7 +17,7 @@ export default class EventHandler {
     this.onLoad(channel);
     this.onLoading(channel);
     this.onReady(channel);
-    this.onPlay(channel);
+   // this.onPlay(channel);
     this.onStop(channel);
 
     this.onSlaveSeek(channel);
@@ -64,14 +64,14 @@ export default class EventHandler {
   }
 
 
-  onPlay(channel){
-    channel.master.on("play", ()=>{
-        channel._clockHandle = setInterval(()=>{
-          const timeLeft = parseInt(channel.master.getDuration() - channel.master.getCurrentTime());
-          this.dispatch(setTimeLeft(channel.channelName, timeLeft))
-        }, 500)
-    })
-  }
+  // onPlay(channel){
+  //   channel.master.on("play", ()=>{
+  //       channel._clockHandle = setInterval(()=>{
+  //         const timeLeft = parseInt(channel.master.getDuration() - channel.master.getCurrentTime());
+  //         this.dispatch(setTimeLeft(channel.channelName, timeLeft))
+  //       }, 500)
+  //   })
+  // }
 
   onStop(channel){
     channel.master.on('pause', ()=>{

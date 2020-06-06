@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { connect } from "react-redux";
 import Tracklist from "./../TrackTable/TrackTable";
 import { formater } from "./../../../../utils/time/timeFromater";
+import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 import "./record-track-list.scss";
 
 const RecordTracklist = ({ record , onSeek}) => {
@@ -36,11 +37,13 @@ const RecordTracklist = ({ record , onSeek}) => {
     }, [onSeek, tracklist])
 
     return (
-        <Tracklist className="record-track-list"
-            cols={cols}
-            items={tracklist}
-            onClickRow={onClickTrack}
-        />
+        <ErrorBoundary>
+            <Tracklist className="record-track-list"
+                cols={cols}
+                items={tracklist}
+                onClickRow={onClickTrack}
+            />
+        </ErrorBoundary>
     )
 }
 

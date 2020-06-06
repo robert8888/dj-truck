@@ -9,6 +9,7 @@ import EffectorButton from "./components/EffectorButton/EffectorButton";
 import EffectorKnob from "./components/EffectorKnob/EffectorKnob";
 import "./effector-channel.scss";
 import mapComponentToParameter from "./utils/mapComponentToParameter";
+import ErrorBoundary from "../../../../common/components/ErrorBoundary/ErrorBoundary";
 
 
 const Effector = ({ setParameter, availableEffects: getAvailableEffects, channel, channelState, setDryWet, setEffect }) => {
@@ -89,21 +90,23 @@ const Effector = ({ setParameter, availableEffects: getAvailableEffects, channel
 
 
     return (
-        <div className={"effector-channel effector ch-" + channel}>
-            <span className="label">{"FX " + channel}</span>
-            <div className="dra-wet-knob">
-                <DryWetKnob alt="D/W" onChange={setDryWet} />
+        <ErrorBoundary>
+            <div className={"effector-channel effector ch-" + channel}>
+                <span className="label">{"FX " + channel}</span>
+                <div className="dra-wet-knob">
+                    <DryWetKnob alt="D/W" onChange={setDryWet} />
+                </div>
+                <div className="effect-selector">
+                    <DropdownButton title={currentEffect || "-----"} className="btn-effect-select">
+                        <Dropdown.Item key={"none"} onClick={setCurrentEffect.bind(null, undefined)}> ----- </Dropdown.Item>
+                        {availableEffects}
+                    </DropdownButton>
+                </div>
+                <div className="effector-param">
+                    {effectorParams}
+                </div>
             </div>
-            <div className="effect-selector">
-                <DropdownButton title={currentEffect || "-----"} className="btn-effect-select">
-                    <Dropdown.Item key={"none"} onClick={setCurrentEffect.bind(null, undefined)}> ----- </Dropdown.Item>
-                    {availableEffects}
-                </DropdownButton>
-            </div>
-            <div className="effector-param">
-                {effectorParams}
-            </div>
-        </div>
+        </ErrorBoundary>
     )
 }
 

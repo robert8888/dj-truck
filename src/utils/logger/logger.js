@@ -41,11 +41,11 @@ export class Log{
 
         switch(args.length){
             case 1 : {
-                if([args[0] instanceof String]){
+                if(args[0] instanceof String){
                     [priv] = args;
                     break;
                 } else if(typeof args[0] === "object"){
-                    ({path, priv, public: pub, error} = args[0])
+                    ({path, private:priv, public: pub, error} = args[0])
                 }
                 break;
             }

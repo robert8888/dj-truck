@@ -25,7 +25,6 @@ const initState = {
 }
 
 export default function loggerReducer(state = initState, action) {
-    // console.log(action)
     switch (action.type) {
         case ACTIONS.LOG_PUSH: {
             const { log } = action;
@@ -50,6 +49,12 @@ export default function loggerReducer(state = initState, action) {
                     log.type === LOG_TYPES.WARNING)) {
                     draftState.last.path = log.path;
                 }
+            })
+        }
+
+        case ACTIONS.LOG_CLEAR_PUBLIC_ERROR : {
+            return produce(state, draftState => {
+                delete draftState.last;
             })
         }
 

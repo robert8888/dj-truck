@@ -3,8 +3,7 @@ import { recording, recordingRquestFail, recordFinalUpdate, roolbackRecord } fro
 import STATUS from "./../../observer/STATUS";
 import io from "socket.io-client";
 import { getApi } from "./../../../../../../apis/apiProvider";
-import WebWorker from "./../../../../../../utils/worker/workerSetup";
-import interpolatePeakWorker from "./interpolatePeaksWorker";
+import { Logger, Log } from "./../../../../../../utils/logger/logger";
 
 
 export default class Recorder {
@@ -27,9 +26,11 @@ export default class Recorder {
         this.wsUrl = api.getSocketUrl();
 
         this.currentRec = Recorder.initRecState();
-        
-        this._interpolatePeaksWorker = new WebWorker(interpolatePeakWorker);
-        this._interpolatePeaksWorker.addEventListener('message', this._onPeakReady.bind(this));
+
+
+        this.peaksUpdateIntervalHandle = null;
+        this.peaksUpdateIntervalTime = 100; //ms
+        this.peaksSizeLimit = 2000;
     }
 
 
@@ -48,19 +49,30 @@ export default class Recorder {
     }
 
     startRecording({ recId, recName }) {
-        //console.log("im start recording", recId, recName);
+    try {
         const token = store.getState().user.token;
         if (!token) {
+            Logger.push(Log.Error(
+                {
+                    private: "Attempt to start recordin not' authorized user",
+                    path: ['pages', 'console', 'core', 'mixxer', 'recorder', 'startRecording']
+                }))
+            return;
+        }
+        if (this.mediaRecorder.state === "recording") {
+            Logger.push(Log.Error(
+                {
+                    private: "Attempt to start recordin during active recording",
+                    path: ['pages', 'console', 'core', 'mixxer', 'recorder', 'startRecording']
+                }))
             return;
         }
 
         const socket = io.connect(this.wsUrl);
 
         socket.on("connect", () => {
-            //console.log("we have connection")
             socket.emit('authentication', { token: token });
             socket.on('authenticated', () => {
-                // console.log('auth')
                 socket.emit("record_details", { recId, recName })
             })
             socket.on('recorder_ready', () => {
@@ -68,12 +80,10 @@ export default class Recorder {
                 this.currentRec.title = recName;
 
                 this.mediaRecorder.ondataavailable = (e) => {
-                    // console.log(e.data)
                     socket.emit('record_chunk', e.data)
                 }
 
                 this.mediaRecorder.addEventListener('stop', () => {
-                    // socket.close()
                     socket.emit('record_stop')
                 })
 
@@ -81,69 +91,102 @@ export default class Recorder {
 
                 this.currentRec.duration = new Date().getTime();
 
-                this.updateInterval = setInterval(this._updatePeaks.bind(this), 100);
+                this.peaksUpdateIntervalHandle = setInterval(this.updatePeaks.bind(this), 100);
 
                 store.dispatch(recording());
             });
 
             socket.on('connect_error', () => {
                 store.dispatch(recordingRquestFail())
+                Logger.push(Log.Error(
+                    {
+                        private: "Error durring connectio to recorder api",
+                        public: "During porccess of connection to record database occured problem",
+                        path: ['pages', 'console', 'core', 'mixxer', 'recorder', 'record socket connecting record'],
+                    }))
             })
 
             socket.on('recording_finished', ({ fileSize }) => {
-              //  console.log("recording finishe event from socekt")
-
                 this.currentRec.fileSize = fileSize;
-               // console.log("post peeaks to worker ", this.currentRec.peaks)
-                this._interpolatePeaksWorker.postMessage([this.currentRec.peaks]);
-
+                const { id, duration, peaks } = this.currentRec;
+                this.updateRecord({
+                    id, duration, fileSize, peaks
+                })
                 socket.close();
             })
 
             socket.on("recording_error", () => {
                 store.dispatch(roolbackRecord(this.currentRec.id))
+                Logger.push(Log.Error(
+                    {
+                        private: "Rocording socket error. ",
+                        public: "During porccess of recording occured problem",
+                        path: ['pages', 'console', 'core', 'mixxer', 'recorder', 'record socket error'],
+                    }))
             })
         })
-    }
-
-    endRecording() {
-        //  console.log("im finish recoriding")
-        if (this.mediaRecorder.state !== 'inactive') {
-            this.mediaRecorder.stop();
-            clearInterval(this.updateInterval);
-            this.currentRec.duration = new Date().getTime() - this.currentRec.duration;
+        } catch(error){
+            Logger.push(Log.Error(
+                {
+                    private: "Rocording error " + error.message,
+                    public: "During porccess of recording occured problem",
+                    path: ['pages', 'console', 'core', 'mixxer', 'recorder', 'startRecording'],
+                    error,
+                }))
         }
     }
 
-    _updatePeaks() {
+    endRecording() {
+        if(this.mediaRecorder.state === "inactive"){
+            return;
+        }
+
+        clearInterval(this.peaksUpdateIntervalHandle);
+        this.mediaRecorder.stop();
+        this.currentRec.duration = new Date().getTime() - this.currentRec.duration;
+    }
+
+    updatePeaks() {
         try {
             const len = this.currentRec.peaks.length;
             this.currentRec.peaks[len] = this.mixer.currentPeakMinMax[0];
             this.currentRec.peaks[len + 1] = this.mixer.currentPeakMinMax[1];
-        } catch{
-            console.log("Error can't update record waveform")
+            if (this.currentRec.peaks.length > this.peaksSizeLimit) {
+                this.currentRec.peaks = this.reducePeaks(this.currentRec.peaks)
+                clearInterval(this.peaksUpdateIntervalHandle);
+                this.peaksUpdateIntervalTime *= 2;
+                this.peaksUpdateIntervalHandle = setInterval(this.updatePeaks.bind(this), this.peaksUpdateIntervalTime);
+            }
+        } catch(error){
+            Logger.push(Log.Error(
+                {
+                    private: "Error during updating record peaks, Can't udpate record waveform",
+                    public: "During porccess of recording occured problem",
+                    path: ['pages', 'console', 'core', 'mixxer', 'recorder', 'updatePeaks'],
+                    error
+                }))
         }
     }
 
-    _onPeakReady(workerEvent){
-        if(!workerEvent.data || !(workerEvent.data[0] instanceof Array)){
-            throw new Error('Transforming peaks failed')
-        }
-        const peaks = workerEvent.data[0];
-        const { id, duration, fileSize } = this.currentRec;
-        this.updateRecord({
-            id, duration, fileSize, peaks
-        })
-    }
-
-    updateRecord(data){
-        console.log('i got peaks')
-        const {id, peaks, duration, fileSize} = data;
+    updateRecord(data) {
+        const { id, peaks, duration, fileSize } = data;
         store.dispatch(recordFinalUpdate(
             id, peaks, duration, fileSize
         ))
         this.currentRec = Recorder.initRecState();
+    }
 
+    reducePeaks(input, ratio = 2) {
+        let output = [];
+        const inputSize = input.length;
+        const outputSize = Math.ceil(inputSize / ratio);
+
+        for (let i = 0; i < outputSize / 2; i++) {
+            output[2 * i] = input[2 * (i * ratio)];
+            output[2 * i + 1] = input[(2 * (i * ratio)) + 1];
+        }
+
+        return output;
     }
 
 }

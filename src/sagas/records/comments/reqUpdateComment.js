@@ -35,11 +35,11 @@ function* handel(action) {
         
         yield put(pushLog(new Log(`Comment id: ${action.commentId} data updated in database`)))
     } catch (error) {
-        yield pushLog(Log.Error(
+        yield put(pushLog(Log.Error(
             ['saga', 'record', 'comments', 'request updated comment'],
             "Can't update comenta data in database" + error.message,
             "Sorry. During updating comment in database occurred problem",
             error
-        ))
+        )))
     }
 }

@@ -11,6 +11,7 @@ import PlayBackControls from "./PlayBackControls/PlayBackControls";
 import Player from "./Player/Player";
 import SyncControl from "./SyncControl/SyncControl";
 import TrackInfo from "./TrackInfo/TrackInfo";
+import ErrorBoundary from "../../../../common/components/ErrorBoundary/ErrorBoundary";
 
 const Deck = props => {
 
@@ -27,19 +28,21 @@ const Deck = props => {
     })
 
     return (
-        <div className={"deck deck-" + props.name} ref={drop}>
-            <TrackInfo name={props.name} />
-            <SyncControl name={props.name} />
-            <div className="player-container">
-                <Player name={props.name} />
-                <PitchSlider name={props.name} />
+        <ErrorBoundary>
+            <div className={"deck deck-" + props.name} ref={drop}>
+                <TrackInfo name={props.name} />
+                <SyncControl name={props.name} />
+                <div className="player-container">
+                    <Player name={props.name} />
+                    <PitchSlider name={props.name} />
+                </div>
+                <div className="control-area">
+                    <PlayBackControls name={props.name} />
+                    <PitchButtons name={props.name} />
+                    <Looper name={props.name} />
+                </div>
             </div>
-            <div className="control-area">
-                <PlayBackControls name={props.name} />
-                <PitchButtons name={props.name} />
-                <Looper name={props.name} />
-            </div>
-        </div>
+        </ErrorBoundary>
     )
 }
 

@@ -1,12 +1,13 @@
 
-import React, { Fragment } from "react";
+import React from "react";
 import Record from "./../Record/Record";
 import "./record-list.scss";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 const RecordList = React.memo(({ list, player, controls }) => {
 
     return (
-        <Fragment>
+        <ErrorBoundary>
             <ul className="record-list">
                 {list && list.map(record => {
                     return <li className="record-list-item" key={record.id + "-list"}>
@@ -18,7 +19,7 @@ const RecordList = React.memo(({ list, player, controls }) => {
                     </li>
                 })}
             </ul>
-        </Fragment>
+        </ErrorBoundary>
     )
 })
 

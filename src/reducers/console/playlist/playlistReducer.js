@@ -278,7 +278,6 @@ function playListReducer(state = initState, action) {
         }
 
         case ACTIONS.PL_SWAP_TRACK_ON_CURRENT: {
-            console.log("swap")
             return produce(state, draftState => {
                 const newList = [...state.list];
                 //swaping

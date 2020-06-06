@@ -4,7 +4,7 @@ import { reqDeleteComment, reqPostComment, reqUpdateComment } from "./../../../.
 import { usePlayer } from "./../../Hooks/usePlayer";
 import CommentContent from "./Comment/Comment";
 import "./record-comments.scss";
-
+import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary"
 
 
 const RecordComments = ({
@@ -62,38 +62,40 @@ const RecordComments = ({
 
 
     return (
-        <div className="record-comments">
-            {/* Creating new post field */}
+        <ErrorBoundary>
+            <div className="record-comments">
+                {/* Creating new post field */}
 
-            {userId && 
+                {userId && 
+                    <Fragment>
+                        <h6>Create new comment: </h6>
+                        <div className="comment-post-form">
+                        <CommentContent 
+                            creationMode
+                            onChange={ onCommentChange.bind(null, null)}/>
+                        </div>
+                    </Fragment>
+                }
+                {/* Comments list */}
+                
+                { (record && record.comments && record.comments.length > 0) &&
                 <Fragment>
-                    <h6>Create new comment: </h6>
-                    <div className="comment-post-form">
-                    <CommentContent 
-                        creationMode
-                        onChange={ onCommentChange.bind(null, null)}/>
-                    </div>
+                    <h6>Comments: </h6>
+                    {record.comments.map( comment => (
+                        <CommentContent key={'comment - ' + comment.id}
+                            header={comment.user.nickname}
+                            editable={comment.user.id === userId}
+                            onChange={onCommentChange.bind(null, comment.id)}
+                            onDelete={onDelete.bind(null, comment.id)}
+                            date={comment.createdAt}
+                            text={comment.text}/>
+                    ))}
                 </Fragment>
-            }
-            {/* Comments list */}
-            
-            { (record && record.comments && record.comments.length > 0) &&
-              <Fragment>
-                <h6>Comments: </h6>
-                {record.comments.map( comment => (
-                    <CommentContent key={'comment - ' + comment.id}
-                        header={comment.user.nickname}
-                        editable={comment.user.id === userId}
-                        onChange={onCommentChange.bind(null, comment.id)}
-                        onDelete={onDelete.bind(null, comment.id)}
-                        date={comment.createdAt}
-                        text={comment.text}/>
-                ))}
-              </Fragment>
-            }
+                }
 
-                       
-        </div>
+                        
+            </div>
+        </ErrorBoundary>
     )
 }
 const mapStateToProps = state => ({

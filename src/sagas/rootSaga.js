@@ -1,6 +1,7 @@
 
 import { all } from "redux-saga/effects";
 import requestSearchResultsSaga from "./externalSearch/reqSearchResultSaga";
+import printLog from "./logger/print";
 import calcBpmSaga from "./playlists/calcBpmSaga";
 import requestAddTrack from "./playlists/reqAddTrackSaga";
 import requestCopyTrackSaga from "./playlists/reqCopySaga";
@@ -34,9 +35,10 @@ import requestUpdateUserDescriptionSaga from "./user/reqUpdateDescription";
 import requestUpdateUserNicknameSaga from "./user/reqUpdateNickname";
 import requestUpdateUserPictureSaga from "./user/reqUpdatePicture";
 
-
 function* rootSaga(){
     yield all([
+        //--- loger
+        printLog(),
         //--- external search
         requestSearchResultsSaga(),
 

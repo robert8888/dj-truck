@@ -12,24 +12,30 @@ export default function* requestDeleteRecord() {
 const getToken = state => state.user.token
 
 function* handel(action) {
+    const path = ['saga', 'record', 'request delete record']
     const token = yield select(getToken);
 
     try {
         const { callQuery, queries } = getApi("UserAssets");
-        const { deleteRecord: deleteRecordFromStore } = getApi('RecordsStore')
+        const { deleteRecord: deleteRecordFromStore } = getApi('RecordsStore');
+
+        const status = yield deleteRecordFromStore(action.recordId)
+        if(status !== "success"){
+            throw new Error("Can't delete reacords from record store database")
+        };
 
         const query = queries.deleteRecordQl(action.recordId);
         const response = yield callQuery(query, token);
-
         if (response.errors) {
             throw new Error("Server response contains errors " + errorParser(response.errors));
         }
 
         let success = response?.data?.deleteRecord;
-        if (success) {
-            const status = yield deleteRecordFromStore(action.recordId);
-            success = (status === 'success')
-        }
+        // if (success) {
+        //     const status =( yield deleteRecordFromStore(action.recordId) === "success");
+        //     console.log("status", status)
+        //     success = (status === 'success')
+        // }
 
 
         if (!success) {
@@ -38,15 +44,15 @@ function* handel(action) {
 
         yield put(setRecDeleteStatus("SUCCESS"))
 
-        yield put(pushLog(new Log(`Record successfully deleted in database, record id: ${action.recordId}`)))
+        yield put(pushLog(new Log(`Record successfully deleted in database, record id: ${action.recordId}`, path)))
     } catch (error) {
         yield put(setRecDeleteStatus("FAIL"))
-        yield pushLog(Log.Error(
-            ['saga', 'record', 'request download record'],
+        yield put(pushLog(Log.Error(
+            path,
             "Can't delete record in database",
             "Sorry. During process of deleteing record from database occurred a problem",
             error
-        ))
+        )))
     }
 
 

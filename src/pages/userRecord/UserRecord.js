@@ -10,6 +10,9 @@ import RecordDetails from "./../common/components/RecordDetails/RecordDetails";
 import RecordTracklist from "./../common/components/RecordTracklist/RecordTracklist";
 import { usePlayer } from "./../common/Hooks/usePlayer";
 import "./user-record.scss";
+import SocialButton from "../common/components/SocialButton/SocialButton";
+
+const sharePoint = process.env.REACT_APP_SHARE_POINT; 
 
 const UserRecord = ({ 
         setFooter,
@@ -114,8 +117,13 @@ const UserRecord = ({
         })
     },[controls, player, record])
 
+    if(!record){
+        return null;
+    }
+
     return (
         <div className="user-record">
+            <SocialButton type="facebook" resorce={sharePoint + "/share/fb/record/" + record.id} text={record.title}/>
             <Record record={record} controls={controls} player={player} simple />
             <Row>
                 <Col xs={{span: 12, order: 2}} md={{span: 6, order:1}}>
