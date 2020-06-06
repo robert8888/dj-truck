@@ -13,7 +13,6 @@ const SocialButton = ({type, resorce, text}) => {
     };
 
     const getUrl = useCallback((type, url, text) => {
-        url = encodeURIComponent(url);
         text = encodeURIComponent(text);
         return urls[type](url, text);
     }, [urls]);
