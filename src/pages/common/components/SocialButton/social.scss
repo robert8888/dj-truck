@@ -1,0 +1,16 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+
+.social-btn{
+    @include button--small();
+    .icon{
+        height: 1em;
+    }
+
+    .btn-content{
+        &::first-letter{
+            text-transform: uppercase;
+        }
+    }
+}
