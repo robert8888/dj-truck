@@ -1,12 +1,20 @@
-import React, {useMemo, useCallback} from "react";
+import React, {useMemo, useCallback, useEffect} from "react";
 import { Button } from "react-bootstrap"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faTwitter, faGoogle, faReddit } from "@fortawesome/free-brands-svg-icons";
 import "./social.scss";
 
+const facebook_app_id = process.env.REACT_APP_FACEBOOK_APP_ID;
+
 const SocialButton = ({type, resorce, text}) => {
     const urls = {
         facebook : (url) => `https://www.facebook.com/sharer/sharer.php?u='${url}'&t='${url}'`,
+        facebook : (url, text) => `https://www.facebook.com/dialog/feed?
+            app_id=${facebook_app_id}
+            &display=popup
+            &link=${encodeURI(url)}
+            &redirect_uri=${window.location.href}`.replace(/\s/g, ""),
+
         twitter : (url, text) => `https://twitter.com/intent/tweet?text=${text}':${url}`,
         google: (url) => `https://plus.google.com/share?url=${url}`,
         reddit: (url, text) => `http://www.reddit.com/submit?url=${url}&title=${text}`
@@ -31,8 +39,12 @@ const SocialButton = ({type, resorce, text}) => {
     }, [type])
 
     const clickHandle = useCallback((url)=>{
-        window.open(url);
+        window.open(url, "Share", "resizable=yes,scrollbars=no,status=yes");
     }, [])
+
+    useEffect(()=>{
+        console.log(resorce);
+    }, [resorce])
   
     const btn = useMemo(()=>{
         return (
