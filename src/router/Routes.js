@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense } from "react";
+import React, {Suspense } from "react";
 import { Redirect, Route } from "react-router-dom";
 //import Console from "./../pages/console/Console";
 //import Profile from "./../pages/profile/Profile";
@@ -15,9 +15,10 @@ const UserRecord = React.lazy(() => import(/* webpackChunkName: "record" */"./..
 const Explorer = React.lazy(() => import(/* webpackChunkName: "expolorer" */"./../pages/explore/Explorer"));
 
 const Routes = props => {
+    console.log(window.location)
     return (
         <Suspense fallback={<Loading/>}>
-            <Fragment>
+            <>
                 <Route path="/exploring" exact component={Explorer} />
                 <PrivateRoute path="/console" exact component={Console} />
                 <PrivateRoute path="/my/playlist" exact component={Playlist}/>
@@ -37,7 +38,7 @@ const Routes = props => {
                 <Route path="/record/:user/:title/:id?" exact component={UserRecord} />
                 
                 <Route path="/test" exact render={() => <h1>Test</h1>} />
-            </Fragment>
+            </>
         </Suspense>
 
     )
