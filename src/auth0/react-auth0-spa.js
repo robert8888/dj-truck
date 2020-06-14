@@ -2,6 +2,8 @@ import createAuth0Client from "@auth0/auth0-spa-js";
 import React, { useContext, useEffect, useState } from "react";
 import { removeUser, setUserProfile } from "./../actions";
 import store from "./../store";
+import {Logger, Log} from "./../utils/logger/logger";
+
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
@@ -10,11 +12,11 @@ export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
 
 let clientExternalResolver;
-export let auth0ClientExternal = new Promise((res, rej)=>{
+export let auth0ClientExternal = new Promise((res, rej) => {
   clientExternalResolver = res;
 })
 
-export const Auth0Provider= ({
+export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
@@ -28,8 +30,12 @@ export const Auth0Provider= ({
 
   useEffect(() => {
     const initAuth0 = async () => {
-      const auth0FromHook = await createAuth0Client(initOptions);
-      setAuth0(auth0FromHook);
+      try {
+        const auth0FromHook = await createAuth0Client(initOptions);
+        setAuth0(auth0FromHook);
+      } catch(err){
+        Logger.push(Log.Warning("You are on not secure domain. !!!"))
+      }
       // clientExternalResolver(auth0FromHook);
       // if (window.location.search.includes("code=") &&
       //     window.location.search.includes("state=")) {
@@ -44,7 +50,7 @@ export const Auth0Provider= ({
       // if (isAuthenticated) {
       //   const user = await auth0FromHook.getUser();
       //   setUser(user);
-        
+
       //   dispatch(setUserProfile({
       //     logged: true,
       //     ...user,
@@ -57,26 +63,26 @@ export const Auth0Provider= ({
     // eslint-disable-next-line
   }, []);
 
-  useEffect(()=>{
-    if(!auth0Client) return;
+  useEffect(() => {
+    if (!auth0Client) return;
 
-    const setupAuth0 =  async () => {
+    const setupAuth0 = async () => {
       clientExternalResolver(auth0Client);
 
       if (window.location.search.includes("code=") &&
-          window.location.search.includes("state=")) {
+        window.location.search.includes("state=")) {
         const { appState } = await auth0Client.handleRedirectCallback();
         onRedirectCallback(appState);
       }
-  
+
       const isAuthenticated = await auth0Client.isAuthenticated();
-  
+
       setIsAuthenticated(isAuthenticated);
-  
+
       if (isAuthenticated) {
         const user = await auth0Client.getUser();
         setUser(user);
-        
+
         dispatch(setUserProfile({
           logged: true,
           ...user,
@@ -122,7 +128,7 @@ export const Auth0Provider= ({
     }))
   };
 
-  const logout = (...p)=>{
+  const logout = (...p) => {
     auth0Client.logout(...p);
     dispatch(removeUser())
   }
