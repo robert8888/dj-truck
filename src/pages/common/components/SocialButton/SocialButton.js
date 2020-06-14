@@ -1,4 +1,4 @@
-import React, {useMemo, useCallback, useEffect} from "react";
+import React, {useMemo, useCallback } from "react";
 import { Button } from "react-bootstrap"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faTwitter, faGoogle, faReddit } from "@fortawesome/free-brands-svg-icons";
@@ -38,13 +38,9 @@ const SocialButton = ({type, resorce, text}) => {
     }, [type])
 
     const clickHandle = useCallback((url)=>{
-        window.open(url, "Share", "resizable=yes,scrollbars=no,status=yes");
+        window.open(url, "Share", "resizable=yes,scrollbars=no,status=yes, width=600");
     }, [])
 
-    useEffect(()=>{
-        console.log(resorce);
-    }, [resorce])
-  
     const btn = useMemo(()=>{
         return (
             <Button onClick={clickHandle.bind(null, url)} className={"social-btn social" + type}>

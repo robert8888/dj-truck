@@ -76,6 +76,12 @@ const RecordComments = ({
                         </div>
                     </Fragment>
                 }
+                {!userId && 
+                    <Fragment>
+                        <h6>Please login to add comment</h6>
+                    </Fragment>
+                }
+
                 {/* Comments list */}
                 
                 { (record && record.comments && record.comments.length > 0) &&

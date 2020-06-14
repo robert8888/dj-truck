@@ -30,19 +30,51 @@ export const Auth0Provider= ({
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions);
       setAuth0(auth0FromHook);
-      clientExternalResolver(auth0FromHook);
+      // clientExternalResolver(auth0FromHook);
+      // if (window.location.search.includes("code=") &&
+      //     window.location.search.includes("state=")) {
+      //   const { appState } = await auth0FromHook.handleRedirectCallback();
+      //   onRedirectCallback(appState);
+      // }
+
+      // const isAuthenticated = await auth0FromHook.isAuthenticated();
+
+      // setIsAuthenticated(isAuthenticated);
+
+      // if (isAuthenticated) {
+      //   const user = await auth0FromHook.getUser();
+      //   setUser(user);
+        
+      //   dispatch(setUserProfile({
+      //     logged: true,
+      //     ...user,
+      //   }))
+      // }
+
+      // setLoading(false);
+    };
+    initAuth0();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(()=>{
+    if(!auth0Client) return;
+
+    const setupAuth0 =  async () => {
+      clientExternalResolver(auth0Client);
+
       if (window.location.search.includes("code=") &&
           window.location.search.includes("state=")) {
-        const { appState } = await auth0FromHook.handleRedirectCallback();
+        const { appState } = await auth0Client.handleRedirectCallback();
         onRedirectCallback(appState);
       }
-
-      const isAuthenticated = await auth0FromHook.isAuthenticated();
-
+  
+      const isAuthenticated = await auth0Client.isAuthenticated();
+  
       setIsAuthenticated(isAuthenticated);
-
+  
       if (isAuthenticated) {
-        const user = await auth0FromHook.getUser();
+        const user = await auth0Client.getUser();
         setUser(user);
         
         dispatch(setUserProfile({
@@ -50,12 +82,12 @@ export const Auth0Provider= ({
           ...user,
         }))
       }
-
       setLoading(false);
-    };
-    initAuth0();
-    // eslint-disable-next-line
-  }, []);
+    }
+
+    setupAuth0();
+  }, [auth0Client, dispatch, onRedirectCallback])
+
 
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true);
@@ -94,6 +126,7 @@ export const Auth0Provider= ({
     auth0Client.logout(...p);
     dispatch(removeUser())
   }
+
   return (
     <Auth0Context.Provider
       value={{
@@ -103,10 +136,10 @@ export const Auth0Provider= ({
         popupOpen,
         loginWithPopup,
         handleRedirectCallback,
-        getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-        loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-        getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-        getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
+        getIdTokenClaims: (...p) => auth0Client && auth0Client.getIdTokenClaims(...p),
+        loginWithRedirect: (...p) => auth0Client && auth0Client.loginWithRedirect(...p),
+        getTokenSilently: (...p) => auth0Client && auth0Client.getTokenSilently(...p),
+        getTokenWithPopup: (...p) => auth0Client && auth0Client.getTokenWithPopup(...p),
         logout: (...p) => logout(...p)
       }}
     >
