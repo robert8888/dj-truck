@@ -8,7 +8,6 @@ const facebook_app_id = process.env.REACT_APP_FACEBOOK_APP_ID;
 
 const SocialButton = ({type, resorce, text}) => {
     const urls = {
-        facebook : (url) => `https://www.facebook.com/sharer/sharer.php?u='${url}'&t='${url}'`,
         facebook : (url, text) => `https://www.facebook.com/dialog/feed?
             app_id=${facebook_app_id}
             &display=popup
