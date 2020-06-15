@@ -58,6 +58,7 @@ const UserRecords = React.memo(({
 
 
     useEffect(() => {
+        console.log("effect start", preloaded, recordsList, loading)
         if ((preloaded && recordsList.length > 0) || loading) { return }
 
         if (isAuthenticated && !userId) { return }
