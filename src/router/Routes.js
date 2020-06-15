@@ -15,7 +15,6 @@ const UserRecord = React.lazy(() => import(/* webpackChunkName: "record" */"./..
 const Explorer = React.lazy(() => import(/* webpackChunkName: "expolorer" */"./../pages/explore/Explorer"));
 
 const Routes = props => {
-    console.log(window.location)
     return (
         <Suspense fallback={<Loading/>}>
             <>

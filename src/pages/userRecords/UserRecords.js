@@ -96,6 +96,8 @@ const UserRecords = React.memo(({
         }
         
 
+        console.log("before requesting", where);
+
         setSearchDisplaing(searchConsole);
 
         requestList(pgSize, pg, where);

@@ -34,30 +34,9 @@ export const Auth0Provider = ({
         const auth0FromHook = await createAuth0Client(initOptions);
         setAuth0(auth0FromHook);
       } catch(err){
-        Logger.push(Log.Warning("You are on not secure domain. !!!"))
+        Logger.push(Log.Warning("You are on not secure domain. !!! for this reason you can't login. Pls go to : https://www.djtruck.pl"))
       }
-      // clientExternalResolver(auth0FromHook);
-      // if (window.location.search.includes("code=") &&
-      //     window.location.search.includes("state=")) {
-      //   const { appState } = await auth0FromHook.handleRedirectCallback();
-      //   onRedirectCallback(appState);
-      // }
 
-      // const isAuthenticated = await auth0FromHook.isAuthenticated();
-
-      // setIsAuthenticated(isAuthenticated);
-
-      // if (isAuthenticated) {
-      //   const user = await auth0FromHook.getUser();
-      //   setUser(user);
-
-      //   dispatch(setUserProfile({
-      //     logged: true,
-      //     ...user,
-      //   }))
-      // }
-
-      // setLoading(false);
     };
     initAuth0();
     // eslint-disable-next-line
