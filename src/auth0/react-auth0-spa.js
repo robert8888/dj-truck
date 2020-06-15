@@ -34,13 +34,14 @@ export const Auth0Provider = ({
         const auth0FromHook = await createAuth0Client(initOptions);
         setAuth0(auth0FromHook);
       } catch(err){
-        Logger.push(Log.Warning("You are on not secure domain. !!! for this reason you can't login. Pls go to : https://www.djtruck.pl"))
+        Logger.push(Log.Warning("You are on not secure domain. !!! for this reason you can't login. Pls go to : https://www.djtruck.pl"));
+        setLoading(false);
       }
 
     };
     initAuth0();
     // eslint-disable-next-line
-  }, []);
+  }, [setLoading]);
 
   useEffect(() => {
     if (!auth0Client) return;
