@@ -8,11 +8,12 @@
   padding: 30px;
 
   .slider-control-btn.btn.btn-primary{
-    margin: 0.5rem;
+    //margin: 0.5rem;
     @include button-transparent($primary);
+     padding: 6px;
     .icon {
-      height: 2.5rem;
-      width: 2.5rem;
+      height: 1.5rem;
+      width: 1.5rem;
     }
   }
 }

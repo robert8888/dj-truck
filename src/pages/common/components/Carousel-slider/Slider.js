@@ -3,7 +3,7 @@ import UUID from "uuidjs";
 import style from "./slider.scss"
 
 const rmLast = (arr, direction) => {
-    direction = direction > 1 ? "next" : "prev";
+    direction = direction < 0 ? "next" : "prev";
     let last = arr.length - 1;
     let _arr = [...arr];
     while (last >= 0) {
@@ -21,7 +21,7 @@ const sumLastSameDirection = (arr, {max}) => {
         let last = _arr.pop();
         let prev = _arr.pop();
         let sum = last + prev;
-        if(max && Math.abs(sum) > max){
+        if (max && Math.abs(sum) > max) {
             sum = (sum > 0) ? max : -max;
         }
         _arr.push(sum);
@@ -30,12 +30,15 @@ const sumLastSameDirection = (arr, {max}) => {
 }
 
 const Slider = ({
-    slides: initSlides,
-    next: nextHandle,
-    prev: prevHandle,
-    minSlideWidth = style.minSlideWidth,
-    onStepDragging = false
-}) => {
+        slides: initSlides,
+        next: nextHandle,
+        prev: prevHandle,
+        set: setHandle,
+        getLength: getLengthHandle,
+        onChange,
+        minSlideWidth = style.minSlideWidth,
+        onStepDragging = false
+    }) => {
     const slider = useRef();
     const [active, setActive] = useState(false);
     const [overLapRatio] = useState(2);
@@ -44,13 +47,14 @@ const Slider = ({
     const [_containerRect, setContainerRect] = useState(null);
     const [slideWidth, setSlideWidth] = useState(null);
     const [visibleSlides, setVisibleSlides] = useState(null);
-    const [slides, setSlides] =  useState(null);
+    const [slides, setSlides] = useState(null);
 
     const shift = useRef();
     const balancedShift = useRef();
     const translate = useRef();
     const inAction = useRef();
     const actionQueue = useRef();
+    const currentSlide = useRef();
 
     const containerRect = useCallback(() => {
         if (!slider.current) return 0;
@@ -77,29 +81,50 @@ const Slider = ({
         translate.current = target;
     }, [slider, translate])
 
-    const updatePosition = useCallback((position, sWidth)=> {
-        if (!slider.current || isNaN(position) || !active ) return;
+    const updatePosition = useCallback((position, sWidth) => {
+        if (!slider.current || isNaN(position) || !active) return;
         updateTranslate(position * (slideWidth || sWidth));
     }, [slider, slideWidth, updateTranslate, active])
 
+    const updateCurrentSlide = useCallback((direction = 0) =>{
+        let current = currentSlide.current ?? Math.floor(visibleSlides / 2);
+        //  console.log(current)
+        current = (current - direction) % initSlides.length;
+        if(current < 0){
+            current = initSlides.length + current;
+        }
+        currentSlide.current = current;
+        onChange && onChange(current);
+        console.log(current)
+    }, [currentSlide, initSlides, onChange, visibleSlides])
+
     useEffect(()=>{
-        if(!visibleSlides || visibleSlides > initSlides.length) return;
+        if(!visibleSlides) return;
+        setTimeout(() => updateCurrentSlide(), 0);
+    }, [visibleSlides, updateCurrentSlide])
+
+    useEffect(() => {
+        if (!visibleSlides || visibleSlides > initSlides.length) {
+            setSlides(initSlides);
+            return;
+        }
         setActive(true);
 
-        let slides = [].concat(Array(overLapRatio *  2 + 1).fill(1).map( () => initSlides)).flat();
+        let slides = [].concat(Array(overLapRatio * 2 + 1).fill(1).map(() => initSlides)).flat();
         setSlides(slides);
     }, [visibleSlides, setActive, initSlides, setSlides, overLapRatio])
 
 
-    useEffect(()=>{
+    useEffect(() => {
         if (!containerRect || !minSlideWidth || !slider.current) return;
         const containerWidth = containerRect().width;
         const visibleSlides = ~~(containerWidth / parseInt(minSlideWidth));
         setVisibleSlides(visibleSlides);
+
     }, [containerRect, minSlideWidth, slider, setVisibleSlides])
 
     useEffect(() => {
-        if(!slides) return;
+        if (!slides) return;
         shift.current = -initSlides.length * overLapRatio;
         balancedShift.current = shift.current;
         updatePosition(shift.current);
@@ -112,11 +137,17 @@ const Slider = ({
     }, [setContainerRect])
 
     useEffect(() => {
-        if(!visibleSlides || !containerRect || !slides) return;
+        if (!visibleSlides || !containerRect || !slides) return;
         const slideWidth = containerRect().width / visibleSlides
         setSlideWidth(slideWidth);
-        slider.current.style.width = slideWidth * slides.length + "px";
-    }, [containerRect,  visibleSlides, slides]);
+        let width = slideWidth * slides.length;
+        if(visibleSlides > slides.length) {
+            width = containerRect().width;
+        }
+        slider.current.style.width = width  + "px";
+    }, [containerRect, visibleSlides, slides]);
+
+
 
     const appendSlides = useCallback(amount => {
         setSlides(slides => {
@@ -143,14 +174,14 @@ const Slider = ({
     const actionRef = useRef();
     const balance = useCallback(() => {
         const diff = balancedShift.current - shift.current;
-        if(!diff) {
+        if (!diff) {
             return;
         }
         (diff < 0) ? prependSlides(Math.abs(diff)) : appendSlides(diff);
         updateTransition(false);
         shift.current = balancedShift.current;
         updatePosition(shift.current);
-        setTimeout(()=>{
+        setTimeout(() => {
             actionRef.current && actionRef.current();
         }, 0)
     }, [shift, balancedShift, prependSlides, appendSlides, updateTransition, updatePosition, actionRef])
@@ -158,55 +189,72 @@ const Slider = ({
 
     const action = useCallback((direction) => {
         if (inAction.current) {
-            if(!direction) return;
-            let queue  = actionQueue.current || [];
+            if (!direction) return;
+            let queue = actionQueue.current || [];
             queue = rmLast([...queue], direction);
-            queue = sumLastSameDirection([...queue, direction], {max : 3})
+            queue = sumLastSameDirection([...queue, direction], {max: 3})
             actionQueue.current = queue;
             return;
         }
         direction = direction || (actionQueue.current && actionQueue.current.shift());
-        if(!direction) return;
+        if (!direction) return;
 
         inAction.current = true;
         updateTransition(true);
         shift.current += direction;
-        updatePosition(shift.current, slideWidth );
-        setTimeout(()=>{
+        updatePosition(shift.current, slideWidth);
+        setTimeout(() => {
             inAction.current = false;
             balance();
-        }, animationDuration)
-    }, [balance, animationDuration, updatePosition, inAction, updateTransition, shift, slideWidth])
+        }, animationDuration);
+        updateCurrentSlide(direction);
+    }, [balance, animationDuration, updatePosition, inAction, updateTransition, shift, slideWidth, updateCurrentSlide])
 
-    useEffect(()=>{
+    useEffect(() => {
         actionRef.current = (...arg) => action(...arg);
     }, [action, actionRef])
 
     const next = useCallback(() => {
-        action(1);
-    }, [action])
+        if(!active) return ;
+        action(-1);
+    }, [action, active])
 
     useEffect(() => nextHandle && nextHandle(next), [next, nextHandle])
 
     const prev = useCallback(() => {
-        action(-1);
-    }, [action])
+        if(!active) return ;
+        action(1);
+    }, [action, active])
 
-    useEffect(() => prevHandle && prevHandle(prev), [prev, prevHandle])
+    useEffect(() => prevHandle && prevHandle(prev), [prev, prevHandle]);
+
+    const set = useCallback((target)=>{
+        if(!active) return;
+        action(currentSlide.current - target);
+    }, [currentSlide, active, action])
+
+    useEffect(()=> setHandle && setHandle(set), [setHandle, set])
+
+    const getLength = useCallback(()=>{
+        return initSlides.length;
+    }, [initSlides])
+
+    useEffect(()=> getLengthHandle && getLengthHandle(getLength), [getLength, getLengthHandle])
 
     const endDraging = useCallback(() => {
         let next = Math.round(translate.current / slideWidth);
-        if(onStepDragging){
-            next = next >  shift.current  ? shift.current + 1 : shift.current - 1;
+        if (onStepDragging) {
+            next = next > shift.current ? shift.current + 1 : shift.current - 1;
         }
+        updateCurrentSlide(next - shift.current );
         shift.current = next;
         updatePosition(shift.current);
         inAction.current = true;
-        setTimeout(()=> {
+        setTimeout(() => {
             balance();
             inAction.current = false;
         }, animationDuration);
-    }, [translate, inAction, shift, slideWidth, balance,  animationDuration,  onStepDragging, updatePosition])
+    }, [translate, inAction, shift, slideWidth, balance, animationDuration, onStepDragging, updatePosition, updateCurrentSlide])
 
     const mouseMove = useCallback((shiftX, event) => {
         const clientX = (event.type === "touchmove") ? event.touches[0].clientX : event.clientX;
@@ -216,7 +264,7 @@ const Slider = ({
 
     const mouseDown = useCallback(event => {
         const sliderContainer = event.target.closest(".carousel-slider-container");
-        if(!sliderContainer) return;
+        if (!sliderContainer || !active) return;
         actionQueue.current = [];
         const rect = sliderContainer.getBoundingClientRect();
         const clientX = (event.type === "touchstart") ? event.touches[0].clientX : event.clientX;
@@ -237,14 +285,20 @@ const Slider = ({
         window.addEventListener("mouseup", mouseUp);
         window.addEventListener("touchend", mouseUp);
         updateTransition(false);
-    }, [updateTransition, shift, slideWidth, endDraging, mouseMove, actionQueue])
+    }, [active, updateTransition, shift, slideWidth, endDraging, mouseMove, actionQueue])
 
     return (
         <div className="carousel-slider-container">
-           <ul className="carousel-slider" ref={slider} onMouseDown={mouseDown} onTouchStart={mouseDown} onDrag={ e => e.preventDefault()}>
-                {slides && slides instanceof Array && slides.map(slide => (
-                    <li key={UUID.genV1()} className={"slide"} style={{width: minSlideWidth || "initial"}}>{slide}</li>
-                ))}
+            <ul className="carousel-slider" ref={slider} onMouseDown={mouseDown} onTouchStart={mouseDown}
+                onDrag={e => e.preventDefault()}>
+                {slides && slides instanceof Array && slides.map((slide, index) => {
+                    let classes = "slide";
+                    if (visibleSlides % 2 !== 0 && index === Math.abs(balancedShift.current) + Math.floor(visibleSlides / 2)) {
+                        classes += " slide-mid";
+                    }
+                    return (<li key={UUID.genV1()} className={classes}
+                                style={{width: minSlideWidth || "initial"}}>{slide}</li>)
+                })}
             </ul>
         </div>
     )

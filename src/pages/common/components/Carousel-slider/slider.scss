@@ -3,11 +3,13 @@ $minStyleWidth : 250px;
 $animationDuration: 1s;
 .carousel-slider-container{
   ul.carousel-slider{
-    padding: 0;
+    padding: 10px 0;
     margin: 0;
     list-style: none;
     display: flex;
     justify-content: space-around;
+    align-items: stretch;
+
     &.slider-transition--active{
       transition: transform $animationDuration ease 0s;
       -webkit-transition: transform $animationDuration ease 0s;
@@ -21,10 +23,9 @@ $animationDuration: 1s;
       -webkit-user-drag: none;
       -webkit-user-select: none;
       -ms-user-select: none;
-
     }
     li{
-
+      display: flex;
     }
   };
 }
