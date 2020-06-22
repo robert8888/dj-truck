@@ -20,6 +20,9 @@ const NavBar = (props) => {
           <Link to="/" ><img alt="Dj truck page logo" src="./../../../../../DJ_TRUCK_LOG_INVERT_MINI.png"></img></Link>
         </li>
         <ul className="sub-menu-main">
+          <li className="sub-menu-item main-nav-item nav-left-item nav-item nav-item-home">
+            <Link to="/" >Home</Link>
+          </li>
           <li className="sub-menu-item main-nav-item nav-left-item nav-item">
             <Link to="/exploring" >Explore</Link>
           </li>

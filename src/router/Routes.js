@@ -6,7 +6,7 @@ import { Redirect, Route } from "react-router-dom";
 import Loading from "./../pages/common/components/Loading/Loding";
 import PrivateRoute from "./PrivateRoute";
 
-
+const Home = React.lazy(()=> import(/*webpackChunkName: "home" */ "./../pages/home/Home"));
 const Console = React.lazy(() => import(/* webpackChunkName: "console" */ "./../pages/console/Console"));
 const Playlist = React.lazy(() => import(/* webpackChunkName: "playlist" */"./../pages/playlist/Playlist"));
 const Profile = React.lazy(()=> import(/* webpackChunkName: "profile" */"./../pages/profile/Profile"));
@@ -14,10 +14,12 @@ const UserRecords = React.lazy(()=> import(/* webpackChunkName: "users reocrds" 
 const UserRecord = React.lazy(() => import(/* webpackChunkName: "record" */"./../pages/userRecord/UserRecord"));
 const Explorer = React.lazy(() => import(/* webpackChunkName: "expolorer" */"./../pages/explore/Explorer"));
 
+
 const Routes = props => {
     return (
         <Suspense fallback={<Loading/>}>
             <>
+                <Route path="/" exact component={Home}/>
                 <Route path="/exploring" exact component={Explorer} />
                 <PrivateRoute path="/console" exact component={Console} />
                 <PrivateRoute path="/my/playlist" exact component={Playlist}/>

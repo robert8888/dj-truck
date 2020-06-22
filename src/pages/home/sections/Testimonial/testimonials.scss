@@ -1,0 +1,48 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+section.home-testimonial{
+    @include section--white();
+    padding: 100px 0;
+    .testimonial-slider{
+        width: 100%;
+        .row{
+            flex-wrap: nowrap;
+            overflow: hidden;
+            &>*{
+                margin: 0;
+                padding: 0;
+            }
+        }
+        .slide-wrapper{
+            display: flex;
+            flex-wrap: nowrap;
+        }
+        .testimonial{
+            border:solid 2px red;
+            border-radius: 5px;
+            padding: 15px;
+            p.text{
+
+            }
+            .testimonial-author{
+                img{
+                    max-width: 50px;
+                    max-height: 50px;
+                    float: left;
+                    margin-right: 20px;
+                }
+                h5.author-name, h6.author-position{
+                    margin-left: 20px;
+                }
+
+                h5.author-name{
+
+                }
+                h6.author-position{
+
+                }
+            }
+        }
+    }
+}

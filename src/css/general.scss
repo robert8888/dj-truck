@@ -2,13 +2,83 @@
 
 h1,h2,h3,h4,h5,h6, p,a, a:active, a:visited, a:link, a:hover, span {
     color: $primary-text-color;
+    font-family: "Lato", sans-serif;
 }
 h1,h2,h3,h4,h5,h6, label {
     letter-spacing: 1px;
 }
 
+h5{
+    font-size: 1.4em;
+}
+
+h4 {
+    font-size: 1.5em;
+}
+
+h3{
+    font-size: 1.6em;
+}
+
+h2{
+    font-size: 2.2em;
+}
+
+p, a {
+    font-size: 1em;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+@media (min-width: 768px){
+    h5{
+        font-size: 1.4em;
+    }
+
+    h4 {
+        font-size: 1.8em;
+    }
+    h3{
+        font-size: 2.2em;
+    }
+
+    h2{
+        font-size: 2.7em;
+    }
+    p , a{
+        font-size: 1.05em;
+    }
+}
+
+@media (min-width: 992px){
+    h5{
+        font-size: 1.6em;
+    }
+
+    h4{
+        font-size: 2.0em;
+    }
+
+    h3{
+        font-size: 2.5em;
+    }
+
+    h2{
+        font-size: 3.2em;
+    }
+
+    p, a{
+        font-size: 1.1em;
+    }
+}
+
+
+
 
 $vertical-break-point : 1200px;
+$vertical-break-point-small : 992px;
 $vertical-break-point-extra-small : 772px;
 
 :export{

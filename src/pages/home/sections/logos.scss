@@ -1,0 +1,13 @@
+
+.logos-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px;
+    .logo-brand {
+        padding: 10px;
+        margin: 10px;
+        height: 100px;
+        width: 200px;
+    }
+}

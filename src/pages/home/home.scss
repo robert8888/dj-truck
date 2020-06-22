@@ -1,0 +1,20 @@
+@import "./../../css/colors.scss";
+@import "./../../css/animations.scss";
+
+.main-container{
+    @include animateBackgroundPosition();
+    min-height: calc(var(--vh) * 200);
+}
+
+.home{
+
+    width: calc(var(--vw) * 100);
+    width: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 1;
+    &>section:not(:first-of-type){
+        background: $primary-white ;
+    }
+}

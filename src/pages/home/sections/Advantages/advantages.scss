@@ -1,0 +1,57 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+
+
+    
+section.advantage{
+    @include section--white();
+    padding-top: 50px;
+    .col-lg-6, .col-lg-6>*{
+        display: flex;
+        margin-bottom: 30px;
+    }
+
+    .adv-section-image{
+        img{
+            max-width: 100%;
+            
+            object-fit: cover;
+        }
+    }
+
+    .adv-section-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .line {
+            height: 10px;
+            width: 30%;
+            background-color: $primary;
+        }
+        h4.adv-section-title{
+            margin: 20px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+        p.text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            //max-height: 20%;
+            -webkit-line-clamp: 4; /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+
+        a{
+            display: inline-block;
+            .btn.btn-primary{
+                @include std-button($primary);
+            }
+        }
+
+    }
+}

@@ -62,6 +62,7 @@
                  padding: 0 10px;
                  white-space: nowrap;
                  letter-spacing: 1px;
+                 font-size: 1em;
              }
             &:hover {
                 color: $primary;
@@ -77,6 +78,10 @@
                 &>*{
                     color: $primary;
                 }
+            }
+
+            &.nav-item-home{
+                display: none;
             }
         }
 
@@ -154,7 +159,9 @@
                 @include sub-menu();
                 right: auto;
                 left: 15px;
-
+                & .nav-item-home{
+                    display: block;
+                }
                
             }
 
