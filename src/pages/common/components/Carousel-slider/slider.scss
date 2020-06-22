@@ -1,0 +1,36 @@
+
+$minStyleWidth : 250px;
+$animationDuration: 1s;
+.carousel-slider-container{
+  ul.carousel-slider{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    &.slider-transition--active{
+      transition: transform $animationDuration ease 0s;
+      -webkit-transition: transform $animationDuration ease 0s;
+    }
+    //
+    *, * > * {
+      user-select: none;
+      user-drag: none;
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+
+    }
+    li{
+
+    }
+  };
+}
+
+
+:export {
+  minSlideWidth : $minStyleWidth;
+  animatioDuration: $animationDuration
+}
