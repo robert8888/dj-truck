@@ -37,11 +37,11 @@ export class Log{
 
         //case 4 - path,  private message, public message, error object
 
-        let path, priv, pub, error; 
+        let path, priv, pub, error;
 
         switch(args.length){
             case 1 : {
-                if(args[0] instanceof String){
+                if(typeof args[0] === "string"){
                     [priv] = args;
                     break;
                 } else if(typeof args[0] === "object"){

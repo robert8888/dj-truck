@@ -25,8 +25,8 @@ function print(log){
         case LOG_TYPES.ERROR : {
             console.group("ERROR");
             console.log(log.path);
-            console.error(log.error.message);
-            console.log(log.error.stack);
+            console.error(log.error?.message);
+            console.log(log.error?.stack);
             console.log(log.message.private);
             console.log(log.message.public)
             console.groupEnd();

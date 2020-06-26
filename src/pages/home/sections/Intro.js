@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom"
 const Intro = () => {
     const history = useHistory();
 
+
     return (
         <section className="home-intro">
 
