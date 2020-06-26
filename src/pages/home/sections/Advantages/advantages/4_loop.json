@@ -1,0 +1,15 @@
+{
+  "header" :{
+    "bold": "Synchronized looper - ",
+    "normal": "now your track will never end"
+  },
+
+  "text" : ["You can get in to loop in any moment ",
+    "without afraid that track will lose synchronization,",
+    "you can change loop length during looper active as well."],
+  "link" : {
+    "to": "./introduction",
+    "text": "Learn more about looper"
+  },
+  "image" : "/advantages/advantage-loop.png"
+}

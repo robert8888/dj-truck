@@ -9,9 +9,9 @@ const Logos = React.memo(() => {
             <Container>
                 <Row>
                     <Col xs={12} lg={12}>
-                        <div className="logos-container">
-                            <img src="/soundcloud.svg" alt="SoundCloud logo" className="logo-brand soundcloud-logo"/>
-                            <img src="/youtube.svg" alt="YouTube logo" className="logo-brand youtube-logo"/>
+                        <div className="home-logos__wrapper">
+                            <img src="/soundcloud.svg" alt="SoundCloud logo" className="home-logos__logo logo-soundcloud"/>
+                            <img src="/youtube.svg" alt="YouTube logo" className="home-logos__logo logo-youtube"/>
                         </div>
                     </Col>
                 </Row>

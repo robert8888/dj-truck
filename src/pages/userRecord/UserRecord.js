@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import PlayerControls from "../common/components/PlayerControls/PlayerControls";
@@ -122,20 +122,22 @@ const UserRecord = ({
     }
 
     return (
-        <div className="user-record">
-            <SocialButton type="facebook" resorce={sharePoint + "/share/fb/record/" + record.id} text={record.title}/>
-            <Record record={record} controls={controls} player={player} simple />
-            <Row>
-                <Col xs={{span: 12, order: 2}} md={{span: 6, order:1}}>
-                    <RecordComments/>
-                </Col>
-                <Col xs={12}  md={{span: 6, order:2}}>
-                    <RecordDetails record={record} />
-                    <RecordTracklist onSeek={seekToTrack}/>
-                </Col> 
-            </Row>
-            <PlayerControls controls={controls} player={player} list={record} />
-        </div>
+        <Container className="app layout container-xl" >
+            <div className="user-record">
+                <SocialButton type="facebook" resorce={sharePoint + "/share/fb/record/" + record.id} text={record.title}/>
+                <Record record={record} controls={controls} player={player} simple />
+                <Row>
+                    <Col xs={{span: 12, order: 2}} md={{span: 6, order:1}}>
+                        <RecordComments/>
+                    </Col>
+                    <Col xs={12}  md={{span: 6, order:2}}>
+                        <RecordDetails record={record} />
+                        <RecordTracklist onSeek={seekToTrack}/>
+                    </Col>
+                </Row>
+                <PlayerControls controls={controls} player={player} list={record} />
+            </div>
+        </Container>
     )
 }
 

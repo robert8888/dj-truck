@@ -4,6 +4,7 @@ import UserProfile from "../common/components/UserProfile/UserProfile";
 import { reqUpdateDescription, reqUpdateNickname, reqUpdatePicture } from "./../../actions";
 import { useAuth0 } from "./../../auth0/react-auth0-spa";
 import "./profile.scss";
+import {Container} from "react-bootstrap";
 
 const Profile = ({
   nickname,
@@ -44,7 +45,9 @@ const Profile = ({
   }
 
   return (
-      <UserProfile nickname={nickname} editable onChange={profileDataChange}/>
+      <Container className="app layout container-xl" >
+        <UserProfile nickname={nickname} editable onChange={profileDataChange}/>
+      </Container>
   );
 };
 const mapStateToProps = state => ({

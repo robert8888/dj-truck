@@ -1,6 +1,7 @@
 @import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
 
-section.home-feautres{
+section.home-features{
     @include section--white();
     padding-bottom: 30px;
     
@@ -11,30 +12,26 @@ section.home-feautres{
         margin: 30px auto;
         display: block;
     }
-    
 
     .container>.row{
         display: flex;
         justify-content: center;
     }
 
-    .row-section-header{
-
-        h3.section-title{
-            font-weight: 800;
-            text-align: center;
-            padding-bottom: 40px;
-            span {
-                font-weight: 600;
-            }
-        } 
+    &__title{
+        font-weight: 800;
+        text-align: center;
+        padding-bottom: 40px;
+        span.light {
+            font-weight: 600;
+        }
     }
 
-    .single-feature{
+    .feature{
         box-sizing: content-box;
         border: 2px solid transparent;
         height: 100%;
-        .feature-icon{
+        &__icon{
             position: relative;
             display: flex;
             justify-content: center;
@@ -44,45 +41,47 @@ section.home-feautres{
                 width: 80px;
             }
         }
-        
         &:hover{
             border: 2px solid $primary;
             border-radius: 5px;
         }
 
-    }
-
-    h5.feature-title {
-        text-align: center;
-        font-weight: 800;
-    }
-
-    p.text{
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    a.link-more{
-        display: block;
-        text-align: center;
-        &:after{
-            content: ">";
-            display: inline-block;
-
+        &__title {
+            text-align: center;
+            font-weight: 800;
         }
-        
+
+        &__text{
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        &__link{
+            display: block;
+            text-align: center;
+            &:after{
+                content: ">";
+                display: inline-block;
+            }
+        }
+
+        $column-colors : (
+                1 : #e6781f,
+                2 : #4dbcd0,
+                3 : #61cb37
+        );
+
+        @each $col, $color in $column-colors{
+            &__col:nth-of-type(#{$col}) .feature__icon {
+                color: $color;
+            }
+        }
+
+        &__col:nth-of-type(2) .feature__icon {
+            .icon{
+                transform: rotate(90deg);
+            }
+        }
     }
 
-    .feature-col:nth-of-type(1) .feature-icon {
-        color: #e6781f;  
-    }
-    .feature-col:nth-of-type(2) .feature-icon {
-        color:#4dbcd0;
-        .icon{
-            transform: rotate(90deg);
-        }    
-    }
-    .feature-col:nth-of-type(3) .feature-icon {
-        color: #61cb37
-    }
 }

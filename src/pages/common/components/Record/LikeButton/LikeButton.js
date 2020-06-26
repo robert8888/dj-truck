@@ -8,7 +8,7 @@ import "./like-button.scss"
 
 const LikeButton = ({state = false, toggle}) =>{
     const classNames = className(
-        "like-btn",
+        "record-like-btn",
         {"btn--pressed": state}
     )
 

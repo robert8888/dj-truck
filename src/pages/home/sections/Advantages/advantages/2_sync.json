@@ -1,0 +1,15 @@
+{
+  "header" :{
+    "bold": "Bpm, Sync & Pitch band - ",
+    "normal": "beat matching never was so easy"
+  },
+
+  "text" : ["Analyzer calculate track bpm, you can manually adjust best ",
+    "position and tempo or just click sync button. Now you are ready",
+    "to make transition between tracks"],
+  "link" : {
+    "to": "./introduction#bpm-matching",
+    "text": "Learn more"
+  },
+  "image" : "/advantages/advantage-sync.png"
+}

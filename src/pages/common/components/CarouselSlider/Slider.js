@@ -30,15 +30,16 @@ const sumLastSameDirection = (arr, {max}) => {
 }
 
 const Slider = ({
-        slides: initSlides,
-        next: nextHandle,
-        prev: prevHandle,
-        set: setHandle,
-        getLength: getLengthHandle,
-        onChange,
-        minSlideWidth = style.minSlideWidth,
-        onStepDragging = false
-    }) => {
+                    slides: initSlides,
+                    next: nextHandle,
+                    prev: prevHandle,
+                    set: setHandle,
+                    getLength: getLengthHandle,
+                    onChange,
+                    minSlideWidth = style.minSlideWidth,
+                    oneStepDragging = false,
+                    auto = null,
+                }) => {
     const slider = useRef();
     const [active, setActive] = useState(false);
     const [overLapRatio] = useState(2);
@@ -55,6 +56,7 @@ const Slider = ({
     const inAction = useRef();
     const actionQueue = useRef();
     const currentSlide = useRef();
+    const isDragged = useRef();
 
     const containerRect = useCallback(() => {
         if (!slider.current) return 0;
@@ -86,20 +88,18 @@ const Slider = ({
         updateTranslate(position * (slideWidth || sWidth));
     }, [slider, slideWidth, updateTranslate, active])
 
-    const updateCurrentSlide = useCallback((direction = 0) =>{
+    const updateCurrentSlide = useCallback((direction = 0) => {
         let current = currentSlide.current ?? Math.floor(visibleSlides / 2);
-        //  console.log(current)
         current = (current - direction) % initSlides.length;
-        if(current < 0){
+        if (current < 0) {
             current = initSlides.length + current;
         }
         currentSlide.current = current;
         onChange && onChange(current);
-        console.log(current)
     }, [currentSlide, initSlides, onChange, visibleSlides])
 
-    useEffect(()=>{
-        if(!visibleSlides) return;
+    useEffect(() => {
+        if (!visibleSlides) return;
         setTimeout(() => updateCurrentSlide(), 0);
     }, [visibleSlides, updateCurrentSlide])
 
@@ -141,12 +141,11 @@ const Slider = ({
         const slideWidth = containerRect().width / visibleSlides
         setSlideWidth(slideWidth);
         let width = slideWidth * slides.length;
-        if(visibleSlides > slides.length) {
+        if (visibleSlides > slides.length) {
             width = containerRect().width;
         }
-        slider.current.style.width = width  + "px";
+        slider.current.style.width = width + "px";
     }, [containerRect, visibleSlides, slides]);
-
 
 
     const appendSlides = useCallback(amount => {
@@ -205,70 +204,72 @@ const Slider = ({
         updatePosition(shift.current, slideWidth);
         setTimeout(() => {
             inAction.current = false;
-            balance();
+            !isDragged.current && balance();
         }, animationDuration);
         updateCurrentSlide(direction);
-    }, [balance, animationDuration, updatePosition, inAction, updateTransition, shift, slideWidth, updateCurrentSlide])
+    }, [balance, animationDuration, updatePosition, inAction, isDragged,
+             updateTransition, shift, slideWidth, updateCurrentSlide])
 
     useEffect(() => {
         actionRef.current = (...arg) => action(...arg);
     }, [action, actionRef])
 
     const next = useCallback(() => {
-        if(!active) return ;
+        if (!active) return;
         action(-1);
     }, [action, active])
 
     useEffect(() => nextHandle && nextHandle(next), [next, nextHandle])
 
     const prev = useCallback(() => {
-        if(!active) return ;
+        if (!active) return;
         action(1);
     }, [action, active])
 
     useEffect(() => prevHandle && prevHandle(prev), [prev, prevHandle]);
 
-    const set = useCallback((target)=>{
-        if(!active) return;
+    const set = useCallback((target) => {
+        if (!active) return;
         action(currentSlide.current - target);
     }, [currentSlide, active, action])
 
-    useEffect(()=> setHandle && setHandle(set), [setHandle, set])
+    useEffect(() => setHandle && setHandle(set), [setHandle, set])
 
-    const getLength = useCallback(()=>{
+    const getLength = useCallback(() => {
         return initSlides.length;
     }, [initSlides])
 
-    useEffect(()=> getLengthHandle && getLengthHandle(getLength), [getLength, getLengthHandle])
+    useEffect(() => getLengthHandle && getLengthHandle(getLength), [getLength, getLengthHandle])
 
-    const endDraging = useCallback(() => {
+    const endDragging = useCallback(() => {
         let next = Math.round(translate.current / slideWidth);
-        if (onStepDragging) {
+        if (oneStepDragging) {
             next = next > shift.current ? shift.current + 1 : shift.current - 1;
         }
-        updateCurrentSlide(next - shift.current );
+        updateCurrentSlide(next - shift.current);
         shift.current = next;
         updatePosition(shift.current);
         inAction.current = true;
         setTimeout(() => {
-            balance();
+            !isDragged.current && balance();
             inAction.current = false;
         }, animationDuration);
-    }, [translate, inAction, shift, slideWidth, balance, animationDuration, onStepDragging, updatePosition, updateCurrentSlide])
+        console.log("end dragging")
+        isDragged.current = false;
+    }, [translate, inAction, shift, slideWidth, balance,
+        animationDuration, oneStepDragging, updatePosition, updateCurrentSlide])
 
     const mouseMove = useCallback((shiftX, event) => {
         const clientX = (event.type === "touchmove") ? event.touches[0].clientX : event.clientX;
         updateTranslate(clientX - shiftX);
     }, [updateTranslate])
 
-
     const mouseDown = useCallback(event => {
         const sliderContainer = event.target.closest(".carousel-slider-container");
         if (!sliderContainer || !active) return;
         actionQueue.current = [];
-        const rect = sliderContainer.getBoundingClientRect();
         const clientX = (event.type === "touchstart") ? event.touches[0].clientX : event.clientX;
-        const shiftX = clientX - rect.left - shift.current * slideWidth;
+        const shiftX = clientX - (shift.current * slideWidth);
         const mouseMoveWithArgs = mouseMove.bind(null, shiftX);
 
         const mouseUp = () => {
@@ -276,16 +277,31 @@ const Slider = ({
             window.removeEventListener("mouseup", mouseUp);
             window.removeEventListener("touchmove", mouseMoveWithArgs);
             window.removeEventListener("touchend", mouseUp)
+            window.removeEventListener("mouseleave", mouseUp);
             updateTransition(true);
-            endDraging();
+            endDragging();
         }
 
         window.addEventListener("mousemove", mouseMoveWithArgs);
         window.addEventListener("touchmove", mouseMoveWithArgs);
         window.addEventListener("mouseup", mouseUp);
         window.addEventListener("touchend", mouseUp);
+        window.addEventListener("mouseleave", mouseUp)
         updateTransition(false);
-    }, [active, updateTransition, shift, slideWidth, endDraging, mouseMove, actionQueue])
+        isDragged.current = true;
+    }, [active, updateTransition, shift, slideWidth,
+             isDragged, endDragging, mouseMove, actionQueue])
+
+    useEffect(()=>{
+        if(!auto) return;
+        let handle = setInterval(()=>{
+            !isDragged.current && next();
+        }, auto);
+        return ()=>{
+            clearInterval(handle);
+        }
+    }, [next, auto, isDragged])
+
 
     return (
         <div className="carousel-slider-container">
@@ -294,7 +310,7 @@ const Slider = ({
                 {slides && slides instanceof Array && slides.map((slide, index) => {
                     let classes = "slide";
                     if (visibleSlides % 2 !== 0 && index === Math.abs(balancedShift.current) + Math.floor(visibleSlides / 2)) {
-                        classes += " slide-mid";
+                        classes += " slide--mid";
                     }
                     return (<li key={UUID.genV1()} className={classes}
                                 style={{width: minSlideWidth || "initial"}}>{slide}</li>)

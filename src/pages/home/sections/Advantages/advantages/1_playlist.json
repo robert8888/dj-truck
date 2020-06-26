@@ -1,0 +1,15 @@
+{
+  "header" :{
+    "bold": "Quick & Simple",
+    "normal": " find track on your favorite music source"
+  },
+
+  "text" : ["Build playlist with your favorite tracks is really easy.",
+  "Just pick music source and enter title or artist and then press",
+  "'Enter' button on your keyboard. Now just select what you were looking for."],
+  "link" : {
+    "to": "./my/playlist",
+    "text": "Start building playlist"
+  },
+  "image" : "/advantages/advantage-playlist.png"
+}

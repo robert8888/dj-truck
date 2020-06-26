@@ -8,13 +8,29 @@
 
 .home{
 
-    width: calc(var(--vw) * 100);
-    width: 100%;
-    position: absolute;
+    overflow: hidden;
     top:0;
     left: 0;
     z-index: 1;
-    &>section:not(:first-of-type){
+    &>section:not(:first-of-type):not(:last-of-type){
         background: $primary-white ;
     }
+
+    .line{
+        height: 10px;
+        width: 20%;
+        background:$primary;
+        margin: 30px auto;
+        display: block;
+    }
+
+    h3.section__title{
+        font-weight: 800;
+        text-align: center;
+        padding-bottom: 40px;
+        span {
+            font-weight: 600;
+        }
+    }
+
 }

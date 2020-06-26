@@ -1,10 +1,16 @@
 @import "./../../../../css/colors.scss";
 @import "./../../../../css/mixins.scss";
 
-section.home-testimonial{
+.home-testimonial{
     @include section--white();
-    padding: 100px 0;
-    .testimonial-slider{
+    padding: 30px 0;
+    .row.section__header{
+        margin: 10px 0 20px;
+        margin-top: clamp(10px, 5%, 0px);
+        margin-bottom: clamp(10px, 5%, 30px);
+    }
+
+    &__slider{
         width: 100%;
         .row{
             flex-wrap: nowrap;
@@ -14,35 +20,68 @@ section.home-testimonial{
                 padding: 0;
             }
         }
-        .slide-wrapper{
+        .slide__wrapper{
             display: flex;
             flex-wrap: nowrap;
         }
-        .testimonial{
-            border:solid 2px red;
-            border-radius: 5px;
-            padding: 15px;
-            p.text{
-
+        .slide--mid{
+            .testimonial{
+                border:solid 2px $primary;
+                border-radius: 5px;
             }
-            .testimonial-author{
-                img{
-                    max-width: 50px;
-                    max-height: 50px;
-                    float: left;
-                    margin-right: 20px;
-                }
-                h5.author-name, h6.author-position{
-                    margin-left: 20px;
-                }
+        }
+    }
+}
 
-                h5.author-name{
 
-                }
-                h6.author-position{
 
-                }
-            }
+.testimonial{
+    @include block-shadow();
+    border:solid 2px lighten($tertiary-dark, 50%);
+    border-radius: 5px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    &:hover{
+        border-color: $primary;
+        .icon-quote{
+            color: $secondary;
+        }
+    }
+    header{
+        display: flex;
+        justify-content: space-between;
+        height: 40px;
+    }
+    &__quote.icon{
+        height: 25px;
+        width: 25px;
+        color: $primary;
+    }
+    &__rank .icon {
+        color: $secondary;
+    }
+    &__text{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 8;
+        -webkit-box-orient: vertical;
+
+    }
+    &__author{
+        margin-top: auto;
+        img{
+            max-width: 55px;
+            max-height: 59px;
+            float: left;
+            margin-right: 20px;
+            top: 50%;
+            position: relative;
+            transform: translateY(-50%);
+        }
+        &__name, &__position{
+            margin-left: 20px;
         }
     }
 }

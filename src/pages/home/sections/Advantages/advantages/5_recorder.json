@@ -1,0 +1,15 @@
+{
+  "header" :{
+    "bold": "Recorder with dynamic compressor - ",
+    "normal": "just push button"
+  },
+
+  "text" : ["Type in name of your record and just press record button. ",
+    "For more advanced user is available dynamic compressor witch",
+    "ensure that your record will be always on the maximum loudness level."],
+  "link" : {
+    "to": "/console",
+    "text": "Record your first set"
+  },
+  "image" : "/advantages/advantage-recorder.png"
+}

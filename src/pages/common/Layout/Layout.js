@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { Container } from "react-bootstrap";
 import { connect } from "react-redux";
 import Logger from "./../components/Logger/Logger";
 import Footer from "./Footer/Footer";
@@ -12,9 +11,9 @@ const Layout = ({ footerType, children }) => {
         <Fragment>
             <Header />
             <Logger />
-            <Container className="app layout container-xl" >
+            {/*<Container className="app layout container-xl" >*/}
                 {children}
-            </Container>
+            {/*</Container>*/}
             {footerType === "default" && <Footer />}
         </Fragment>
     )

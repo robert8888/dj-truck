@@ -6,12 +6,12 @@ import {faFileAudio, faListAlt, faSlidersH} from "@fortawesome/free-solid-svg-ic
 
 const Featrues = ()=>{
     return (
-        <section className="home-feautres">
+        <section className="home-features">
             <Container>
-                <Row className="row-section-header">
+                <Row className="home-features__row">
                     <Col>
                         <div className="line"/>
-                        <h3 className="section-title">Broswer and willingness <span> - that's all what you need</span></h3>
+                        <h3 className="home-features__title section__title">Browser and willingness <span className="light"> - that's all what you need</span></h3>
                     </Col>
                 </Row>
                 <Row>
@@ -21,7 +21,7 @@ const Featrues = ()=>{
                         text={`Build your playlist using external music source. 
                         Categorize it in directories, and set track order as you like. You can create as many lists as you want`}
                         link={"/introduction#external"}
-                        animationDelay={"100"}
+                        order={0}
                         />
                     <Feature 
                         icon={faSlidersH}
@@ -29,7 +29,7 @@ const Featrues = ()=>{
                         text={`Push track from your playlist to console players. Press play, adjust tempo or use sync.
                         You have mixer with effects and filters. It's simple just be creative. `}
                         link={"/introduction#external"}
-                        animationDelay={"300"}
+                        order={1}
                         />
                     <Feature 
                         icon={faFileAudio}
@@ -37,7 +37,7 @@ const Featrues = ()=>{
                         text={`You can record your set. Just press record button. 
                         All your record are stored on your account. You can set description and record genres. `}
                         link={"/introduction#external"}
-                        animationDelay={"500"}
+                        order={2}
                         />
                 </Row>
             </Container>

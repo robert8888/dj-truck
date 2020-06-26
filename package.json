@@ -36,6 +36,7 @@
     "react-event-injector": "^1.1.2",
     "react-fontawesome": "^1.7.1",
     "react-loading-io": "^2.2.1",
+    "react-on-scroll-animation": "^1.0.0",
     "react-portal": "^4.2.1",
     "react-redux": "^7.2.0",
     "react-redux-loading-bar": "^4.6.0",

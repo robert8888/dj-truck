@@ -1,0 +1,16 @@
+{
+  "header" :{
+    "bold": "Mixer with cue and low & high pass filter - ",
+    "normal": "all what you need"
+  },
+
+  "text" : ["Two channels mixer with cue section, three band ",
+    "equalization and build in filters with resonans adjust. ",
+    "Each channel have own level peak meter that will ",
+    "help you control loudnes."],
+  "link" : {
+    "to": "./introduction",
+    "text": "Read mixer description"
+  },
+  "image" : "/advantages/advantage-mixer.png"
+}

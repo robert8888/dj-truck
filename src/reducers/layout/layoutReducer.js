@@ -1,7 +1,7 @@
 import produce from "imer";
 import { ACTIONS } from "./../../actions";
 
-const FOOTER_TYPES = ["default", "player"]
+const FOOTER_TYPES = ["none", "default", "player"]
 
 const initState = {
     header: {
@@ -19,12 +19,12 @@ export default function headerState(state = initState, action) {
     switch (action.type) {
 
         case ACTIONS.LAYOUT_SET_FOOTER_TYPE: {
-            let {type} = action;
-            if(!type){
-                type = FOOTER_TYPES[0]
+            let {footerType} = action;
+            if(!footerType){
+                footerType = FOOTER_TYPES[1]
             }
 
-            if(!FOOTER_TYPES.includes(type)){
+            if(!FOOTER_TYPES.includes(footerType)){
                 return state;
             }
             
@@ -32,7 +32,7 @@ export default function headerState(state = initState, action) {
                 ...state,
                 footer: {
                     ...state.footer,
-                    type: action.type,
+                    type: footerType,
                 }
             }
         }

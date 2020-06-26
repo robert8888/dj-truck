@@ -1,6 +1,23 @@
-@import "./../../../../css//colors.scss";
+@import "./../../../../css/colors.scss";
 
 
 .footer{
-    height: 100px;
+    .col{
+        padding-top: 50px;
+        .footer-content{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 5px 0;
+            p{
+                font-size: .8rem;
+                letter-spacing: 1px;
+            }
+            a {
+                font-size: .8rem;
+                white-space: nowrap;
+            }
+            border-top: 1px solid white;
+        }
+    }
 }

@@ -19,6 +19,7 @@ const withRefSize = (WrappedComponent) => {
             const updateSize = () => {
                 let size = {};
                 for(let [name, element] of Object.entries(this.references)){
+                    if(!element) return ;
                     const {width, height} = element.getBoundingClientRect();
                     size[name] = {
                         width,

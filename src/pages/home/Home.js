@@ -4,9 +4,10 @@ import {setFooterType} from "./../../actions";
 
 import Intro from "./sections/Intro";
 import Logos from "./sections/Logos";
-import Featrues from "./sections/Features/Features";
+import Features from "./sections/Features/Features";
 import Advantages from "./sections/Advantages/Advantages";
-import Testimionials from "./sections/Testimonial/Testimonials";
+import Testimonials from "./sections/Testimonial/Testimonials";
+import Encourage from "./sections/Encourage";
 
 import "./home.scss";
 
@@ -16,14 +17,18 @@ const Home = ({setFooter})=>{
         setFooter();
     }, [setFooter])
 
+
     return (
-        <div className="home">
-            <Intro/>
-            <Logos/>
-            <Featrues/>
-            <Advantages/>
-            <Testimionials/>
-        </div>
+
+            <div className="home">
+                <Intro/>
+                <Logos/>
+                <Features/>
+                <Advantages/>
+                <Testimonials/>
+                <Encourage/>
+            </div>
+
     )
 }
 

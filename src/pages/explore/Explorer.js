@@ -2,6 +2,8 @@ import React, { useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import RecordSearch from "../common/components/RecordSearch/RecordSearch";
 import useRecordSearchUrl from "../common/Hooks/useRecordSearchURL";
+import {Container} from "react-bootstrap";
+
 import "./explorer.scss";
 
 const Explorer = props =>{
@@ -21,9 +23,11 @@ const Explorer = props =>{
     }, [getSearchUrl, history] )
     
     return (
-        <div className="explor">
-            <RecordSearch title="Dj Trucks" onSearch={onSearch}/>
-        </div>
+        <Container className="app layout container-xl" >
+            <div className="explor">
+                <RecordSearch title="Dj Trucks" onSearch={onSearch}/>
+            </div>
+        </Container>
     )
 }
 

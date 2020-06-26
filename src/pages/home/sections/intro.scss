@@ -4,53 +4,33 @@
 
 
 .home-intro{
-    height: calc(var(--vh) * 100);
-    min-height: calc(var(--vh) * 100);
+  //  height: calc(var(--vh) * 100);
+    //min-height: calc(var(--vh) * 100);
     position: relative;
     svg{
         position: absolute;
         bottom: 0;
-        transform: translateY(67%);
+        transform: translateY(65%);
     }
 
-    .container{
-        height: 100%;
+    .container {
+        // height: 100%;
+        min-height: calc(var(--vh) * 90);
         display: flex;
         justify-content: space-between;
         flex-direction: column;
-    
+
         .row > .col {
 
-            &>* {
+            & > * {
                 margin: 10px auto;
                 text-align: center;
             }
-
-            &>p{
-                margin: 10px;
-            }
-            h3{
-                span{
-                    white-space: nowrap;
-                }
-            }
-            h2{
-                font-weight: 700;
-                span{
-                    white-space: nowrap;;
-                }
-            }
-            &>.btn.btn-primary{
-                @include std-button();
-                margin: 0 auto;
-                padding: 1em;
-            }
-            
         }
-        .row:first-of-type{
-            padding-top: 70px;
 
-             min-height:  calc(var(--vh) * 40);
+        .row:first-of-type{
+            min-height:  calc(var(--vh) * 40);
+            padding-top: 25px;
             .col{
                 display: flex;
                 flex-direction: column;
@@ -60,24 +40,43 @@
 
         .row:last-of-type{
             @include clearfix();
-
             max-height: calc(var(--vh) * 50);
-            .col{
-           
-                img{
-                    @include showUp(0.8s , 0.6s);
-                    position: relative;
-                    top:10px;
-                    
-                    max-width: 90%;
-                    max-height: calc(var(--vh) * 50);
-
-                    display: block;
-                    
-                }
-            }
         }
     }
+
+    &__text {
+        margin: 10px;
+        letter-spacing: 2px;
+    }
+    &__subtitle {
+        span{
+            white-space: nowrap;
+        }
+    }
+    &__title {
+        font-weight: 700;
+        span{
+            white-space: nowrap;;
+        }
+    }
+    &__button.btn.btn-primary{
+        @include std-button();
+        margin: 0 auto;
+        padding: 1em;
+    }
+
+    &__laptop{
+       // @include showUp(0.8s , 0.6s);
+        position: relative;
+        top:10px;
+
+        max-width: 90%;
+        max-height: calc(var(--vh) * 50);
+
+        display: inline-block;
+    }
+
+
 }
 
 @media (max-height : 500px){

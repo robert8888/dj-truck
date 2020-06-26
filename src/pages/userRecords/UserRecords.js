@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import {Container, Dropdown, DropdownButton} from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { reqRecs, setFooterType } from "./../../actions";
@@ -25,6 +25,7 @@ const UserRecords = React.memo(({
     ///-----------Turn of footer--------------------
 
     useEffect(() => {
+        console.log("settin ffoter player")
         setFooter("player")
     }, [setFooter])
     //--------------------------------
@@ -155,37 +156,39 @@ const UserRecords = React.memo(({
 
     
     return (
-        <div className="user-records">
-            {nickname && <UserProfile nickname={nickname} withGenres/>}
-            {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
-            <div className="user-records-top-bar">
-                <h2 className="title">{pageTitle}</h2>
-                <DropdownButton
-                    alignRight
-                    className="btn-pagger"
-                    title={_pageSize + " on page "}>
-                    <Dropdown.Item onClick={changePageSize.bind(null, 10)}> 10 </Dropdown.Item>
-                    <Dropdown.Item onClick={changePageSize.bind(null, 20)}> 20 </Dropdown.Item>
-                    <Dropdown.Item onClick={changePageSize.bind(null, 30)}> 30 </Dropdown.Item>
-                    <Dropdown.Item onClick={changePageSize.bind(null, 50)}> 50 </Dropdown.Item>
-                    <Dropdown.Item onClick={changePageSize.bind(null, 75)}> 75 </Dropdown.Item>
-                    <Dropdown.Item onClick={changePageSize.bind(null, 100)}> 100 </Dropdown.Item>
-                </DropdownButton>
-            </div>
+        <Container className="app layout container-xl" >
+            <div className="user-records">
+                {nickname && <UserProfile nickname={nickname} withGenres/>}
+                {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
+                <div className="user-records-top-bar">
+                    <h2 className="title">{pageTitle}</h2>
+                    <DropdownButton
+                        alignRight
+                        className="btn-pagger"
+                        title={_pageSize + " on page "}>
+                        <Dropdown.Item onClick={changePageSize.bind(null, 10)}> 10 </Dropdown.Item>
+                        <Dropdown.Item onClick={changePageSize.bind(null, 20)}> 20 </Dropdown.Item>
+                        <Dropdown.Item onClick={changePageSize.bind(null, 30)}> 30 </Dropdown.Item>
+                        <Dropdown.Item onClick={changePageSize.bind(null, 50)}> 50 </Dropdown.Item>
+                        <Dropdown.Item onClick={changePageSize.bind(null, 75)}> 75 </Dropdown.Item>
+                        <Dropdown.Item onClick={changePageSize.bind(null, 100)}> 100 </Dropdown.Item>
+                    </DropdownButton>
+                </div>
 
-            <RecordsList
-                list={recordsList}
-                controls={controls}
-                player={player} />
-            <Pagin
-                current={_page}
-                call={goToPage}
-                all={Math.floor(countAll / _pageSize)} />
-            <PlayerControls
-                list={recordsList}
-                controls={controls}
-                player={player} />
-        </div>
+                <RecordsList
+                    list={recordsList}
+                    controls={controls}
+                    player={player} />
+                <Pagin
+                    current={_page}
+                    call={goToPage}
+                    all={Math.floor(countAll / _pageSize)} />
+                <PlayerControls
+                    list={recordsList}
+                    controls={controls}
+                    player={player} />
+            </div>
+        </Container>
     )
     
 

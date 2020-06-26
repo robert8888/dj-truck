@@ -44,29 +44,3 @@ $warning: #e6781f;
 
 
 
-@mixin background-primary-gradient() {
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #123b42, #123b42, #06191d);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #123b42, #123b42, #06191d); 
-}
-
-
-
-@mixin backgorund-secondary-gradient() {
-    background: #0F2027;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #123b42, #123b42, #06191d);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #e6781f, #e6781f, #8f460b); 
-}
-
-@mixin section--white{
-        background: white;
-
-        p, span, h1, h2, h3, h4, h5, h6, a, a:active, a:visited{
-          color :$secondary-text-color;
-        }
-    
-        a:hover {
-            color: darken($primary, 20%)
-        }
-
-}

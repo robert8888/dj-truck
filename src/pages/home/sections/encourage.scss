@@ -1,0 +1,68 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/mixins.scss";
+@import "./../../../css/general.scss";
+
+.home > section.home-encourage{
+  @include section--white();
+  background-color: transparent;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+
+  &>*{
+    grid-column: 1/1;
+    grid-row: 1 / 1;
+  }
+
+  .row{
+    justify-content: center;
+    margin: 0;
+  }
+
+  position: relative;
+  svg{
+    height: 400px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .encourage{
+    @include block-shadow(.3);
+    border: 1px solid rgba(0,0,0, 0.2);
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 30px;
+    background: white;
+
+    &>*{
+      margin: 10px 0;
+    }
+    &__title{
+      font-weight: 800;
+    }
+    &__subtitle{
+      font-weight: 600;
+    }
+
+    &__button.btn{
+      @include std-button();
+      display: inline-block;
+    }
+  }
+}
+
+@media screen and (min-width: $vertical-break-point-small) {
+  .col.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .row{
+     margin: 0 -15px;
+  }
+}

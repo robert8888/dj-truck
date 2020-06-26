@@ -1,8 +1,7 @@
 @import "./../../../../../css/colors.scss";
 @import "./../../../../../css/mixins.scss";
 
-.like-btn {
-    @include button-transparent();
+button.record-like-btn {
     position: absolute;
     width: 30px;
     height: 30px;

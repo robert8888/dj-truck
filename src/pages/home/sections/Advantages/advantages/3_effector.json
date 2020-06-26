@@ -1,0 +1,19 @@
+{
+  "header" :[{
+          "bold": "2 channels ",
+          "normal": "effector with "
+        }, {
+          "bold": "7 build in ",
+          "normal": "effects"
+        }],
+
+  "text" : ["Console have builded in two channels effector. ",
+    "To your disposition you have : Reverb, Delay, Dub Delay,",
+    "PinPon Delay, Flagler, Distortion, Quadrafuzz. What more ",
+    "you cane use two effect in the same time on one channel."],
+  "link" : {
+    "to": "./introduction#effects",
+    "text": "Learn using effects"
+  },
+  "image" : "/advantages/advantage-effector.png"
+}

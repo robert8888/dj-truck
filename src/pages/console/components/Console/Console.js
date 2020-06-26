@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { consoleStopAll } from "./../../../../actions";
+import { consoleStopAll, setFooterType } from "./../../../../actions";
 import { usePlayer } from "./../../../common/Hooks/usePlayer";
 import "./console.scss";
 import Deck from "./Deck/Deck";
@@ -18,6 +18,10 @@ const Console = ({dispatch}) => {
             dispatch(consoleStopAll())
         }   
     }, [control, dispatch])
+
+    useEffect(()=>{
+        dispatch(setFooterType("default"))
+    }, [dispatch])
 
     return (
         <ErrorBoundary>

@@ -5,7 +5,7 @@
 
 .truck-console {
   @include panel-border(0.2);
-
+  margin-top: 25px;
   display: grid;
   grid-template-rows: auto auto auto;
   grid-template-columns: calc(50% - 150px) 300px calc(50% - 150px);
