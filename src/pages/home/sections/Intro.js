@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./intro.scss";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Rosa from "react-on-scroll-animation";
@@ -45,9 +45,10 @@ const Intro = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Rosa animation="show-up" anchorPlacement="top-bottom" delay="800" once>
+                        <Rosa animation="show-up" anchorPlacement="top-bottom"  delay="800" once>
                             <img className="home-intro__laptop"
                                  src="./laptop-preview.png"
+                                 width="860" height="468"
                                  alt="program preview in laptop"/>
                         </Rosa>
                     </Col>
