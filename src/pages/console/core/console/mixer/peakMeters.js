@@ -6,41 +6,62 @@ const peakMeters = {
     },
 
     getChannelPeakMeter(channelName) {
-        let analyser = this.audioNodes?.channels[channelName]?.analyserNode
-        if (!analyser) {
-            return [];
-        }
-        let sampleBuffer = this.sampleBuffers.channels[channelName];
-        if (!sampleBuffer) {
-            return [];
-        }
-        return this.getPeakData(analyser, sampleBuffer)
+        return this.peekMeterData[channelName] || []
     },
 
-    getMasterPeakMetter(part){
+    startUpdatingPeakMeter(channelName){
+        this.peekMeterData[channelName] = [];
+        let analyser = this.audioNodes?.channels[channelName]?.analyserNode;
+        let sampleBuffer = this.sampleBuffers.channels[channelName];
+        if(!analyser || !sampleBuffer) return;
+
+        this.peekMeterHandlers[channelName] = setInterval( () => {
+            this.peekMeterData[channelName] = this.getPeakData(analyser, sampleBuffer)
+        }, 50)
+
+    },
+
+    stopUpdatingPeakMeter(channelName){
+        clearInterval(this.peekMeterHandlers[channelName])
+    },
+
+    getMasterPeakMeter(channelPart){
+        return this.peekMeterData.main[channelPart]
+    },
+
+    startUpdatingMaster(){
+        if(!this.peekMeterData.main) {
+            this.peekMeterData.main = {
+                pre : [],
+                post: []
+            }
+        }
+
         const main = this.audioNodes.channels['main'];
         let buffers = this.sampleBuffers.channels['main'];
         if(!buffers){
             buffers = this.sampleBuffers.channels["main"] = {};
         }
-        if(part === "pre"){
-            if(!buffers.pre){
-                const fftSize = main.preAnalyserNode.fftSize;
-                buffers.pre = new Float32Array(fftSize);
-            }
-            return this.getPeakData(main.preAnalyserNode, buffers.pre);
-        } else if(part === "post"){
-            if(!buffers.post){
-                const fftSize = main.preAnalyserNode.fftSize;
-                buffers.post = new Float32Array(fftSize);
-            }
-            const peak = this.getPeakDataComplex(main.postAnalyserNode, buffers.post);
-            //store value to get possibility to consume it by recorder
-            this.currentPeakMinMax = peak.minMax;
-            return peak;
+
+        if(!buffers.pre){
+            const fftSize = main.preAnalyserNode.fftSize;
+            buffers.pre = new Float32Array(fftSize);
         }
+
+        if(!buffers.post){
+            const fftSize = main.preAnalyserNode.fftSize;
+            buffers.post = new Float32Array(fftSize);
+        }
+
+        this.peekMeterHandlers.main = setInterval(()=>{
+            this.peekMeterData.main.pre = this.getPeakData(main.preAnalyserNode, buffers.pre);
+            this.peekMeterData.main.post = this.getPeakDataComplex(main.postAnalyserNode, buffers.post);
+        }, 50)
     },
 
+    stopUpdatingMaster(){
+        clearInterval(this.peekMeterHandlers.main);
+    },
     
     
     getPeakData(analyser, sampleBuffer) {

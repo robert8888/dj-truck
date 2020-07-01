@@ -6,7 +6,7 @@ import Equaliztion from "./equalization";
 import Fader from "./fader";
 import Mastering from "./mastering";
 import PeakMeters from "./peakMeters";
-import Recorder from "./recorder/recorder";
+import Recorder from "./recorder";
 
 
 export default class Mixer {
@@ -24,6 +24,8 @@ export default class Mixer {
 
         this.initChannelContainer('audioNodes');
         this.initChannelContainer('sampleBuffers');
+        this.initChannelContainer('peekMeterHandlers');
+        this.initChannelContainer('peekMeterData');
         this.createMainChannel();
 
         this.recorder = new Recorder(this);
@@ -101,18 +103,21 @@ export default class Mixer {
     getChannelInterface(channelName) {
         return {
             getPeakMeter: () => this.getChannelPeakMeter(channelName),
+            startUpdating: () => this.startUpdatingPeakMeter(channelName),
+            stopUpdating: () => this.stopUpdatingPeakMeter(channelName)
         }
     }
 
     getMasteringInterface() {
         return {
-            getPrePeakMeter: {
-                getPeakMeter: this.getMasterPeakMetter.bind(this, "pre")
-            },
-            getPostPeakMeter: {
-                getPeakMeter: this.getMasterPeakMetter.bind(this, "post")
-            }
-
+            getPeakMeter : channelSection => ({
+                getPeakMeter: this.getMasterPeakMeter.bind(this, channelSection),
+                startUpdating: this.startUpdatingMaster.bind(this),
+                stopUpdating: this.stopUpdatingMaster.bind(this)
+            }),
+            // getPostPeakMeter: {
+            //     getPeakMeter: this.getMasterPeakMeter.bind(this, "post")
+            // }
         }
     }
 
@@ -124,16 +129,18 @@ export default class Mixer {
         //build aduio nodes after, below chain in this order
         this.audioNodes.channels[channelName] = {
             outputCueNode: audioCtx.createGain(),
+            // - cue nodes
             cue: {
                 cueGainNode: audioCtx.createGain(),
-                cueChannelSpliterNode: audioCtx.createChannelSplitter(2),
+                cueChannelSplitterNode: audioCtx.createChannelSplitter(2),
             },
+            // - filters
             eqHiFilterNode: audioCtx.createBiquadFilter(),
             eqMidFilterNode: audioCtx.createBiquadFilter(),
             eqLowFilterNode: audioCtx.createBiquadFilter(),
             lowPassFilterNode: audioCtx.createBiquadFilter(),
             highPassFilterNode: audioCtx.createBiquadFilter(),
-            //
+            // - send and returns
             sendNode: audioCtx.createGain(),
             sendAndReturns: Array(this.config.externalChannels).fill(1).map(() => ({
                 send: audioCtx.createGain(),
@@ -150,12 +157,12 @@ export default class Mixer {
         const channelNodes = this.audioNodes.channels[channelName];
         //-- Cue
         channelNodes.outputCueNode.connect(channelNodes.cue.cueGainNode);
-        channelNodes.cue.cueGainNode.connect(channelNodes.cue.cueChannelSpliterNode);
+        channelNodes.cue.cueGainNode.connect(channelNodes.cue.cueChannelSplitterNode);
         //connecting to main chanel
         if (this.isCueEnable) {
             const mainChannelNodes = this.audioNodes.channels['main']
-            channelNodes.cue.cueChannelSpliterNode.connect(mainChannelNodes.cueChannelMerger, 0, 2);
-            channelNodes.cue.cueChannelSpliterNode.connect(mainChannelNodes.cueChannelMerger, 1, 3);
+            channelNodes.cue.cueChannelSplitterNode.connect(mainChannelNodes.cueChannelMerger, 0, 2);
+            channelNodes.cue.cueChannelSplitterNode.connect(mainChannelNodes.cueChannelMerger, 1, 3);
         }
         //
         channelNodes.analyserNode.fftSize = 256;

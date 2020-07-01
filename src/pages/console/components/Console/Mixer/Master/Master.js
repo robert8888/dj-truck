@@ -37,7 +37,7 @@ const Mastering = props => {
             <PeakLevelMeterH
                 mastering 
                 active={true}
-                interface={mixerInterface?.getPrePeakMeter} />
+                interface={mixerInterface?.getPeakMeter("pre")} />
             <ThresholdKnob onChange={props.setThreshold}/>
             <RatioKnob onChange={props.setRatio}/>
             <AttackKnob onChange={props.setAttack}/>
@@ -45,7 +45,7 @@ const Mastering = props => {
             <GainKnob onChange={props.setPostGain}/>
             <PeakLevelMeterH 
                active={true}
-               interface={ mixerInterface?.getPostPeakMeter}/>
+               interface={ mixerInterface?.getPeakMeter("post")}/>
         </div>
     )
 }

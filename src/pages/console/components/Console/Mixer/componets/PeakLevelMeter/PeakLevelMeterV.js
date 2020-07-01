@@ -66,12 +66,14 @@ class PeakLevelMater extends React.PureComponent {
     }
 
     checkActive(){
-
         if(this.props.active && this.props.interface){
             this.breakFlag = false;
+            this.props.interface.startUpdating();
             setTimeout(this.updateLedStates.bind(this), 100);
         } else {
             this.breakFlag = true;
+            if(!this.props.interface) return;
+            this.props.interface.stopUpdating();
         }
     }
 
@@ -86,6 +88,7 @@ class PeakLevelMater extends React.PureComponent {
 
     componentWillUnmount() {
         this.breakFlag = true;
+        this.props.interface.stopUpdating();
     }
 
     render() {

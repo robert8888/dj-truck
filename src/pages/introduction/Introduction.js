@@ -13,6 +13,7 @@ const Introduction = ({dispatch}) => {
 
 
     return (
+        <ErrorBoundary>
             <div className="introduction">
                 <Container className="container-xl">
                     {/*<svg preserveAspectRatio="none" width="100" height="100" className="introduction__background">*/}
@@ -32,6 +33,7 @@ const Introduction = ({dispatch}) => {
                     </Row>
                 </Container>
             </div>
+        </ErrorBoundary>
     )
 }
 
