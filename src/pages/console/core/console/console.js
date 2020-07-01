@@ -21,15 +21,21 @@ export default class Console{
 
     }
 
-
     static Get(){
-        if(!Console.instance){
-            let consol = new Console();
-            Console.instance = consol;
-            return Console.instance;
-        } else {
-            return Console.instance;
-        }
+        return new Promise((res, rej) => {
+            if(!Console.instance){
+                try{
+                    let consol = new Console();
+                    Console.instance = consol;
+                    res(Console.instance);
+                }
+                catch(error){
+                    rej(error);
+                }
+            } else {
+                res(Console.instance);
+            }
+        })
     }
 
     getMixerChannelInterface(channelName){

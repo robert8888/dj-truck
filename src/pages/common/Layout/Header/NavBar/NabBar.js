@@ -26,9 +26,9 @@ const NavBar = (props) => {
           <li className="sub-menu-item main-nav-item nav-left-item nav-item">
             <Link to="/exploring" >Explore</Link>
           </li>
-          <li className="sub-menu-item main-nav-item nav-left-item nav-item">
-            <Link to="/records" >Records</Link>
-          </li>
+          {/*<li className="sub-menu-item main-nav-item nav-left-item nav-item">*/}
+          {/*  <Link to="/records" >Records</Link>*/}
+          {/*</li>*/}
           <li className="sub-menu-item main-nav-item nav-left-item nav-item">
             <Link to="/introduction" >Become a DJ</Link>
           </li>

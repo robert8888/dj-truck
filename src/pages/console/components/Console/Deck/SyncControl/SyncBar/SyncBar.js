@@ -62,7 +62,9 @@ class SyncBar extends React.Component {
   }
 
   componentDidMount(){
-    this.channelInterface = Console.Get().getChannelInterface(this.props.name);
+    Console.Get().then( instance =>
+        this.channelInterface = instance.getChannelInterface(this.props.name)
+    )
   }
 
   render() {

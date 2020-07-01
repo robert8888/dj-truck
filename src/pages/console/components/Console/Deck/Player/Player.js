@@ -11,12 +11,13 @@ class Player extends React.Component {
   }
 
   componentDidMount() {
-    const mixConsole = Console.Get();
-    mixConsole.createChannel(
-      this.props.name,
-      this.masterContainer.current,
-      this.slaveContainer.current
-    );
+    Console.Get().then( console => {
+      console.createChannel(
+          this.props.name,
+          this.masterContainer.current,
+          this.slaveContainer.current
+      )
+    });
   }
 
   render() {

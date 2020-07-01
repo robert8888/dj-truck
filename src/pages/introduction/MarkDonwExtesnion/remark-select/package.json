@@ -1,0 +1,23 @@
+{
+  "name": "remark-attr",
+  "version": "1.0.0",
+  "description": "Adding class and id atribute to AST tree (not standard markdown syntax)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Remark",
+    "attribute",
+    "id",
+    "className",
+    "experimental",
+    "syntax",
+    "html"
+  ],
+  "author": "robert.kami88@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "unist-util-filter": "^2.0.2"
+  }
+}

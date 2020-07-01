@@ -1,28 +1,23 @@
 @import "./../../css/colors.scss";
 @import "./../../css/mixins.scss";
 
-body.page-explorer .main-container{
-    @include backgorund-secondary-gradient();
-    position: relative;
-    .record-search {
-        padding: 0;
-        position: absolute;
-        top: 40%;
-        left: 0;
-        width: 100%;
-        transform: translateY(-50%)
-    }
-    .record-search-container{
-        input[type="text"] {
-            @include input($primary-white);
-            margin: 0 auto;
-            width: 80%;
-            max-width: 600px;
-        };
+body.page-explorer {
+    min-height: 80vh;
 
-        .record-search-options {
-            @include checkBox($primary-white);
+    .main-container{
+        @include background-primary-gradient();
+        position: relative;
+        .record-search {
+            padding: 0;
+            position: absolute;
+            top: 40%;
+            left: 2.5%;
+            width: 95%;
+            transform: translateY(-50%)
         }
     }
+}
 
+.explor{
+    min-height: calc(var(--vh) * 80);
 }

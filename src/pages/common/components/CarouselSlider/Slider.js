@@ -57,6 +57,12 @@ const Slider = ({
     const actionQueue = useRef();
     const currentSlide = useRef();
     const isDragged = useRef();
+    const isMounted = useRef();
+
+    useEffect(() => {
+        isMounted.current = true;
+        return () => isMounted.current = false;
+    },[isMounted])
 
     const containerRect = useCallback(() => {
         if (!slider.current) return 0;
@@ -172,6 +178,8 @@ const Slider = ({
 
     const actionRef = useRef();
     const balance = useCallback(() => {
+        if(!isMounted.current) return;
+
         const diff = balancedShift.current - shift.current;
         if (!diff) {
             return;
@@ -183,7 +191,8 @@ const Slider = ({
         setTimeout(() => {
             actionRef.current && actionRef.current();
         }, 0)
-    }, [shift, balancedShift, prependSlides, appendSlides, updateTransition, updatePosition, actionRef])
+    }, [shift, balancedShift, prependSlides, appendSlides,
+        updateTransition, updatePosition, actionRef, isMounted])
 
 
     const action = useCallback((direction) => {
@@ -254,7 +263,6 @@ const Slider = ({
             !isDragged.current && balance();
             inAction.current = false;
         }, animationDuration);
-        console.log("end dragging")
         isDragged.current = false;
     }, [translate, inAction, shift, slideWidth, balance,
         animationDuration, oneStepDragging, updatePosition, updateCurrentSlide])

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import "./intro.scss";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Rosa from "react-on-scroll-animation";
@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom"
 
 const Intro = () => {
     const history = useHistory();
-
 
     return (
         <section className="home-intro">

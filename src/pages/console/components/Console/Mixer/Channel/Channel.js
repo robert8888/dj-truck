@@ -24,6 +24,16 @@ import "./mixer-channel.scss";
 
 class Channel extends React.Component{
     cueNotSupportedMsg = `Sorry your device not support this`;
+    state = {
+        console : null
+    }
+
+    componentDidMount() {
+        Console.Get().then( instance => this.setState({
+            ...this.state,
+            console : instance,
+        }))
+    }
 
     render(){
         return (
@@ -38,7 +48,7 @@ class Channel extends React.Component{
                 <PeakLevelMeter 
                     name={this.props.name}
                     active={this.props.chReady}
-                    interface={ Console.Get().getMixerChannelInterface(this.props.name) }/>
+                    interface={ this.state.console && this.state.console.getMixerChannelInterface(this.props.name) }/>
                 <div className="knobs-set-2">
                     <GainKnob className="eq-gain" onChange={ this.props.setGain }/>
                     <div className="mixer-group">

@@ -25,7 +25,9 @@ const Mastering = props => {
     }, [_interface])
 
     useEffect(() => {
-        setInterface(Console.Get().getMixerMasterInterface())
+        Console.Get().then(instance => {
+            setInterface(instance.getMixerMasterInterface());
+        })
     }, [setInterface])
 
     return (

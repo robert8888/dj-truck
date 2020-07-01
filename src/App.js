@@ -9,7 +9,7 @@ import Routes from "./router/Routes";
 import store from "./store";
 import history from "./utils/history/history";
 import "./utils/viewSize";
-import "./utils/animateOnScroll";
+
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
