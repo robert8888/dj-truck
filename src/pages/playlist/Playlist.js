@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux"
-import { Col, Row } from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 import ExternalSearch from "./../common/components/ExternalSearch/Search";
@@ -14,16 +14,18 @@ const Playlist = ({currentPlalistContent}) => {
 
     return (
         <>
-        <div className="page-playlist-container">
-            <DndProvider backend={Backend}>
-                <Row>
-                    <Col>
-                        <ExternalSearch controls={controls} player={player}/>
-                        <PlayListExplorer page="playlist" player={player} controls={controls} />
-                    </Col>
-                </Row>
-            </DndProvider>
-        </div>
+        <Container className={"container-xl"}>
+            <div className="page-playlist-container">
+                <DndProvider backend={Backend}>
+                    <Row>
+                        <Col>
+                            <ExternalSearch controls={controls} player={player}/>
+                            <PlayListExplorer page="playlist" player={player} controls={controls} />
+                        </Col>
+                    </Row>
+                </DndProvider>
+            </div>
+        </Container>
         <PlayerControls player={player} controls={controls} list={currentPlalistContent}/>
         </>        
     )
