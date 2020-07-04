@@ -200,9 +200,6 @@
 
     @include block-like-button($color);
 
-    // &:-webkit-autofill,
-    // &:-webkit-autofill:hover, 
-    // &:-webkit-autofill:focus,
 
     &, &:active:focus:hover, &:active ,&:focus{
         background: $primary-dark;
@@ -240,11 +237,12 @@
     &:-webkit-autofill,
      &:-webkit-autofill:hover, 
      &:-webkit-autofill:focus{
-        border: 1px solid $color;
-        -webkit-text-fill-color: $color;
-        -webkit-box-shadow: 0 0 0px 1000px $secondary-dark inset;
+      //  border: 1px solid $color;
+        -webkit-text-fill-color: $secondary;
+        -webkit-box-shadow: 0 0 8px rgba($color, 0.6),  0 0 0 1px $color;
+        box-shadow: 0 0 8px rgba($color, 0.6),  0 0 0 1px $color;
         font-size: inherit;
-        background: $secondary-dark;
+        transition: background-color 5000s ease-in-out 0s;
     }
 }
 
@@ -476,4 +474,77 @@
 
 @mixin block-shadow($ratio : 0.2){
     box-shadow: 5px 5px 10px rgba(0 ,0 , 0 , $ratio);
+}
+
+
+@mixin dropdown-nav($top: initial, $left: initial, $right: initial){
+    position: absolute;
+    top: $top;
+    left: $left;
+    right: $right;
+    display: none;
+    z-index: 1000;
+    background: $secondary-dark;
+    border-top: 1px solid $primary;
+    color: $primary-text-color;
+    list-style: none;
+    padding: 0;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 1px 3px 4px 2px darken($secondary-dark, 5%);
+
+    [class*="__item"]{
+        &:not(:last-of-type){
+            border-bottom: 1px solid darken($secondary-dark, 5%);
+        }
+
+        padding: 10px 15px;
+        display: flex;
+        border-left: 3px solid transparent;
+        white-space: nowrap;
+        cursor: pointer;
+        &>* {
+            line-height: 1rem;
+        }
+        &:hover > * {
+            color: $primary;
+        }
+        &:hover{
+            background: $primary-dark;
+            border-left: 3px solid $primary;
+        }
+    }
+
+    [class*="__item--spacer"]{
+        height: 3px;
+        background: darken($secondary-dark, 5%);
+        margin: 0;
+        border: 0;
+        outline: 0;
+        padding: 0;
+        cursor: pointer;
+        &:hover{
+            background: inherit;
+            border: 0;
+        }
+    }
+}
+
+@mixin modal(){
+    &[class*="--visible"]{
+        display: block;
+    }
+    display: none;
+    position: -ms-device-fixed;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    //backface-visibility: hidden;
+    //-webkit-font-smoothing: subpixel-antialiased;
+    border: 2px solid $secondary-dark;
+    box-shadow: 0 0 0 100vw rgba(0,0,0,.5), 0 0 5px 1px rgba(0,0,0,.8);
+    background: $secondary-dark;
+
 }

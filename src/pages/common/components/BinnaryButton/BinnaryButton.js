@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-
+import withControlMapping from "../../../console/components/Console/Control/withControlMapping";
 
 const BinnaryButton = props => {
     const [state, setState] = useState( props.initValue || 0);
@@ -34,4 +34,4 @@ const BinnaryButton = props => {
     )
 }
 
-export default BinnaryButton;
+export default withControlMapping(BinnaryButton);

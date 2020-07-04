@@ -1,0 +1,92 @@
+//@import "./../../../../../css/general.scss";
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+
+
+.control{
+  &__nav{
+    &, &__sub{
+      @include dropdown-nav();
+      [class*="__item"]{
+        padding-left: 15px;
+        padding-right: 45px;
+      }
+    }
+    & {
+      left: 2.5px;
+    }
+    &__sub{
+      left: 100%;
+      top: -1px;
+      [class*="__item"]{
+        padding-left: 35px;
+      }
+    }
+
+    display: none;
+
+    &:hover, &__item:hover > &__sub{
+      display: block;
+    }
+
+    &__item{
+      position: relative;
+      &--current{
+        position: relative;
+        &:before{
+          position: absolute;
+          content: "✓";
+          left: 10px;
+
+        }
+      }
+    }
+
+    &__container{
+      position: relative;
+    }
+    &__button{
+      @include std-button();
+      &:hover + ul{
+        display: block;
+      }
+    }
+  }
+}
+
+
+.modal{
+  @include modal();
+  background: $secondary-dark;
+}
+
+.creating-profile{
+  padding: 30px 30px 45px;
+  position: relative;
+  flex-wrap: nowrap;
+  display: flex;
+  align-items: flex-end;
+  color: $primary-text-color;
+  .form-group{
+    margin: 0 15px;
+  }
+  &__name.form-control{
+    @include input();
+  }
+
+  &__btn{
+    @include std-button();
+    margin: 0 15px;
+    height: auto;
+  }
+
+  &__btn--aboard{
+    @include button--small();
+    padding: 7px;
+    position: absolute;
+    margin: 0;
+    top: 5px;
+    right: 5px;
+  }
+}

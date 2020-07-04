@@ -1,0 +1,169 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+@mixin dropdown-menu(){
+    @include dropdown-nav(51px, initial, 0);
+    //top:51px;
+    //right: 0px;
+}
+
+
+.nav{
+    width: 100%;
+    //border-bottom: 1px solid $primary;
+
+    display: flex;
+    justify-content: space-between;
+
+    .nav--main, .nav-sub--main{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+
+        a {
+            &, &:hover, &:active, &:visited{
+                 cursor: pointer;
+                 text-decoration: none;
+                 color: $primary-text-color;
+                 display: inline-block;
+                 height: 100%;
+                 vertical-align: middle;
+                 line-height: 50px;
+                 padding: 0 10px;
+                 white-space: nowrap;
+                 letter-spacing: 1px;
+                 font-size: 1em;
+             }
+            &:hover {
+                color: $primary;
+            }
+        }
+
+        .nav__item--main{
+            position: relative;
+            border-right: 1px solid $primary-dark;
+            cursor: pointer;
+            &:hover:not(.nav__item__user):not(.nav__item__logo) {
+                border-bottom: 1px solid $primary;
+                &>*{
+                    color: $primary;
+                }
+            }
+
+            &.nav__item__home{
+                display: none;
+            }
+        }
+
+        .nav-sub--user{
+            @include dropdown-menu();
+        }
+
+
+        &.nav--left{
+            .nav__item--left{
+                &.nav__item__logo{
+                    img{
+                        height: 50px;
+                        padding: 5px;
+                    }
+                    & > a:first-of-type{
+                        display: none;
+                    }
+                }
+            }
+        }
+
+
+
+    .nav__item--right{
+        display: flex;
+        &.nav__item__user{
+            img{
+                padding: 5px;
+                object-fit: scale-down;
+                height: 50px;
+            }
+            h4{
+                margin: 0;
+                font-size: 1rem;
+                line-height: 50px;
+                vertical-align: middle;
+                padding-right: 5px;
+            }
+            padding: 0 10px;
+        }
+
+        &.nav__item__sub-menu{
+            padding: 0 10px;
+            img{
+                padding: 5px;
+                object-fit: scale-down;
+                height: 50px;
+            }
+            h4{
+                margin: 0;
+                font-size: 1rem;
+                line-height: 50px;
+                vertical-align: middle;
+                padding-right: 5px;
+            }
+            &:hover{
+                border-bottom: 1px solid $primary;
+                .icon-container .icon{
+                    color: $primary;
+                }
+                .nav-sub--user{
+                    display: block;
+                }
+            }
+            .nav__item__icon{
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .icon {
+                    color: $primary-text-color;
+                }
+            }
+        }
+
+        &.nav__item__login{
+            border-left: 1px solid $primary-dark;
+        }
+    }
+
+
+
+        @media screen and (max-width: 768px){
+            .nav-sub--main{
+                @include dropdown-menu();
+                right: auto;
+                left: 15px;
+                & .nav__item__home{
+                    display: block;
+                }
+               
+            }
+
+            &.nav--left{
+                .nav__item--left{
+                    &.nav__item__logo{
+                        &>a:first-of-type {
+                            display: block;
+                        }
+                        &>a:last-of-type {
+                            display: none;
+                        }
+    
+                    }
+                }
+                &:hover .nav-sub--main{
+                    display: block;
+                }
+            }
+        }
+    }
+
+}

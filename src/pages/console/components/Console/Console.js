@@ -9,6 +9,7 @@ import Mastering from "./Mixer/Master/Master";
 import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
 import ErrorBoundary from "./../../../common/components/ErrorBoundary/ErrorBoundary";
+import ControlMenu from "./Control/ControlMenu";
 
 const Console = ({dispatch}) => {
     const [control] = usePlayer();
@@ -25,6 +26,7 @@ const Console = ({dispatch}) => {
 
     return (
         <ErrorBoundary>
+            <ControlMenu/>
             <div className="truck-console">
                 <Mastering />
                 <Recorder />

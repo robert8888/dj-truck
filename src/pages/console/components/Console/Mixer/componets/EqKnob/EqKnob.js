@@ -1,8 +1,7 @@
 import React from "react";
 import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed";
 import "./eq-knob.scss";
-
-
+import withControlMapping from "../../../Control/withControlMapping";
 const EqKnob = props =>{
 
     return (
@@ -17,4 +16,4 @@ const EqKnob = props =>{
     )
 }
 
-export default EqKnob;
+export default withControlMapping(EqKnob);

@@ -1,7 +1,7 @@
 import React from "react";
 import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed";
 import "./filter-knob.scss";
-
+import withControlMapping from "../../../Control/withControlMapping";
 
 const FilterKnob = props =>{
     const displayText = (value) => {
@@ -27,4 +27,4 @@ const FilterKnob = props =>{
     )
 }
 
-export default FilterKnob;
+export default  withControlMapping(FilterKnob);

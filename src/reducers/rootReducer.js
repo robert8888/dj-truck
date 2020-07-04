@@ -5,6 +5,7 @@ import console from "./console/decksReducer";
 import effector from "./console/effectorReducer";
 import mastering from "./console/masteringReducer";
 import mixer from "./console/mixerReducer";
+import midi from "./control/midi/midiReducer";
 import playList from "./console/playlist/playlistReducer";
 import recorder from "./console/recorder/recorderReducer";
 import searchReducer from "./console/searchReducer";
@@ -24,6 +25,7 @@ export default combineReducers({
     effector,
     configuration,
     mastering,
+    midi,
     recorder,
     //------
     records,

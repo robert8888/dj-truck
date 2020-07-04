@@ -18,6 +18,8 @@ export { default as loopLength } from "./loopLength";
 export { default as masteringParameters } from "./mastering";
 export { default as cueChange } from "./mixerCue";
 export { default as pitch } from "./pitch";
+// midi control
+export {default as midiPort} from "./midiPort";
 // playback
 export { default as playPause } from "./playPause";
 // recorder 

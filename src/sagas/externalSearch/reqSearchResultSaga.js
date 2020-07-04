@@ -11,7 +11,7 @@ export default function* watcher() {
 
 
 function* searchAsync(action) {
-    const path = ['saga', 'externalSearch', 'call to exteranl miusic source search api']
+    const path = ['saga', 'externalSearch', 'call to external music source search api']
     const {text: query, source, limit} = action;
     try {
         yield put(showLoading());
@@ -25,12 +25,12 @@ function* searchAsync(action) {
         yield put(setSearchResults(results));
 
         yield put(pushLog(
-            new Log(`Successful recive search result for query${query} on source: ${source}`, path)
+            new Log(`Successful receive search result for query${query} on source: ${source}`, path)
         ))
     } catch(error){
         yield put(pushLog(Log.Error(
             path,
-            "Durring searching occured error: " + error.message,
+            "During searching occurred error: " + error.message,
             "Sorry. During process of searching track occurred a problem",
             error
         )))

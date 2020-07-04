@@ -4,6 +4,7 @@ import Effector from "./effector/effector";
 import Mixer from "./mixer/mixer";
 import Observer from "./observer/observer";
 import STATUS from "./observer/STATUS";
+import MidiController from "./control/midi";
 
 
 
@@ -18,7 +19,7 @@ export default class Console{
         this.mixer = new Mixer(this.channels);
         this.effector = new Effector(this.mixer.mainAudioContext);
         this.mixer.connect(this.effector);
-
+        this.midiControler = new MidiController();
     }
 
     static Get(){
@@ -192,6 +193,11 @@ export default class Console{
             case STATUS.RECORDER : {
                 this.mixer.recorder.action(diff.subStatus, diff.recParam);
                 break;
+            }
+
+            // ------ Control Midi
+            case STATUS.MIDI_PORT_CHANGE : {
+                this.midiControler.updateMidiPort(diff.currentValue)
             }
 
             default : return; 

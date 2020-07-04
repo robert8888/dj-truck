@@ -1,7 +1,7 @@
 import React from "react";
 import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed";
 import "./gain-knob.scss";
-
+import withControlMapping from "../../../Control/withControlMapping";
 
 const GainKnob = props =>{
     return (
@@ -16,4 +16,4 @@ const GainKnob = props =>{
     )
 }
 
-export default GainKnob;
+export default withControlMapping(GainKnob);

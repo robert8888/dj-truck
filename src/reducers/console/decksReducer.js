@@ -148,9 +148,9 @@ function consoleReducer(state = initState, action) {
             return nextPlayBackState(state, action.destination, true, { paused: !prevPause })
         }
 
-        case ACTIONS.SET_TIME_LEFT: {
-            return nextPlayBackState(state, action.destination, true, { timeLeft: action.timeLeft })
-        }
+        // case ACTIONS.SET_TIME_LEFT: {
+        //     return nextPlayBackState(state, action.destination, true, { timeLeft: action.timeLeft })
+        // }
 
         case ACTIONS.TOGGLE_CUE: {
             let prevCue = state.channel[action.destination]?.playBackState?.cueActive;

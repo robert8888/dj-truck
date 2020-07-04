@@ -34,6 +34,7 @@ import currentUserSaga from "./user/currentUserSaga";
 import requestUpdateUserDescriptionSaga from "./user/reqUpdateDescription";
 import requestUpdateUserNicknameSaga from "./user/reqUpdateNickname";
 import requestUpdateUserPictureSaga from "./user/reqUpdatePicture";
+import controlSaga from "./control";
 
 function* rootSaga(){
     yield all([
@@ -58,7 +59,8 @@ function* rootSaga(){
         requestDeleteTrackSaga(),
         toogleDirSaga(),
         calcBpmSaga(),
-
+        // -- control - midi and kbd profiles
+        controlSaga(),
         //--- recorder
         requestCreatedRecordSaga(),
         requestUpdateRecordSaga(),

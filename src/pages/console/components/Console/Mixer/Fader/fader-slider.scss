@@ -29,6 +29,7 @@
     border: 2px solid $primary-dark;
     position: absolute;
     left: 50%;
+    top:0;
     transform: translateX(-50%);
     &.indicator--active {
       background: $mixer-primary;

@@ -34,14 +34,17 @@
         "channel-a fader  channel-b";
         .mixer-fader{
             padding: 0;
-            display: flex;
+
             @media (max-width : $vertical-break-point-extra-small){
                     justify-self: center;
+                    display: flex;
+
                     .zero-indicator{
                         display: none;
                     }
                     .fader.slider{
                         position: relative;
+                        margin-top: 0;
                     }
             }
 

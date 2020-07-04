@@ -10,6 +10,9 @@ import { LOGGER_ACTIONS as loggerActionTypes } from "./logger/logger";
 import { PROFILE_ACTIONS as userProfileActions } from "./profile/profile";
 import { RECORDS_ACTIONS as recordsActios } from "./records/records";
 import { USER_ACTIONS as userActions } from "./user/user";
+import { CONTROL_MIDI_ACTIONS as midiControlAction } from "./control/midi";
+
+export { default as MAPPING} from "./control/MAPPING";
 
 export const ACTIONS = {
     ...layoutActionTypes,
@@ -21,6 +24,7 @@ export const ACTIONS = {
     ...effectorActionTypes,
     ...masteringActionTypes,
     ...recorderActionTypes,
+    ...midiControlAction,
 
     ...userActions,
     ...userProfileActions,
@@ -40,6 +44,7 @@ export * from "./logger/logger";
 export * from "./profile/profile";
 export * from "./records/records";
 export * from "./user/user";
+export * from "./control/midi";
 
 
 

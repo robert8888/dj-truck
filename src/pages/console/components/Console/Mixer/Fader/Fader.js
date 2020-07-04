@@ -4,6 +4,7 @@ import { setFader } from "../../../../../../actions";
 import Slider from "./../../../common/RangeSlider/Slider";
 import "./fader-slider.scss";
 import generalStyle from "./../../../../../../css/general.scss";
+import withControlMapping from "../../Control/withControlMapping";
 
 const Fader = props => {
     let [isZero , setIsZero ] = useState(true);
@@ -61,4 +62,4 @@ const mapDispachToProps = dispatch => ({
     setFader : (value) => dispatch(setFader(value)), 
 })
 
-export default connect(null, mapDispachToProps)(Fader);
+export default withControlMapping(connect(null, mapDispachToProps)(Fader));

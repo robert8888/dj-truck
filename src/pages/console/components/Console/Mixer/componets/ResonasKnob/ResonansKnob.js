@@ -1,7 +1,7 @@
 import React from "react";
 import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed"
 import "./resonans-knob.scss";
-
+import withControlMapping from "../../../Control/withControlMapping";
 
 const ResonansKnob = props =>{
 
@@ -17,4 +17,4 @@ const ResonansKnob = props =>{
     )
 }
 
-export default ResonansKnob;
+export default withControlMapping(ResonansKnob);
