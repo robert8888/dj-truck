@@ -5,8 +5,9 @@ const ACTIONS = {
     C_MIDI_SET_PORT : "Set current mini in port",
 
     C_MIDI_SET_MAPPING_STATE: "Set is in mapping mode state",
-    C_MIDI_SET_MAPPING_CURRENT: "Set current midi mapping element",
+    C_MIDI_SET_MAPPING_ACTION: "Set current midi mapping element",
     C_MIDI_SET_MAPPING_VALUE: "Set midi value to current mapped action",
+    C_MIDI_SET_ACTION_HANDLE : "Set handle to action dispatch",
 
     // ----
     C_MIDI_REQ_CREATE_PROFILE: "Create midi profile",
@@ -41,11 +42,15 @@ export function setMidiMappingState(value){
 }
 
 export function setMidiCurrentMapping(element){
-    return { type: ACTIONS.C_MIDI_SET_MAPPING_CURRENT, element}
+    return { type: ACTIONS.C_MIDI_SET_MAPPING_ACTION, element}
 }
 
-export function setMidiValue(midi){
-    return { type: ACTIONS.C_MIDI_SET_MAPPING_VALUE, midi}
+export function setMidiMapValue(midiMsg){
+    return { type: ACTIONS.C_MIDI_SET_MAPPING_VALUE, midiMsg}
+}
+
+export function setMidiActionHandle(actionId, handle){
+    return {type: ACTIONS.C_MIDI_SET_ACTION_HANDLE, actionId,  handle}
 }
 
 // ----- CRUD Profile

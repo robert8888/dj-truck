@@ -1,4 +1,7 @@
 import {ACTIONS, MAPPING} from "./../../../actions";
+import {produce} from "imer";
+import _omitBy from "lodash/omitBy";
+import _invert from "lodash/invert";
 
 const initState = {
     port: localStorage.getItem("midiPort"),
@@ -6,18 +9,27 @@ const initState = {
     currentMapping: null,
     profileList : [{id: 123, name: "Profile 1"}, {id: 321, name: "Profile 2"}],
     currentProfileId : 123,
-    profiles : [
-        {
+    actions : (()=>{
+        const _actions = {};
+        for(let action of Object.values(MAPPING)){
+            _actions[action.id] = {
+                id : action.id,
+                descriptions: action.description,
+            }
+        }
+        return _actions;
+    })(),
+
+    profiles : {
+        123: {
             id: 456454,
             name : "Profile 1",
-            map : [
-                {
-                    action: MAPPING.MIXER_CHANNEL_RESONANCE(1),
-                    midi: null,
-                }
-            ]
+            map : {
+                toAction : {},
+                toMidi : {}
+            }
         }
-    ]
+    }
 
 
 }
@@ -41,12 +53,29 @@ export default function midiReducer(state  = initState, action){
             }
         }
 
-        case ACTIONS.C_MIDI_SET_MAPPING_CURRENT : {
+        case ACTIONS.C_MIDI_SET_MAPPING_ACTION : {
             return {
                 ...state,
                 currentMapping: action.element,
-
             }
+        }
+
+        case ACTIONS.C_MIDI_SET_MAPPING_VALUE : {
+            if(!state.currentMapping) return state;
+            const {midiMsg} = action;
+            return produce(state, draftState => {
+                const profile = state.profiles[state.currentProfileId];
+                const toAction = _omitBy(profile.map.toAction, ( value, key) =>
+                      ((key === midiMsg.id) || (value === state.currentMapping.id))
+                    )
+
+                const toMidi = _omitBy(profile.map.toMidi, (value, key) =>
+                        ((value === midiMsg.id) || (key === state.currentMapping.id))
+                    )
+                toAction[midiMsg.id] = state.currentMapping.id;
+                toMidi[state.currentMapping.id] = midiMsg.id;
+                draftState.profiles[state.currentProfileId].map = {toAction, toMidi};
+            })
         }
 
         case ACTIONS.C_MIDI_SET_CURRENT_PROFILE : {
@@ -54,6 +83,14 @@ export default function midiReducer(state  = initState, action){
                 ...state,
                 currentProfileId: action.profileId
             }
+        }
+
+        case ACTIONS.C_MIDI_SET_ACTION_HANDLE : {
+            const {actionId: id, handle} = action;
+
+            return produce(state, draftState => {
+                draftState.actions[id].resolver = handle;
+            })
         }
 
         ///CRUD - CSUD to be more explicit

@@ -3,8 +3,11 @@
 
 @import "./../../../common/RangeSlider/slider.scss";
 
-.fader {
+.mixer-fader{
+  position: relative;
+}
 
+.fader {
   .fader.slider {
     @media screen and (min-width : $vertical-break-point-extra-small){
       @include slider-horizontal(40px);

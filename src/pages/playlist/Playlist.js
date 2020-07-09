@@ -9,7 +9,7 @@ import PlayListExplorer from "./../common/components/PlayListExplorer/PlayListEx
 import { usePlayer } from "./../common/Hooks/usePlayer";
 import "./playlist.scss";
 
-const Playlist = ({currentPlalistContent}) => {
+const Playlist = ({currentPlaylistContent}) => {
     const [controls, player] = usePlayer();
 
     return (
@@ -26,13 +26,13 @@ const Playlist = ({currentPlalistContent}) => {
                 </DndProvider>
             </div>
         </Container>
-        <PlayerControls player={player} controls={controls} list={currentPlalistContent}/>
+        <PlayerControls player={player} git pucontrols={controls} list={currentPlaylistContent}/>
         </>        
     )
 }
 
 const mapStateToProps  = state => ({
-    currentPlalistContent : state.playList.list,
+    currentPlaylistContent : state.playList.list,
 })
 
 export default connect(mapStateToProps)(Playlist);

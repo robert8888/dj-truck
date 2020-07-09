@@ -1,6 +1,6 @@
 import React, { useState, useEffect}from "react";
 import { connect } from "react-redux";
-import { setFader } from "../../../../../../actions";
+import {MAPPING, setFader} from "../../../../../../actions";
 import Slider from "./../../../common/RangeSlider/Slider";
 import "./fader-slider.scss";
 import generalStyle from "./../../../../../../css/general.scss";
@@ -29,7 +29,7 @@ const Fader = props => {
             if(isZero){
                 value = 0;
             }
-            props.setFader(value);
+            props.onChange(value);
         }
     }
 
@@ -52,14 +52,19 @@ const Fader = props => {
                 to={50} 
                 step={5} 
                 stickiZero={5}
-                onChange={ sliderChangeHandle } />
+                onChange={ sliderChangeHandle} />
         </div>
     )
 }
 
-
-const mapDispachToProps = dispatch => ({
-    setFader : (value) => dispatch(setFader(value)), 
+const mapDispatchToProps = dispatch => ({
+    setFader : (value) => dispatch(setFader(value)),
 })
 
-export default withControlMapping(connect(null, mapDispachToProps)(Fader));
+const MixerFader = withControlMapping(connect(null, mapDispatchToProps)(Fader));
+
+export default props => {
+    return <MixerFader className="mixer-fader" onChange={props.setFader}  role={MAPPING.MIXER_FADER}/>
+}
+
+

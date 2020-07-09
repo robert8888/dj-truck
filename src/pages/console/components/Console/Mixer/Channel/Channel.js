@@ -37,6 +37,7 @@ class Channel extends React.Component{
     }
 
     render(){
+
         return (
             <div className={"mixer-channel channel-" + this.props.name }>
 
@@ -45,17 +46,17 @@ class Channel extends React.Component{
                             className="eq-hi"
                             value={this.props.highValue}
                             onChange={ this.props.setHi }
-                            role={MAPPING.MIXER_CHANNEL_EQ_HI(this.props.name)}/>
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_EQ_HI`]}/>
                     <EqKnob alt="Mid"
                             className="eq-mid"
                             value={this.props.midValue}
                             onChange={this.props.setMid }
-                            role={MAPPING.MIXER_CHANNEL_EQ_MID(this.props.name)}/>
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_EQ_MID`]}/>
                     <EqKnob alt="Low"
                             className="eq-low"
                             value={this.props.lowValue}
                             onChange={ this.props.setLow }
-                            role={MAPPING.MIXER_CHANNEL_EQ_LOW(this.props.name)}/>
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_EQ_LOW`]}/>
 
                 </div>
                 <PeakLevelMeter 
@@ -67,21 +68,21 @@ class Channel extends React.Component{
                         className="eq-gain"
                         value={this.props.gainValue}
                         onChange={ this.props.setGain }
-                        role={MAPPING.MIXER_CHANNEL_GAIN(this.props.name)}/>
+                        role={MAPPING[`MIXER_CHANNEL_${this.props.name}_GAIN`]}/>
                     <div className="mixer-group">
                         <ResonanceKnob
                             alt="RES" 
                             className="resonans"
                             value={this.props.filterResonanceValue}
                             onChange={ this.props.setFilterResonance }
-                            role={MAPPING.MIXER_CHANNEL_RESONANCE(this.props.name)}
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FILTER_RESONANCE`]}
                             />
                         <FilterKnob 
                             alt="FL" 
                             className="filter"
                             value={this.props.filterValue}
                             onChange={ this.props.setFilter}
-                            role={MAPPING.MIXER_CHANNEL_FILTER(this.props.name)}/>
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FILTER`]}/>
                     </div>
                 </div>
                 <BinaryButton
@@ -90,7 +91,7 @@ class Channel extends React.Component{
                             disabled= {!this.props.cueEnabled}
                             {...((!this.props.cueEnabled ) ? { "data-tooltip" : this.cueNotSupportedMsg } : {})}
                             onChange={this.props.setCue.bind(null)}
-                            role={MAPPING.MIXER_CHANNEL_CUE(this.props.name)}>
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_CUE`]}>
                                 <FontAwesomeIcon icon={faHeadphones}/>
                 </BinaryButton>
 
@@ -99,14 +100,15 @@ class Channel extends React.Component{
                             className="btn-fx" 
                             value={this.props.send1}
                             onChange={this.props.setSend.bind(null, 1)}
-                            role={MAPPING.MIXER_CHANNEL_FX(this.props.name, 1)}>
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FX_1`]}
+                            >
                                 FX 1
                         </BinaryButton>
                         <BinaryButton
                             className="btn-fx" 
                             value={this.props.send2}
                             onChange={this.props.setSend.bind(null, 2)}
-                            role={MAPPING.MIXER_CHANNEL_FX(this.props.name, 2)}>
+                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FX_2`]}>
                                 FX 2
                         </BinaryButton>
                 </div>

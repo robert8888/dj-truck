@@ -1,52 +1,86 @@
-import {setCue, setFader, setFilter, setFilterResonans, setGain, setHi, setLow, setMid, setSend} from "..";
+
 
 export default {
-    MIXER_CHANNEL_GAIN : (channel) => ({
-        id: "MCG-"+channel,
-        description: `Mixer channel ${channel} gain`,
-        resolver: value => setGain(channel, value)
-    }),
-    MIXER_CHANNEL_EQ_LOW : (channel) => ({
-        id: "MCEL-"+channel,
-        description: `Mixer channel ${channel} eq low`,
-        resolver: value => setLow(channel, value)
-    }),
-    MIXER_CHANNEL_EQ_MID : (channel) => ({
-        id: "MCEM-"+channel,
-        description: `Mixer channel ${channel} mid low`,
-        resolver: value => setMid(channel, value)
-    }),
-    MIXER_CHANNEL_EQ_HI : (channel) => ({
-        id: "MCEH-"+channel,
-        description: `Mixer channel ${channel} hi low`,
-        resolver: value => setHi(channel, value)
-    }),
-    MIXER_CHANNEL_FILTER : (channel) => ({
-        id: "MCF-"+channel,
-        description : `Mixer channel ${channel} filter`,
-        resolver : value =>  setFilter(channel, value)
-    }),
-    MIXER_CHANNEL_RESONANCE : (channel) => ({
-        id: "MCR-"+channel,
-        description : `Mixer channel ${channel} resonance`,
-        resolver : value =>  setFilterResonans(channel, value)
-    }),
+    MIXER_CHANNEL_A_GAIN : {
+        id : `MCG_A`,
+        description: `Mixer channel A gain`,
+    },
+    MIXER_CHANNEL_B_GAIN : {
+        id : `MCG_B`,
+        description: `Mixer channel B gain`,
+    },
+    MIXER_CHANNEL_A_EQ_LOW : {
+        id : `MCEL_A`,
+        description: `Mixer channel A eq low`,
+    },
+    MIXER_CHANNEL_B_EQ_LOW : {
+        id : `MCEL_B`,
+        description: `Mixer channel B eq low`,
+    },
+    MIXER_CHANNEL_A_EQ_MID : {
+        id : `MCEM_A`,
+        description: `Mixer channel A eq mid`,
+    },
+    MIXER_CHANNEL_B_EQ_MID : {
+        id : `MCEM_B`,
+        description: `Mixer channel B eq mid`,
+    },
+    MIXER_CHANNEL_A_EQ_HI : {
+        id : `MCEH_A`,
+        description: `Mixer channel A eq high`,
+    },
+    MIXER_CHANNEL_B_EQ_HI : {
+        id : `MCEH_B`,
+        description: `Mixer channel B eq high`,
+    },
+    MIXER_CHANNEL_A_FILTER : {
+        id: `MCF_A`,
+        description: `Mixer channel A filter`
+    },
+    MIXER_CHANNEL_B_FILTER : {
+        id: `MCF_B`,
+        description: `Mixer channel B filter`
+    },
 
-    MIXER_CHANNEL_CUE : (channel) => ({
-        id: "MCC-"+channel,
-        description : `Mixer channel ${channel} cue`,
-        resolver : value =>  setCue(channel, value)
-    }),
+    MIXER_CHANNEL_A_FILTER_RESONANCE : {
+        id: `MCFR_A`,
+        description: `Mixer channel A filter resonance`
+    },
 
-    MIXER_CHANNEL_FX : (channel, send) => ({
-        id: `MCFX-${send}-${channel}`,
-        description : `Mixer channel ${channel} fx ${send}`,
-        resolver : value =>  setSend(channel, send, value)
-    }),
+    MIXER_CHANNEL_B_FILTER_RESONANCE : {
+        id: `MCFR_B`,
+        description: `Mixer channel B filter resonance`
+    },
 
+    MIXER_CHANNEL_A_CUE : {
+        id: `MCC_A`,
+        description: `Mixer channel A cue`
+    },
+
+    MIXER_CHANNEL_B_CUE : {
+        id: `MCC_B`,
+        description: `Mixer channel B cue`
+    },
+
+    MIXER_CHANNEL_A_FX_1 : {
+        id: `MCFX_A_1`,
+        description: `Mixer channel A fx 1`
+    },
+
+    MIXER_CHANNEL_A_FX_2 : {
+        id: `MCFX_A_2`,
+        description: `Mixer channel A fx 2`
+    },
+    MIXER_CHANNEL_B_FX_1 : {
+        id: `MCFX_B_1`,
+        description: `Mixer channel B fx 1`
+    },
+    MIXER_CHANNEL_B_FX_2 : {
+        id: `MCFX_B_2`,
+        description: `Mixer channel B fx 2`
+    },
     MIXER_FADER : {
-        id: "MF",
-        description : `Mixer fader`,
-        resolver : value =>  setFader(value)
+        id: `MF`,
+        description: `Mixer fader`
     },
 }

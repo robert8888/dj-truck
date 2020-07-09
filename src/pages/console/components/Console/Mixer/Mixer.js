@@ -13,14 +13,13 @@ class Mixer extends React.Component{
                 <div className="mixer">
                     <Channel name="A"/>
                     <Channel name="B"/>
-                    <Fader
-                        className="mixer-fader"
-                        role={MAPPING.MIXER_FADER}/>
+                    <Fader />
                 </div>
             </ErrorBoundary>
         )
     }
 }
+
 
 
 export default Mixer;
