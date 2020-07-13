@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import throttle from 'lodash/throttle';
 import Console from "./../../../../core/console/console";
 import EqKnob from "./../componets/EqKnob/EqKnob"
 import GainKnob from "./../componets/GainKnob/GainKnob";
@@ -23,127 +22,104 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHeadphones} from "@fortawesome/free-solid-svg-icons"
 import "./mixer-channel.scss";
 
-class Channel extends React.Component{
+class Channel extends React.Component {
     cueNotSupportedMsg = `Sorry your device not support this`;
     state = {
-        console : null
+        console: null
     }
 
     componentDidMount() {
-        Console.Get().then( instance => this.setState({
+        Console.Get().then(instance => this.setState({
             ...this.state,
-            console : instance,
+            console: instance,
         }))
     }
 
-    render(){
-
+    render() {
+        const channel = this.props.name;
         return (
-            <div className={"mixer-channel channel-" + this.props.name }>
-
+            <div className={"mixer-channel channel-" + channel}>
                 <div className="knobs-set-1">
-                    <EqKnob alt="Hi"
+                    <EqKnob text="Hi"
                             className="eq-hi"
-                            value={this.props.highValue}
-                            onChange={ this.props.setHi }
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_EQ_HI`]}/>
-                    <EqKnob alt="Mid"
+                            get={state => state.mixer.channels[channel].high.current}
+                            set={value => setHi(channel, value)}
+                            role={MAPPING[`MIXER_CHANNEL_${channel}_EQ_HI`]}/>
+                    <EqKnob text="Mid"
                             className="eq-mid"
-                            value={this.props.midValue}
-                            onChange={this.props.setMid }
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_EQ_MID`]}/>
-                    <EqKnob alt="Low"
+                            get={state => state.mixer.channels[channel].mid.current}
+                            set={value => setMid(channel, value)}
+                            role={MAPPING[`MIXER_CHANNEL_${channel}_EQ_MID`]}/>
+                    <EqKnob text="Low"
                             className="eq-low"
-                            value={this.props.lowValue}
-                            onChange={ this.props.setLow }
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_EQ_LOW`]}/>
+                            get={state => state.mixer.channels[channel].low.current}
+                            set={value => setLow(channel, value)}
+                            role={MAPPING[`MIXER_CHANNEL_${channel}_EQ_LOW`]}/>
 
                 </div>
-                <PeakLevelMeter 
-                    name={this.props.name}
+
+                <PeakLevelMeter
+                    name={channel}
                     active={this.props.chReady}
-                    interface={ this.state.console && this.state.console.getMixerChannelInterface(this.props.name) }/>
+                    interface={this.state.console && this.state.console.getMixerChannelInterface(channel)}/>
+
                 <div className="knobs-set-2">
                     <GainKnob
                         className="eq-gain"
-                        value={this.props.gainValue}
-                        onChange={ this.props.setGain }
-                        role={MAPPING[`MIXER_CHANNEL_${this.props.name}_GAIN`]}/>
+                        get={state => state.mixer.channels[channel].gain.current}
+                        set={ value => setGain(channel, value)}
+                        role={MAPPING[`MIXER_CHANNEL_${channel}_GAIN`]}/>
                     <div className="mixer-group">
                         <ResonanceKnob
-                            alt="RES" 
+                            text="RES"
                             className="resonans"
-                            value={this.props.filterResonanceValue}
-                            onChange={ this.props.setFilterResonance }
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FILTER_RESONANCE`]}
-                            />
-                        <FilterKnob 
-                            alt="FL" 
+                            get={state => state.mixer.channels[channel].filterResonance.current}
+                            set={value => setFilterResonans(channel, value)}
+                            role={MAPPING[`MIXER_CHANNEL_${channel}_FILTER_RESONANCE`]}/>
+                        <FilterKnob
+                            text="FL"
                             className="filter"
-                            value={this.props.filterValue}
-                            onChange={ this.props.setFilter}
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FILTER`]}/>
+                            get={state => state.mixer.channels[channel].filter.current}
+                            set={value => setFilter(channel, value)}
+                            role={MAPPING[`MIXER_CHANNEL_${channel}_FILTER`]}/>
                     </div>
                 </div>
+
                 <BinaryButton
-                            className="btn-cue" 
-                            value={this.props.cueValue}
-                            disabled= {!this.props.cueEnabled}
-                            {...((!this.props.cueEnabled ) ? { "data-tooltip" : this.cueNotSupportedMsg } : {})}
-                            onChange={this.props.setCue.bind(null)}
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_CUE`]}>
-                                <FontAwesomeIcon icon={faHeadphones}/>
+                    className="btn-cue"
+                    disabled={!this.props.cueEnabled}
+                    {...((!this.props.cueEnabled) ? {"data-tooltip": this.cueNotSupportedMsg} : {})}
+                    get={ state => !!state.mixer.channels[channel].cue.current}
+                    set={ value => setCue(channel, value)}
+                    role={MAPPING[`MIXER_CHANNEL_${channel}_CUE`]}>
+                        <FontAwesomeIcon icon={faHeadphones}/>
                 </BinaryButton>
 
                 <div className="mixer-group group-fx">
-                        <BinaryButton
-                            className="btn-fx" 
-                            value={this.props.send1}
-                            onChange={this.props.setSend.bind(null, 1)}
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FX_1`]}
-                            >
-                                FX 1
-                        </BinaryButton>
-                        <BinaryButton
-                            className="btn-fx" 
-                            value={this.props.send2}
-                            onChange={this.props.setSend.bind(null, 2)}
-                            role={MAPPING[`MIXER_CHANNEL_${this.props.name}_FX_2`]}>
-                                FX 2
-                        </BinaryButton>
+                    <BinaryButton
+                        className="btn-fx"
+                        get={state => state.mixer.channels[channel].sends[0]}
+                        set={value => setSend(channel, 1, value)}
+                        role={MAPPING[`MIXER_CHANNEL_${channel}_FX_1`]}>
+                            FX 1
+                    </BinaryButton>
+                    <BinaryButton
+                        className="btn-fx"
+                        get={state => state.mixer.channels[channel].sends[1]}
+                        set={value => setSend(channel, 2, value)}
+                        role={MAPPING[`MIXER_CHANNEL_${channel}_FX_2`]}>
+                            FX 2
+                    </BinaryButton>
                 </div>
             </div>
         )
     }
-
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    cueEnabled : state.mixer.cueEnabled,
-    send1 : state.mixer.channels[ownProps.name].sends[0],
-    send2 : state.mixer.channels[ownProps.name].sends[1],
+    cueEnabled: state.mixer.cueEnabled,
     chReady: state.console.channel[ownProps.name].playBackState.ready,
-
-    cueValue : state.mixer.channels[ownProps.name].cue,
-    lowValue: state.mixer.channels[ownProps.name].low,
-    midValue: state.mixer.channels[ownProps.name].mid,
-    highValue: state.mixer.channels[ownProps.name].high,
-    gainValue: state.mixer.channels[ownProps.name].gain,
-    filterValue: state.mixer.channels[ownProps.name].filter,
-    filterResonanceValue : state.mixer.channels[ownProps.name].filterResonans,
 })
 
-const mapDispachToProps = (dispatch, ownProps) =>{
-    const tdispatch = throttle(dispatch, 50);
-    return {
-    setGain : (value) =>  tdispatch(setGain(ownProps.name, value)),
-    setHi : (value) => tdispatch(setHi(ownProps.name, value)),
-    setMid : (value) => tdispatch(setMid(ownProps.name, value)),
-    setLow : (value) => tdispatch(setLow(ownProps.name, value)),
-    setSend : (number, value) => dispatch(setSend(ownProps.name, number, value)),
-    setFilter : (value) => tdispatch(setFilter(ownProps.name, value)),
-    setFilterResonance : (value) => tdispatch(setFilterResonans(ownProps.name, value)),
-    setCue : (value) => tdispatch(setCue(ownProps.name, value))
-}}
 
-export default connect(mapStateToProps, mapDispachToProps)(Channel);
+export default connect(mapStateToProps)(Channel);

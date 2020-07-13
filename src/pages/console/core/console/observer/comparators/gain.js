@@ -5,8 +5,8 @@ export default function eqGainChange(prev, current) {
   current = current.mixer;
   let response = null;
   for (let channelName of Object.keys(prev.channels)) {
-    const prevValue = prev.channels[channelName].gain;
-    const currentValue = current.channels[channelName].gain;
+    const prevValue = prev.channels[channelName].gain.current;
+    const currentValue = current.channels[channelName].gain.current;
     if (prevValue !== currentValue) {
       response = response || [];
       response.push({

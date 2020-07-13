@@ -29,7 +29,7 @@ const Fader = props => {
             if(isZero){
                 value = 0;
             }
-            props.onChange(value);
+            props.setFader(value);
         }
     }
 
@@ -52,16 +52,21 @@ const Fader = props => {
                 to={50} 
                 step={5} 
                 stickiZero={5}
+                value={props.value}
                 onChange={ sliderChangeHandle} />
         </div>
     )
 }
 
+const mapStateToProps = state => ({
+    value : state.mixer.fader.current,
+})
+
 const mapDispatchToProps = dispatch => ({
     setFader : (value) => dispatch(setFader(value)),
 })
 
-const MixerFader = withControlMapping(connect(null, mapDispatchToProps)(Fader));
+const MixerFader = withControlMapping(connect(mapStateToProps, mapDispatchToProps)(Fader));
 
 export default props => {
     return <MixerFader className="mixer-fader" onChange={props.setFader}  role={MAPPING.MIXER_FADER}/>

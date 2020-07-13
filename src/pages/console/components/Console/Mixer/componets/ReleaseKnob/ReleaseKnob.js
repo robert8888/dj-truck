@@ -9,11 +9,11 @@ const ReleaseKnob = props =>{
         <KnobDescribed className={"release-knob " + props.className}
             showValue  
             scale={1}
-            alt="Rel"
+            text="Rel"
             initValue={.25}
             quantize={.05} 
             onChange={ props.onChange }
-            dobuleClickInit/>
+            doubleClickInit/>
     )
 }
 

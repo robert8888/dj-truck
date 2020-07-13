@@ -86,7 +86,6 @@ export default class Mixer {
         main.recorderStremDestination = ac.createMediaStreamDestination();
         main.postGainNode.connect(main.recorderStremDestination)
 
-
         this.mastering.configCompressor();
 
         //wiring in chain
@@ -115,9 +114,6 @@ export default class Mixer {
                 startUpdating: this.startUpdatingMaster.bind(this),
                 stopUpdating: this.stopUpdatingMaster.bind(this)
             }),
-            // getPostPeakMeter: {
-            //     getPeakMeter: this.getMasterPeakMeter.bind(this, "post")
-            // }
         }
     }
 

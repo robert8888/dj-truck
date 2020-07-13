@@ -1,20 +1,21 @@
 import {ACTIONS, MAPPING} from "./../../../actions";
 import {produce} from "imer";
 import _omitBy from "lodash/omitBy";
-import _invert from "lodash/invert";
 
 const initState = {
-    port: localStorage.getItem("midiPort"),
+    port: null,
     mapping: false,
     currentMapping: null,
     profileList : [{id: 123, name: "Profile 1"}, {id: 321, name: "Profile 2"}],
     currentProfileId : 123,
     actions : (()=>{
         const _actions = {};
-        for(let action of Object.values(MAPPING)){
-            _actions[action.id] = {
-                id : action.id,
-                descriptions: action.description,
+        for(let key in MAPPING){
+            if(!MAPPING.hasOwnProperty(key)) continue;
+            _actions[MAPPING[key].id] = {
+                id : MAPPING[key].id,
+                descriptions: MAPPING[key].description,
+                fullName : key,
             }
         }
         return _actions;
@@ -85,13 +86,14 @@ export default function midiReducer(state  = initState, action){
             }
         }
 
-        case ACTIONS.C_MIDI_SET_ACTION_HANDLE : {
-            const {actionId: id, handle} = action;
-
-            return produce(state, draftState => {
-                draftState.actions[id].resolver = handle;
-            })
-        }
+        // case ACTIONS.C_MIDI_SET_ACTION_HANDLE : {
+        //     const {actionId: id, handle} = action;
+        //
+        //     console.log("id, handle", id , handle)
+        //     return produce(state, draftState => {
+        //         draftState.actions[id].resolver = true;
+        //     })
+        // }
 
         ///CRUD - CSUD to be more explicit
         case ACTIONS.C_MIDI_CREATE_PROFILE :{

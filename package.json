@@ -28,6 +28,7 @@
     "node-sass": "^4.13.1",
     "nouislider-react": "^3.3.7",
     "patch-package": "^6.2.2",
+    "prop-types": "^15.7.2",
     "query-string": "^6.12.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",

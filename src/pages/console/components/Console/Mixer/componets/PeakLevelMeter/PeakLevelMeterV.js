@@ -9,7 +9,6 @@ class PeakLevelMater extends React.PureComponent {
         super(...args);
         this.size = 30;
 
-
         this.rightChannel = [];
         this.leftChannel = [];
 
@@ -33,33 +32,16 @@ class PeakLevelMater extends React.PureComponent {
                     className={"level-meter-led left-bar led-" + i} />
             )
         }
-
-       // this.mixerChannelInterface = this.props.interface; 
         this.breakFlag = false;
         this.lastCall = 0;
-
     }
 
     updateLedStates() {
-        if (this.breakFlag) {
-            return;
-        }
-
-        requestAnimationFrame(this.updateLedStates.bind(this));
-        //throtell to 50ms
-        const now = new Date().getTime();
-        if (now - this.lastCall < 30) {
-            return;
-        }
-        this.lastCall = now;
-
-        //drawing ...
         let peakMeter = this.props.interface.getPeakMeter();
         let ledOn = 25 + peakMeter.peakdB / 2;
 
-
         for (let i = 0; i < this.size; i++) {
-
+            if(!this.leftRefs[i] || this.rightRefs[i]) break;
             this.leftRefs[i].current.classList.toggle("led--on", (i <= ledOn))
             this.rightRefs[i].current.classList.toggle("led--on", (i <= ledOn))
         }
@@ -69,10 +51,11 @@ class PeakLevelMater extends React.PureComponent {
         if(this.props.active && this.props.interface){
             this.breakFlag = false;
             this.props.interface.startUpdating();
-            setTimeout(this.updateLedStates.bind(this), 100);
+            this.intervalHandle = setInterval(() => requestAnimationFrame(this.updateLedStates.bind(this)), 40);
         } else {
             this.breakFlag = true;
             if(!this.props.interface) return;
+            clearInterval(this.intervalHandle);
             this.props.interface.stopUpdating();
         }
     }
@@ -84,7 +67,6 @@ class PeakLevelMater extends React.PureComponent {
     componentDidMount(){
         this.checkActive();
     }
-
 
     componentWillUnmount() {
         this.breakFlag = true;
@@ -104,8 +86,6 @@ class PeakLevelMater extends React.PureComponent {
             </div>
         )
     }
-
 }
-
 
 export default PeakLevelMater;

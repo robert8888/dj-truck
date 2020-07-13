@@ -2,10 +2,11 @@
 @import "./../../../../../../css/mixins.scss";
 
 @mixin play-back-controls ($deck-primary){
-    display: inline-block;
+    & , & > * {
+        display: inline-block;
+    }
     .btn.btn-primary{
         @include deck-button($deck-primary);
-        
         
         &.play-btn{
             margin-left: 2px;
@@ -18,8 +19,6 @@
             }
         }
     }
-
-
 }
 
 .play-back-controls-A{

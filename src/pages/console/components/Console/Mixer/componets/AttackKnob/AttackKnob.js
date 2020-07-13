@@ -9,11 +9,11 @@ const AttackKnob = props =>{
         <KnobDescribed className={"attack-knob " + props.className}
             showValue  
             scale={1}
-            alt="Atc"
+            text="Atc"
             initValue={.003}
             quantize={.001} 
             onChange={ props.onChange }
-            dobuleClickInit/>
+            doubleClickInit/>
     )
 }
 

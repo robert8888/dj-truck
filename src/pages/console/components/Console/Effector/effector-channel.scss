@@ -1,7 +1,7 @@
 @import "./../../../../../css/colors.scss";
 @import "./../../../../../css/mixins.scss";
 
-.effector-channel{
+.effector{
     position: relative;
     display: flex;
     width: 100%;
@@ -12,30 +12,30 @@
     border-bottom: none;
     padding: 5px;
     padding-left: 25px;
-    padding-bottom: 0;
+    padding-bottom: 2px;
 
-    .label  {
-        @include label();
-    }
-    
 
     .effect-selector{
-        flex: 1;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
+        &, &__wrapper{
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
-        padding-left: 8px;
-        .btn-effect-select{
+        &__wrapper{
+            padding-left: 8px;
+        }
+        &__button{
             .btn{
                 @include drop-down-button($mixer-primary);
                 padding: 8px 6px;
             }
-        };
+        }
     }
 
 
-    .effector-param{
+    .effect-param{
         align-self: flex-end;
         display: flex;
         padding-bottom: 2px;

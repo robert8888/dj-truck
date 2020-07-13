@@ -1,12 +1,18 @@
 import { ACTIONS } from "./../../actions";
 import { produce } from "imer";
-
-
+import {evalValue, toggleValue} from "./utils/evalMidiValue";
+import _get from "lodash/get";
+import _set from "lodash/set";
 
 const channelNumber = 2;
 const initState = () => {
     const channel = {
-        dryWet: 0,
+        dryWet: {
+            current: 0,
+            default: 0,
+            min: 0,
+            max: 100,
+        },
         currentEffect: null,
         effects: {
             /*reverb: {
@@ -31,18 +37,18 @@ const initState = () => {
     return state;
 }
 
-const nextParameterState = (state, channel, effect, param) => {
-    return produce(state, nextState => {
-        nextState.lastChange = {
-            sygnature : "#EffectParam/" + channel + "/" + effect + "/" + Object.keys(param).join("/"),
-            channel,
-            effect, 
-            param : param,
-        }
+const nextParameterState = (state, channel, effect, param, value) => {
+    return produce(state, draftState => {
+        const signature = "#EffectParam/" + channel + "/" + effect + "/" + param;
 
-        const effectParam = state?.channels[channel]?.effects[effect] || {};
-        nextState.channels[channel].effects[effect] = { ...effectParam, ...param };
+        _set(draftState,  ['channels', channel, 'effects', effect, param], value)
+
+        draftState.lastChange = {signature, channel, effect, param}
     })
+}
+
+const temp = {
+    floatEffectIndex: 0
 }
 
 export default function effectorReducer(state = initState(), action) {
@@ -52,29 +58,76 @@ export default function effectorReducer(state = initState(), action) {
         }
 
         case ACTIONS.SET_EFFECT_PARAMETER: {
-            return nextParameterState(state, action.channel, action.effect, { [action.name]: action.value })
+            let {channel, effect, name, value} = action;
+            if(value === undefined) return;
+            if(!effect){
+                effect = state.channels[channel].currentEffect;
+            }
+            if(typeof name === "number" && name < Object.keys(state.effects[effect]).length){
+                name = Object.keys(state.effects[effect])[name];
+            }
+            const min = _get(state, ["effects", effect, name, "min"]);
+            const max = _get(state, ["effects", effect, name, "max"]);
+            const current =
+                _get(state, ["channels", channel, "effects", effect, name]) ??
+                _get(state, ["effects", effect, name, "defaultValue"]);
+            const type = state.effects[effect].type;
+            if(type === "bool"){
+                if(value === null){
+                    value = !!current;
+                } else if(typeof value === "string" && value.match(/^[+-]?\d+\.??\d*?%$/)){
+                    value = evalValue(value, min, max , current)
+                }
+            } else{
+                if(value === null){
+                    value = toggleValue(min, max , current);
+                } else if(typeof value === "string" && value.match(/^[+-]?\d+\.??\d*?%$/)) {
+                    value = evalValue(value, min, max , current)
+                }
+            }
+            return nextParameterState(state, channel, effect, name, value )
         }
 
         case ACTIONS.SET_CURRENT_EFFECT : {
-            return produce(state, nextState =>{
-                nextState.channels[action.channel].currentEffect = action.effect;
-
-                nextState.lastChange = {
-                    sygnature : "#EffectChange/"+action.channel,
-                    channel : action.channel,
-                    effect : action.effect,
+            let {value, channel} = action;
+            if(value === undefined) return state;
+            const min = 0;
+            const max = Object.keys(state.effects).length - 1;
+            const current = Object.keys(state.effects).indexOf(state.channels[channel].currentEffect);
+            if(value === null){
+                value = Object.keys(state.effects)[(current + 1) % max];
+            } else if(typeof value === "string" && value.match(/^[+-]?\d+\.??\d*?%$/)){
+                temp.floatEffectIndex = evalValue(value, min, max, temp.floatEffectIndex || current)
+                value = Object.keys(state.effects)[Math.round(temp.floatEffectIndex)]
+            }
+            return produce(state, draftState =>{
+                draftState.channels[action.channel].currentEffect = value;
+                draftState.lastChange = {
+                    signature : "#EffectChange/" + channel,
+                    effect : value,
+                    channel
                 }
             })
         }
         
         case ACTIONS.SET_DRY_WET : {
-            return produce(state, nextState =>{
-                nextState.channels[action.channel].dryWet= action.value;
-
-                nextState.lastChange = {
-                    sygnature : "#DryWetChange/"+action.channel,
-                    channel : action.channel,
-                    value : action.value,
+            let {channel, value} = action;
+            if(value === undefined) return state;
+            const current = state.channels[channel].dryWet.current;
+            const min = state.channels[channel].dryWet.min;
+            const max = state.channels[channel].dryWet.max;
+            if(value === null){
+                value = toggleValue(min, max, current)
+            }
+            if(typeof value === "string"){
+                value = evalValue(value, min, max, current)
+            }
+            return produce(state, draftState =>{
+                draftState.channels[channel].dryWet.current = value;
+                draftState.lastChange = {
+                    signature : "#DryWetChange/" + channel,
+                    channel,
+                    value,
                 }
             })
         }

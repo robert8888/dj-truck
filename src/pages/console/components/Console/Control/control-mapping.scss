@@ -1,4 +1,5 @@
 @import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
 
 .control-mapping{
 
@@ -7,6 +8,16 @@
   }
 
   &__layer{
+    @include tooltip();
+    &[data-tooltip]:before{
+      //bottom: 100%;
+      left: -2px;
+      top: -24px;
+      white-space: nowrap;
+      height: 24px;
+      width: 96px;
+      text-align: center;
+    }
     display: none;
     position: absolute;
     width: 100%;
@@ -14,20 +25,27 @@
     top:0;
     left: 0;
     z-index: 10;
-    background: rgba($primary, .2);
+    background: rgba($primary, .3);
     border: 2px solid $primary;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    span{
+    span.value{
       text-shadow: 0px 0px 5px rgba(#fff, 0.6);
+      line-height: 1rem;
+      background: rgba($primary, 0.8);
     }
     &--active{
       display: flex;
     }
     &--current{
-      background: rgba($secondary, .2);
+      background: rgba($secondary, .9);
       border: 2px solid $secondary;
+      span.value{
+        color: white;
+        background: $secondary;
+        font-weight: 500;
+      }
     }
 
   }

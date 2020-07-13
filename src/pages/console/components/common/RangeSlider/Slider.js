@@ -3,13 +3,13 @@ import debounce from "lodash/debounce";
 import "./slider.scss";
 
 //props
-//from - down boundry
-//to  - up boundry value
+//from - down boundary
+//to  - up boundary value
 //onChange - handler for change
 //value - value to make external control
-//step - for quntize value
-//stick-zero - stick zero to sticki behaviore of slider like on fader
-//vertival or horizontal - vertiacl or horizonal position
+//step - for quantize value
+//stick-zero - stick zero to sticky mode
+//vertical or horizontal - vertical or horizontal position
 
 
 class Slider extends React.Component {
@@ -27,7 +27,7 @@ class Slider extends React.Component {
   state = {
 
     sliderRange: null,
-    sliderCurrnetPosition: null,
+    sliderCurrentPosition: null,
     sliderPrevPosition: null,
     isDragged: false,
     isTemp: false, // is temporary value return as second arguemnt onChange callback
@@ -88,39 +88,43 @@ class Slider extends React.Component {
     return position;
   }
 
-  setPosition = (currentPosition, prevPosition) => {
-    let position = this.boundPosition(currentPosition);
-
-    this.setState(
-      {
-        ...this.state,
-        sliderCurrnetPosition: position,
-        sliderPrevPosition: prevPosition || this.state.sliderPrevPosition
-      },
-      () => {
-        if (this.props.onChange) {
-          this.props.onChange(
-            this.evalValue(this.state.sliderCurrnetPosition),
-            this.state.isTemp
-          );
-        }
-      }
-    );
-
-    this.updateStyles();
-  };
-
-  updateStyles(){
-    let position = this.stickiPostion(this.state.sliderCurrnetPosition);
-    if (this.props.horizontal) {
-      this.sliderThumbElement.current.style.left = position + "px";
-    } else {
-      this.sliderThumbElement.current.style.top = position + "px";
+  update(){
+    if (this.props.onChange) {
+      let value = this.evalValue(this.state.sliderCurrentPosition);
+      if(isNaN(value)) return;
+      this.props.onChange(
+          value,
+          this.state.isTemp
+      );
     }
   }
 
+  setPosition = (currentPosition, prevPosition) => {
+    let position = this.boundPosition(currentPosition);
+    this.setState(
+      {
+        ...this.state,
+        sliderCurrentPosition: position,
+        sliderPrevPosition: prevPosition || this.state.sliderPrevPosition
+      },
+      () => {
+        this.update();
+        this.updateStyles();
+      }
+    );
+  };
 
-
+  updateStyles(){
+    let position = this.stickiPostion(this.state.sliderCurrentPosition);
+    if (this.props.horizontal) {
+      this.sliderThumbElement.current.style.left = position + "px";
+      this.sliderThumbElement.current.style.top = null;
+    } else {
+      this.sliderThumbElement.current.style.top = position + "px";
+      this.sliderThumbElement.current.style.left = null;
+    }
+  }
+  
   mouseDownHandle = event => {
     if (
       event.target === this.sliderAreaElement.current ||
@@ -133,7 +137,7 @@ class Slider extends React.Component {
         ? event.clientX - rect.left
         : event.clientY - rect.top;
       
-      const current = this.state.sliderCurrnetPosition || this.getPostion(this.props.initValue || 0) 
+      const current = this.state.sliderCurrentPosition || this.getPostion(this.props.initValue || 0) 
       this.setPosition(position, current);
     } // dragging
     else if (event.target === this.sliderThumbElement.current) {
@@ -159,7 +163,7 @@ class Slider extends React.Component {
       if (this.props.step) {
         const step = this.props.step;
         let prevVal = this.evalValue(this.state.sliderPrevPosition);
-        if (this.state.sliderCurrnetPosition > this.state.sliderPrevPosition) {
+        if (this.state.sliderCurrentPosition > this.state.sliderPrevPosition) {
           prevVal += step;
         } else {
           prevVal -= step;
@@ -240,11 +244,10 @@ class Slider extends React.Component {
   }
 
   componentDidUpdate(prevProbs){
-    if( this.props.value && this.props.value !== prevProbs.value){
-      let position = this.getPostion(this.props.value);
-      if(position !== this.state.sliderCurrnetPosition){
-        this.setPosition(position);
-      }
+    if( this.props.value !== undefined &&
+        this.props.value !== this.state.value &&
+        !this.state.isDragged){
+      this.setPosition(this.getPostion(this.props.value));
     }
   }
 
@@ -253,7 +256,7 @@ class Slider extends React.Component {
   }
 
   render() {
-    
+
     return (
       <div 
         className={ "slider" + (this.props.className ? " " + this.props.className : "")}

@@ -17,7 +17,12 @@
     }
 
     .player-container{
-        position: relative;
+       // position: relative;
+        display: flex;
+        justify-content: space-between;
+        .player {
+          width : calc(100% - 50px)
+        }
     }
     
     .control-area{

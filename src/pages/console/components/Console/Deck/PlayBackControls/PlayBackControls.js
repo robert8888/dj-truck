@@ -1,12 +1,14 @@
-import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import React from "react";
-import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { canelCueAndPlay, toggleCue, togglePlay } from "./../../../../../../actions";
+import {canelCueAndPlay, MAPPING, toggleCue, togglePlay}
+    from "../../../../../../actions";
+import PlayButton from "./PlayButton";
+import CueButton from "./CueButton";
 import "./play-back.scss";
 
-const PlayBackControls = ({ name, toggleCue, togglePalay, cuePlay, paused, cueActive }) => {
+
+const PlayBackControls = ({ name, toggleCue, togglePlay, cuePlay, paused, cueActive }) => {
 
     const cueMouseDown = () => {
         toggleCue()
@@ -31,15 +33,12 @@ const PlayBackControls = ({ name, toggleCue, togglePalay, cuePlay, paused, cueAc
 
     return (
         <div className={"play-back-controls-" + name}>
-            <Button className={"play-btn " + (((!paused) && "btn--pressed") || "")}
-                onClick={togglePalay}>
-                <FontAwesomeIcon icon={(paused) ? faPlay : faPause} />
-            </Button>
-            <Button
-                className={"cue-btn " + ((cueActive && "btn--pressed") || "")}
-                onMouseDown={cueMouseDown} >
-                Cue
-            </Button>
+            <PlayButton onClick={togglePlay}
+                        paused={paused}
+                        role={MAPPING[`DECK_CHANNEL_${name}_PLAY`]}/>
+            <CueButton  onMouseDown={cueMouseDown}
+                        active={cueActive}
+                        role={MAPPING[`DECK_CHANNEL_${name}_CUE`]}/>
         </div>
     )
 }
@@ -49,11 +48,11 @@ const mapStateToProps = (state, ownProps) => ({
     cueActive: state.console.channel[ownProps.name].playBackState.cueActive,
 })
 
-const mapDispachToProps = (dispach, ownProps) => ({
-    togglePalay: () => dispach(togglePlay(ownProps.name)),
-    toggleCue: () => dispach(toggleCue(ownProps.name)),
-    cuePlay: () => dispach(canelCueAndPlay(ownProps.name))
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    togglePlay: () => dispatch(togglePlay(ownProps.name, null)),
+    toggleCue: () => dispatch(toggleCue(ownProps.name, null)),
+    cuePlay: () => dispatch(canelCueAndPlay(ownProps.name, null))
 })
 
-export default connect(mapStateToProps, mapDispachToProps)(PlayBackControls);
+export default connect(mapStateToProps, mapDispatchToProps)(PlayBackControls);
 

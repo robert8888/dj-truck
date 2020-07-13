@@ -5,8 +5,8 @@ export default function currentEffectChanged(prev, current) {
   current = current.effector;
   let response = null;
 
-  if (!current.lastChange.sygnature ||
-    (current.lastChange.sygnature && !current.lastChange.sygnature.startsWith("#EffectChange"))) {
+  if (!current.lastChange.signature ||
+    (current.lastChange.signature && !current.lastChange.signature.startsWith("#EffectChange"))) {
     return null
   } else {
     const prevValue = prev.channels[current.lastChange.channel].currentEffect;

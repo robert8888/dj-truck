@@ -1,28 +1,13 @@
-
-
-// Spec 
-// witout any option Knob is standard with value from 0 to 100 and on inti value is 0
-// -initValue:number allow to set init value
-// -showValue props allows to display numeric value on knob
-// -diplayFormula : a callbac function with will be used to show value on knob
-// -scale:number allow to scale value eg. 10 give range from 0 to 10 
-// -symetric:boolean if this props is present knob havse valeu from -100 to 100 * scale 
-// -unsymetric:{negative:number, positive:number} allows to set unsymetric range value : 
-//  {positive : 5 } means that values bigger than 0 are divided by 5 range is from -100 to 20 * scale
-// -quantize:number switch knob to quantize mode in witch returned values are quantize to parametr 
-//       eg: 2 returns value 100, 98 , 96 ... quantize:0.05 returns values 100, 99.95.... 
-// -qunatize:{negative:number, positive:number} allows to set diffrent qunatizes for negative and positives values.
-// -responseFactor if is present adjust knob response on a mouse move // default= 1 eg responseFactor 2 will increase response two times
-// -alt if is present when mouse is over and knob is not draggin it will display alt value 
-
 import React from "react";
 import style from "./knob.scss";
+import _throttle from "lodash/throttle";
+import PropTypes from "prop-types";
 
 
 class Knob extends React.PureComponent{
 
-    constructor(){
-        super();
+    constructor(...args){
+        super(...args);
         this.html = {
             bigCircle : React.createRef(),
             leftHalf : React.createRef(),
@@ -31,23 +16,28 @@ class Knob extends React.PureComponent{
             smallCircle : React.createRef(),
             dot : React.createRef()
         }
+        this.throttleTime = this.props.throttle || 30;
+
+        this.onChange = _throttle((...args) => {
+            this.props.onChange && this.props.onChange(...args);
+        }, this.throttleTime)
     }
 
     state = {
         value: 0,
         position: 0, 
-        snapShotPostion: 0,
+        snapShotPosition: 0,
 
         idDragged: false,
         isMouseOver: false,
     }
 
     snap(){
-        this.setState({...this.state, snapShotPostion: this.state.position})
+        this.setState({...this.state, snapShotPosition: this.state.position})
     }
 
     normalizePostion(position){
-        if(this.props.symetric || this.props.unsymetric){
+        if(this.props.symmetric || this.props.asymmetric){
             return Math.min(Math.max(position, -100), 100)
         } 
         return Math.min(Math.max(position, 0), 100)
@@ -59,7 +49,6 @@ class Knob extends React.PureComponent{
 
          // value is quantaized 
          return this.valueToPosition(this.evalValue(position));
-
     }
 
     valueToPosition(value){
@@ -68,13 +57,13 @@ class Knob extends React.PureComponent{
             position = value * 100 / this.props.scale;
         }
 
-        if(this.props.unsymetric){
-            if(this.props.unsymetric.positive && value > 0 ){
-                let scale = this.props.unsymetric.positive;
+        if(this.props.asymmetric){
+            if(this.props.asymmetric.positive && value > 0 ){
+                let scale = this.props.asymmetric.positive;
                 position = position * scale;
             } 
-            if(this.props.unsymetric.negative &&  value < 0){
-                let scale = this.props.unsymetric.negative;
+            if(this.props.asymmetric.negative &&  value < 0){
+                let scale = this.props.asymmetric.negative;
                 position = position * scale;
             }
         }
@@ -88,13 +77,13 @@ class Knob extends React.PureComponent{
             value = this.props.scale * position / 100 ;
         } 
         
-        if(this.props.unsymetric){
-            if(this.props.unsymetric.positive && position > 0 ){
-                let scale = this.props.unsymetric.positive;
+        if(this.props.asymmetric){
+            if(this.props.asymmetric.positive && position > 0 ){
+                let scale = this.props.asymmetric.positive;
                 value = value / scale;
             } 
-            if(this.props.unsymetric.negative && position < 0){
-                let scale = this.props.unsymetric.negative;
+            if(this.props.asymmetric.negative && position < 0){
+                let scale = this.props.asymmetric.negative;
                 value = value / scale;
             }
         }
@@ -118,15 +107,19 @@ class Knob extends React.PureComponent{
         return Math.floor(value * 1000000) / 1000000;
     }
 
-    setPostion(position){
+
+    update(value){
+        const position = this.valueToPosition(value);
+        this.setPosition(position, true);
+    }
+
+    setPosition(position, silent){
         position =  this.normalizePostion(position);
         const value = this.evalValue(position);
 
-        this.setState({...this.state, position, value}, ()=>{
-            this.mapPostionToArms(this.state.position)
-        });
-
-        (this.props.onChange && this.props.onChange(this.state.value))
+        this.setState({...this.state, position, value});
+        window.requestAnimationFrame(()=> this.mapPostionToArms(position))
+        !silent && this.onChange(value);
     }
 
     mapPostionToArms(position){
@@ -134,7 +127,7 @@ class Knob extends React.PureComponent{
         let reversArm = false;
         position = this.quantizePosition(position); 
 
-        if(this.props.symetric || this.props.unsymetric){
+        if(this.props.symmetric || this.props.asymmetric){
             rightArm = 88;
             leftArm = 92; 
             dotAngle = position  * 1.4 ;     
@@ -163,8 +156,8 @@ class Knob extends React.PureComponent{
 
     updateValue(){
         let value = ""
-        if(this.isMouseOver && !this.state.isDragged && this.props.alt){
-            value = this.props.alt.substr(0,4).toUpperCase();
+        if(this.isMouseOver && !this.state.isDragged && this.props.text){
+            value = this.props.text.substr(0,4).toUpperCase();
         } else {
             if(this.props.showValue){
                 value = this.evalValue(this.state.position)
@@ -233,8 +226,8 @@ class Knob extends React.PureComponent{
     mouseMove(startY, event){
         event.stopPropagation();
         let responsFactor = this.props.responsFactor || 1;
-        let position = this.state.snapShotPostion - (event.clientY  - startY) * responsFactor;
-        this.setPostion(position);
+        let position = this.state.snapShotPosition - (event.clientY  - startY) * responsFactor;
+        this.setPosition(position);
     }
 
     mouseEnter(){
@@ -252,20 +245,20 @@ class Knob extends React.PureComponent{
     }
 
     mouseDoubelClick(){
-        if(this.props.dobuleClickInit){
+        if(this.props.doubleClickInit){
             const value = this.props.initValue || 0;
             const position = this.valueToPosition(value);
             this.setState({...this.state, value : value}, ()=>{
-                this.setPostion(position)
+                this.setPosition(position)
             })
         }
     }
 
-    //----------------compontent metod
+    //----------------live cycle methods
     componentDidMount(){
         let position = this.state.position;
-        if(this.props.initValue){
-            position = this.valueToPosition(this.props.initValue)
+        if(this.props.initValue || this.props.value){
+            position = this.valueToPosition(this.props.initValue || this.props.value)
         }
 
         this.setState({...this.state, position : position}, ()=>{
@@ -274,10 +267,8 @@ class Knob extends React.PureComponent{
     }
 
     componentDidUpdate(oldProps){
-        if(this.props.value !== oldProps.value){
-            const postion = this.valueToPosition(this.props.value);
-            this.setPostion(postion);
-        }
+        if(this.props.value === oldProps.value || this.state.isDragged) return;
+        this.update(this.props.value);
     }
 
 
@@ -324,5 +315,30 @@ class Knob extends React.PureComponent{
         )
     }
 }
+
+Knob.propTypes = {
+    initValue: PropTypes.number, //allow to set init value
+    showValue: PropTypes.oneOfType([
+        PropTypes.bool, //display numeric value on knob
+        PropTypes.oneOf(["always"]),
+    ]),
+    displayFormula: PropTypes.func, // allow to pass function witch transform displayed value
+    scale: PropTypes.number,// scale value eg. 10 give range from 0 to 10 - (100 / scale)
+    symmetric: PropTypes.bool, // if is true instead value from 0 to 100 / scale - it will have from -100 to 100
+    asymmetric: PropTypes.shape({ // allows to set asymmetric scale
+        negative: PropTypes.number, // eg: negative: 2 makes negative value dived by 2 - instead -100 to 100 gives: -50 to 100
+        positive: PropTypes.number, //
+    }),
+    quantize: PropTypes.oneOfType([
+        PropTypes.number, // eg:  value : 2 -> 100, 98 , 96....
+        PropTypes.shape({
+            negative: PropTypes.number, // asymmetric quantization
+            positive: PropTypes.number, //
+        })
+    ]),
+    responseFactor: PropTypes.number, // ratio for mouse dragging action - default 1
+    text: PropTypes.string, // text displayed during dragging and hover
+}
+
 
 export default Knob;

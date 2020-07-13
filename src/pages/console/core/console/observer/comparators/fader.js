@@ -6,8 +6,8 @@ export default function eqLowChange(prev, current) {
 
   let response = null;
 
-  const prevValue = prev.fader.position;
-  const currentValue = current.fader.position;
+  const prevValue = prev.fader.current;
+  const currentValue = current.fader.current;
   if (prevValue !== currentValue) {
     response = response || [];
     response.push({

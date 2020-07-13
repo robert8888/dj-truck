@@ -111,12 +111,6 @@ export default class Channels {
     waveSurfer.setPlaybackRate(1 + currentValue / 100);
     waveSurfer.fireEvent("interaction");
 
-    /*
-    if(channel?.backend?.source instanceof AudioBufferSourceNode){
-        const rate = 1 + currentValue / 100
-        channel.backend.source.playbackRate.value = rate; 
-        channel.backend.playbackRate = rate;
-    }*/
   }
 
   sync(channelName){

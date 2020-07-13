@@ -5,8 +5,8 @@ export default function eqMidChange(prev, current) {
   current = current.mixer;
   let response = null;
   for (let channelName of Object.keys(prev.channels)) {
-    const prevValue = prev.channels[channelName].mid;
-    const currentValue = current.channels[channelName].mid;
+    const prevValue = prev.channels[channelName].mid.current;
+    const currentValue = current.channels[channelName].mid.current;
     if (prevValue !== currentValue) {
       response = response || [];
       response.push({

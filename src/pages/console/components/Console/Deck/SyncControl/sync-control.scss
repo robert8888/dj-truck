@@ -8,6 +8,9 @@
     padding: 3px 0;
     line-height: 1;
     display: flex;
+    &>.control-mapping__wrapper {
+        display: flex;
+    }
     button{
         margin-right: 3px;
     }

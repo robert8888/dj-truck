@@ -2,8 +2,9 @@ import React from "react";
 import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed";
 import "./filter-knob.scss";
 import withControlMapping from "../../../Control/withControlMapping";
+import {connect} from "react-redux";
 
-const FilterKnob = props =>{
+const FilterKnob = ({value, update, text}) =>{
     const displayText = (value) => {
         if (value < 0) {
             return "LP"
@@ -16,15 +17,23 @@ const FilterKnob = props =>{
     return (
         <KnobDescribed className="filter-knob "
             showValue={"always"} 
-            symetric
+            symmetric
             scale={10} 
-            alt={props.alt}
+            text={text}
             displayFormula={ displayText }
             quantize={0.01} 
-            onChange={ props.onChange }
-            value={props.value}
-            dobuleClickInit/>
+            onChange={ update }
+            value={value}
+            doubleClickInit/>
     )
 }
 
-export default  withControlMapping(FilterKnob);
+const mapStateToProps = (state, {get}) => ({
+    value : get && get(state),
+})
+
+const mapDispatchToProps = (dispatch, {set}) => ({
+    update : (value) => dispatch(set(value))
+})
+
+export default  withControlMapping(connect(mapStateToProps, mapDispatchToProps)(FilterKnob));

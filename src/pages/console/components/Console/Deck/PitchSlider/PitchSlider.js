@@ -1,23 +1,32 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setPitch } from "../../../../../../actions";
+import { setPitch, MAPPING } from "../../../../../../actions";
 import Slider from "./../../../common/RangeSlider/Slider";
 import "./pitch-slider.scss";
+import withControlMapping from "../../Control/withControlMapping";
 
-const PitchSlider = props => {
+const PitchSlider = ({name, pitch, setPitch, min, max}) => {
     return (
-        <div className={"pitch pitch-" + props.name} >
-            <Slider from={-8} to={8}  onChange={props.setPitch} value={ props.pitch }/>
+        <div className={"pitch pitch-" + name} >
+            <Slider from={min} to={max} onChange={setPitch} value={ pitch }/>
         </div>
     )
 }
 
+const ControlledPitchSlider = withControlMapping(PitchSlider);
+
+const MappedPitchSlider = ({name, ...props}) =>{
+    return <ControlledPitchSlider {...props} name={name} role={MAPPING[`DECK_CHANNEL_${name}_PITCH`]}/>
+}
+
 const mapStateToProps = (state, ownProps) =>({
-    pitch : state.console.channel[ownProps.name].playBackState.pitch,
+    min: state.console.channel[ownProps.name].playBackState.pitch.min,
+    max: state.console.channel[ownProps.name].playBackState.pitch.max,
+    pitch : state.console.channel[ownProps.name].playBackState.pitch.current,
 })
 
-const mapDispachToProps = (dispach, ownProps) => ({
-    setPitch : (value) => dispach(setPitch(value, ownProps.name)), 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    setPitch : (value) => dispatch(setPitch(ownProps.name, value)),
 })
 
-export default connect(mapStateToProps, mapDispachToProps)(PitchSlider);
+export default connect(mapStateToProps, mapDispatchToProps)(MappedPitchSlider);

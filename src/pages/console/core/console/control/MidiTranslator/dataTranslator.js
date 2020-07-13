@@ -1,9 +1,7 @@
 import MIDI_STATUS from "./midiStatus";
 
 export default class MidiDataTranslator{
-    constructor() {
 
-    }
     translateFirstByte(status, data){
         if([MIDI_STATUS.NOTE_ON,
             MIDI_STATUS.NOTE_OFF,

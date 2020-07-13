@@ -1,5 +1,8 @@
 import { produce } from "imer";
 import { ACTIONS } from "./../../actions";
+import _set from "lodash/set";
+import {toRange} from "../../utils/math/argRanges";
+import {evalValue} from "./utils/evalMidiValue";
 
 const initDeckState = {
     track: {
@@ -19,14 +22,31 @@ const initDeckState = {
         paused: true,
         cuePoint: 0,
         cueActive: false,
-        pitch: 0,
+        pitch: {
+            min: -8,
+            max: 8,
+            default: 0,
+            current: 0,
+        },
         timeLeft: null,
         offset: null, // move this to track now is in both
         sync: false,
         loop: false,
     },
     deckState: {
-        loopLength: -1,
+        loopLengths : (()=>{
+            const lengths = []
+            for (let i = 1 / 64; i <= 64; i = i * 2) {
+               lengths.push(i);
+            }
+            return lengths;
+        })(),
+        loopLength: {
+            default : 4,
+            min: 0,
+            max: 12,
+            current: 8,
+        }
     }
 }
 
@@ -44,31 +64,22 @@ const initState = {
 }
 
 function nextState(part) {
-    return (state, destination, haveToBeReady, variables) => {
+    return (state, destination, haveToBeReady, variables, depth) => {
 
         if (!state.channel[destination]) return state;
         if (haveToBeReady && !state.channel[destination].playBackState.ready) return state;
 
+        const base = ["channel", destination, part]
+
         const nextState = produce(state, (draftState) => {
             for (let [variable, value] of Object.entries(variables)) {
-                switch (part) {
-                    case "playBackState": {
-                        draftState.channel[destination].playBackState[variable] = value;
-                        break;
-                    }
-                    case "track": {
-                        draftState.channel[destination].track[variable] = value;
-                        break;
-                    }
-                    case "deckState": {
-                        draftState.channel[destination].deckState[variable] = value;
-                        break;
-                    }
-                    default: break;
+                const path = [...base, variable];
+                if(depth){
+                    path.push("current")
                 }
+                _set(draftState, path, value);
             }
         })
-
         return nextState;
     }
 }
@@ -77,7 +88,13 @@ const nextPlayBackState = nextState('playBackState');
 const nextTrackState = nextState('track');
 const nextDeckState = nextState('deckState');
 
-
+//this is easies way to keep
+//some value between reducer calling
+//is used to store not integer value of loop length
+//in case increasing it value by cc midi signal
+const temp = {
+    floatLoopLength: null
+}
 
 function consoleReducer(state = initState, action) {
     switch (action.type) {
@@ -108,7 +125,7 @@ function consoleReducer(state = initState, action) {
                     sourceId: nextTrack.sourceId,
                     thumbnails: nextTrack.thumbnails,
                 }
-                //reseting  play back state
+                //reset  play back state
                 draftState.channel[action.destination].playBackState = {
                     ...initState.channel[action.destination].playBackState,
                     offset: nextTrack.offset,
@@ -126,33 +143,48 @@ function consoleReducer(state = initState, action) {
         }
 
         case ACTIONS.SET_PITCH: {
-            return nextPlayBackState(state, action.destination, false, { pitch: action.pitch })
+            let {pitch : value, destination} = action;
+            if(value === null || value === undefined) return state;
+            const min = state.channel[destination].playBackState.pitch.min;
+            const max = state.channel[destination].playBackState.pitch.max;
+            const current = state.channel[destination].playBackState.pitch.current;
+            if(typeof value === "string"){
+                value = evalValue(value, min,  max, current)
+            }
+            value = toRange(value, min, max);
+            return nextPlayBackState(state, destination, false, { pitch: value }, true)
         }
 
         case ACTIONS.INCREASE_PITCH: {
-            let prevPitch = state.channel[action.destination]?.playBackState?.pitch;
+            let prevPitch = state.channel[action.destination]?.playBackState?.pitch.current;
             if (prevPitch === undefined) return state;
-            return nextPlayBackState(state, action.destination, false, { pitch: prevPitch + action.amount })
+            return nextPlayBackState(state, action.destination, false, { pitch: prevPitch + action.amount }, true)
         }
 
         case ACTIONS.DECREASE_PITCH: {
-            let prevPitch = state.channel[action.destination]?.playBackState?.pitch;
+            let prevPitch = state.channel[action.destination]?.playBackState?.pitch.current;
             if (prevPitch === undefined) return state;
-            return nextPlayBackState(state, action.destination, false, { pitch: prevPitch - action.amount })
+            return nextPlayBackState(state, action.destination, false, { pitch: prevPitch - action.amount }, true)
         }
 
 
         case ACTIONS.TOGGLE_PLAY: {
+            const {value} = action;
+            if(value === undefined) return state;
+            if(typeof value === "string" &&
+               (value.match(/^[+-]/) || ![0,100].includes(parseInt(value)))) {
+                return state;
+            }
+
             let prevPause = state.channel[action.destination]?.playBackState?.paused;
             prevPause = (prevPause === undefined) ? true : prevPause;
             return nextPlayBackState(state, action.destination, true, { paused: !prevPause })
         }
 
-        // case ACTIONS.SET_TIME_LEFT: {
-        //     return nextPlayBackState(state, action.destination, true, { timeLeft: action.timeLeft })
-        // }
 
         case ACTIONS.TOGGLE_CUE: {
+            const {value} = action;
+            if(typeof  value === "string") return;
             let prevCue = state.channel[action.destination]?.playBackState?.cueActive;
             prevCue = (prevCue === undefined) ? false : prevCue;
             return nextPlayBackState(state, action.destination, true, { cueActive: !prevCue })
@@ -171,6 +203,12 @@ function consoleReducer(state = initState, action) {
 
 
         case ACTIONS.SET_MASTER: {
+            const {value} = action;
+            if(value === undefined ||
+              (value && value.match(/^[+-]/))||
+              (typeof value === "string" && ![0, 100].includes(parseInt(value)))) {
+                return state;
+            }
             const nextMaster = (action.destination === state.master)
                 ? ""
                 : action.destination;
@@ -178,14 +216,20 @@ function consoleReducer(state = initState, action) {
         }
 
         case ACTIONS.TOGGLE_SYNC: {
+            const {value} = action;
+            if(value === undefined) return state;
+
             let prevSync = state.channel[action.destination]?.playBackState?.sync;
             prevSync = (prevSync === undefined) ? false : prevSync;
             let offset = state.channel[action.destination]?.playBackState?.offset;
             if (!offset && !prevSync) return state// can't turn on sync if offset is not calculated 
+
             return nextPlayBackState(state, action.destination, true, { sync: !prevSync })
         }
 
         case ACTIONS.SET_SYNC: {
+            const {value} = action;
+            if(value === undefined || value === null) return state;
             let offset = state.channel[action.destination]?.playBackState?.offset;
             if (!offset) return state;// can't turn on sync if offset is not calculated 
             return nextPlayBackState(state, action.destination, true, { sync: action.value });
@@ -211,12 +255,27 @@ function consoleReducer(state = initState, action) {
             }, state);
         }
 
+        //---------------lo oo ops
+
         case ACTIONS.SET_LOOP: {
+            let {value} = action;
+            if(value === undefined ||
+                (typeof value === "string" && value.match(/^[+-]/))) {
+                return state;
+            }
+            if(typeof value === "string"){
+                value = parseInt(value);
+                if(![0,100].includes(value))return state;
+                value = !!value;
+            }
+            if(value === null){
+                value = !state.channel[action.destination].playBackState.loop;
+            }
             const paused = state.channel[action.destination].playBackState.paused;
             const bpm = state.channel[action.destination].track.bpm;
             const offset = state.channel[action.destination].playBackState.offset;
 
-            let newValue = action.value;
+            let newValue = value;
             if (paused || !bpm || offset === null) {
                 newValue = false;
             }
@@ -225,9 +284,30 @@ function consoleReducer(state = initState, action) {
 
 
         case ACTIONS.SET_LOOP_LENGTH: {
-            return nextDeckState(state, action.destination, false, { loopLength: action.value });
-        }
+            let {value} = action;
+            if(value === undefined) return state;
 
+            const min = state.channel[action.destination].deckState.loopLength.min;
+            const max = state.channel[action.destination].deckState.loopLength.max;
+            const current = state.channel[action.destination].deckState.loopLength.current;
+
+            if(value === null){
+                value = (current + 1) % max;
+            }
+            if(typeof value === "string"){
+                if(value.match(/^[+-]/)){
+                    const diff = (max - min) * (parseFloat(value.substr(1)) /100);
+                    temp.floatLoopLength += (value.startsWith("+")) ? diff : -diff;
+                    value = parseInt(temp.floatLoopLength)
+                } else {
+                    value = parseInt(parseInt(value) * (max - min) /100) + min;
+                    temp.floatLoopLength = value;
+                }
+            } else {
+                temp.floatLoopLength = value;
+            }
+            return nextDeckState(state, action.destination, false, { loopLength: value }, true);
+        }
 
         default: return state;
     }

@@ -2,19 +2,28 @@ import React from "react";
 import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed"
 import "./resonans-knob.scss";
 import withControlMapping from "../../../Control/withControlMapping";
+import {connect} from "react-redux";
 
-const ResonansKnob = props =>{
+const ResonanceKnob = ({update, value, text}) =>{
 
     return (
         <KnobDescribed className="filter-knob "
             showValue
             scale={20} 
-            alt={props.alt}
+            text={text}
             quantize={1} 
-            onChange={ props.onChange }
-            value={props.value}
-            dobuleClickInit/>
+            onChange={ update }
+            value={ value}
+            doubleClickInit/>
     )
 }
 
-export default withControlMapping(ResonansKnob);
+const mapStateToProps = (state, {get}) => ({
+    value : get && get(state),
+})
+
+const mapDispatchToProps = (dispatch, {set}) => ({
+    update : (value) => dispatch(set(value))
+})
+
+export default withControlMapping(connect(mapStateToProps, mapDispatchToProps)(ResonanceKnob));

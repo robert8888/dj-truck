@@ -143,8 +143,8 @@ const ControlMenu = ({
             </li>
         ))
         return items;
-    }, [setMidiMappingMode, setKbdMappingMode,
-             midiMappingMode, createProfile, deleteProfile])
+    }, [setMidiMappingMode, setKbdMappingMode, kbdMappingMode,
+             midiMappingMode, deleteProfile])
 
     const profilesMenu = useMemo(()=>{
         const items = (midiProfiles && midiProfiles.length && midiProfiles.map( profile => {
@@ -164,7 +164,6 @@ const ControlMenu = ({
         return items.concat(menuCrudItems("midi"));
     }, [midiProfiles, currentProfileId, setCurrentProfile, menuCrudItems])
 
-    console.log(midiIns);
 
     return (
         <div className="control">

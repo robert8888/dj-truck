@@ -10,10 +10,10 @@ const RatioKnob = props =>{
             showValue 
             scale={20}
             initValue={1}
-            alt="Ratio"
+            text="Ratio"
             quantize={1} 
             onChange={ props.onChange }
-            dobuleClickInit/>
+            doubleClickInit/>
     )
 }
 

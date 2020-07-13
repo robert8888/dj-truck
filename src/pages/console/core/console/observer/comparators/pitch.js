@@ -5,8 +5,8 @@ export default function checkPitchChange(prev, current) {
   current = current.console;
   let response = null;
   for (let channelName of Object.keys(prev.channel)) {
-    const prevValue = prev.channel[channelName].playBackState.pitch;
-    const currentValue = current.channel[channelName].playBackState.pitch;
+    const prevValue = prev.channel[channelName].playBackState.pitch.current;
+    const currentValue = current.channel[channelName].playBackState.pitch.current;
     if (prevValue !== currentValue) {
         response = response || [];
         response.push({

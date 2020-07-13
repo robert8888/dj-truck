@@ -15,7 +15,7 @@ const Pitch = props => {
 }
 
 const mapsStateToProps = (state, ownProps) => ({
-    pitch :  state.console.channel[ownProps.name].playBackState.pitch,
+    pitch :  state.console.channel[ownProps.name].playBackState.pitch.current,
 })
 
 export default connect(mapsStateToProps)(Pitch);

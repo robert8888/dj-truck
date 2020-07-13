@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import BinnaryButton from "../../../../../../common/components/BinnaryButton/BinnaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faSquare } from "@fortawesome/free-solid-svg-icons";
 import "./record-button.scss"
+import UUIDClass from "uuidjs";
 
 const RecordButton = props =>{
     const [icon , setIcon] = useState(faCircle);
@@ -11,7 +12,6 @@ const RecordButton = props =>{
         if(props.onChange instanceof Function){
             props.onChange(state);
         }
-
         if(state){
             setIcon(faSquare)
         } else {
@@ -22,11 +22,12 @@ const RecordButton = props =>{
     return (
         <BinnaryButton 
             className="record-btn"
-            onChange={handleChangeState}
+            update={handleChangeState}
             disabled={props.disabled}
-            data-tooltip="Sorry you have to be logged to have ability to record your sets"> 
-                <FontAwesomeIcon 
-                    icon={icon} 
+            data-tooltip="Sorry you have to be logged to have ability to record your sets">
+                <FontAwesomeIcon
+                    icon={icon}
+                    key={UUIDClass.genV1()}
                     className="icon icon-record"/>
         </BinnaryButton>
     )

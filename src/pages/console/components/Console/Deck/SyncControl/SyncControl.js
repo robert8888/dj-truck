@@ -1,45 +1,37 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { Button } from 'react-bootstrap';
-import { toggleSync, setMaster } from './../../../../../../actions';
+import {toggleSync, setMaster, MAPPING} from './../../../../../../actions';
 import "./sync-control.scss";
 import SyncBar from "./SyncBar/SyncBar";
+import SyncButton from "./SyncButton";
+import MasterButton from "./MaterButton";
 
-const SyncControl = props =>{
+const SyncControl = ({isMaster, noMaster, name}) => {
 
     let isActive = useCallback(()=>{
-        if(props.isMaster || props.noMaster){
+        if(isMaster || noMaster){
             return false;
         } 
         return true;
-    }, [props.isMaster, props.noMaster])
+    }, [isMaster, noMaster])
 
     return (
-        <div className={"sync-control bar-deck-" + props.name }>
-            <Button 
-                className={"sync-btn " + ((props.syncState) ? "btn--pressed" : "")} 
-                onClick={props.toggleSyncState}>
-                    Sync
-            </Button>
-            <Button 
-                className={"master-btn " + ((props.isMaster) ? "btn--pressed" : "" )}
-                onClick ={props.toggleMasterState}>
-                    Master
-            </Button>
-            <SyncBar className="sync-bar" active={ isActive} name={props.name}/>
+
+        <div className={"sync-control bar-deck-" + name }>
+            <SyncButton get={state => state.console.channel[name].playBackState.sync}
+                        set={toggleSync(name, null)}
+                        role={MAPPING[`DECK_CHANNEL_${name}_SYNC`]}/>
+            <MasterButton get={state => state.console.master === name}
+                          set={setMaster(name, null)}
+                          role={MAPPING[`DECK_CHANNEL_${name}_MASTER`]}/>
+            <SyncBar className="sync-bar" active={ isActive} name={name}/>
         </div>
     )
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    syncState : state.console.channel[ownProps.name].playBackState.sync,
     isMaster : state.console.master === ownProps.name,
     noMaster : (state.console.master === null || state.console.master === "")
 })
 
-const mapDispachToProps = (dispach, ownProps) => ({
-    toggleSyncState : () => dispach(toggleSync(ownProps.name)),
-    toggleMasterState : () => dispach(setMaster(ownProps.name))
-})
-
-export default connect(mapStateToProps, mapDispachToProps)(SyncControl);
+export default connect(mapStateToProps)(SyncControl);

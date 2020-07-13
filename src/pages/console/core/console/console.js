@@ -198,6 +198,7 @@ export default class Console{
             // ------ Control Midi
             case STATUS.MIDI_PORT_CHANGE : {
                 this.midiControler.updateMidiPort(diff.currentValue)
+                break;
             }
 
             default : return; 

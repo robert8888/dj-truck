@@ -49,7 +49,7 @@ export function setChannelReady(value, destination){
 }
 
 
-export function setPitch(pitch, destination){
+export function setPitch( destination, pitch){
     return {
         type: ACTIONS.SET_PITCH,
         pitch: pitch,
@@ -57,18 +57,20 @@ export function setPitch(pitch, destination){
     }
 }
 
-export function togglePlay(destination){
+export function togglePlay(destination, value){
     return {
         type: ACTIONS.TOGGLE_PLAY,
         destination : destination,
+        value
     }
 }
 
 
-export function toggleCue(destination){
+export function toggleCue(destination, value){
     return {
         type: ACTIONS.TOGGLE_CUE,
         destination : destination,
+        value
     }
 }
 
@@ -111,21 +113,23 @@ export function decreasePitch(destination, amount){
     }
 }
 
-export function setMaster(destination){
+export function setMaster(destination, value){
     return {
         type: ACTIONS.SET_MASTER, 
         destination,
+        value
     }
 }
 
-export function toggleSync(destination){
+export function toggleSync(destination, value){
     return {
         type: ACTIONS.TOGGLE_SYNC, 
         destination,
+        value
     }
 }
 
-export function setSync(destination,value){
+export function setSync(destination, value){
     return {
         type: ACTIONS.SET_SYNC,
         destination,

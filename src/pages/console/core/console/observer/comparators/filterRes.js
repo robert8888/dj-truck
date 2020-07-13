@@ -5,8 +5,8 @@ export default function mixerChannelFitlerChange(prev, current) {
   current = current.mixer;
   let response = null;
   for (let channelName of Object.keys(prev.channels)) {
-    const prevValue = prev.channels[channelName].filterResonans;
-    const currentValue = current.channels[channelName].filterResonans;
+    const prevValue = prev.channels[channelName].filterResonance.current;
+    const currentValue = current.channels[channelName].filterResonance.current;
     if (prevValue !== currentValue) {
       response = response || [];
       response.push({

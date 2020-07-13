@@ -14,7 +14,6 @@ import TrackInfo from "./TrackInfo/TrackInfo";
 import ErrorBoundary from "../../../../common/components/ErrorBoundary/ErrorBoundary";
 
 const Deck = props => {
-
     const dropResult = (item) => {
         props.loadTrack(item.track, props.name);
         return {
@@ -34,7 +33,7 @@ const Deck = props => {
                 <SyncControl name={props.name} />
                 <div className="player-container">
                     <Player name={props.name} />
-                    <PitchSlider name={props.name} />
+                    <PitchSlider name={props.name}/>
                 </div>
                 <div className="control-area">
                     <PlayBackControls name={props.name} />

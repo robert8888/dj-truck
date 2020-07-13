@@ -60,16 +60,24 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
         border-radius:  2px;
     }
 
+
     .knobs-set-1{
         grid-column: 1;
         grid-row:1;
+        position: relative;
+        z-index: 5;
         @if $side == "left"{
             grid-column:2;
+            z-index: 3;
+        }
+        .eq-knob{
+            margin-top: 0;
         }
     }
-
-    
-
+    .knobs-set-2{
+        position: relative;
+        z-index: 4;
+    }
 
     .peak-level-meter{
         grid-row: 2 / 4;
@@ -203,10 +211,12 @@ $split-border : 1px solid lighten($secondary-dark, 20%);
     &.channel-A{
         @include mixer-channel(left);
         @include mobile-mixer-channel(left);
+        z-index: 2;
     }
 
     &.channel-B{
         @include mixer-channel(right);
         @include mobile-mixer-channel(right);
+        z-index: 1;
     }
 }

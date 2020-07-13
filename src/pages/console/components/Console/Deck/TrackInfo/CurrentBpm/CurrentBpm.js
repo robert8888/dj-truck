@@ -3,16 +3,16 @@ import { calcBpm } from "./../../../../../../../utils/bpm/converter";
 import { connect } from "react-redux";
 
 
-const CurrentBpm = props => {
+const CurrentBpm = ({pitch, bpm}) => {
     const container = useRef(null);
 
     useEffect(()=>{
         let currentBpm = "000";
-        if(props.bpm && props.bpm !== "calculating"){
-            currentBpm = calcBpm(props.bpm, props.pitch).toFixed(2);
+        if(bpm && bpm !== "calculating"){
+            currentBpm = calcBpm(bpm, pitch).toFixed(2);
         } 
         container.current.textContent = currentBpm;
-    }, [props.bpm, container, props.pitch])
+    }, [bpm, container, pitch])
     
     return (
         <span className="track-bpm-current" ref={container}/>
@@ -21,7 +21,7 @@ const CurrentBpm = props => {
 
 const mapsStateToProps = (state, ownProps) => ({
     bpm :  state.console.channel[ownProps.name].track.bpm,
-    pitch :  state.console.channel[ownProps.name].playBackState.pitch,
+    pitch :  state.console.channel[ownProps.name].playBackState.pitch.current,
 })
 
 export default connect(mapsStateToProps)(CurrentBpm);

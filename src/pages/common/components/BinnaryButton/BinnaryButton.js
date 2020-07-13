@@ -1,37 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import withControlMapping from "../../../console/components/Console/Control/withControlMapping";
+import {connect} from "react-redux";
 
-const BinnaryButton = props => {
-    const [state, setState] = useState( props.initValue || 0);
-    const {onChange, className, dispatch, ...rest} = props;
+const BinaryButton = ({value, initValue, update, className, children, ...rest}) => {
+    const [state, setState] = useState( initValue || 0);
+
+    delete rest.defaults;
+    delete rest.get;
+    delete rest.set;
 
     const clickHandle = (event)=> {
         event.stopPropagation();
         let nextState;
-        if(props.value !== null && props.value !== undefined){
-            nextState = props.value ? 0 : 1;
+        if(value !== null && value !== undefined){
+            nextState = value ? 0 : 1;
         } else {
             nextState = state ? 0 : 1    
         }
         setState(nextState);
-        if(props.onChange){
-            props.onChange(nextState)
+        if(update){
+            update(nextState)
         }
     }
 
     useEffect(()=>{
-        setState(props.value);
-    }, [props.value])
+        setState(value);
+    }, [value])
 
     return (
         <Button 
             className={ className + ((!!state) ? " btn--pressed-filed" : "")} 
             onClick = {clickHandle}
             {...rest}>
-                {props.children}
+                {children}
         </Button>
     )
 }
 
-export default withControlMapping(BinnaryButton);
+const mapStateToProps = (state, {get, defaults}) => ({
+    value : get && get(state) || defaults && defaults(state),
+})
+
+const mapDispatchToProps = (dispatch, {set, update}) => ({
+    update : (value) => (update && update(value)) || (set && dispatch(set(value)))
+})
+
+export default withControlMapping(connect(mapStateToProps, mapDispatchToProps)(BinaryButton));

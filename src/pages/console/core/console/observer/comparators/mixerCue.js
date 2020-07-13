@@ -5,8 +5,8 @@ export default function cueChange(prev, current) {
   current = current.mixer;
   let response = null;
   for (let channelName of Object.keys(prev.channels)) {
-    const prevValue = prev.channels[channelName].cue;
-    const currentValue = current.channels[channelName].cue;
+    const prevValue = prev.channels[channelName].cue.current;
+    const currentValue = current.channels[channelName].cue.current;
     if (prevValue !== currentValue) {
       response = response || [];
       response.push({

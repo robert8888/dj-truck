@@ -1,0 +1,16 @@
+.resizable{
+  svg{
+    max-width: 150px;
+  }
+  &__container{
+    text-align: center;
+    top: 40%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    width: 100%;
+  }
+  &.horizontal span{
+    white-space: nowrap;
+  }
+}

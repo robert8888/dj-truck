@@ -3,7 +3,9 @@
 @import "./MiniSlider/mini-slider.scss";
 
 @mixin looper($color) {
-  display: inline-block;
+  &, &> * {
+    display: inline-block;
+  }
   float: right;
   button.btn {
     @include deck-button($color);

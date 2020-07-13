@@ -1,6 +1,6 @@
 import store from "./../../../../../../store/";
-import { getBeatLength, calcBpm } from "./../../../../../../utils/bpm/converter";
-import { setPitch, setSync } from "./../../../../../../actions";
+import { getBeatLength, calcBpm } from "../../../../../../utils/bpm/converter";
+import { setPitch, setSync } from "../../../../../../actions";
 
 export default class Synchronizer {
   constructor(channels) {
@@ -11,11 +11,10 @@ export default class Synchronizer {
 
   getSyncBarPostion(channelName) {
     const data = this.getSyncData(channelName);
-    if (data != null) {
-      const { diff, masterBeatLength } = data;
-      return diff / masterBeatLength;
-    }
-    return null;
+    if(!data) return null;
+
+    const { diff, masterBeatLength } = data;
+    return diff / masterBeatLength;
   }
 
   sync(channelName) {
@@ -35,11 +34,11 @@ export default class Synchronizer {
     }
     const masterBpm = state.console.channel[state.console.master].track.bpm;
     const currentMasterPitch = 
-        state.console.channel[state.console.master].playBackState.pitch;
+        state.console.channel[state.console.master].playBackState.pitch.current;
     const slaveBpm = state.console.channel[channelName].track.bpm;
     const newSlavePitch = 
         (calcBpm(masterBpm, currentMasterPitch) / slaveBpm - 1) * 100;
-    this.dispatch(setPitch(newSlavePitch, channelName));
+    this.dispatch(setPitch(channelName, newSlavePitch));
 
     slaveChannel.backend.seekTo(slaveChannel.getCurrentTime() + syncData.diff);
     slaveChannel.drawer.progress(slaveChannel.backend.getPlayedPercents());

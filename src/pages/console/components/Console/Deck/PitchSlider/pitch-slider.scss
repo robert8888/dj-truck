@@ -21,6 +21,9 @@
 
 .pitch{
     display: flex;
+    position: relative;
+    width: 46px;
+    height: auto;
     .slider{
         @include slider-vertical(46px);
     }
@@ -34,3 +37,5 @@
         @include slider-color($deck-B-primary);
     }
 }
+
+.control-mapping__wrapper > .pitch { height: 100%}

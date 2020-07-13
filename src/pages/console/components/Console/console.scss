@@ -2,8 +2,13 @@
 @import "./../../../../css/colors.scss";
 @import "./../../../../css/mixins.scss";
 
+.component{
+  &__label{
+    @include label();
+  }
+}
 
-.truck-console {
+.console {
   @include panel-border(0.2);
   margin-top: 25px;
   display: grid;

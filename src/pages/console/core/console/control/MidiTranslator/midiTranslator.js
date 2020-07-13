@@ -39,8 +39,10 @@ export default class MidiTranslator{
                 break;
             }
             case MIDI_STATUS.PITCH_WHEEL_RANGE : {
-                id += "-PW"
+                id += "-PW";
+                break;
             }
+            default: return id;
         }
 
         return id;

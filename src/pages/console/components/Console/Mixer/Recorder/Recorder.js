@@ -11,8 +11,8 @@ import "./recorder.scss";
 const Recorder = ({ recordingState, startRecording, endRecording , userLogged, recName }) =>{
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [inputDisabled, setInputDisabled] = useState(false);
-    const [timeRuning, setTimeRuning] = useState(false)
-    const [prepering, setPrepering] = useState(false)
+    const [timeRunning, setTimeRunning] = useState(false)
+    const [preparing, setPreparing] = useState(false)
     const [_recName , setRecName] = useState("");
 
     const [clearTime , setClearTimeHandler] = useState(null);
@@ -34,7 +34,7 @@ const Recorder = ({ recordingState, startRecording, endRecording , userLogged, r
     const recordStateChange = useCallback((state)=>{
         if(state){
             startRecording(_recName);
-            setPrepering(true)
+            setPreparing(true)
         } else {
             endRecording();
             clearTime();
@@ -50,26 +50,26 @@ const Recorder = ({ recordingState, startRecording, endRecording , userLogged, r
     useEffect(()=>{
         switch(recordingState){
             case RECORDER_STATE.INIT:{
-                setPrepering(true);
+                setPreparing(true);
                 break;
             }
             case RECORDER_STATE.FAIL:{
-                setPrepering(false);
+                setPreparing(false);
                 break;
             }
             case RECORDER_STATE.RECORDING : {
-                setPrepering(false);
-                setTimeRuning(true);
+                setPreparing(false);
+                setTimeRunning(true);
                 break;
             }
             case RECORDER_STATE.IDLE : {
-                setPrepering(false);
-                setTimeRuning(false);
+                setPreparing(false);
+                setTimeRunning(false);
                 break;
             }
             default : return;
         }
-    }, [recordingState, setTimeRuning, setPrepering])
+    }, [recordingState, setTimeRunning, setPreparing])
 
 
     return (
@@ -83,8 +83,8 @@ const Recorder = ({ recordingState, startRecording, endRecording , userLogged, r
                 value= { _recName }
                 onChange={str => setRecName(str)}/>
             <RecordTime 
-                prepering={prepering}
-                runing={timeRuning} 
+                prepering={preparing}
+                runing={timeRunning}
                 clearHandler={ assignClearHandler }/>
         </div>
     )

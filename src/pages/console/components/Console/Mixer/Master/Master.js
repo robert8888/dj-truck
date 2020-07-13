@@ -33,7 +33,7 @@ const Mastering = props => {
     return (
         <div className="mastering">
             <div className="label">COM</div>
-            <GainKnob onChange={ props.setPreGain}/>
+            <GainKnob update ={ props.setPreGain}/>
             <PeakLevelMeterH
                 mastering 
                 active={true}
@@ -42,7 +42,7 @@ const Mastering = props => {
             <RatioKnob onChange={props.setRatio}/>
             <AttackKnob onChange={props.setAttack}/>
             <ReleaseKnob onChange={props.setRelease}/>
-            <GainKnob onChange={props.setPostGain}/>
+            <GainKnob update ={props.setPostGain}/>
             <PeakLevelMeterH 
                active={true}
                interface={ mixerInterface?.getPeakMeter("post")}/>
@@ -58,7 +58,6 @@ const mapDispatchToProps = dispatch =>({
     setRatio : value => dispatch(setRatio(value)),
     setAttack : value => dispatch(setAttack(value)),
     setRelease : value => dispatch(setRelease(value)),
-    
 })
 
 export default connect(null, mapDispatchToProps)(Mastering);

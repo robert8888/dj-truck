@@ -5,8 +5,8 @@ export default function eqHiChange(prev, current) {
   current = current.mixer;
   let response = null;
   for (let channelName of Object.keys(prev.channels)) {
-    const prevValue = prev.channels[channelName].high;
-    const currentValue = current.channels[channelName].high;
+    const prevValue = prev.channels[channelName].high.current;
+    const currentValue = current.channels[channelName].high.current;
     if (prevValue !== currentValue) {
       response = response || [];
       response.push({

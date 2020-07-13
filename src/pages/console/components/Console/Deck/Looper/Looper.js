@@ -1,54 +1,48 @@
 import React from "react";
 import {connect} from "react-redux";
-import { Button } from "react-bootstrap";
 import MiniSlider from "./MiniSlider/MiniSlider";
 import "./looper.scss";
-import {setLoop, setLoopLength} from "./.././../../../../../actions";
+import {MAPPING, setLoop, setLoopLength} from "../../../../../../actions";
+import InButton from "./InButton";
+import OutButton from "./OutButton";
 
 class Looper extends React.Component {
-  constructor() {
-    super();
+  constructor(...args) {
+    super(...args);
     this.sliderElement = React.createRef();
     this.state = {
-      lengths: [],
       position: 0,
     };
 
-    for (let i = 1 / 64; i <= 64; i = i * 2) {
-      this.state.lengths.push(i);
-    }
+    this.sliderItems =
+        this.props.loopLengths.map(length => {
+            let display = length;
+            if (length < 1) {
+                display = "1/" + 1 / length;
+            }
+            return display;
+        })
   }
 
   sliderValueChange(currentSlide) {
-    this.props.setLoopLength(this.state.lengths[currentSlide]);
+    this.props.setLoopLength(currentSlide);
   }
 
-  render() {
-    const listItems = this.state.lengths.map((length, index) => {
-        let display = length;
-        if (length < 1) {
-            display = "1/" + 1 / length;
-        }
-
-        return (<li className="slider-list-item" 
-                    key={index} 
-                    data-value={length}>
-                        {display}
-                </li>);
-    });
-
+   render() {
+   const {name} = this.props;
     return (
-      <div className={"looper looper-deck-" + this.props.name}>
-        <Button className={"btn-in" + ((this.props.loopState) ? " btn--pressed-filed" : "")}
-                onClick={this.props.setLoop.bind(null, true)}>
-                  IN
-        </Button>
-        <Button className="btn-out" onClick={this.props.setLoop.bind(null, false)}>OUT</Button>
+      <div className={"looper looper-deck-" + name}>
+        <InButton  onClick={this.props.setLoop.bind(null, true)}
+                   state={this.props.loopState}
+                   role={MAPPING[`DECK_CHANNEL_${name}_LOOP_IN`]}/>
+        <OutButton onClick={this.props.setLoop.bind(null, false)}
+                   role={MAPPING[`DECK_CHANNEL_${name}_LOOP_OUT`]}/>
         <MiniSlider
           onChange={this.sliderValueChange.bind(this)}
-          className={"mini-slider-deck-" + this.props.name}
-          renderItems={listItems}
-          initValue={8}
+          className={"mini-slider-deck-" + name}
+          slides={this.sliderItems}
+          value={this.props.loopLengthValue}
+          role={MAPPING[`DECK_CHANNEL_${name}_LOOP_LENGTH`]}
         />
       </div>
     );
@@ -57,11 +51,13 @@ class Looper extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
     loopState : state.console.channel[ownProps.name].playBackState.loop,
+    loopLengths: state.console.channel[ownProps.name].deckState.loopLengths,
+    loopLengthValue : state.console.channel[ownProps.name].deckState.loopLength.current,
 })
 
-const mapDispachToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
     setLoop : (value) => dispatch(setLoop(ownProps.name, value)),
     setLoopLength : (value) => dispatch(setLoopLength(ownProps.name, value))
 })
 
-export default connect(mapStateToProps, mapDispachToProps)(Looper);
+export default connect(mapStateToProps, mapDispatchToProps)(Looper);

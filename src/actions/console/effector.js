@@ -14,7 +14,7 @@ export function setAvailableEffects(effects){
     }
 };
 
-export function setEffectParametr(channel, effect, name, value )
+export function setEffectParameter(channel, effect, name, value )
 {
     return{
         type: ACTIONS.SET_EFFECT_PARAMETER,
@@ -25,11 +25,11 @@ export function setEffectParametr(channel, effect, name, value )
     }
 }
 
-export function setCurrentEffect(channel, effect){
+export function setCurrentEffect(channel, value){
     return {
         type: ACTIONS.SET_CURRENT_EFFECT,
-        effect,
-        channel
+        channel,
+        value
     }
 };
 

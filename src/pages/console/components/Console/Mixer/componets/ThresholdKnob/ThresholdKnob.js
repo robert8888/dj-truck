@@ -9,11 +9,11 @@ const ThresholdKnob = props =>{
         <KnobDescribed className={"threshold-knob " + props.className}
             showValue 
             scale={-100}
-            alt="Thres"
+            text="Thres"
             initValue={0}
             quantize={.5} 
             onChange={ props.onChange }
-            dobuleClickInit/>
+            doubleClickInit/>
     )
 }
 

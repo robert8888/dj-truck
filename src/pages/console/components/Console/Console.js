@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { consoleStopAll, setFooterType } from "./../../../../actions";
 import { usePlayer } from "./../../../common/Hooks/usePlayer";
-import "./console.scss";
 import Deck from "./Deck/Deck";
 import Effector from "./Effector/Effector";
 import Mastering from "./Mixer/Master/Master";
@@ -10,6 +9,7 @@ import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
 import ErrorBoundary from "./../../../common/components/ErrorBoundary/ErrorBoundary";
 import ControlMenu from "./Control/ControlMenu";
+import "./console.scss";
 
 const Console = ({dispatch}) => {
     const [control] = usePlayer();
@@ -27,7 +27,7 @@ const Console = ({dispatch}) => {
     return (
         <ErrorBoundary>
             <ControlMenu/>
-            <div className="truck-console">
+            <div className="component console">
                 <Mastering />
                 <Recorder />
 

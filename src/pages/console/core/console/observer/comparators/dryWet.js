@@ -8,8 +8,8 @@ export default function dryWetChanged(prev, current) {
     (current.lastChange.sygnature && !current.lastChange.sygnature.startsWith("#DryWetChange"))) {
     return null
   } else {
-    const prevValue = prev.channels[current.lastChange.channel].dryWet;
-    const currentValue = current.channels[current.lastChange.channel].dryWet;
+    const prevValue = prev.channels[current.lastChange.channel].dryWet.current;
+    const currentValue = current.channels[current.lastChange.channel].dryWet.current;
     if (prevValue !== currentValue) {
       return [{
         status: STATUS.DRY_WET_CHANGED,
