@@ -1,10 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {connect} from "react-redux";
-import _get from "lodash/get";
 import EffectorKnob from "./EffectorKnob/EffectorKnob";
 import EffectorButton from "./EffectorButton/EffectorButton";
 import {MAPPING, setEffectParameter} from "../../../../../../../actions";
-
+import _get from "lodash/get";
 
 const EffectParams = ({allEffects, channel, effects, current}) => {
     const [currentEffect, setCurrentEffect] = useState(undefined);
@@ -53,8 +52,7 @@ const EffectParams = ({allEffects, channel, effects, current}) => {
             }
             return null;
         }))
-    }, [currentEffect, allEffects,
-        channel, effectsRef, current])
+    }, [currentEffect, allEffects, channel])
 
 
     return (

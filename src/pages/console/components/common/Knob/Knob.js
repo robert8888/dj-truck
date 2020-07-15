@@ -4,7 +4,7 @@ import _throttle from "lodash/throttle";
 import PropTypes from "prop-types";
 
 
-class Knob extends React.PureComponent{
+class Knob extends React.Component{
 
     constructor(...args){
         super(...args);
@@ -16,7 +16,7 @@ class Knob extends React.PureComponent{
             smallCircle : React.createRef(),
             dot : React.createRef()
         }
-        this.throttleTime = this.props.throttle || 30;
+        this.throttleTime = this.props.throttle || 75;
 
         this.onChange = _throttle((...args) => {
             this.props.onChange && this.props.onChange(...args);
@@ -116,13 +116,15 @@ class Knob extends React.PureComponent{
     setPosition(position, silent){
         position =  this.normalizePostion(position);
         const value = this.evalValue(position);
-
+        /**
+         * Warning uncomment below !!!
+         */
         this.setState({...this.state, position, value});
-        window.requestAnimationFrame(()=> this.mapPostionToArms(position))
+        window.requestAnimationFrame(()=> this.mapPositionToArms(position))
         !silent && this.onChange(value);
     }
 
-    mapPostionToArms(position){
+    mapPositionToArms(position){
         let rightArm, leftArm, dotAngle;
         let reversArm = false;
         position = this.quantizePosition(position); 
@@ -171,29 +173,33 @@ class Knob extends React.PureComponent{
     }
 
     updateStyle({rightArm, leftArm, dotAngle, reversArm}){
-        this.html.bigCircle.current.style.backgroundImage = 
-            `linear-gradient(`+ (180 + leftArm)  +`deg, `+style.primaryDark+` 50%, transparent 50%),
+        window.requestAnimationFrame(() => {
+            this.html.bigCircle.current.style.backgroundImage =
+                `linear-gradient(`+ (180 + leftArm)  +`deg, `+style.primaryDark+` 50%, transparent 50%),
              linear-gradient(`+ (180 + rightArm) +`deg, transparent 50%, `+style.primaryDark+` 50%)`;
 
-        this.html.rightHalf.current.style.transform = `rotate(`+ leftArm +`deg)`;
-        this.html.leftHalf.current.style.transform = `rotate(`+ rightArm +`deg)`;
-        if(reversArm){
-            this.html.leftHalf.current.classList.add("half--reverse")
-        } else {
-            this.html.leftHalf.current.classList.remove("half--reverse")
-        }
+            this.html.rightHalf.current.style.transform = `rotate(`+ leftArm +`deg)`;
+            this.html.leftHalf.current.style.transform = `rotate(`+ rightArm +`deg)`;
+            if(reversArm){
+                this.html.leftHalf.current.classList.add("half--reverse")
+            } else {
+                this.html.leftHalf.current.classList.remove("half--reverse")
+            }
 
-        this.html.dot.current.style.transform= 'rotate('+ dotAngle + 'deg)';
+            this.html.dot.current.style.transform = 'rotate('+ dotAngle + 'deg)';
+        })
     }
 
     setActive(value){
-        if(value){
-            this.html.value.current.classList.add("knob--focus")
-            this.html.bigCircle.current.classList.add("big-circle--focus");
-        }else {
-            this.html.value.current.classList.remove("knob--focus");
-            this.html.bigCircle.current.classList.remove("big-circle--focus");
-        }
+        window.requestAnimationFrame(()=>{
+            if(value){
+                this.html.value.current.classList.add("knob--focus")
+                this.html.bigCircle.current.classList.add("big-circle--focus");
+            }else {
+                this.html.value.current.classList.remove("knob--focus");
+                this.html.bigCircle.current.classList.remove("big-circle--focus");
+            }
+        })
     }
 
     // -------------- events below
@@ -244,7 +250,7 @@ class Knob extends React.PureComponent{
         }
     }
 
-    mouseDoubelClick(){
+    mouseDoubleClick(){
         if(this.props.doubleClickInit){
             const value = this.props.initValue || 0;
             const position = this.valueToPosition(value);
@@ -262,7 +268,7 @@ class Knob extends React.PureComponent{
         }
 
         this.setState({...this.state, position : position}, ()=>{
-            this.mapPostionToArms(position);
+            this.mapPositionToArms(position);
         })
     }
 
@@ -271,15 +277,18 @@ class Knob extends React.PureComponent{
         this.update(this.props.value);
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return (this.props.value !== nextProps.value && !this.state.isDragged)
+    }
 
     render(){
-
+        console.log("render knob")
         return (
             <div 
                 className={"knob " + this.props.className} 
                 onMouseDown={this.mouseDown.bind(this)}
                 onDragStart={ e => e.preventDefault()}
-                onDoubleClick={this.mouseDoubelClick.bind(this)}
+                onDoubleClick={this.mouseDoubleClick.bind(this)}
                 onMouseEnter={ this.mouseEnter.bind(this)}
                 onMouseLeave={ this.mouseLeve.bind(this)}
                 >

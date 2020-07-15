@@ -2,8 +2,7 @@ import React, { useMemo, useEffect, useState } from "react";
 import {connect} from "react-redux";
 import "./master.scss";
 import Console from "./../../../../core/console/console";
-import GainKnob from "./../componets/GainKnob/GainKnob";
-import PeakLevelMeterH from "../componets/PeakLevelMeter/PeakLevelMeterH";
+import VolumePeekLevelMeter from "./../componets/VoluemPeakLevelMeter/VolumePeakLevelMeter";
 import ThresholdKnob from "../componets/ThresholdKnob/ThresholdKnob";
 import RatioKnob from "../componets/RatioKnob/RatioKnob";
 import AttackKnob from "../componets/AttackKnob/AttackKnob";
@@ -16,6 +15,7 @@ import {
         setAttack,
         setRelease 
     } from "../../../../../../actions";
+import {toGainCurve} from "../../../../../../utils/sound/converter";
 
 const Mastering = props => {
     const [_interface, setInterface] = useState();
@@ -33,19 +33,20 @@ const Mastering = props => {
     return (
         <div className="mastering">
             <div className="label">COM</div>
-            <GainKnob update ={ props.setPreGain}/>
-            <PeakLevelMeterH
-                mastering 
+            <VolumePeekLevelMeter
+                aspect={"horizontal"}
+                update ={ value => props.setPreGain(toGainCurve(value))}
                 active={true}
                 interface={mixerInterface?.getPeakMeter("pre")} />
             <ThresholdKnob onChange={props.setThreshold}/>
             <RatioKnob onChange={props.setRatio}/>
             <AttackKnob onChange={props.setAttack}/>
             <ReleaseKnob onChange={props.setRelease}/>
-            <GainKnob update ={props.setPostGain}/>
-            <PeakLevelMeterH 
-               active={true}
-               interface={ mixerInterface?.getPeakMeter("post")}/>
+            <VolumePeekLevelMeter
+                aspect={"horizontal"}
+                update ={value => props.setPostGain(toGainCurve(value))}
+                active={true}
+                interface={ mixerInterface?.getPeakMeter("post")}/>
         </div>
     )
 }

@@ -1,9 +1,11 @@
 @import "./../../../../../../css/colors.scss";
 @import "./../../../../../../css/mixins.scss";
+@import "./../../../../../../css/general.scss";
 
 
 .mastering{
     position: relative;
+    justify-content: space-between;
     display: flex;
     width: 100%;
     height: 70px;
@@ -23,9 +25,21 @@
        margin: 0 5px;
     }
 
-    .peak-level-meter{
+    .volume-plm{
         margin: 0 10px;
-        width: calc(50% - 210px);
+        width: calc(50% - 150px);
         align-self: center;
+    }
+}
+
+@media (max-width : $vertical-break-point-extra-small) {
+    .mastering{
+        justify-content: space-between;
+        .release-knob, .attack-knob{
+            display: none;
+        }
+        .volume-plm{
+            width: calc(50% - 80px);
+        }
     }
 }

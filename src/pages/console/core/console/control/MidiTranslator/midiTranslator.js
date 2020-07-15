@@ -1,7 +1,7 @@
-
 import MidiDataTranslator from "./dataTranslator";
 import MidiStatusTranslator from "./statusTranslator";
 import MIDI_STATUS from "./midiStatus";
+
 export default class MidiTranslator{
     constructor() {
         this.statusTranslator = new MidiStatusTranslator();

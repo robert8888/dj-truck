@@ -86,14 +86,6 @@ export default function midiReducer(state  = initState, action){
             }
         }
 
-        // case ACTIONS.C_MIDI_SET_ACTION_HANDLE : {
-        //     const {actionId: id, handle} = action;
-        //
-        //     console.log("id, handle", id , handle)
-        //     return produce(state, draftState => {
-        //         draftState.actions[id].resolver = true;
-        //     })
-        // }
 
         ///CRUD - CSUD to be more explicit
         case ACTIONS.C_MIDI_CREATE_PROFILE :{
@@ -101,12 +93,13 @@ export default function midiReducer(state  = initState, action){
             const {profile} = action;
             return {
                 ...state,
-                profiles: [
-                    ...state.profiles,{
+                profiles: {
+                    ...state.profiles,
+                    [profile.id]: {
                         ...profile,
-                        map: []
+                        map: {toMidi: {}, toAction:{}}
                     }
-                ],
+                },
                 profileList: [
                     ...state.profileList,
                     profile
@@ -122,7 +115,10 @@ export default function midiReducer(state  = initState, action){
                 ...state,
                 profiles: state.profiles.map( p => {
                     if(p.id === profile.id){
-                        p = profile;
+                        p = {
+                            ...p,
+                            ...profile
+                        }
                     }
                     return p;
                 })

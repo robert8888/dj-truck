@@ -6,9 +6,10 @@ import GainKnob from "./../componets/GainKnob/GainKnob";
 import FilterKnob from "./../componets/FilterKnob/FitlerKnob";
 import ResonanceKnob from "./../componets/ResonasKnob/ResonansKnob";
 import BinaryButton from "./../../../../../common/components/BinnaryButton/BinnaryButton";
-import PeakLevelMeter from "./../componets/PeakLevelMeter/PeakLevelMeterV";
+import VolumePeakLevelMeter from "../componets/VoluemPeakLevelMeter/VolumePeakLevelMeter";
 import {
     setGain,
+    setVolume,
     setLow,
     setMid,
     setHi,
@@ -21,6 +22,8 @@ import {
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHeadphones} from "@fortawesome/free-solid-svg-icons"
 import "./mixer-channel.scss";
+import {toGainCurve} from "../../../../../../utils/sound/converter";
+
 
 class Channel extends React.Component {
     cueNotSupportedMsg = `Sorry your device not support this`;
@@ -58,9 +61,12 @@ class Channel extends React.Component {
 
                 </div>
 
-                <PeakLevelMeter
+                <VolumePeakLevelMeter
+                    aspect={"vertical"}
                     name={channel}
                     active={this.props.chReady}
+                    get={state => state.mixer.channels[channel].volume.current}
+                    set={value => setVolume(channel, value)}
                     interface={this.state.console && this.state.console.getMixerChannelInterface(channel)}/>
 
                 <div className="knobs-set-2">

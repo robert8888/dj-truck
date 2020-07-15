@@ -11,7 +11,7 @@ const GainKnob = ({value, update}) =>{
             scale={100} 
             asymmetric={{positive:4}}
             text="Gain"
-            quantize={{negative: 5, positive:1}} 
+            quantize={{negative: 5, positive:1}}
             onChange={ update }
             value={value}
             doubleClickInit/>

@@ -4,8 +4,8 @@ export default function dryWetChanged(prev, current) {
   prev = prev.effector;
   current = current.effector;
 
-  if (!current.lastChange.sygnature ||
-    (current.lastChange.sygnature && !current.lastChange.sygnature.startsWith("#DryWetChange"))) {
+  if (!current.lastChange.signature ||
+    (current.lastChange.signature && !current.lastChange.signature.startsWith("#DryWetChange"))) {
     return null
   } else {
     const prevValue = prev.channels[current.lastChange.channel].dryWet.current;

@@ -4,6 +4,7 @@ const STATUS = {
     TOGGLE_CUE : "Fire when cueActive state was changed",
     PITCH_CHANGE : "Fire when pitch was changed",
     GAIN_CHANGE : "Fire when gain of mixer channels was changed",
+    VOLUME_CHANGE: "Fire when volume of mixer channel was changed",
     EQ_HI_CHANGE : "Fire when equalization highest band was changed",
     EQ_MID_CHANGE : "Fire when equalization mid band was changed",
     EQ_LOW_CHANGE : "Fire when equalization lowest band was changed",

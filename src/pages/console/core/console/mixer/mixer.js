@@ -143,18 +143,21 @@ export default class Mixer {
                 return: null
             })),
             //
-            bypassNode: audioCtx.createGain(),
+            bypassNode: audioCtx.createGain(), // for sends
+            volumeNode: audioCtx.createGain(),
             mainGainNode: audioCtx.createGain(),
             analyserNode: audioCtx.createAnalyser(),
             faderVolumeNode: audioCtx.createGain(),
         }
 
-        //--Confign
+        //--Config nodes --------------------
         const channelNodes = this.audioNodes.channels[channelName];
         //-- Cue
         channelNodes.outputCueNode.connect(channelNodes.cue.cueGainNode);
         channelNodes.cue.cueGainNode.connect(channelNodes.cue.cueChannelSplitterNode);
-        //connecting to main chanel
+        //mute on start
+        channelNodes.cue.cueGainNode.gain.value = 0;
+        //connecting to main channel
         if (this.isCueEnable) {
             const mainChannelNodes = this.audioNodes.channels['main']
             channelNodes.cue.cueChannelSplitterNode.connect(mainChannelNodes.cueChannelMerger, 0, 2);
@@ -204,12 +207,13 @@ export default class Mixer {
             channelNodes.highPassFilterNode,
             channelNodes.sendNode,
             channelNodes.bypassNode,
+            channelNodes.volumeNode,
             channelNodes.mainGainNode,
             channelNodes.analyserNode,
             channelNodes.faderVolumeNode,
         ])
 
-        //-Conect to main output mixer channel
+        //-Connect to main output mixer channel
         surfer.backend.gainNode.disconnect();
         surfer.backend.gainNode.connect(
             this.audioNodes.channels['main'].preGainNode

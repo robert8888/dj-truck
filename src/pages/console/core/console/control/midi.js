@@ -1,4 +1,3 @@
-import * as JZZ from "jzz";
 import {MAPPING, setMidiMapValue} from "./../../../../../actions"
 import store from "./../../../../../store";
 import MidiTranslator from "./MidiTranslator/midiTranslator";
@@ -14,25 +13,27 @@ const selectActions = state => state.midi.actions;
 
 export default class MidiController {
     constructor() {
-        this.engine = JZZ();
         this.midiTranslator = new MidiTranslator();
 
         this.setMidiMap = _throttle(
             (msg) => store.dispatch(setMidiMapValue(msg))
             , 100)
         this.throtles = new Map();
+        this.midiIn = this.onMidiIn.bind(this)
     }
-
 
 
     updateMidiPort(port){
-        this.engine.openMidiIn(port.name)
-            .then(port => port.connect(this.onMidiIn.bind(this)))
+        if(this.currentPort){
+            this.currentPort.onmidimessage = this.midiIn;
+        }
+        port.onmidimessage = this.midiIn;
+        this.currentPort = port;
     }
 
-    onMidiIn(_msg){
+    onMidiIn(message){
         const state = store.getState()
-        const msg = this.midiTranslator.translate(_msg);
+        const msg = this.midiTranslator.translate(message.data);
         const mappingMode = selectMappingMode(state);
         if(mappingMode){
             this.setMidiMap(msg)

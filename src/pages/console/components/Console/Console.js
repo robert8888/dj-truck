@@ -26,9 +26,12 @@ const Console = ({dispatch}) => {
 
     return (
         <ErrorBoundary>
-            <ControlMenu/>
+
             <div className="component console">
-                <Mastering />
+                <div className={"configuration"}>
+                    <ControlMenu/>
+                    <Mastering />
+                </div>
                 <Recorder />
 
                 <Effector channel={1} />

@@ -111,6 +111,12 @@ export default class Console{
                 this.mixer.setGain(diff.channel, diff.currentValue);
                 break;
             }
+
+            case STATUS.VOLUME_CHANGE: {
+                this.mixer.setVolume(diff.channel, diff.currentValue);
+                break;
+            }
+
             case STATUS.EQ_LOW_CHANGE : {
                 this.mixer.setEqLow(diff.channel, diff.currentValue);
                 break;

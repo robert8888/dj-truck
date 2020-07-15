@@ -2,10 +2,34 @@
 @import "./../../../../../css/colors.scss";
 @import "./../../../../../css/mixins.scss";
 
-
-
 .control{
+  background: $secondary-dark;
+  border-bottom: 1px solid $primary-dark;
+  border-right: 1px solid $primary-dark;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 15px;
+
   &__nav{
+    &__container{
+      position: relative;
+      & .control__nav::before{
+        //aria around menu witch help to keep menu open
+        //if cursor will a little bit deviate from menu
+        content: "";
+        display: block;
+        position: absolute;
+        left: -25%;
+        top: -50px;
+        width: 150%;
+        height: calc(100% + 100px);
+      }
+    }
+
+
     &, &__sub{
       @include dropdown-nav();
       [class*="__item"]{
@@ -13,6 +37,7 @@
         padding-right: 45px;
       }
     }
+
     & {
       left: 2.5px;
     }
@@ -26,7 +51,10 @@
 
     display: none;
 
-    &:hover, &__item:hover > &__sub{
+    &--expanded, &__item:hover > &__sub{
+      display: block;
+    }
+    &--expanded{
       display: block;
     }
 
@@ -41,6 +69,9 @@
 
         }
       }
+      &--disabled {
+        color: rgba($primary-text-color, 0.3)
+      }
     }
 
     &__container{
@@ -48,45 +79,28 @@
     }
     &__button{
       @include std-button();
+      position: relative;
+      z-index: 10;
+
       &:hover + ul{
-        display: block;
+        //display: block;
       }
     }
   }
 }
 
-
 .modal{
-  @include modal();
-  background: $secondary-dark;
-}
-
-.creating-profile{
-  padding: 30px 30px 45px;
-  position: relative;
-  flex-wrap: nowrap;
-  display: flex;
-  align-items: flex-end;
-  color: $primary-text-color;
-  .form-group{
-    margin: 0 15px;
-  }
-  &__name.form-control{
-    @include input();
-  }
-
-  &__btn{
-    @include std-button();
-    margin: 0 15px;
-    height: auto;
-  }
-
-  &__btn--aboard{
-    @include button--small();
-    padding: 7px;
-    position: absolute;
-    margin: 0;
-    top: 5px;
-    right: 5px;
+  &__content{
+    display: flex;
+    flex-direction: column;
+    &__profile-name[type="text"]{
+      width: 100%;
+      margin: 0;
+    }
+    &__confirm-btn[type="button"]{
+      align-self: flex-end;
+      margin-right: 0;
+      letter-spacing: 1px;
+    }
   }
 }

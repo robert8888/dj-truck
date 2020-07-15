@@ -39,11 +39,11 @@ const BinaryButton = ({value, initValue, update, className, children, ...rest}) 
 }
 
 const mapStateToProps = (state, {get, defaults}) => ({
-    value : get && get(state) || defaults && defaults(state),
+    value : (get && get(state)) ?? (defaults && defaults(state)),
 })
 
 const mapDispatchToProps = (dispatch, {set, update}) => ({
-    update : (value) => (update && update(value)) || (set && dispatch(set(value)))
+    update : (value) => ((update && update(value)) ?? (set && dispatch(set(value))))
 })
 
 export default withControlMapping(connect(mapStateToProps, mapDispatchToProps)(BinaryButton));

@@ -492,6 +492,7 @@
     white-space: nowrap;
     cursor: pointer;
     box-shadow: 1px 3px 4px 2px darken($secondary-dark, 5%);
+    line-height: 1rem;
 
     [class*="__item"]{
         &:not(:last-of-type){
@@ -528,23 +529,4 @@
             border: 0;
         }
     }
-}
-
-@mixin modal(){
-    &[class*="--visible"]{
-        display: block;
-    }
-    display: none;
-    position: -ms-device-fixed;
-    width: auto;
-    height: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    //backface-visibility: hidden;
-    //-webkit-font-smoothing: subpixel-antialiased;
-    border: 2px solid $secondary-dark;
-    box-shadow: 0 0 0 100vw rgba(0,0,0,.5), 0 0 5px 1px rgba(0,0,0,.8);
-    background: $secondary-dark;
-
 }

@@ -4,7 +4,12 @@ import _set from "lodash/set";
 import _get from "lodash/get";
 
 const channel = {
-    volume: 100,
+    volume: {
+      min: -100,
+      max: 30,
+      default: 0,
+      current: 0,
+    },
 
     low: {
         min: -50,
@@ -147,8 +152,12 @@ export default function mixerReducer(state = initState, action) {
             return produce(state, draftState => draftState.fader.current = value);
         }
         case ACTIONS.SET_GAIN: {
-            return nextChannelState(state, action.destination, { gain: action.value})
+            return nextChannelState(state, action.destination, { gain: action.value })
         }
+        case ACTIONS.SET_VOLUME:{
+            return nextChannelState(state, action.destination, { volume: action.value })
+        }
+
         case ACTIONS.SET_LOW: {
             return nextChannelState(state, action.destination, { low: action.value })
         }

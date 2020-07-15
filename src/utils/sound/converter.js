@@ -2,8 +2,17 @@
 export function toDbValue(value) {
     let gain = 1 + value / 100;
     let dB = Math.floor(20 * Math.log10(gain));
-    return dB;  
+    return dB;
 }
+
+// based on value from myCurveFit.com
+export function toGainCurve(value){
+    if(value < 0 ){
+        return   -(109.59 + (0.3584427 - 109.59)/(1 + (Math.abs(value)/12.20073) ** 1.190145))
+    }
+    return value;
+}
+
 
 export function toDbValueText (value) {
     let dB = toDbValue(value)

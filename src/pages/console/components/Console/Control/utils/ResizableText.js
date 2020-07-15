@@ -2,26 +2,22 @@ import React, {useCallback, useState} from "react";
 import "./resizeble-text.js.scss"
 
 const ResizableText = ({children}) => {
-    const [size, setSize] = useState(null);
     const [aspect, setAspect] = useState(null)
 
-    const updateSize = useCallback( ref =>{
+    const updateAspect = useCallback( ref =>{
         if(!ref) return;
         const wrapper = ref.closest(".control-mapping__wrapper");
         if(!wrapper) return;
         const rect =wrapper.getBoundingClientRect()
-        setSize(rect);
         if(rect.width  > rect.height * 1.2){
             setAspect("horizontal")
         } else {
             setAspect("vertical")
         }
-    }, [setSize, setAspect])
-
-
+    }, [setAspect])
 
     return (
-        <div ref={updateSize} className={"resizable " + aspect || ""}>
+        <div ref={updateAspect} className={"resizable " + aspect || ""}>
             <svg
                 width="100%"
                 height="100%"

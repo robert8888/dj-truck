@@ -14,14 +14,7 @@ const initState = () => {
             max: 100,
         },
         currentEffect: null,
-        effects: {
-            /*reverb: {
-                decay: 5
-            },
-            echo: {
-                time: 4
-            }*/
-        }
+        effects: {}
     };
 
     const state = {

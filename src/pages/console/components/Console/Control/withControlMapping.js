@@ -41,14 +41,12 @@ export default function withControlMapping(Component){
             setMidiCurrentMapping(role)
         }, [setMidiCurrentMapping, role])
 
-
         useEffect(()=>{
             if(!midiMapping) return;
             (role?.id === currentMidiMapping?.id) ?
                 setIsCurrent(true) :
                 setIsCurrent(false)
         }, [role, midiMapping, currentMidiMapping, setIsCurrent])
-
 
         const value = useMemo(() => {
             if(!midiValueMap || !role || !midiValueMap[role.id]) return null;
@@ -60,7 +58,6 @@ export default function withControlMapping(Component){
             return <span className={"value"}>{value.split("-").join(" ")}</span>
         }, [value])
 
-        console.log("mapping")
         if(!activated) return <Component {...props} className={className || ""}/>
 
         return(

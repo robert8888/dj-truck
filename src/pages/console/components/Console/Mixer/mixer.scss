@@ -25,14 +25,16 @@
 
     .mixer-fader{
         padding: 0 25%;
+        display: flex;
         grid-area: fader;
     }
 
     @media (max-width : $vertical-break-point ) {
         grid-template-columns: 2fr 1fr 2fr ;
         grid-template-areas: 
-        "channel-a fader  channel-b";
+        "channel-a fader channel-b";
         .mixer-fader{
+           // display: none;
             padding: 0;
 
             @media (max-width : $vertical-break-point-extra-small){
@@ -47,8 +49,17 @@
                         margin-top: 0;
                     }
             }
-
+        }
+        @media (max-width : $vertical-break-point-extra-small) {
+            grid-template-columns: 2fr 2fr ;
+            grid-template-areas:
+                "channel-a channel-b";
+            .mixer-fader {
+                 display: none;
+            }
         }
     }
+
+
 
 }

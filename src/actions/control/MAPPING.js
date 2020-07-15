@@ -3,7 +3,10 @@ import {
     setFilter, setFilterResonans,
     setCue, setSend, setFader,
     togglePlay, toggleCue,
-    setLoop, setLoopLength, setPitch, setSync, setMaster, toggleSync, setDryWet, setCurrentEffect, setEffectParameter
+    setLoop, setLoopLength,
+    setPitch,
+    setMaster, toggleSync,
+    setDryWet, setCurrentEffect, setEffectParameter
 } from '../';
 
 export default {

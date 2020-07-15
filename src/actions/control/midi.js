@@ -78,8 +78,8 @@ export function updateMidiProfile(profile){
     return {type: ACTIONS.C_MIDI_UPDATE_PROFILE, profile}
 }
 
-export function reqDeleteMidiProfile(){
-    return {type: ACTIONS.C_MIDI_REQ_DELETE_PROFILE}
+export function reqDeleteMidiProfile(profile){
+    return {type: ACTIONS.C_MIDI_REQ_DELETE_PROFILE, profile}
 }
 
 export function deleteMidiProfile(profile){
