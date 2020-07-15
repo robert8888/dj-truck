@@ -39,9 +39,8 @@ class PeakLevelMater extends React.PureComponent {
     updateLedStates() {
         let peakMeter = this.props.interface.getPeakMeter();
         let ledOn = 25 + peakMeter.peakdB / 2;
-
         for (let i = 0; i < this.size; i++) {
-            if(!this.leftRefs[i] || this.rightRefs[i]) break;
+            if(!this.leftRefs[i] || !this.rightRefs[i]) continue;
             this.leftRefs[i].current.classList.toggle("led--on", (i <= ledOn))
             this.rightRefs[i].current.classList.toggle("led--on", (i <= ledOn))
         }

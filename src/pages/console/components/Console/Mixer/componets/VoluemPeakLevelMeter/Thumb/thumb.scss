@@ -1,0 +1,115 @@
+@import "./../../../../../../../../css/colors.scss";
+
+$triangle-color-primary: darken($primary, 30%);
+$triangle-color-secondary:  $secondary;
+.volume-plm{
+  position: relative;
+  &__thumb{
+    position: absolute;
+    &--vertical{
+      left: 0;
+      right: 0;
+      width: 100%;
+    }
+    &--horizontal{
+      top: 0;
+      left:0;
+      bottom: 0;
+      height: 100%;
+    }
+  }
+}
+
+.thumb{
+  position: relative;
+  &--vertical{
+    width: 100%;
+    height: 15px;
+    &:hover{
+      cursor: row-resize;
+    }
+  }
+  &--horizontal{
+    height: 100%;
+    width: 15px;
+    &:hover{
+      cursor: col-resize;
+    }
+  }
+
+  &__bar{
+    position: absolute;
+    background: rgba(#fff, 0.7);
+    z-index: 1;
+    &--horizontal{
+      top:0;
+      left: 6px;
+      height: 100%;
+      width: 2px;
+    }
+    &--vertical{
+      left:0;
+      top: 6px;
+      width: 100%;
+      height: 2px;
+    }
+  }
+
+  &__triangle {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    filter: drop-shadow(0 0 3px $secondary-dark);
+    z-index: 2;
+    &--horizontal{
+      &:first-of-type{
+        border-top: 8px solid $triangle-color-primary;
+        border-bottom: none;
+        top: 0;
+      }
+      &:last-of-type{
+        border-top: none;
+        border-bottom: 8px solid $triangle-color-primary;
+        bottom: 0;
+      }
+    }
+    &--vertical{
+      &:first-of-type{
+        border-left: none;
+        border-right: 8px solid $triangle-color-primary;
+        right: 0;
+      }
+      &:last-of-type{
+        border-left: 8px solid $triangle-color-primary;
+        border-right: none;
+        left: 0;
+      }
+    }
+  }
+
+  &:hover, &--active{
+    .thumb__bar{
+      background: white;
+    }
+    .thumb__triangle{
+      &--vertical{
+        &:first-of-type{
+          border-right-color: $triangle-color-secondary;
+        }
+        &:last-of-type {
+          border-left-color: $triangle-color-secondary;
+        }
+      }
+      &--horizontal{
+        &:first-of-type{
+          border-top-color: $triangle-color-secondary;
+        }
+        &:last-of-type{
+          border-bottom-color: $triangle-color-secondary;
+        }
+      }
+    }
+  }
+
+}

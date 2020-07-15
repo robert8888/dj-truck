@@ -2,7 +2,7 @@
 
 @mixin peak-level-meter-horizontal($height) {
     @include peak-level-meter-vertical(1px);
-    width: auto;
+    width: 100%;
     height: $height;
     flex-direction: column;
     padding: 0.05 * $height;
