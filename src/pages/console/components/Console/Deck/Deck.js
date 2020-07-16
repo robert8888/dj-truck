@@ -1,9 +1,8 @@
-import React from "react";
+import React, {useContext, useMemo} from "react";
 import { useDrop } from 'react-dnd';
 import { connect } from "react-redux";
 import { loadTrack } from "./../../../../../actions";
 import ItemTypes from "./../../../../common/DndItemTypes";
-import "./deck.scss";
 import Looper from "./Looper/Looper";
 import PitchButtons from "./PitchButtons/PitchButtons";
 import PitchSlider from "./PitchSlider/PitchSlider";
@@ -12,10 +11,15 @@ import Player from "./Player/Player";
 import SyncControl from "./SyncControl/SyncControl";
 import TrackInfo from "./TrackInfo/TrackInfo";
 import ErrorBoundary from "../../../../common/components/ErrorBoundary/ErrorBoundary";
+import DeckContext from "./DeckCtx";
+import ConsoleContext from "./../ConsoleCtx";
+import classNames from "classnames";
+import "./deck.scss";
 
-const Deck = props => {
+const Deck = ({name: channel, loadTrack}) => {
+    const consoleContext = useContext(ConsoleContext);
     const dropResult = (item) => {
-        props.loadTrack(item.track, props.name);
+        loadTrack(item.track, channel);
         return {
             target: "deck"
         }
@@ -26,21 +30,32 @@ const Deck = props => {
         drop: dropResult,
     })
 
+    const containerClassNames = useMemo(()=>{
+        return classNames(
+            "deck",
+            "deck--" + channel, {
+                "deck--collapsed": consoleContext.collapse,
+                "deck--expanded" : !consoleContext.collapse,
+            })
+    }, [consoleContext])
+
     return (
         <ErrorBoundary>
-            <div className={"deck deck-" + props.name} ref={drop}>
-                <TrackInfo name={props.name} />
-                <SyncControl name={props.name} />
-                <div className="player-container">
-                    <Player name={props.name} />
-                    <PitchSlider name={props.name}/>
+            <DeckContext.Provider value={{channel: channel}}>
+                <div className={containerClassNames} ref={drop}>
+                    <TrackInfo name={channel} />
+                    <SyncControl channel={channel} />
+                    <div className="player-container">
+                        <Player name={channel} />
+                        <PitchSlider name={channel}/>
+                    </div>
+                    <div className="controls">
+                        <PlayBackControls name={channel} />
+                        <PitchButtons name={channel} />
+                        <Looper name={channel} />
+                    </div>
                 </div>
-                <div className="control-area">
-                    <PlayBackControls name={props.name} />
-                    <PitchButtons name={props.name} />
-                    <Looper name={props.name} />
-                </div>
-            </div>
+            </DeckContext.Provider>
         </ErrorBoundary>
     )
 }

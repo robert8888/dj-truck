@@ -7,14 +7,7 @@
     padding: 5px;
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: 
-    "channel-a channel-b"
-    "fader fader";
-    
     .mixer-channel{
-        width: 100%;
-
         &.channel-A{
             grid-area: channel-a;
         }
@@ -24,20 +17,31 @@
     }
 
     .mixer-fader{
-        padding: 0 25%;
-        display: flex;
         grid-area: fader;
     }
 
-    @media (max-width : $vertical-break-point ) {
-        grid-template-columns: 2fr 1fr 2fr ;
-        grid-template-areas: 
-        "channel-a fader channel-b";
-        .mixer-fader{
-           // display: none;
-            padding: 0;
+    &--expanded{
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+        "channel-a channel-b"
+        "fader fader";
 
-            @media (max-width : $vertical-break-point-extra-small){
+        .mixer-channel{
+            width: 100%;
+        }
+
+        .mixer-fader{
+            padding: 0 25%;
+            display: flex;
+        }
+
+        @media (max-width : $vertical-break-point ) {
+            grid-template-columns: 2fr 1fr 2fr ;
+            grid-template-areas:
+        "channel-a fader channel-b";
+            .mixer-fader{
+                padding: 0;
+                @media (max-width : $vertical-break-point-extra-small){
                     justify-self: center;
                     display: flex;
 
@@ -48,17 +52,29 @@
                         position: relative;
                         margin-top: 0;
                     }
+                }
             }
-        }
-        @media (max-width : $vertical-break-point-extra-small) {
-            grid-template-columns: 2fr 2fr ;
-            grid-template-areas:
+            @media (max-width : $vertical-break-point-extra-small) {
+                grid-template-columns: 2fr 2fr ;
+                grid-template-areas:
                 "channel-a channel-b";
-            .mixer-fader {
-                 display: none;
+                .mixer-fader {
+                    display: none;
+                }
             }
         }
     }
+
+    &--collapsed{
+        grid-template-columns: 1fr  1fr;
+        grid-template-areas:
+        "channel-a channel-b";
+        .mixer-fader {
+            display: none;
+        }
+        padding-bottom: 10px;
+    }
+
 
 
 

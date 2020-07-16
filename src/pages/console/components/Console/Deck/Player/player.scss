@@ -4,18 +4,15 @@
 $master-height: 130px;
 $slave-height: 50px;
 
-
 :export{
     masterHeight: $master-height;
     slaveHeight: $slave-height;
 }
 
-
-
-@mixin player($primary-color){
+.player{
     position: relative;
     width: calc(100% - 50px);
-    .player-loading{
+    &__loading{
         position: absolute;
         left: 50%;
         top: $master-height / 2;
@@ -24,31 +21,15 @@ $slave-height: 50px;
 
         }
     }
-    .master, .slave{
+    &__master, &__slave{
         background: $primary-dark;
     }
-    .master{
+    &__master{
         height: $master-height;
         overflow: hidden;
-     //   margin-right: 4px;
     }
-    .slave{
+    &__slave{
         height: $slave-height;
         border-top: 1px solid $secondary-dark;
     }
-
-    &+.pitch{
-        //margin-left: 4px;
-    }
-}
-
-
-.player{
-    &.player-A{
-        @include player($deck-A-primary)
-    }
-    &.player-B{
-        @include player($deck-B-primary)
-    }
-
 }

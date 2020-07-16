@@ -1,19 +1,20 @@
 import React from "react";
 import Channel from "./Channel/Channel";
 import Fader from "./Fader/Fader";
-import "./mixer.scss"
 import ErrorBoundary from "../../../../common/components/ErrorBoundary/ErrorBoundary";
+import ConsoleCtx from "./../ConsoleCtx";
+import "./mixer.scss"
 
 class Mixer extends React.Component{
-
+    static contextType = ConsoleCtx;
     render(){
         return (
             <ErrorBoundary>
-                <div className="mixer">
-                    <Channel name="A"/>
-                    <Channel name="B"/>
-                    <Fader />
-                </div>
+                    <div className={"mixer mixer--" + (this.context.collapse ? "collapsed" : "expanded")}>
+                        <Channel name="A"/>
+                        <Channel name="B"/>
+                        <Fader />
+                    </div>
             </ErrorBoundary>
         )
     }

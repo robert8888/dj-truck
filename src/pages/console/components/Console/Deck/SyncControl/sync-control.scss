@@ -8,22 +8,24 @@
     padding: 3px 0;
     line-height: 1;
     display: flex;
+    &--A{
+        button.btn.btn-primary{
+            @include deck-sync-button($deck-A-primary);
+        }
+    }
+    &--B{
+        button.btn.btn-primary{
+            @include deck-sync-button($deck-B-primary);
+        }
+    }
+
     &>.control-mapping__wrapper {
         display: flex;
     }
     button{
         margin-right: 3px;
     }
-    &.bar-deck-A{
-        button{
-            @include deck-sync-button($deck-A-primary);
-        }
-    }
-    &.bar-deck-B{
-        button{
-            @include deck-sync-button($deck-B-primary);
-        }
-    }
+
 
     .sync-bar{
 

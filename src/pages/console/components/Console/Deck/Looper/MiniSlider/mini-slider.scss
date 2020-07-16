@@ -3,7 +3,7 @@
 
 
 @mixin mini-slider($color, $width, $height) {
-    .slider-container{
+    &.slider-container{
         @include block-like-button($color);
         cursor: pointer;
         position: relative;

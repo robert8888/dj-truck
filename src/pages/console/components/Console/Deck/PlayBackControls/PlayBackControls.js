@@ -32,7 +32,7 @@ const PlayBackControls = ({ name, toggleCue, togglePlay, cuePlay, paused, cueAct
     }
 
     return (
-        <div className={"play-back-controls-" + name}>
+        <div className={"controls__playback controls__playback--" + name}>
             <PlayButton onClick={togglePlay}
                         paused={paused}
                         role={MAPPING[`DECK_CHANNEL_${name}_PLAY`]}/>

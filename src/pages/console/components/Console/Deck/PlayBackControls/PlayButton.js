@@ -6,7 +6,7 @@ import withControlMapping from "../../Control/withControlMapping";
 
 const PlayButton = ({onClick, paused}) =>{
     return (
-        <Button className={"play-btn " + (((!paused) && "btn--pressed") || "")}
+        <Button className={"btn--play " + (((!paused) && "btn--pressed") || "")}
                 onClick={onClick}>
             <FontAwesomeIcon icon={(paused) ? faPlay : faPause} />
         </Button>

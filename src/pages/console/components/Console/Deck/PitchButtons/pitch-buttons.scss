@@ -1,36 +1,31 @@
 @import "./../../../../../../css/colors.scss";
 @import "./../../../../../../css/mixins.scss";
 
+.controls__pitch{
+    float:right;
+    @each $channel, $colors in $deck-colors {
+        &--#{$channel} {
+            .btn.btn-primary{
+                @include deck-button(map-get($colors, "primary"));
+            }
+        }
+    }
 
-@mixin pitch-button($deck-color){
-    float : right;
-    button.btn.btn-primary{
-        @include deck-button($deck-color);
-        &.btn.pitch-btn{
+    .btn{
+        &--pitch.btn-primary{
             height: 20px;
             line-height: 0;
             font-weight: bold;
             font-size: 14px;
             display: block;
             width: 45px;
-            margin: 3px;
-            margin-right: 0;
-            &.btn-increase {
-                margin-top: 0px;
-            }
-            &.btn-decrease {
-                padding-bottom: 10px;
-            }
-        
+            margin: 3px 0 3px 3px;
+        }
+        &--increase.btn-primary{
+            margin-top: 0;
+        }
+        &--decrease{
+            padding-bottom: 10px;
         }
     }
-
-}
-
-.pitch-btns-A {
-    @include pitch-button($deck-A-primary);
-}
-
-.pitch-btns-B {
-    @include pitch-button($deck-B-primary);
 }

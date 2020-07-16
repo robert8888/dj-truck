@@ -1,5 +1,5 @@
 import React from "react"
-
+import classNames from "classnames";
 import "./peak-level-meter--vertical.scss";
 // there is 30 leds indicators
 // 25 is blue and calc from bottom last 25 is zero dB.
@@ -73,9 +73,16 @@ class PeakLevelMater extends React.PureComponent {
     }
 
     render() {
-
+        const containerClassNames = classNames(
+            "peak-level-meter", {
+                [`peak-level-meter--${this.props.name}`]: !!this.props.name,
+                [this.props.className]: !!this.props.className,
+                "peak-level-meter--horizontal" : this.props.aspect === "horizontal",
+                "peak-level-meter--vertical" : this.props.aspect === "vertical"
+            }
+        )
         return (
-            <div className={"peak-level-meter " + this.props.className}>
+            <div className={containerClassNames}>
                 <div className="meter-channel">
                     {this.leftChannel}
                 </div>

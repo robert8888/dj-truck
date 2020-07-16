@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 const ResonanceKnob = ({update, value, text}) =>{
 
     return (
-        <KnobDescribed className="filter-knob "
+        <KnobDescribed className="filter-resonance-knob "
             showValue
             scale={20} 
             text={text}

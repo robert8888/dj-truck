@@ -15,6 +15,7 @@ const Search = ({
     queryString,
     controls,
     player,
+    page,
 }) => {
     const [resultOpen, setResultOpen] = useState(false);
     const [source, setSource] = useState(null);
@@ -53,6 +54,7 @@ const Search = ({
             <div className="search">
                 <div className="search-controls">
                     <DropdownButton
+                        id={"buttonSelectApi"}
                         className="btn-api-select"
                         title={source || ""}>
                         {apiList}
@@ -70,6 +72,7 @@ const Search = ({
                             Clear 
                         </Button>}
                     <DropdownButton
+                        id={"buttonSelectResultLimit"}
                         className="btn-max-result-select"
                         title={limit}>
                         <Dropdown.Item onClick={() => setLimit(10)}> 10 </Dropdown.Item>
@@ -92,10 +95,10 @@ const mapStateToProps = state => ({
     queryString: state.searchReducer.searchString
 })
 
-const mapDispachToProps = dispatch => ({
+const mapDispatchToProps = dispatch => ({
     setQuery: (text) => dispatch(searchInput(text)),
     searchStart: (text, source, limit) => dispatch(searchStart(text, source, limit)),
     clearSearch: () => dispatch(clearSearch()),
 })
 
-export default connect(mapStateToProps, mapDispachToProps)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

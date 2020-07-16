@@ -6,7 +6,7 @@ import withControlMapping from "../../Control/withControlMapping";
 const InButton = ({onClick, state}) =>{
 
     return (
-        <Button className={"btn-in" + ((state) ? " btn--pressed-filed" : "")}
+        <Button className={"btn--in" + ((state) ? " btn--pressed-filed" : "")}
                 onClick={onClick}>
             IN
         </Button>

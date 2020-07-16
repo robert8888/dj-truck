@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import PeakLevelMeterH from "./PeakLevelMeter/PeakLevelMeterH";
 import PeakLevelMeterV from "./PeakLevelMeter/PeakLevelMeterV";
 import Thumb from "./Thumb/Thumb";
@@ -12,6 +12,7 @@ const VolumePeakLevelMeter = ({
       update = () => Logger.push(Log.Error("not implemented update function !!!")),
       aspect,
       doubleClickInit,
+      updateFlag,
       ...props
     }) => {
     const [shift] = useState(1/(30/5)); // check peek level zero db description
@@ -20,13 +21,19 @@ const VolumePeakLevelMeter = ({
     const [thumbRect, setThumbRect] = useState(null);
     const [maxPosition, setMaxPosition] = useState(null);
     const [isDragged, setIsDragged] = useState(false);
+    const areaRef = useRef();
     const currentValue = useRef();
     const isDraggedRef = useRef();
     const thumb = useRef();
 
-    const updateAreaRect = useCallback(ref => (
+    useEffect(()=>{
+        setAreaRect(areaRef.current.getBoundingClientRect())
+    }, [areaRef, updateFlag])
+
+    const updateAreaRect = useCallback(ref => {
         ref && !areaRect && setAreaRect(ref.getBoundingClientRect())
-    ), [setAreaRect, areaRect])
+        areaRef.current = ref;
+    }, [setAreaRect, areaRect, areaRef])
 
     const thumbRef = useCallback( ref => {
         if(!ref) return ;
@@ -54,6 +61,7 @@ const VolumePeakLevelMeter = ({
             window.removeEventListener("resize", resetSize);
         }
     }, [setAreaRect])
+
 
     useEffect(function updateMaxPosition() {
         if(!areaRect || !thumbRect) return;
@@ -107,10 +115,10 @@ const VolumePeakLevelMeter = ({
         updateValue(position);
     }, [vertical, thumb ,normalize, updateValue])
 
-    const mouseMove = useCallback((shift, {clientX, clientY})=>{
+    const mouseMove = useCallback((shift,{clientX, clientY})=>{
         const position = (vertical ? clientY - areaRect.top : clientX - areaRect.left) - shift;
         updatePosition(position);
-    }, [vertical, areaRect, updatePosition])
+    }, [vertical, areaRect,  updatePosition])
 
     const mouseDown = useCallback(({target, clientX, clientY}) => {
         let shift;
@@ -134,7 +142,7 @@ const VolumePeakLevelMeter = ({
         window.addEventListener('mousemove', mMove);
         window.addEventListener('mouseup', onMouseUp);
         window.addEventListener('mouseleave', onMouseUp);
-    }, [vertical, thumbRect, updatePosition, mouseMove, setThumbState])
+    }, [vertical, thumbRect,  updatePosition, mouseMove, setThumbState])
 
     const mouseDoubleClick = useCallback(()=>{
         if(!doubleClickInit) return;
@@ -160,8 +168,8 @@ const VolumePeakLevelMeter = ({
              onDragStart={ e => e.preventDefault()}
              className={"peak-level-meter volume-plm volume-plm--" + aspect}>
                 { aspect === "horizontal"
-                   ? <PeakLevelMeterH {...props}/>
-                   : <PeakLevelMeterV {...props}/>
+                   ? <PeakLevelMeterH {...props} aspect={aspect}/>
+                   : <PeakLevelMeterV {...props} aspect={aspect}/>
                 }
             <Thumb aspect={aspect}
                    ref={thumbRef}

@@ -4,7 +4,7 @@ import "./peak-level-meter--horizontal.scss";
 
 const PeakLevelMeterH = props =>{
     return (
-        <PeakLevelMeterV className="peak-level-meter--horizontal" {...props}/>
+        <PeakLevelMeterV {...props}/>
     )
 }
 

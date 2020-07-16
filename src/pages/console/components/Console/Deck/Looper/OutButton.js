@@ -6,7 +6,7 @@ import withControlMapping from "../../Control/withControlMapping";
 const OutButton = ({onClick}) =>{
 
     return (
-        <Button className="btn-out" onClick={onClick}>OUT</Button>
+        <Button className="btn--out" onClick={onClick}>OUT</Button>
     )
 }
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import { Log, Logger } from "../../../utils/logger/logger";
 import { getApi } from "./../../../apis/apiProvider";
 import { PLAYBACK_STATE } from "./usePlabackState";
@@ -345,12 +345,12 @@ export function usePlayer() {
         })
     }, [player])
 
-    const controls = {
+    const controls = useMemo(() => ({
         playback,
         seek,
         setVolume,
         stop,
-    }
+    }), [playback, seek, setVolume, stop])
 
     return [
         controls,

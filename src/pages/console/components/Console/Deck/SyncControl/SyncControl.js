@@ -1,12 +1,16 @@
-import React, { useCallback } from "react";
+import React, {useCallback, useContext} from "react";
 import { connect } from "react-redux";
 import {toggleSync, setMaster, MAPPING} from './../../../../../../actions';
-import "./sync-control.scss";
 import SyncBar from "./SyncBar/SyncBar";
 import SyncButton from "./SyncButton";
 import MasterButton from "./MaterButton";
+// import ConsoleContext from "./../../ConsoleCtx";
+// import DeckContext from "./../DeckCtx";
+import "./sync-control.scss";
 
-const SyncControl = ({isMaster, noMaster, name}) => {
+const SyncControl = ({isMaster, noMaster, channel}) => {
+    // const consoleContext = useContext(ConsoleContext);
+    // const deckContext = useContext(DeckContext);
 
     let isActive = useCallback(()=>{
         if(isMaster || noMaster){
@@ -17,14 +21,14 @@ const SyncControl = ({isMaster, noMaster, name}) => {
 
     return (
 
-        <div className={"sync-control bar-deck-" + name }>
-            <SyncButton get={state => state.console.channel[name].playBackState.sync}
-                        set={toggleSync(name, null)}
-                        role={MAPPING[`DECK_CHANNEL_${name}_SYNC`]}/>
-            <MasterButton get={state => state.console.master === name}
-                          set={setMaster(name, null)}
-                          role={MAPPING[`DECK_CHANNEL_${name}_MASTER`]}/>
-            <SyncBar className="sync-bar" active={ isActive} name={name}/>
+        <div className={"sync-control sync-control--" + channel}>
+            <SyncButton get={state => state.console.channel[channel].playBackState.sync}
+                        set={toggleSync(channel, null)}
+                        role={MAPPING[`DECK_CHANNEL_${channel}_SYNC`]}/>
+            <MasterButton get={state => state.console.master === channel}
+                          set={setMaster(channel, null)}
+                          role={MAPPING[`DECK_CHANNEL_${channel}_MASTER`]}/>
+            <SyncBar className="sync-bar" active={ isActive} name={channel}/>
         </div>
     )
 }

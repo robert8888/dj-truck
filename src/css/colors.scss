@@ -1,3 +1,4 @@
+@use "sass:map";
 
 $primary-dark : #1b1b1b;
 $secondary-dark : #313131;
@@ -12,7 +13,7 @@ $secondary: #e6781f;
 $primary-text-color: #d4d4d4;
 $secondary-text-color: #1b1b1b;
 
-
+/////decsks
 $deck-A-primary: #61cb37;
 
 $deck-A-primary-dark: darken($deck-A-primary, 30%);
@@ -28,6 +29,19 @@ $deck-B-primary-dark: darken($deck-B-primary, 30%);
     deckBPrimaryDark : $deck-B-primary-dark
 }
 
+$deck-colors : (
+    A : (
+        primary: #61cb37,
+        secondary: darken(#61cb37, 30%)
+    ),
+    B : (
+        primary: #e6781f,
+        secondary: darken(#e6781f, 30%)
+    )
+);
+
+//////mixer
+
 $mixer-primary: #4dbcd0;
 $mixer-knob-primary: #4dbcd0;
 
@@ -38,7 +52,7 @@ $mixer-level-meter-safe: #ee8700;
 // ----
 
 $light-red : #C21D17; 
-
+$dark-red: #9d0007;
 $error:  #ee000c;
 $warning: #e6781f;
 

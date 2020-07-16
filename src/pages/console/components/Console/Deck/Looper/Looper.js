@@ -31,7 +31,7 @@ class Looper extends React.Component {
    render() {
    const {name} = this.props;
     return (
-      <div className={"looper looper-deck-" + name}>
+      <div className={"controls__looper controls__looper--" + name}>
         <InButton  onClick={this.props.setLoop.bind(null, true)}
                    state={this.props.loopState}
                    role={MAPPING[`DECK_CHANNEL_${name}_LOOP_IN`]}/>
@@ -39,7 +39,7 @@ class Looper extends React.Component {
                    role={MAPPING[`DECK_CHANNEL_${name}_LOOP_OUT`]}/>
         <MiniSlider
           onChange={this.sliderValueChange.bind(this)}
-          className={"mini-slider-deck-" + name}
+          className={"mini-slider--" + name}
           slides={this.sliderItems}
           value={this.props.loopLengthValue}
           role={MAPPING[`DECK_CHANNEL_${name}_LOOP_LENGTH`]}

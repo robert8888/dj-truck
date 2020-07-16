@@ -1,0 +1,36 @@
+@import "./../../../../../css/colors.scss";
+@import "./../../../../../css/mixins.scss";
+
+.collapse-button{
+  @include  button--small($primary-dark);
+
+  &.btn.btn-primary{
+    &:hover,
+    &:hover:active,
+    &:hover:focus,
+    &:focus:hover,
+    &:hover:focus:active{
+      border-color: $light-red;
+      background: $primary-dark;
+      color: white;
+      outline: none;
+      box-shadow: none;
+    }
+    &:focus {
+      background: $dark-red;
+      color: white;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  padding: 6px 16px;
+  background: $dark-red;
+  &__wrapper{
+    padding: 2px;
+    background: $secondary-dark;
+  }
+  &__icon{
+
+  }
+}

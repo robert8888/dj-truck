@@ -22,14 +22,16 @@ import {
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHeadphones} from "@fortawesome/free-solid-svg-icons"
 import "./mixer-channel.scss";
-import {toGainCurve} from "../../../../../../utils/sound/converter";
-
+import ConsoleContext from "./../../ConsoleCtx";
+import classNames from "classnames";
 
 class Channel extends React.Component {
     cueNotSupportedMsg = `Sorry your device not support this`;
     state = {
         console: null
     }
+
+    static contextType = ConsoleContext
 
     componentDidMount() {
         Console.Get().then(instance => this.setState({
@@ -38,10 +40,20 @@ class Channel extends React.Component {
         }))
     }
 
+    containerClassNames(){
+        return classNames(
+            "mixer-channel",
+            "channel-" + this.props.name,{
+                "channel--collapsed": this.context.collapse,
+                "channel--expanded": !this.context.collapse,
+            }
+        )
+    }
+
     render() {
         const channel = this.props.name;
         return (
-            <div className={"mixer-channel channel-" + channel}>
+            <div className={this.containerClassNames()}>
                 <div className="knobs-set-1">
                     <EqKnob text="Hi"
                             className="eq-hi"
@@ -67,6 +79,7 @@ class Channel extends React.Component {
                     active={this.props.chReady}
                     get={state => state.mixer.channels[channel].volume.current}
                     set={value => setVolume(channel, value)}
+                    updateFlag={this.context.collapse}
                     interface={this.state.console && this.state.console.getMixerChannelInterface(channel)}/>
 
                 <div className="knobs-set-2">

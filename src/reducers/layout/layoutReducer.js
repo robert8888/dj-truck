@@ -12,7 +12,8 @@ const initState = {
     footer: {
         type: FOOTER_TYPES[0],
         display: true,
-    }
+    },
+    consoleCollapse: false,
 }
 
 export default function headerState(state = initState, action) {
@@ -44,6 +45,14 @@ export default function headerState(state = initState, action) {
                     drafState.header[name] = value;
                 }
             })
+        }
+
+        case ACTIONS.LAYOUT_SET_CONSOLE_COLLAPSE : {
+            const value = action.value ?? !state.consoleCollapse ?? false;
+            return {
+                ...state,
+                consoleCollapse: value
+            }
         }
 
         default: return state;

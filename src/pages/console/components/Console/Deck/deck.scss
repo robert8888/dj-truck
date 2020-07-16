@@ -9,10 +9,11 @@
     padding-bottom: 0;
     background: $secondary-dark;
     border: 1px solid;
-    &.deck-A{
+    position: relative;
+    &--A{
         @include deck($deck-A-primary);
     }
-    &.deck-B{
+    &--B{
         @include deck($deck-B-primary);
     }
 
@@ -25,7 +26,28 @@
         }
     }
     
-    .control-area{
+    .controls{
         padding: 5px 0;
+    }
+    &--collapsed{
+        .sync-control,
+        .pitch,
+        .player__master{
+            display: none;
+        }
+        .controls{
+            &__looper,
+            &__pitch,
+            .btn--cue{
+                display: none;
+            }
+            &__playback{
+                position: absolute;
+                bottom: 12.5px;
+            }
+        }
+        .player{
+            left: 50px;
+        }
     }
 }

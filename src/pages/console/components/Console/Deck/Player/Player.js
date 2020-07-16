@@ -25,12 +25,12 @@ class Player extends React.Component {
     return (
       <div className={"player player-" + this.props.name}>
         {this.props.loadingProgress < 100 && this.props.loadingProgress > 0 && (
-          <div className="player-loading">
+          <div className="player__loading">
             <span>Loading {this.props.loadingProgress} % </span>
           </div>
         )}
-        <div className="master" ref={this.masterContainer} />
-        <div className="slave" ref={this.slaveContainer} />
+        <div className="player__master" ref={this.masterContainer} />
+        <div className="player__slave" ref={this.slaveContainer} />
       </div>
     );
   }

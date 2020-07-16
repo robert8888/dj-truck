@@ -9,45 +9,90 @@
 }
 
 
+.collapse-button{
+  &__container{
+    position: absolute;
+    top: calc(100%);
+    right: -1px;
+    @include panel-border(0.2);
+    border-top: none;
+  }
+  &__wrapper{
+    border: 1px solid lighten($primary-dark, 5%);
+    border-top: none;
+    position: relative;
+    &:before{
+      content: "";
+      position: absolute;
+      top: -3px;
+      width: 100%;
+      height: 3px;
+      left: 0;
+      background: $secondary-dark;
+    }
+  }
+}
+
 .console {
   @include panel-border(0.2);
+  position: relative;
   margin-top: 25px;
+  margin-bottom: 25px;
   display: grid;
-  grid-template-rows: auto auto auto;
   grid-template-columns: calc(50% - 150px) 300px calc(50% - 150px);
-
-  .configuration{
-    grid-column: 1 / span 2;
-    grid-row: 1;
-    display: flex;
+  &--expanded{
+    grid-template-rows: auto auto auto;
+    .configuration{
+      grid-column: 1 / span 2;
+      grid-row: 1;
+      display: flex;
+    }
+    .recorder{
+      grid-column: 3;
+      grid-row: 1;
+    }
+    .effector.ch-1{
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .effector.ch-2{
+      grid-column: 3;
+      grid-row: 2;
+    }
+    .deck.deck-A {
+      grid-column: 1;
+      grid-row: 3;
+    }
+    .deck-B{
+      grid-column: 3;
+      grid-row: 3;
+    }
+    .mixer{
+      grid-column: 2;
+      grid-row: 2 / span 2;
+    }
   }
 
-  .recorder{
-    grid-column: 3;
-    grid-row: 1;
-  }
-
-  .effector.ch-1{
-    grid-column: 1;
-    grid-row: 2;
-  }
-  .effector.ch-2{
-    grid-column: 3;
-    grid-row: 2;
-  }
-  .deck.deck-A {
-    grid-column: 1;
-    grid-row: 3;
-  }
-  .deck-B{
-    grid-column: 3;
-    grid-row: 3;
-  }
-  
-
-  .mixer{
-    grid-column: 2;
-    grid-row: 2 / span 2;
+  &--collapsed{
+    grid-template-rows: 1fr;
+    .configuration,
+    .recorder,
+    .effector.ch-1,
+    .effector.ch-2{
+      display: none;
+    }
+    .deck.deck-A {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .deck-B{
+      grid-column: 3;
+      grid-row: 1;
+    }
+    .mixer{
+      grid-column: 2;
+      grid-row: 1;
+    }
   }
 }
 
