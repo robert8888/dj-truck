@@ -34,7 +34,7 @@ const ControlMenu = ({
     const modalType = useRef();
 
     useEffect(()=>{
-        navigator.requestMIDIAccess()
+        navigator.requestMIDIAccess({sysex:true})
             .then((webMidi)=>{
                 const ports = [];
                 webMidi.inputs.forEach( port => ports.push(port))

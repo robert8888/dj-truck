@@ -3,7 +3,7 @@ import store from "./../../../../../../store";
 import { getBeatLength } from "./../../../../../../utils/bpm/converter";
 import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler";
 import config from "./configuration";
-
+//import addPitchInKey from "./pitchInKey";
 
 
 export default class ChannelBuilder {
@@ -22,6 +22,7 @@ export default class ChannelBuilder {
     //--master waveSurfer obj
     channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
+   // addPitchInKey(channel.master);
 
     // addAnimationFrame(channel.master);
 
@@ -45,10 +46,10 @@ export default class ChannelBuilder {
     let minPxPerSec = channel.master.params.minPxPerSec;
     let bitLength = getBeatLength(bpm);
 
-    let barPostions = [];
+    let barsPositions = [];
 
     for (let i = offset; i < channel.master.getDuration(); i += bitLength) {
-      barPostions.push(i);
+      barsPositions.push(i);
     }
 
     let barStyle = position => ({
@@ -73,7 +74,7 @@ export default class ChannelBuilder {
     styleApply(container, containerStyle);
 
     channel.barsElements = [];
-    barPostions.forEach(position => {
+    barsPositions.forEach(position => {
       let bar = document.createElement("div");
       let style = barStyle(minPxPerSec * position);
       styleApply(bar, style);

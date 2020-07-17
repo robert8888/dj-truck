@@ -81,8 +81,11 @@ const Logger = ({ log }) => {
   
     const loggerClasses = useMemo(()=>{
         return classNames(
-            'logger',
-            {'logger--hidden': hidden}
+            'logger', {
+                'logger--hidden': hidden,
+                'logger--visible':!hidden
+            }
+
         )
     }, [hidden])
     

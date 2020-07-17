@@ -37,6 +37,7 @@ const PlaybackButton = ({playback, player}) => {
     }, [player, setCurrent])
 
     const buttonClick = useCallback((...args)=>{
+        console.log("button click")
         if(!current){
             return;
         }
@@ -48,7 +49,7 @@ const PlaybackButton = ({playback, player}) => {
 
     return (
         <div className="playback-button-container">
-            <BinaryButton className={btnClassNames} onChange={buttonClick}>
+            <BinaryButton className={btnClassNames} update={buttonClick}>
                 <FontAwesomeIcon icon={icon}/>
             </BinaryButton>
         </div>

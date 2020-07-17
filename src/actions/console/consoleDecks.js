@@ -16,6 +16,7 @@ const  ACTIONS = {
     SET_SYNC: "set sync $value to $destination channel ",
     SET_LOOP: "set $value to loop variable on $destination channel",
     SET_LOOP_LENGTH : "set $loopLenght to $destination channel",
+    SET_IN_KEY: "set mixing in key flag $value for $destination channel",
 
     CONSOLE_STOP_ALL: "stop playback clear deck stop recording",
     CONSOLE_RESET : 'stop playing track and clear track from channel',
@@ -150,6 +151,12 @@ export function setLoopLength(destination, value){
         type : ACTIONS.SET_LOOP_LENGTH,
         destination,
         value
+    }
+}
+
+export function setPitchInKey(destination, value){
+    return {
+        type: ACTIONS.SET_IN_KEY, destination, value
     }
 }
 

@@ -27,6 +27,7 @@ const BinaryButton = ({value, initValue, update, className, children, ...rest}) 
     useEffect(()=>{
         setState(value);
     }, [value])
+    console.log("value from button", value)
 
     return (
         <Button 

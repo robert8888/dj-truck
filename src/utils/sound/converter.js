@@ -7,7 +7,7 @@ export function toDbValue(value) {
 
 // based on value from myCurveFit.com
 export function toGainCurve(value){
-    if(value < 0 ){
+    if(value < 0  && value !== -100){
         return   -(109.59 + (0.3584427 - 109.59)/(1 + (Math.abs(value)/12.20073) ** 1.190145))
     }
     return value;

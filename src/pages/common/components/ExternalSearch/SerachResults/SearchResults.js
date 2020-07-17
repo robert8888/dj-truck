@@ -19,7 +19,7 @@ class SearchResults extends React.Component {
 
         return (
             (this.props.open && <div className="search-results">
-                <ul className="search-result-list">
+                <ul className="search-results__list">
                     {
                         (this.props.searchList && !this.props?.searchList[0]?.error && this.props?.searchList.map(item =>
                             <SearchItem

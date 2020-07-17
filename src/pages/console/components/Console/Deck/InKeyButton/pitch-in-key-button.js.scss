@@ -1,0 +1,15 @@
+@import "./../../../../../../css/colors.scss";
+@import "./../../../../../../css/mixins.scss";
+
+.btn{
+  @each $channel, $colors in $deck-colors{
+    &--#{$channel}{
+      @include  button--small(map-get($colors, "primary"));
+      width: 42px;
+      margin-left: 5px;
+    }
+    &--#{$channel} &--pressed-filed{
+      box-shadow: none;
+    }
+  }
+}

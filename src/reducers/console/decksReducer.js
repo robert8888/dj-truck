@@ -46,7 +46,8 @@ const initDeckState = {
             min: 0,
             max: 12,
             current: 8,
-        }
+        },
+        inKey: false,
     }
 }
 
@@ -282,6 +283,14 @@ function consoleReducer(state = initState, action) {
             return nextPlayBackState(state, action.destination, true, { loop: newValue });
         }
 
+        case ACTIONS.SET_IN_KEY: {
+            const {value, destination} = action;
+            if(!destination || value === undefined || value === null){
+                return state;
+            }
+            return nextDeckState(state, destination, false, {inKey: value} )
+        }
+
 
         case ACTIONS.SET_LOOP_LENGTH: {
             let {value} = action;
@@ -308,6 +317,7 @@ function consoleReducer(state = initState, action) {
             }
             return nextDeckState(state, action.destination, false, { loopLength: value }, true);
         }
+
 
         default: return state;
     }

@@ -86,3 +86,8 @@ $vertical-break-point-extra-small : 772px;
     verticalBreakPoint : $vertical-break-point;
     verticalBreakPointExtraSmall : $vertical-break-point-extra-small;
 }
+
+html{
+    scroll-snap-type: y mandatory;
+    scroll-padding: 100px;
+}

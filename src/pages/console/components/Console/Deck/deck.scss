@@ -16,7 +16,9 @@
     &--B{
         @include deck($deck-B-primary);
     }
-
+    &__group{
+        display: flex;
+    }
     .player-container{
        // position: relative;
         display: flex;
@@ -32,6 +34,7 @@
     &--collapsed{
         .sync-control,
         .pitch,
+        .btn--in-key,
         .player__master{
             display: none;
         }

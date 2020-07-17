@@ -302,7 +302,7 @@ function playListReducer(state = initState, action) {
                 return state;
             }
             list = Array.from(list);
-            const index = list.findIndex(element => element.id === id);
+            const index = list.findIndex(track => track.id === id);
             if (index === -1) {
                 return state;
             }
@@ -325,6 +325,26 @@ function playListReducer(state = initState, action) {
                 newList.splice(action.index, 1);
                 draftState.list = newList
                 set(draftState, [...draftState.currentPlaylist, "_content"], newList) //?? check
+            })
+        }
+
+        case ACTIONS.LOAD_TRACK: {
+            const {track: {id}} = action;
+            let list = get(state, [...state.currentPlaylist, "_content"]) // ?? check
+            if (!list) {
+                return state;
+            }
+            list = Array.from(list);
+            console.log(id, list)
+            const index = list.findIndex(track => track.id === id);
+            if (index === -1) {
+                return state;
+            }
+            list[index].wasLoaded = true;
+            return produce(state, draftState => {
+                set(draftState, [...state.currentPlaylist, "_content"], list);
+                draftState.list = list;
+                draftState.refreshFalg = Math.random();
             })
         }
 

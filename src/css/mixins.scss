@@ -90,8 +90,8 @@
         color: $primary-dark;
         -webkit-box-shadow: none;
         box-shadow: none;
-        -webkit-box-shadow: 0 0 0 0.2rem $primary-dark;
-        box-shadow: 0 0 0 0.2rem $primary-dark  ;
+        -webkit-box-shadow: 0 0 0 1px $primary-dark;
+        box-shadow: 0 0 0 1px $primary-dark  ;
 
     }
 }
@@ -337,8 +337,8 @@
    td {
        background: $secondary-dark;
        padding: 5px;
-       max-height: 25px;
-       line-height: 25px;
+       //max-height: 25px;
+       //line-height: 25px;
        &.overflow{
            max-width: 0;
            width: 100%;
@@ -347,13 +347,16 @@
            text-overflow: ellipsis;
        }
    }
+   tr.lowlight{
+       color: rgba($primary-text-color, .5);
+   }
 
    tr:hover td{
        background: $tertiary-dark;
    }
 
    .btn.btn-primary{
-       @include std-button();
+     //  @include std-button();
        width: 1.5em;
        height: 1.5em;
        display: flex;

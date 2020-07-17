@@ -5,6 +5,7 @@ import Backend from "react-dnd-html5-backend";
 import ExternalSearch from "./../common/components/ExternalSearch/Search";
 import PlayListExplorer from "./../common/components/PlayListExplorer/PlayListExplorer";
 import Console from "./components/Console/Console";
+import "./console.scss"
 
 const PageConsole = () => {
   const page = useMemo(()=> "console", [])
@@ -12,7 +13,7 @@ const PageConsole = () => {
       <DndProvider backend={Backend}>
           <Container className="app layout container-xl" >
             <Console />
-            <Row>
+            <Row className={"component__playlist-navigation"}>
               <Col>
                 <ExternalSearch page={page}/>
                 <PlayListExplorer page={page}/>

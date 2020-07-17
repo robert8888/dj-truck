@@ -26,7 +26,7 @@ const Playlist = ({currentPlaylistContent}) => {
                 </DndProvider>
             </div>
         </Container>
-        <PlayerControls player={player} git pucontrols={controls} list={currentPlaylistContent}/>
+        <PlayerControls player={player} controls={controls} list={currentPlaylistContent}/>
         </>        
     )
 }

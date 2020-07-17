@@ -7,6 +7,7 @@ import { formater } from "./../../../../../../utils/time/timeFromater";
 import ItemTypes from "./../../../../DndItemTypes";
 import PlaybackButton from "./../../../PlaybackButton/PlaybackButton";
 import PlaylistContext from "./../PlaylistContext";
+import {Button} from "react-bootstrap";
 
 const PlaylistItem = props => {
   const ref = useRef(null)
@@ -80,9 +81,9 @@ const PlaylistItem = props => {
     opacity: (isDragging) ? 0 : 1
   }
 
-  const timeFormating = time => formater.secondsToStr(time);
+  const timeFormatting = time => formater.secondsToStr(time);
 
-  const bpmFromating = bpm => {
+  const bpmFormatting = bpm => {
     if (!bpm) {
       return null;
     } else if (bpm === "calculating") {
@@ -95,12 +96,13 @@ const PlaylistItem = props => {
   return (
     <tr
       ref={ref}
-      className="track-list-table-row"
+      className={"track-list-table-row " + (track.wasLoaded ? "lowlight" : "")}
       style={style}
       onMouseEnter={ctx.setHover.bind(null, props.listIndex)}>
         {props.player && 
           <td className="track-list-table-col btn-playback">
-            <PlaybackButton 
+            <PlaybackButton
+              className={"btn--play"}
               playback={props.controls.playback}
               player={props.player}
               id={track.sourceId}
@@ -112,15 +114,24 @@ const PlaylistItem = props => {
         <td className="track-list-table-col source">{track.source}</td>
         <td className="track-list-table-col title overflow">{track.title}</td>
         <td className="track-list-table-col quality">{track.quality}</td>
-        <td className="track-list-table-col time">{timeFormating(track.duration)}</td>
-        <td className="track-list-table-col bpm">{bpmFromating(track.bpm)}</td>
+        <td className="track-list-table-col time">{timeFormatting(track.duration)}</td>
+        <td className="track-list-table-col bpm">{bpmFormatting(track.bpm)}</td>
+        { props.withSends &&
+          <td className="track-list-table-col destination">
+            <Button className="btn-dest dest-a"
+                    onClick={e => props.load(track, "A")}
+                    {...(props.channelPaused ? {disabled: !props.channelPaused.A} : {})}
+            > A </Button>
+            <Button className="btn-dest dest-b"
+                    onClick={e => props.load(track, "B")}
+                {...(props.channelPaused ? {disabled: !props.channelPaused.B} : {})}
+            > B </Button>
+          </td>
+        }
     </tr>
   )
 }
 
-const mapDispatchToProps = dispach => ({
-  load: (track, destination) => dispach(loadTrack(track, destination))
-})
 
-export default connect(null, mapDispatchToProps)(PlaylistItem);
+export default PlaylistItem;
 

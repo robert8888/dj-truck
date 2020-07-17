@@ -6,7 +6,7 @@
     background: $primary-dark;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 100%; 
+
     @include  scrolls();
 
     table.playlist-table{
@@ -14,13 +14,20 @@
         td>.bpm-load-spin{
             @include loading-io-spin();
         }
+        .btn--play .btn.btn-primary{
+            @include std-button();
+            display: flex;
+        }
     }
 
     .playlist-text-info{
         margin-top: 50px;
         text-align: center;
     }
-
+    .track-list-table-col.destination{
+        display: flex;
+        justify-content: space-around;
+    }
 }
 
 .btn-dest.btn-primary{
@@ -28,11 +35,11 @@
     padding: 6px 18px;
 
     &.dest-a{
-        @include button($deck-A-primary);
+        @include deck-button($deck-A-primary);
     }
 
     &.dest-b{
-        @include button($deck-B-primary);
+        @include deck-button($deck-B-primary);
     }
 }
 

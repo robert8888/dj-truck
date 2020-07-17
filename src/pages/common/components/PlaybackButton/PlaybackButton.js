@@ -42,7 +42,7 @@ const PlaybackButton = ({playback, id, player, source = "RecordsStore", ...props
 
     return (
         <div className={"playback-button-container " + props.className}>
-            <BinaryButton className={btnClassNames} onChange={toggleHandler} value={(state===PLAYBACK_STATE.PLAY)}>
+            <BinaryButton className={btnClassNames} update={toggleHandler} value={(state===PLAYBACK_STATE.PLAY)}>
                 <FontAwesomeIcon icon={icon}/>
             </BinaryButton>
         </div>

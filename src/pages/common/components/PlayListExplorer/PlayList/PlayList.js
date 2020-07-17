@@ -21,6 +21,8 @@ class PlayList extends React.Component {
        
         if(this.props.player){
             this.headers.unshift("");
+        } else {
+            this.headers.push("Destination")
         }
     }
 
@@ -83,7 +85,7 @@ class PlayList extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.refreshFalg !== this.props.refreshFalg) {
+        if (prevProps.refreshFlag !== this.props.refreshFlag) {
             this.forceUpdate();
         }
     }
@@ -101,6 +103,14 @@ class PlayList extends React.Component {
             }
         }
         return items;
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return (
+            Object.keys(this.props.channelPaused).some(channel =>
+                this.props.channelPaused[channel] !== nextProps.channelPaused[channel]
+            ))
+        || (this.props.playlist !== nextProps.playlist)
     }
 
     render() {
@@ -121,6 +131,9 @@ class PlayList extends React.Component {
                                             dragStart={this.makeListSnapshot.bind(this)}
                                             endOutside={this.resetList.bind(this)}
                                             endWithin={this.acceptListOrder.bind(this)}
+                                            withSends={this.props.page === "console"}
+                                            channelPaused={this.props.channelPaused}
+                                            load={this.props.load}
                                             key={item.id}
                                         />
                                     )}
@@ -146,7 +159,11 @@ class PlayList extends React.Component {
 const mapStateToProps = (state) => ({
     playlist: state.playList.list,
     currentPlaylist: state.playList.currentPlaylist,
-    refreshFalg: state.playList.refreshFalg,
+    refreshFlag: state.playList.refreshFalg,
+    channelPaused : {
+        A : state.console.channel.A.playBackState.paused,
+        B : state.console.channel.B.playBackState.paused
+    }
 })
 
 const mapDispatchToProps = dispatch => ({

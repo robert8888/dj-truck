@@ -5,6 +5,7 @@ import { loadTrack } from "./../../../../../actions";
 import ItemTypes from "./../../../../common/DndItemTypes";
 import Looper from "./Looper/Looper";
 import PitchButtons from "./PitchButtons/PitchButtons";
+//import PitchInKeyButton from "./InKeyButton/PitchInKeyButton";
 import PitchSlider from "./PitchSlider/PitchSlider";
 import PlayBackControls from "./PlayBackControls/PlayBackControls";
 import Player from "./Player/Player";
@@ -15,6 +16,7 @@ import DeckContext from "./DeckCtx";
 import ConsoleContext from "./../ConsoleCtx";
 import classNames from "classnames";
 import "./deck.scss";
+
 
 const Deck = ({name: channel, loadTrack}) => {
     const consoleContext = useContext(ConsoleContext);
@@ -30,6 +32,7 @@ const Deck = ({name: channel, loadTrack}) => {
         drop: dropResult,
     })
 
+
     const containerClassNames = useMemo(()=>{
         return classNames(
             "deck",
@@ -44,7 +47,10 @@ const Deck = ({name: channel, loadTrack}) => {
             <DeckContext.Provider value={{channel: channel}}>
                 <div className={containerClassNames} ref={drop}>
                     <TrackInfo name={channel} />
-                    <SyncControl channel={channel} />
+                    <div className={"deck__group"}>
+                        <SyncControl channel={channel} />
+                        {/*<PitchInKeyButton/>*/}
+                    </div>
                     <div className="player-container">
                         <Player name={channel} />
                         <PitchSlider name={channel}/>

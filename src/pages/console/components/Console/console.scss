@@ -40,6 +40,8 @@
   margin-bottom: 25px;
   display: grid;
   grid-template-columns: calc(50% - 150px) 300px calc(50% - 150px);
+
+
   &--expanded{
     grid-template-rows: auto auto auto;
     .configuration{

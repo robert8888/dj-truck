@@ -13,7 +13,11 @@ export default function checkPitchChange(prev, current) {
         status: STATUS.PITCH_CHANGE,
         channel: channelName,
         prevValue: prevValue,
-        currentValue: currentValue
+        currentValue: {
+            pitch: currentValue,
+            pitchInKey: current.channel[channelName].deckState.inKey,
+        }
+
       });
     }
   }

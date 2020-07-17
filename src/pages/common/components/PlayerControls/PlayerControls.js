@@ -8,19 +8,19 @@ import Volume from "./Volume/Volume";
 import ErrorBoundary from './../ErrorBoundary/ErrorBoundary'
 
 const PlayerControls = ({controls, player,  list}) => {
-    const [currentRecord , setCurrentRecrod] = useState(null);
-    const [currentRecordDetails, setCurrentRecrodDails] = useState(null);
+    const [currentRecord , setCurrentRecord] = useState(null);
+    const [currentRecordDetails, setCurrentRecordDetails] = useState(null);
 
     useEffect(() => {
         if(!player){
             return;
         }
-        player.subscribeCurrent(setCurrentRecrod);
+        player.subscribeCurrent(setCurrentRecord);
 
         return ()=>{
-            player.unSubscribeCurrent(setCurrentRecrod)
+            player.unSubscribeCurrent(setCurrentRecord)
         }
-    }, [player, setCurrentRecrod])
+    }, [player, setCurrentRecord])
 
     useEffect(()=>{
         if(!list) {return; }
@@ -36,9 +36,9 @@ const PlayerControls = ({controls, player,  list}) => {
        
         if(!current) return; 
         
-        setCurrentRecrodDails(current)
+        setCurrentRecordDetails(current)
         
-    }, [player, list, currentRecord, setCurrentRecrodDails])
+    }, [player, list, currentRecord, setCurrentRecordDetails])
 
     return (
         <ErrorBoundary>

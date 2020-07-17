@@ -37,10 +37,10 @@ const SearchListItem = (props) => {
     }
 
     return (
-        <li className="search-list-item" onClick={handleClick}>
-            <div className="list-item-thumbnails">
-                <img alt="youtube thumbnail" className="thumbnail-img" src={thumbnails?.default?.url} />
-                <span className="thumbnail-time">{formatTime(duration)}</span>
+        <li className="search-results__item" onClick={handleClick}>
+            <div className="search-results__item__thumbnail">
+                <img alt="thumbnail" className="thumbnail-img" src={thumbnails?.default?.url || "./music_source_thumbnail.png"} />
+                <span className="search-results__item__time">{formatTime(duration)}</span>
                 { props.player && 
                     <PlaybackButton 
                         className="search-result"
@@ -50,7 +50,7 @@ const SearchListItem = (props) => {
                         source={source}/>
                 }
             </div>
-            <div className="list-item-details">
+            <div className="search-results__details">
                 <h5>{stripHtml(title)}</h5>
                 <p>{stripHtml(description)}</p>
                 <a href={sourceUrl} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}> {sourceUrl} </a>

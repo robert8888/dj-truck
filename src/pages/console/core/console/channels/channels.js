@@ -107,8 +107,10 @@ export default class Channels {
   }
 
   adjustPitch(channelName, currentValue) {
+    const {pitch, pitchInKey} = currentValue;
     let waveSurfer= this.getChannel(channelName); 
-    waveSurfer.setPlaybackRate(1 + currentValue / 100);
+    waveSurfer.setPlaybackRate(1 + pitch / 100);
+    waveSurfer.backend._pitchInKey = pitchInKey;
     waveSurfer.fireEvent("interaction");
 
   }

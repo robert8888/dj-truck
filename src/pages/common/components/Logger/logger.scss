@@ -3,7 +3,6 @@
 
 
 .logger{
-
     margin: 5px auto 20px auto;
     background: $primary-white;
     border-radius: 2px;
@@ -11,8 +10,11 @@
     position: relative;
     box-shadow: 2px 2px 4px 2px rgba(black, 0.1);
     letter-spacing: 1px;
-    &.logger--hidden{
+    &--hidden{
         display: none;
+    }
+    &--visible{
+        scroll-snap-align: start;
     }
 
     .logger-header{

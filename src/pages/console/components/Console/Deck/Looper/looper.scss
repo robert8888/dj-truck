@@ -4,10 +4,11 @@
 
 .controls__looper{
   @each $channel, $colors in $deck-colors {
+    &--#{$channel} {display: flex}
     &--#{$channel} .btn.btn-primary{
         @include deck-button(map-get($colors, "primary"));
     }
-    .mini-slider--#{$channel}{
+    .mini-slider--#{$channel},.mini-slider--#{$channel} > div {
       @include mini-slider(map-get($colors, "primary"), 75px, 40px);
     }
   }
