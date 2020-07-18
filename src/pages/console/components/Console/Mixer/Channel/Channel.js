@@ -75,11 +75,13 @@ class Channel extends React.Component {
 
                 <VolumePeakLevelMeter
                     aspect={"vertical"}
+                    className={"volume-plm peak-level-meter"}
                     name={channel}
                     active={this.props.chReady}
                     get={state => state.mixer.channels[channel].volume.current}
                     set={value => setVolume(channel, value)}
                     updateFlag={this.context.collapse}
+                    role={MAPPING[`MIXER_CHANNEL_${channel}_VOLUME`]}
                     interface={this.state.console && this.state.console.getMixerChannelInterface(channel)}/>
 
                 <div className="knobs-set-2">

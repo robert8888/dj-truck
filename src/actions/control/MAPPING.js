@@ -6,7 +6,8 @@ import {
     setLoop, setLoopLength,
     setPitch,
     setMaster, toggleSync,
-    setDryWet, setCurrentEffect, setEffectParameter
+    setDryWet, setCurrentEffect, setEffectParameter,
+    setConsoleState, setVolume
 } from '../';
 
 export default {
@@ -20,6 +21,19 @@ export default {
         description: `Mixer channel B gain`,
         action: value => setGain("B", value)
     },
+
+    MIXER_CHANNEL_A_VOLUME: {
+        id: `MCV_A`,
+        description: `Mixer channel A volume`,
+        action: value => setVolume("A", value)
+    },
+
+    MIXER_CHANNEL_B_VOLUME: {
+        id: `MCV_B`,
+        description: `Mixer channel B volume`,
+        action: value => setVolume("B", value)
+    },
+
     MIXER_CHANNEL_A_EQ_LOW : {
         id : `MCEL_A`,
         description: `Mixer channel A eq low`,
@@ -111,6 +125,7 @@ export default {
         description: `Mixer fader`,
         action: value => setFader(value),
     },
+
 
     //----- decks
 
@@ -280,4 +295,10 @@ export default {
         description: "Adjust second effect parameter FX 2",
         action: value => setEffectParameter(2, null, 3, value)
     },
+
+    CONSOLE_COLLAPSE : {
+        id: "CONC",
+        description: "Collapse , expand console",
+        action: value => setConsoleState(value),
+    }
 }

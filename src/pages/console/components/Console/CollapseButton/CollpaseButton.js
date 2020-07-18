@@ -1,11 +1,11 @@
 import React, {useCallback, useContext, useMemo} from "react";
-import {Button} from "react-bootstrap";
+import {connect} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faChevronUp, faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import consoleCtx from "./../ConsoleCtx";
-import {setConsoleState} from "./../../../../../actions"
+import {MAPPING, setConsoleState} from "./../../../../../actions"
 import "./collapse-button.scss";
-import {connect} from "react-redux";
+import BinaryButton from "../../../../common/components/BinnaryButton/BinnaryButton";
 
 const CollapseButton = ({update}) => {
     const consoleContext = useContext(consoleCtx)
@@ -25,9 +25,13 @@ const CollapseButton = ({update}) => {
     return (
         <div className={"component__collapse-button collapse-button__container"}>
             <div className={"component__wrapper collapse-button__wrapper"}>
-                <Button className={"collapse-button"} onClick={toggleCollapse}>
+                <BinaryButton
+                    className={"collapse-button"}
+                    value={collapsed}
+                    update={toggleCollapse}
+                    role={MAPPING.CONSOLE_COLLAPSE}>
                     <FontAwesomeIcon className={"collapse-button__icon"} icon={icon}/>
-                </Button>
+                </BinaryButton>
             </div>
         </div>
     )

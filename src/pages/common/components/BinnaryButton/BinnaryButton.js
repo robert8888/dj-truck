@@ -25,9 +25,9 @@ const BinaryButton = ({value, initValue, update, className, children, ...rest}) 
     }
 
     useEffect(()=>{
-        setState(value);
+        if(value === null || value === undefined) return;
+         setState(value);
     }, [value])
-    console.log("value from button", value)
 
     return (
         <Button 
@@ -39,8 +39,8 @@ const BinaryButton = ({value, initValue, update, className, children, ...rest}) 
     )
 }
 
-const mapStateToProps = (state, {get, defaults}) => ({
-    value : (get && get(state)) ?? (defaults && defaults(state)),
+const mapStateToProps = (state, {get, defaults, value}) => ({
+    value : value ?? (get && get(state)) ?? (defaults && defaults(state)),
 })
 
 const mapDispatchToProps = (dispatch, {set, update}) => ({

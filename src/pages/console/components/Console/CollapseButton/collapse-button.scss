@@ -2,9 +2,17 @@
 @import "./../../../../../css/mixins.scss";
 
 .collapse-button{
-  @include  button--small($primary-dark);
+  &.btn, & > .btn.btn-primary {
+   @include button--small($primary-dark);
+    padding: 6px 16px;
+    background: $dark-red;
+    &.btn--pressed-filed{
+      background: $dark-red;
+      color: white;
+    }
+ }
 
-  &.btn.btn-primary{
+  &.btn, & > .btn.btn-primary {
     &:hover,
     &:hover:active,
     &:hover:focus,
@@ -24,8 +32,7 @@
     }
   }
 
-  padding: 6px 16px;
-  background: $dark-red;
+
   &__wrapper{
     padding: 2px;
     background: $secondary-dark;

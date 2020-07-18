@@ -1,5 +1,6 @@
 import produce from "imer";
 import { ACTIONS } from "./../../actions";
+import {evalValue} from "../console/utils/evalMidiValue";
 
 const FOOTER_TYPES = ["none", "default", "player"]
 
@@ -48,7 +49,18 @@ export default function headerState(state = initState, action) {
         }
 
         case ACTIONS.LAYOUT_SET_CONSOLE_COLLAPSE : {
-            const value = action.value ?? !state.consoleCollapse ?? false;
+            let {value} = action;
+            if(value === undefined) return state;
+            if(value === null) value = !state.consoleCollapse;
+            if(typeof value === "string"){
+                if (parseInt(value) === 100){
+                    value = true;
+                } else if(parseInt(value) === 0){
+                    value = false;
+                } else {
+                    return state;
+                }
+            }
             return {
                 ...state,
                 consoleCollapse: value
