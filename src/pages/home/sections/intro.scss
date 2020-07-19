@@ -74,6 +74,7 @@
         max-height: calc(var(--vh) * 50);
 
         display: inline-block;
+        object-fit:  contain;
     }
 
 

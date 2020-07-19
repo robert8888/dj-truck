@@ -31,8 +31,6 @@ const initState = {
             }
         }
     }
-
-
 }
 
 
@@ -40,7 +38,6 @@ export default function midiReducer(state  = initState, action){
 
     switch (action.type){
         case ACTIONS.C_MIDI_SET_PORT : {
-            localStorage.setItem("midiPort", action.port);
             return {
                 ...state,
                 port: action.port,

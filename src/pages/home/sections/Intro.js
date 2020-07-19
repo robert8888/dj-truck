@@ -47,7 +47,7 @@ const Intro = () => {
                         <Rosa animation="show-up" anchorPlacement="top-bottom"  delay="800" once>
                             <img className="home-intro__laptop"
                                  src="./laptop-preview.png"
-                                 width="860" height="468"
+                                 // width="860" height="468"
                                  alt="program preview in laptop"/>
                         </Rosa>
                     </Col>
