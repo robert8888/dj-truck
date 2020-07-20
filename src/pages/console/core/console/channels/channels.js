@@ -140,7 +140,7 @@ export default class Channels {
     const channel = this.getChannel(channelName)
     return {
       time: channel.getCurrentTime(),
-      left: channel.getDuration() - channel.getCurrentTime()
+      left: (channel.getDuration() - channel.getCurrentTime()) / channel.getPlaybackRate()
     }
     
   }
