@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useMemo, useCallback, useRef} from "react";
 import {connect} from "react-redux";
 import {
-    setMidiMappingState,
+    setMappingState,
     setMidiPort,
-    setCurrentMidiProfile,
-    reqDeleteMidiProfile,
-    reqCreateMidiProfile, reqUpdateMidiProfile,
+    setCurrentProfile,
+    reqDeleteProfile,
+    reqCreateProfile, reqUpdateProfile,
 } from "../../../../../actions";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCogs} from "@fortawesome/free-solid-svg-icons"
@@ -15,16 +15,36 @@ import UUID from "uuidjs";
 import classNames from "classnames";
 import "./control-menu.scss";
 
+const mapStateToProps = state =>({
+    currentPort : state.control.port,
+
+    currentMidiProfileId : state.control.currentMidiProfileId,
+    currentKbdProfileId: state.control.currentKbdProfileId,
+
+    profilesList : state.control.profileList,
+
+    mappingMode: state.control.mapping,
+})
+
+const mapDispatchToProps = dispatch => ({
+    updatePort : (port) => dispatch(setMidiPort(port)),
+    setMappingMode: (value) => dispatch(setMappingState(value)),
+    setProfile : (id, profileType) => dispatch(setCurrentProfile(id, profileType)),
+
+    reqCreateProfile: (name, profileType) => dispatch(reqCreateProfile(name, profileType)),
+    reqUpdateProfile: profile => dispatch(reqUpdateProfile(profile)),
+    reqDeleteProfile: profile => dispatch(reqDeleteProfile(profile)),
+})
+
 const ControlMenu = ({
     currentPort, updatePort,
 
-    midiMappingMode, setMidiMappingMode, midiProfiles,
-    currentMidiProfileId, setMidiProfile,
-    createMidiProfile, updateMidiProfile, deleteMidiProfile,
-
-    kbdMappingMode, setKbdMappingMode,
-    createKbdProfile, updateKbdProfile, deleteKbdProfile,
-                     }) => {
+    mappingMode, setMappingMode,
+    profilesList,
+    currentMidiProfileId, currentKbdProfileId,
+    setProfile,
+    reqCreateProfile, reqUpdateProfile, reqDeleteProfile,
+     }) => {
     const [midiDisabled, setMidiDisabled] = useState(false);
     const [modalState, setModalState] = useState(["hidden", "visible"][0]);
     const [midiIns, setMidiIns] = useState(null);
@@ -32,6 +52,14 @@ const ControlMenu = ({
     const profileNameInput = useRef();
     const profileType = useRef();
     const modalType = useRef();
+
+    const midiProfiles = useMemo(()=>
+        profilesList.filter(profile => profile.type === "midi")
+    ,[profilesList])
+
+    const kbdProfiles = useMemo(()=>
+            profilesList.filter(profile => profile.type === "kbd")
+    ,[profilesList])
 
     useEffect(()=>{
         navigator.requestMIDIAccess({sysex:true})
@@ -65,40 +93,28 @@ const ControlMenu = ({
     }, [midiIns, setPort, currentPort])
 
     const deleteProfile = useCallback((type) => {
-        if(type === "midi"){
-            deleteMidiProfile();
-        } else if(type === "kbd"){
-            deleteKbdProfile();
-        }
-    }, [deleteMidiProfile, deleteKbdProfile]);
+        reqDeleteProfile(type);
+    }, [reqDeleteProfile]);
 
     const modalConfirm = useCallback(()=>{
         const name = profileNameInput.current.value;
         const type = profileType.current;
         const mode = modalType.current;
-        if(type === "midi"){
-            if(mode === "create"){
-                createMidiProfile(name)
-            } else if(mode === "edit"){
-                updateMidiProfile({id: currentMidiProfileId, name})
-            }
-        } else if(type === "kbd"){
-            if(mode === "create"){
-                createKbdProfile(name)
-            } else if(mode === "edit"){
-                updateKbdProfile(name);
-            }
+        if(mode === "create"){
+            reqCreateProfile(name, type)
+        } else if(mode === "edit") {
+            reqUpdateProfile(name, type)
         }
 
         setModalState("hidden")
-    }, [currentMidiProfileId, updateKbdProfile, updateMidiProfile,
-             profileNameInput, profileType, createMidiProfile,
-             createKbdProfile, setModalState])
+    }, [currentMidiProfileId, reqUpdateProfile, profileNameInput,
+             profileType, reqCreateProfile, setModalState])
 
     const menuCrudItems = useCallback( type => {
         const items = [];
         items.push((
-            <li key={"control-nav-item-create"} className={"control__nav__item control__nav__item--create"}
+            <li key={"control-nav-item-create"}
+                className={"control__nav__item control__nav__item--create"}
                 onClick={() => {
                     setModalState("visible");
                     profileType.current = type;
@@ -108,22 +124,23 @@ const ControlMenu = ({
             </li>
         ))
         items.push((
-            <li key={"control-nav-item-edit"} className={"control__nav__item control__nav__item--edit"}
-                onClick={()=>{
-                    type === "midi" ?
-                        setMidiMappingMode(!midiMappingMode) :
-                        setKbdMappingMode(!kbdMappingMode);
-                    }
-                }>
-                {(((type=== "midi" && midiMappingMode) ||
-                   (type === "kbd" && kbdMappingMode))
-                    ? "Finish " : "") + "Edit"}
+            <li key={"control-nav-item-edit"}
+                className={"control__nav__item control__nav__item--edit" +
+                          (mappingMode === type ? "control__nav__item-active" : "")}
+                onClick={()=>{ setMappingMode(mappingMode === type ? null : type)}} >
+                {((mappingMode === type) ? "Finish " : "") + "Edit"}
+
             </li>
         ))
         items.push((
-            <li key={"control-nav-item-rename"} className={"control__nav__item control__nav__item--rename"}
+            <li key={"control-nav-item-rename"}
+                className={"control__nav__item control__nav__item--rename"}
                 onClick={() => {
                     setModalState("visible");
+                    profileNameInput.current.value = profilesList.find( profile =>
+                           (type === "midi" && profile.id === currentMidiProfileId)
+                        || (type === "kbd" && profile.id === currentKbdProfileId)
+                    )?.name || ""
                     profileType.current = type;
                     modalType.current = "edit";
                 }}>
@@ -137,26 +154,33 @@ const ControlMenu = ({
             </li>
         ))
         return items;
-    }, [setMidiMappingMode, setKbdMappingMode, kbdMappingMode,
-             midiMappingMode, deleteProfile, setModalState])
+    }, [setMappingMode, mappingMode, deleteProfile, setModalState,
+             currentKbdProfileId, currentKbdProfileId, profilesList]);
 
-    const midiProfilesMenu = useMemo(()=>{
-        const items = (midiProfiles && midiProfiles.length && midiProfiles.map( profile => {
+    const profilesMenuItems = useCallback((type)=>{
+        const profiles = type === "midi" ? midiProfiles : kbdProfiles;
+        const currentId = type === "midi" ? currentMidiProfileId : currentKbdProfileId;
+        const items = (profiles && profiles.length && profiles.map( profile => {
             const classes = classNames(
                 "control__nav__item", {
-                    "control__nav__item--current": profile.id === currentMidiProfileId,
+                    "control__nav__item--current": profile.id === currentId,
                 }
             )
             return (
-                <li key={UUID.genV1()}  className={classes} onClick={setMidiProfile.bind(null, profile.id)}>
-                    {profile.name}
+                <li key={UUID.genV1()}  className={classes}
+                    onClick={setProfile.bind(null, profile.id, type)}>
+                        {profile.name}
                 </li>
             )
         })) || [];
         items.push((<li key={"control-nav-item-spacer-1"} className={"control__nav__item control__nav__item--spacer"}/>))
 
-        return items.concat(menuCrudItems("midi"));
-    }, [midiProfiles, currentMidiProfileId, setMidiProfile, menuCrudItems])
+        return items.concat(menuCrudItems(type));
+    }, [midiProfiles, currentMidiProfileId, setProfile, menuCrudItems])
+
+    const midiProfilesMenuItems = useMemo(() => profilesMenuItems("midi"), [profilesMenuItems])
+
+    const kbdProfilesMenuItems = useMemo(() => profilesMenuItems("kbd"), [profilesMenuItems])
 
     return (
         <div className="control component">
@@ -176,15 +200,22 @@ const ControlMenu = ({
                     <li className={"control__nav__item"}>
                         Midi profiles
                         <ul className={"control__nav control__nav__sub"}>
-                            {midiProfilesMenu}
+                            {midiProfilesMenuItems}
                         </ul>
                     </li>
-                    <li className={"control__nav__item"}>Keyboard profiles</li>
+                    <li className={"control__nav__item"}>
+                        Keyboard profiles
+                        <ul className={"control__nav control__nav__sub"}>
+                            {kbdProfilesMenuItems}
+                        </ul>
+                    </li>
                 </ul>
             </nav>
 
 
-            <Modal show={(modalState === "visible")} title={"Profile name"} onHide={setModalState.bind(null,"hidden")}>
+            <Modal show={(modalState === "visible")}
+                   title={"Profile name"}
+                   onHide={setModalState.bind(null,"hidden")}>
                 <div className={"modal__content"}>
                     <Form.Group>
                         <Form.Control
@@ -204,29 +235,6 @@ const ControlMenu = ({
     )
 }
 
-const mapStateToProps = state =>({
-    currentPort : state.midi.port,
 
-    currentMidiProfileId : state.midi.currentProfileId,
-    midiProfiles : state.midi.profileList,
-
-    kbdMappingMode: null,
-    midiMappingMode: state.midi.mapping,
-})
-
-const mapDispatchToProps = dispatch => ({
-    updatePort : (port) => dispatch(setMidiPort(port)),
-    setMidiMappingMode: (value) => dispatch(setMidiMappingState(value)),
-    setMidiProfile : (id) => dispatch(setCurrentMidiProfile(id)),
-
-    createMidiProfile: name => dispatch(reqCreateMidiProfile(name)),
-    updateMidiProfile: profile => dispatch(reqUpdateMidiProfile(profile)),
-    deleteMidiProfile: profile => dispatch(reqDeleteMidiProfile(profile)),
-
-    setKbdMappingMode: () => console.log("kbd mapping mode not implemented"),
-    createKbdProfile: () => console.log("create midi profile, im not implemented"),
-    updateKbdProfile: () => console.log("update midi profile"),
-    deleteKbdProfile: () => console.log("delete kbd profile,  im not implemented")
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlMenu);

@@ -305,8 +305,14 @@ function consoleReducer(state = initState, action) {
             }
             if(typeof value === "string"){
                 if(value.match(/^[+-]/)){
-                    const diff = (max - min) * (parseFloat(value.substr(1)) /100);
-                    temp.floatLoopLength += (value.startsWith("+")) ? diff : -diff;
+                    let diff = parseFloat(value.substr(1));
+                    if(diff >= 10){
+                        temp.floatLoopLength += (value.startsWith("+")) ? 1 : -1;
+                    } else {
+                        diff = (max - min) * (diff /100);
+                        temp.floatLoopLength += (value.startsWith("+")) ? diff : -diff;
+                    }
+                    temp.floatLoopLength = toRange(temp.floatLoopLength, min, max);
                     value = parseInt(temp.floatLoopLength)
                 } else {
                     value = parseInt(parseInt(value) * (max - min) /100) + min;
@@ -315,6 +321,7 @@ function consoleReducer(state = initState, action) {
             } else {
                 temp.floatLoopLength = value;
             }
+            console.log(value)
             return nextDeckState(state, action.destination, false, { loopLength: value }, true);
         }
 

@@ -1,12 +1,12 @@
 import { put, takeEvery } from "redux-saga/effects";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import {ACTIONS, setMidiProfile, pushLog} from "../../../actions";
+import {ACTIONS, setProfile, pushLog} from "../../../actions";
 import { Log } from "./../../../utils/logger/logger";
 
 const path = ['saga', 'control', 'midi', 'read profile']
 
 export default function* watcher(){
-    yield takeEvery(ACTIONS.C_MIDI_REQ_PROFILE, handle)
+    yield takeEvery(ACTIONS.CONTROL_REQ_PROFILE, handle)
 }
 
 function* handle(action){
@@ -23,7 +23,7 @@ function* handle(action){
             map : []
         }
 
-        yield put(setMidiProfile(profile));
+        yield put(setProfile(profile));
 
         yield put(pushLog(new Log(`Midi profile  ${id} loaded from database`, path)))
     } catch (error){

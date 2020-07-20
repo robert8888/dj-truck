@@ -26,7 +26,7 @@ import ConsoleContext from "./../../ConsoleCtx";
 import classNames from "classnames";
 
 class Channel extends React.Component {
-    cueNotSupportedMsg = `Sorry your device not support this`;
+    cueNotSupportedMsg = `Sorry your device not support cue`;
     state = {
         console: null
     }

@@ -3,48 +3,36 @@ import store from "./../../../../../store";
 import MidiTranslator from "./MidiTranslator/midiTranslator";
 import _throttle from "lodash/throttle";
 import STATUS from "./MidiTranslator/midiStatus";
+import Controller from "./controller";
 
-const selectMappingMode = state => state.midi.mapping;
-const selectProfileMap = state => {
-    const currentId = state.midi.currentProfileId;
-    return state.midi.profiles[currentId].map;
-}
-const selectActions = state => state.midi.actions;
 
-export default class MidiController {
+export default class MidiController extends Controller{
     constructor() {
+        super("midi")
         this.midiTranslator = new MidiTranslator();
-
-        this.setMidiMap = _throttle(
-            (msg) => store.dispatch(setMidiMapValue(msg))
-            , 100)
-        this.throtles = new Map();
-        this.midiIn = this.onMidiIn.bind(this)
     }
-
 
     updateMidiPort(port){
         if(this.currentPort){
-            this.currentPort.onmidimessage = this.midiIn;
+            this.currentPort.onmidimessage = null;
         }
-        port.onmidimessage = this.midiIn;
+        port.onmidimessage = this.onMidiIn.bind(this);
         this.currentPort = port;
     }
 
     onMidiIn(message){
-        const state = store.getState()
         const msg = this.midiTranslator.translate(message.data);
-        const mappingMode = selectMappingMode(state);
-        if(mappingMode){
-            this.setMidiMap(msg)
+        const mappingMode = this._getMappingMode();
+        if(mappingMode === "midi"){
+            this.commit(setMidiMapValue(msg))
             return;
         }
 
-        let action = this._getAction(state, msg.id);
+        let action = this._getAction(msg.id)?.reference;
         if(!action) return;
 
         if(msg.name === STATUS.NOTE_ON && msg.velocity === 0) {
-            store.dispatch(action());
+            this.commit(action())
             return;
         }
 
@@ -68,17 +56,7 @@ export default class MidiController {
         //
 
         if(typeof action !== "function") return;
-        store.dispatch(action(value))
+        this.commit(action(value))
     }
 
-    _getAction(state, midiId){
-        if(!state) {
-            state = store.getState();
-        }
-        const map = selectProfileMap(state);
-        const actionId = map.toAction[midiId];
-        const actions = selectActions(state);
-        if(!actions[actionId]) return null;
-        return MAPPING[actions[actionId].fullName].action;
-    }
 }

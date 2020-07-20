@@ -9,6 +9,10 @@
     $ratio-big-to-small : 0.70;
     $shift : ($diameter - ( $diameter * $ratio-big-to-small )) / 2; 
 
+    &:hover{
+        cursor: n-resize;
+    }
+
     .knob-big-circle{
         width: $diameter;
         height: $diameter;

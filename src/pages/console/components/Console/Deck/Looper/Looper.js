@@ -6,6 +6,17 @@ import {MAPPING, setLoop, setLoopLength} from "../../../../../../actions";
 import InButton from "./InButton";
 import OutButton from "./OutButton";
 
+const mapStateToProps = (state, ownProps) => ({
+    loopState : state.console.channel[ownProps.name].playBackState.loop,
+    loopLengths: state.console.channel[ownProps.name].deckState.loopLengths,
+    loopLengthValue : state.console.channel[ownProps.name].deckState.loopLength.current,
+})
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    setLoop : (value) => dispatch(setLoop(ownProps.name, value)),
+    setLoopLength : (value) => dispatch(setLoopLength(ownProps.name, value))
+})
+
 class Looper extends React.Component {
   constructor(...args) {
     super(...args);
@@ -49,15 +60,6 @@ class Looper extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-    loopState : state.console.channel[ownProps.name].playBackState.loop,
-    loopLengths: state.console.channel[ownProps.name].deckState.loopLengths,
-    loopLengthValue : state.console.channel[ownProps.name].deckState.loopLength.current,
-})
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    setLoop : (value) => dispatch(setLoop(ownProps.name, value)),
-    setLoopLength : (value) => dispatch(setLoopLength(ownProps.name, value))
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Looper);

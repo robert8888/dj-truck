@@ -5,6 +5,7 @@ import Mixer from "./mixer/mixer";
 import Observer from "./observer/observer";
 import STATUS from "./observer/STATUS";
 import MidiController from "./control/midi";
+import KbdController from "./control/kbd";
 
 
 
@@ -20,14 +21,15 @@ export default class Console{
         this.effector = new Effector(this.mixer.mainAudioContext);
         this.mixer.connect(this.effector);
         this.midiControler = new MidiController();
+        this.kbdControler = new KbdController();
     }
 
     static Get(){
         return new Promise((res, rej) => {
             if(!Console.instance){
                 try{
-                    let consol = new Console();
-                    Console.instance = consol;
+                    let _console = new Console();
+                    Console.instance = _console;
                     res(Console.instance);
                 }
                 catch(error){

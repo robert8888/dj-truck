@@ -17,8 +17,8 @@ class MiniSlider extends React.Component {
   }
 
   updateSlide(nextSlide){
-    this.setState({ ...this.state, currentSlide: nextSlide });
     (this.props.onChange && this.props.onChange(nextSlide))
+    this.setState({ ...this.state, currentSlide: nextSlide });
   }
 
   nextSlide(){
@@ -49,7 +49,7 @@ class MiniSlider extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.value === undefined || prevProps.value === this.state.currentSlide) return;
+    if(this.props.value === undefined || this.props.value === this.state.currentSlide) return;
     this.updateSlide(this.props.value);
   }
 

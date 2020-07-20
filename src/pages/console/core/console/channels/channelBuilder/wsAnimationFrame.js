@@ -22,7 +22,7 @@ export function addAnimationFrame(waveSurfer){
 
 
     waveSurfer.drawer._measureDimensions = function(){
-        console.log("dimension measured")
+      //  console.log("dimension measured")
         this.wrapper._clientWidth = this.wrapper.clientWidth;
         this.wrapper._scrollWidth = this.wrapper.scrollWidth;
     }

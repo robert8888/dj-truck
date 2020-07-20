@@ -1,15 +1,15 @@
 import {all} from "redux-saga/effects";
-// midi profiles
-import reqCreateMidiProfileSaga from "./midi/reqCreateProfile";
-import reqReadMidiProfileSaga from "./midi/reqReadProfile";
-import reqUpdateMidiProfileSaga from "./midi/reqUpdateProfile";
-import reqDeleteMidiProfileSaga from "./midi/reqDeleteProfile";
+// kbd and mini control profiles
+import reqCreateControlProfileSaga from "./control/reqCreateProfile";
+import reqReadControlProfileSaga from "./control/reqReadProfile";
+import reqUpdateControlProfileSaga from "./control/reqUpdateProfile";
+import reqDeleteControlProfileSaga from "./control/reqDeleteProfile";
 
 export default function * controlRoot(){
     yield all([
-        reqCreateMidiProfileSaga(),
-        reqReadMidiProfileSaga(),
-        reqUpdateMidiProfileSaga(),
-        reqDeleteMidiProfileSaga(),
+        reqCreateControlProfileSaga(),
+        reqReadControlProfileSaga(),
+        reqUpdateControlProfileSaga(),
+        reqDeleteControlProfileSaga(),
     ])
 }

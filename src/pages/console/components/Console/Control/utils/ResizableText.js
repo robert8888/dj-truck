@@ -1,36 +1,38 @@
-import React, {useCallback, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import "./resizeble-text.js.scss"
 
-const ResizableText = ({children}) => {
-    const [aspect, setAspect] = useState(null)
+const ResizableText = ({children, aspect}) => {
+    const container = useRef();
+    const wrapper = useRef();
 
-    const updateAspect = useCallback( ref =>{
-        if(!ref) return;
-        const wrapper = ref.closest(".control-mapping__wrapper");
-        if(!wrapper) return;
-        const rect =wrapper.getBoundingClientRect()
-        if(rect.width  > rect.height * 1.2){
-            setAspect("horizontal")
+
+    useEffect(() => {
+        if(!children || !wrapper.current || !container.current) return;
+        wrapper.current.style.transform = `none`;
+        const parentSize = container.current.parentElement.getBoundingClientRect();
+        const wrapperSize = wrapper.current.getBoundingClientRect();
+        const xRatio = wrapperSize.width / parentSize.width;
+        const yRatio = wrapperSize.height / parentSize.height;
+        const ratio = Math.max(xRatio, yRatio);
+        if(ratio > 1){
+            let transform = `scale(${1  / (ratio * 1.1)})`
+            if(parentSize.height > parentSize.width * 1.2){
+                transform += " rotate(90deg)"
+            }
+            wrapper.current.style.transform = transform;
         } else {
-            setAspect("vertical")
+            wrapper.current.style.transform = `none`
         }
-    }, [setAspect])
+    }, [children, wrapper, container])
 
     return (
-        <div ref={updateAspect} className={"resizable " + aspect || ""}>
-            <svg
-                width="100%"
-                height="100%"
-                viewBox={`0 0 100 ${(aspect === "horizontal") ? 25 : 50}`}
-                preserveAspectRatio="xMinYMin meet">
-                <foreignObject width="100%" height="100%" xmlns="http://www.w3.org/1999/xhtml">
-                    <div className={"resizable__container"} xmlns="http://www.w3.org/1999/xhtml" >
-                        {children}
-                    </div>
-                </foreignObject>
-            </svg>
+        <div ref={container} className={"resizable__container"}>
+            <div ref={wrapper} className={"resizable__wrapper"}>
+                {children}
+            </div>
         </div>
     )
+
 }
 
 export default ResizableText;

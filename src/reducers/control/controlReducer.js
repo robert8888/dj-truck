@@ -1,4 +1,4 @@
-import {ACTIONS, MAPPING} from "./../../../actions";
+import {ACTIONS, MAPPING} from "./../../actions";
 import {produce} from "imer";
 import _omitBy from "lodash/omitBy";
 
@@ -6,8 +6,9 @@ const initState = {
     port: null,
     mapping: false,
     currentMapping: null,
-    profileList : [{id: 123, name: "Profile 1"}, {id: 321, name: "Profile 2"}],
-    currentProfileId : 123,
+    profileList : [{id: 123, type : "midi", name: "Profile 1"}, {id: 321, type:"midi", name: "Profile 2"}, {id: 456, type:"kbd", name: "Profile 54"}],
+    currentMidiProfileId : 123,
+    currentKbdProfileId: 456,
     actions : (()=>{
         const _actions = {};
         for(let key in MAPPING){
@@ -25,6 +26,16 @@ const initState = {
         123: {
             id: 456454,
             name : "Profile 1",
+            type: "midi",
+            map : {
+                toAction : {},
+                toMidi : {}
+            }
+        },
+        456: {
+            id: 456,
+            name : "Profile 56",
+            type: "kbd",
             map : {
                 toAction : {},
                 toMidi : {}
@@ -34,35 +45,35 @@ const initState = {
 }
 
 
-export default function midiReducer(state  = initState, action){
+export default function controlReducer(state  = initState, action){
 
     switch (action.type){
-        case ACTIONS.C_MIDI_SET_PORT : {
+        case ACTIONS.CONTROL_SET_MIDI_PORT : {
             return {
                 ...state,
                 port: action.port,
             };
         }
 
-        case ACTIONS.C_MIDI_SET_MAPPING_STATE : {
+        case ACTIONS.CONTROL_SET_MAPPING_STATE : {
             return {
                 ...state,
                 mapping: action.value,
             }
         }
 
-        case ACTIONS.C_MIDI_SET_MAPPING_ACTION : {
+        case ACTIONS.CONTROL_SET_MAPPING_ACTION : {
             return {
                 ...state,
                 currentMapping: action.element,
             }
         }
 
-        case ACTIONS.C_MIDI_SET_MAPPING_VALUE : {
+        case ACTIONS.CONTROL_SET_MIDI_MAPPING_VALUE : {
             if(!state.currentMapping) return state;
             const {midiMsg} = action;
             return produce(state, draftState => {
-                const profile = state.profiles[state.currentProfileId];
+                const profile = state.profiles[state.currentMidiProfileId];
                 const toAction = _omitBy(profile.map.toAction, ( value, key) =>
                       ((key === midiMsg.id) || (value === state.currentMapping.id))
                     )
@@ -72,20 +83,47 @@ export default function midiReducer(state  = initState, action){
                     )
                 toAction[midiMsg.id] = state.currentMapping.id;
                 toMidi[state.currentMapping.id] = midiMsg.id;
-                draftState.profiles[state.currentProfileId].map = {toAction, toMidi};
+                draftState.profiles[state.currentMidiProfileId].map = {toAction, toMidi};
             })
         }
 
-        case ACTIONS.C_MIDI_SET_CURRENT_PROFILE : {
+        case ACTIONS.CONTROL_SET_KBD_MAPPING_VALUE : {
+            if(!state.currentMapping) return state;
+            const {keyId} = action;
+            const currentMappingKey = state.currentMapping.id +"-"+ state.currentMapping.method
+            return produce(state, draftState => {
+                const profile = state.profiles[state.currentKbdProfileId];
+                const toAction = _omitBy(profile.map.toAction, ( value, key) =>
+                    ((key === keyId) || (value === currentMappingKey))
+                )
+
+                const toKbd = _omitBy(profile.map.toKbd, (value, key) =>
+                    ((value === keyId) || (key === currentMappingKey))
+                )
+                toAction[keyId] = currentMappingKey ;
+                toKbd[currentMappingKey] = keyId;
+                draftState.profiles[state.currentKbdProfileId].map = {toAction, toKbd};
+            })
+        }
+
+
+        case ACTIONS.CONTROL_SET_CURRENT_PROFILE : {
+            const {profileId, profileType} = action;
+            const data = {}
+            if(profileType === "midi"){
+                data.currentMidiProfileId = profileId;
+            } else {
+                data.currentKbdProfileId = profileId
+            }
             return {
                 ...state,
-                currentProfileId: action.profileId
+                ...data,
             }
         }
 
 
         ///CRUD - CSUD to be more explicit
-        case ACTIONS.C_MIDI_CREATE_PROFILE :{
+        case ACTIONS.CONTROL_CREATE_PROFILE :{
             console.log(action)
             const {profile} = action;
             return {
@@ -105,8 +143,8 @@ export default function midiReducer(state  = initState, action){
             }
         }
 
-        case ACTIONS.C_MIDI_SET_PROFILE:
-        case ACTIONS.C_MIDI_UPDATE_PROFILE: {
+        case ACTIONS.CONTROL_SET_PROFILE:
+        case ACTIONS.CONTROL_UPDATE_PROFILE: {
             const {profile} = action;
             return {
                 ...state,
@@ -122,7 +160,7 @@ export default function midiReducer(state  = initState, action){
             }
         }
 
-        case ACTIONS.C_MIDI_DELETE_PROFILE:{
+        case ACTIONS.CONTROL_DELETE_PROFILE:{
             const {profile} = action;
             return {
                 ...state,
