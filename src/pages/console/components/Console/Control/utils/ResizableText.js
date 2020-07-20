@@ -1,10 +1,9 @@
 import React, {useEffect, useRef} from "react";
 import "./resizeble-text.js.scss"
 
-const ResizableText = ({children, aspect}) => {
+const ResizableText = ({children}) => {
     const container = useRef();
     const wrapper = useRef();
-
 
     useEffect(() => {
         if(!children || !wrapper.current || !container.current) return;

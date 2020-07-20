@@ -321,7 +321,6 @@ function consoleReducer(state = initState, action) {
             } else {
                 temp.floatLoopLength = value;
             }
-            console.log(value)
             return nextDeckState(state, action.destination, false, { loopLength: value }, true);
         }
 

@@ -1,16 +1,12 @@
-import React, {useCallback, useContext} from "react";
+import React, {useCallback} from "react";
 import { connect } from "react-redux";
 import {toggleSync, setMaster, MAPPING} from './../../../../../../actions';
 import SyncBar from "./SyncBar/SyncBar";
 import SyncButton from "./SyncButton";
 import MasterButton from "./MaterButton";
-// import ConsoleContext from "./../../ConsoleCtx";
-// import DeckContext from "./../DeckCtx";
 import "./sync-control.scss";
 
 const SyncControl = ({isMaster, noMaster, channel}) => {
-    // const consoleContext = useContext(ConsoleContext);
-    // const deckContext = useContext(DeckContext);
 
     let isActive = useCallback(()=>{
         if(isMaster || noMaster){

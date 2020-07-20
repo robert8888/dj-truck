@@ -107,7 +107,7 @@ const ControlMenu = ({
         }
 
         setModalState("hidden")
-    }, [currentMidiProfileId, reqUpdateProfile, profileNameInput,
+    }, [reqUpdateProfile, profileNameInput, modalType,
              profileType, reqCreateProfile, setModalState])
 
     const menuCrudItems = useCallback( type => {
@@ -155,7 +155,7 @@ const ControlMenu = ({
         ))
         return items;
     }, [setMappingMode, mappingMode, deleteProfile, setModalState,
-             currentKbdProfileId, currentKbdProfileId, profilesList]);
+        currentMidiProfileId, currentKbdProfileId, profilesList]);
 
     const profilesMenuItems = useCallback((type)=>{
         const profiles = type === "midi" ? midiProfiles : kbdProfiles;
@@ -176,7 +176,8 @@ const ControlMenu = ({
         items.push((<li key={"control-nav-item-spacer-1"} className={"control__nav__item control__nav__item--spacer"}/>))
 
         return items.concat(menuCrudItems(type));
-    }, [midiProfiles, currentMidiProfileId, setProfile, menuCrudItems])
+    }, [midiProfiles, currentMidiProfileId,
+             currentKbdProfileId, kbdProfiles, setProfile, menuCrudItems])
 
     const midiProfilesMenuItems = useMemo(() => profilesMenuItems("midi"), [profilesMenuItems])
 

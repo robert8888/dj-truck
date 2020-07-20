@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect} from "react";
 import { connect } from "react-redux";
 import { consoleStopAll, setFooterType } from "./../../../../actions";
 import { usePlayer } from "./../../../common/Hooks/usePlayer";
@@ -26,7 +26,7 @@ const Console = ({callStopAll, updateFooterType, consoleCollapse }) => {
 
     useEffect(()=> {
         updateFooterType()
-    }, [setFooterType])
+    }, [updateFooterType])
 
 
     return (

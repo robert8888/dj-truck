@@ -102,7 +102,7 @@ export default function withControlMapping(Component){
                         (mappingMode === "kbd" && role?.type === Number && aspect === "vertical")
                 }
             )
-        },[mappingMode, isCurrent, role, aspect])
+        },[mappingMode, role, aspect])
 
 
         const upLayerClasses = useMemo(()=>{
@@ -135,7 +135,7 @@ export default function withControlMapping(Component){
                 <div onClick={setAsCurrentMapping.bind(null, "up")}
                      className={layerClasses + upLayerClasses}
                      data-tooltip={value && (value.set || value.up)}>
-                        <ResizableText aspect={aspect}>
+                        <ResizableText>
                             {content.set || content.up}
                         </ResizableText>
                 </div>
@@ -143,7 +143,7 @@ export default function withControlMapping(Component){
                 <div onClick={setAsCurrentMapping.bind(null, "down")}
                      className={layerClasses + downLayerClasses}
                      data-tooltip={value && value.down}>
-                        <ResizableText aspect={aspect}>
+                        <ResizableText>
                             {content.down}
                         </ResizableText>
                 </div>

@@ -12,7 +12,7 @@ const CollapseButton = ({update}) => {
 
     const collapsed = consoleContext.collapse;
     const icon = useMemo(()=>{
-       return consoleContext.collapse
+       return collapsed
             ? faChevronDown
             : faChevronUp
 
@@ -20,7 +20,7 @@ const CollapseButton = ({update}) => {
 
     const toggleCollapse = useCallback(()=> {
         update(!consoleContext.collapse)
-    }, [consoleContext])
+    }, [consoleContext, update])
 
     return (
         <div className={"component__collapse-button collapse-button__container"}>

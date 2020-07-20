@@ -5,7 +5,6 @@ import { loadTrack } from "./../../../../../actions";
 import ItemTypes from "./../../../../common/DndItemTypes";
 import Looper from "./Looper/Looper";
 import PitchButtons from "./PitchButtons/PitchButtons";
-//import PitchInKeyButton from "./InKeyButton/PitchInKeyButton";
 import PitchSlider from "./PitchSlider/PitchSlider";
 import PlayBackControls from "./PlayBackControls/PlayBackControls";
 import Player from "./Player/Player";
@@ -40,7 +39,7 @@ const Deck = ({name: channel, loadTrack}) => {
                 "deck--collapsed": consoleContext.collapse,
                 "deck--expanded" : !consoleContext.collapse,
             })
-    }, [consoleContext])
+    }, [consoleContext, channel])
 
     return (
         <ErrorBoundary>

@@ -1,6 +1,5 @@
 import produce from "imer";
 import { ACTIONS } from "./../../actions";
-import {evalValue} from "../console/utils/evalMidiValue";
 
 const FOOTER_TYPES = ["none", "default", "player"]
 

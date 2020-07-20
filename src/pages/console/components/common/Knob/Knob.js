@@ -282,7 +282,6 @@ class Knob extends React.Component{
     }
 
     render(){
-        console.log("render knob")
         return (
             <div 
                 className={"knob " + this.props.className} 

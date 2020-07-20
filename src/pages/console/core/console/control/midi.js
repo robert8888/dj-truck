@@ -1,7 +1,5 @@
-import {MAPPING, setMidiMapValue} from "./../../../../../actions"
-import store from "./../../../../../store";
+import {setMidiMapValue} from "./../../../../../actions"
 import MidiTranslator from "./MidiTranslator/midiTranslator";
-import _throttle from "lodash/throttle";
 import STATUS from "./MidiTranslator/midiStatus";
 import Controller from "./controller";
 

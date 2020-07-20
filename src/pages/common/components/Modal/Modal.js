@@ -1,4 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import ReactDOM from "react-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import "./modal.scss";
@@ -6,19 +7,21 @@ import classNames from "classnames"
 
 const Modal = ({children, onHide, show , title, backdropHide = false}) => {
     const [isVisible, setVisible] = useState(show ?? false);
+    const mouseDown = useRef();
 
     const showModal = useCallback(() => {
+        if(!mouseDown.current) return;
         setVisible(true);
-        window.addEventListener("mousedown", mouseDown)
-    },[setVisible]);
+        window.addEventListener("mousedown", mouseDown.current)
+    },[setVisible, mouseDown]);
 
     const hideModal = useCallback(() =>{
         setVisible(false);
-        window.removeEventListener("mousedown", mouseDown);
+        window.removeEventListener("mousedown", mouseDown.current);
         onHide && onHide instanceof Function && onHide();
-    }, [setVisible])
+    }, [setVisible, mouseDown, onHide])
 
-    const mouseDown = useCallback(({target})=>{
+    mouseDown.current = useCallback(({target})=>{
         if(!backdropHide) return;
         if(target.closest(".modal__container")) return;
         hideModal();
@@ -26,7 +29,7 @@ const Modal = ({children, onHide, show , title, backdropHide = false}) => {
 
     useEffect(()=>{
         show ? showModal() : hideModal();
-    }, [setVisible, show])
+    }, [show, showModal, hideModal])
 
 
     const containerClass = useMemo(()=> classNames(
@@ -35,7 +38,7 @@ const Modal = ({children, onHide, show , title, backdropHide = false}) => {
         }
     ), [isVisible])
 
-    return (
+    return ReactDOM.createPortal((
         <div className={containerClass}>
             <div className={"modal__container"}>
                 <div className={"modal__header"}>
@@ -52,7 +55,7 @@ const Modal = ({children, onHide, show , title, backdropHide = false}) => {
                 </div>
             </div>
         </div>
-    )
+    ), document.body);
 }
 
 export default Modal
