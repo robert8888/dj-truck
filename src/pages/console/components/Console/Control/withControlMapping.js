@@ -8,17 +8,17 @@ import ResizableText from "./utils/ResizableText";
 export default function withControlMapping(Component){
 
     const mapStateToProps = (state) => ({
+        enableMapping : state.control.port || state.control.mapping,
         mappingMode : state.control.mapping,
         currentMapping: state.control.currentMapping,
 
-        midiValueMap : state.control.profiles[state.control.currentMidiProfileId]?.map.toMidi,
-        kbdValueMap: state.control.profiles[state.control.currentKbdProfileId]?.map.toKbd,
-        enableMapping : state.control.port || state.control.mapping ,
+        profiles : state.control.profiles,
+        currentMidiId : state.control.currentMidiProfileId,
+        currentKbdId : state.control.currentKbdProfileId,
     })
 
     const mapDispatchToProps = dispatch => ({
         setCurrentMapping: value => dispatch(setCurrentMapping(value)),
-        // setActionHandle: (actionId, handle) => dispatch(setMidiActionHandle(actionId, handle)),
     })
 
 
@@ -27,10 +27,11 @@ export default function withControlMapping(Component){
            enableMapping,
            mappingMode,
            currentMapping,
+
+           currentMidiId,
+           currentKbdId,
+           profiles,
            setCurrentMapping,
-           currentMidiProfileId,
-           midiValueMap,
-           kbdValueMap,
            className,
            ...props})  => {
         const [isCurrent, setIsCurrent] = useState(null);
@@ -44,8 +45,10 @@ export default function withControlMapping(Component){
             if(enableMapping && role){
                 setActivated(true);
             }
-        }, [enableMapping, role])
+        }, [enableMapping, role]);
 
+        const midiValueMap = useMemo(()=> profiles[currentMidiId]?.map?.toMidi, [profiles, currentMidiId])
+        const kbdValueMap = useMemo(()=> profiles[currentKbdId]?.map?.toKbd, [profiles, currentKbdId])
 
         const setAsCurrentMapping = useCallback((method) => {
             if(!isDual || !method){
@@ -125,6 +128,7 @@ export default function withControlMapping(Component){
                 : setAspect("vertical")
 
         }, [setAspect])
+
 
 
         if(!activated) return <Component {...props} className={className || ""}/>

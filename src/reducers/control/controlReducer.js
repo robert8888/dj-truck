@@ -1,14 +1,15 @@
 import {ACTIONS, MAPPING} from "./../../actions";
 import {produce} from "imer";
 import _omitBy from "lodash/omitBy";
+import _invert from "lodash/invert"
 
 const initState = {
     port: null,
     mapping: false,
     currentMapping: null,
-    profileList : [{id: 123, type : "midi", name: "Profile 1"}, {id: 321, type:"midi", name: "Profile 2"}, {id: 456, type:"kbd", name: "Profile 54"}],
-    currentMidiProfileId : 123,
-    currentKbdProfileId: 456,
+    profileList : [],//[{type: "midi", name:"midid test", id : 50}],
+    currentMidiProfileId : 50,
+    currentKbdProfileId: null,
     actions : (()=>{
         const _actions = {};
         for(let key in MAPPING){
@@ -19,28 +20,22 @@ const initState = {
                 fullName : key,
             }
         }
+        console.log("call buil daciotns")
         return _actions;
     })(),
 
     profiles : {
-        123: {
-            id: 456454,
-            name : "Profile 1",
-            type: "midi",
-            map : {
-                toAction : {},
-                toMidi : {}
-            }
-        },
-        456: {
-            id: 456,
-            name : "Profile 56",
-            type: "kbd",
-            map : {
-                toAction : {},
-                toMidi : {}
-            }
-        }
+        // 50 : {
+        //     map: {
+        //         toMidi : {
+        //             "MCEL_A"  : "CH:4-PW"
+        //
+        //         },
+        //         toAction: {
+        //             "CH:4-PW" : "MCEL_A"
+        //         }
+        //     }
+        // }
     }
 }
 
@@ -122,9 +117,18 @@ export default function controlReducer(state  = initState, action){
         }
 
 
+        case ACTIONS.CONTROL_SET_PROFILE_LIST :{
+            const {profileList} = action;
+            return {
+                ...state,
+                profileList,
+            }
+        }
+
+
         ///CRUD - CSUD to be more explicit
         case ACTIONS.CONTROL_CREATE_PROFILE :{
-            console.log(action)
+            console.log("create profile", action)
             const {profile} = action;
             return {
                 ...state,
@@ -143,28 +147,79 @@ export default function controlReducer(state  = initState, action){
             }
         }
 
-        case ACTIONS.CONTROL_SET_PROFILE:
+        case ACTIONS.CONTROL_SET_PROFILE: {
+            const {profile} = action;
+            const profiles = state.profiles;
+            const map = {}
+            map.toAction = {};
+
+            if(profile.type  === "midi"){
+                map.toMidi = {};
+            } else if(profile.type === "kbd"){
+                map.toKbd = {};
+            }
+
+            profile.map.forEach(item => {
+                if(profile.type  === "midi"){
+                    map.toMidi[item.value] = item.key;
+                } else if(profile.type === "kbd"){
+                    map.toKbd[item.value] = item.key;
+                }
+                map.toAction[item.key] = item.value;
+            })
+
+            profiles[profile.id] = {
+                ...profile,
+                map,
+            }
+            const draftState = {
+                ...state,
+                profiles,
+            }
+            if(profile.type === "midi"){
+                draftState.currentMidiProfileId = profile.id;
+                localStorage.setItem("currentMidiProfileId",  profile.id);
+            } else if(profile.type === "kbd"){
+                draftState.currentKbdProfileId = profile.id;
+                localStorage.setItem("currentKbdProfileId", profile.id);
+            }
+            return draftState;
+
+        }
         case ACTIONS.CONTROL_UPDATE_PROFILE: {
             const {profile} = action;
+            const profiles = state.profiles;
+            profiles[profile.id] = {
+                ...profiles[profile.id],
+                ...profile,
+            }
+            const profileList = state.profileList.map(p => {
+                if(p.id === profile.id){
+                    p = {...p, ...profile}
+                }
+                return p
+            })
+
             return {
                 ...state,
-                profiles: state.profiles.map( p => {
-                    if(p.id === profile.id){
-                        p = {
-                            ...p,
-                            ...profile
-                        }
-                    }
-                    return p;
-                })
+                profiles,
+                profileList,
             }
         }
 
         case ACTIONS.CONTROL_DELETE_PROFILE:{
             const {profile} = action;
+            const profiles = state.profiles;
+            delete profiles[profile.id];
+            if(profile.type === "midi"){
+                localStorage.removeItem("currentMidiProfileId")
+            } else if(profile.type === "kbd"){
+                localStorage.removeItem("currentKbdProfileId")
+            }
+
             return {
                 ...state,
-                profiles: state.profiles.filter( p => p.id !== profile.id),
+                profiles,
                 profileList: state.profileList.filter( p => p.id !== profile.id),
             }
         }

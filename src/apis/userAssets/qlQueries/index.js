@@ -31,3 +31,11 @@ export {default as updateCommentQl} from "./records/updateComment";
 export {default as deleteCommentQl} from "./records/deleteComment";
 export {default as addToFavoriteQl} from "./records/favorite/addToFavorite";
 export {default as removeFromFavoriteQl} from "./records/favorite/removeFromFavorite";
+
+//------------- control profiles -------
+export {default as createControlProfileQl} from "./controlProfile/createProfile";
+export {default as deleteControlProfileQl} from "./controlProfile/deleteProfile";
+export {default as updateControlProfileQl} from "./controlProfile/updateProfile";
+export {default as updateControlProfileMapQl} from "./controlProfile/updateProfileMap";
+export {default as getControlProfileListQl} from "./controlProfile/getProfileList";
+export {default as getControlProfileQl} from "./controlProfile/getProfile";

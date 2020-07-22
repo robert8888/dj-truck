@@ -9,17 +9,10 @@ export default class KbdController extends Controller{
         super("kbd")
         this.keyDown = this.onKeyDown.bind(this)
         window.addEventListener("keydown", this.keyDown);
-        window.onpopstate = () => {
-            console.log("on popo state")
-            window.location.text("/console")
-                ? window.addEventListener("keydown", this.keyDown)
-                : window.removeEventListener("keydown", this.keyDown)
-        };
     }
 
     onKeyDown(event){
-        console.log("key down")
-        if(document.activeElement.matches("input, textarea")) return;
+        if(document.activeElement.matches("input, textarea") || event.repeat) return;
         event.preventDefault();
         const keyId = this.getKeyId(event);
         const mappingMode = selectMappingMode(store.getState());

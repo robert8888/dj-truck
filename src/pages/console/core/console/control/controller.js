@@ -4,9 +4,16 @@ import {MAPPING} from "../../../../../actions";
 export default class Controller{
     constructor(type) {
         this.type = type;
+        this.storeRefreshInterval = 2000;
     }
 
     get state(){
+        if(!this.lastStoreState  ||
+           ( new Date().getTime() > this.lastStoreState + this.storeRefreshInterval)){
+            this.lastStoreState = new Date().getTime();
+            this._state =
+            console.log("update state");
+        }
         return store.getState().control;
     }
 

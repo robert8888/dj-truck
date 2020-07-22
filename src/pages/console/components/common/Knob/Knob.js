@@ -174,6 +174,10 @@ class Knob extends React.Component{
 
     updateStyle({rightArm, leftArm, dotAngle, reversArm}){
         window.requestAnimationFrame(() => {
+            if(!this.html.bigCircle.current || !this.html.rightHalf.current
+                || !this.html.leftHalf.current || !this.html.dot.current){
+                return; // in some case delayed by request frame updating occur after demounting
+            }
             this.html.bigCircle.current.style.backgroundImage =
                 `linear-gradient(`+ (180 + leftArm)  +`deg, `+style.primaryDark+` 50%, transparent 50%),
              linear-gradient(`+ (180 + rightArm) +`deg, transparent 50%, `+style.primaryDark+` 50%)`;

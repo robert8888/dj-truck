@@ -1,35 +1,40 @@
 import { put, takeEvery, select } from "redux-saga/effects";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import {ACTIONS, deleteProfile, pushLog} from "../../../actions";
+import {ACTIONS, deleteControlProfile, pushLog} from "../../../actions";
 import { Log } from "./../../../utils/logger/logger";
+import {getApi} from "../../../apis/apiProvider";
+import errorParser from "../../../utils/serverErrorParser/errorParser";
 
-const path = ['saga', 'control', 'midi', 'delete new profile']
+const path = ['saga', 'control', 'midi', 'delete control profile']
 
 export default function* watcher(){
     yield takeEvery(ACTIONS.CONTROL_REQ_DELETE_PROFILE, handle)
 }
 
-const currentProfile = state => {
-    const id = state.control.currentProfileId;
-    return state.control.profiles.find( p => p.id === id);
-}
+const getToken = state => state.user.token
 
 function* handle(action){
+    const {profile} = action;
+    const token = yield select(getToken);
 
-    //const {profile: {id}} =  action //
-
+    if(!token || !profile) return;
     try {
         yield put(showLoading());
 
-        const profile = yield select(currentProfile);
-        if(!profile) return;
+        const { callQuery, queries } = getApi("UserAssets");
+        const query = queries.deleteControlProfileQl;
+        const response = yield callQuery(query, token , { id : profile.id })
 
-        yield put(deleteProfile(profile));
-        yield put(pushLog(new Log(`Midi profile ${profile.id} deleted from database`, path)))
+        if (response.errors || !response.data.deleteControlProfile) {
+            throw new Error("Server response contains errors " + errorParser(response.errors));
+        }
+
+        yield put(deleteControlProfile(profile));
+        yield put(pushLog(new Log(`Control profile ${profile.id} deleted from database`, path)))
     } catch (error){
         yield put(pushLog(Log.Error(
             path,
-            "Can't delete profile from database :" + error.message,
+            "Can't delete control profile from database :" + error.message,
             error
         )))
     } finally {

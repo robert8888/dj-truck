@@ -1,15 +1,18 @@
 import {all} from "redux-saga/effects";
 // kbd and mini control profiles
 import reqCreateControlProfileSaga from "./control/reqCreateProfile";
-import reqReadControlProfileSaga from "./control/reqReadProfile";
 import reqUpdateControlProfileSaga from "./control/reqUpdateProfile";
 import reqDeleteControlProfileSaga from "./control/reqDeleteProfile";
+import reqReadProfileList from "./control/reqProfileList";
+import reqLoadProfile from "./control/reqLoadProfile";
 
 export default function * controlRoot(){
+    console.log("control root saga")
     yield all([
         reqCreateControlProfileSaga(),
-        reqReadControlProfileSaga(),
         reqUpdateControlProfileSaga(),
         reqDeleteControlProfileSaga(),
+        reqReadProfileList(),
+        reqLoadProfile(),
     ])
 }

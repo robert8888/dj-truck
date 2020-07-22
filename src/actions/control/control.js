@@ -26,6 +26,7 @@ const ACTIONS = {
     CONTROL_REQ_PROFILE_LIST: "Request for current user control profile list",
     CONTROL_SET_PROFILE_LIST: "Set user control profile list",
 
+    CONTROL_REQ_CURRENT_PROFILE: "Request for profile map by id",
     CONTROL_SET_CURRENT_PROFILE: "Set current control profile",//
 }
 
@@ -54,50 +55,54 @@ export function setKbdMapValue(keyId){
 }
 
 // ----- CRUD Profile
-export function reqCreateProfile(name, profileType){
+export function reqCreateControlProfile(name, profileType){
     return {type: ACTIONS.CONTROL_REQ_CREATE_PROFILE, name, profileType}
 }
 
-export function createProfile(profile){
+export function createControlProfile(profile){
     return {type: ACTIONS.CONTROL_CREATE_PROFILE, profile}
 }
 
-export function reqProfile(id){
+export function reqControlProfile(id){
     return {type: ACTIONS.CONTROL_REQ_PROFILE, id}
 }
 
-export function setProfile(profile){
+export function setControlProfile(profile){
     return {type: ACTIONS.CONTROL_SET_PROFILE, profile}
 }
 
-export function reqUpdateProfile(profile){
+export function reqUpdateControlProfile(profile){
+    return {type: ACTIONS.CONTROL_REQ_UPDATE_PROFILE, profile}
+}
+
+export function updateControlProfile(profile){
     return {type: ACTIONS.CONTROL_UPDATE_PROFILE, profile}
 }
 
-export function updateProfile(profile){
-    return {type: ACTIONS.CONTROL_UPDATE_PROFILE, profile}
-}
-
-export function reqDeleteProfile(profile){
+export function reqDeleteControlProfile(profile){
     return {type: ACTIONS.CONTROL_REQ_DELETE_PROFILE, profile}
 }
 
-export function deleteProfile(profile){
+export function deleteControlProfile(profile){
     return {type: ACTIONS.CONTROL_DELETE_PROFILE, profile}
 }
 
 //------ profile list
 
 
-export function reqProfileList(){
+export function reqControlProfileList(){
     return {type: ACTIONS.CONTROL_REQ_PROFILE_LIST}
 }
 
-export function setProfileList(list){
-    return {type: ACTIONS.CONTROL_SET_PROFILE_LIST, list}
+export function setControlProfileList(profileList){
+    return {type: ACTIONS.CONTROL_SET_PROFILE_LIST, profileList}
 }
 //-------- current profile
 
-export function setCurrentProfile(profileId, profileType){
+// export function reqCurrentControlProfile(profileId){
+//     return {type: ACTIONS.CONTROL_REQ_CURRENT_PROFILE, profileId};
+// }
+
+export function setCurrentControlProfile(profileId, profileType){
     return { type: ACTIONS.CONTROL_SET_CURRENT_PROFILE, profileId, profileType}
 }
