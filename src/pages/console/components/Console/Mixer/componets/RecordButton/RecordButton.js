@@ -24,7 +24,7 @@ const RecordButton = props =>{
             className="record-btn"
             update={handleChangeState}
             disabled={props.disabled}
-            data-tooltip="Sorry you have to be logged to have ability to record your sets">
+            data-tooltip="Sorry you have to be logged in to be able to record your gigs">
                 <FontAwesomeIcon
                     icon={icon}
                     key={UUIDClass.genV1()}

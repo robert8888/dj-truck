@@ -50,11 +50,11 @@ const Content = () => {
     }, [md, setContent])
 
 
-    if(!md || !content) return null;
-
     return (
         <main className="introduction__content">
-            {content}
+            <div className="introduction__content__wrapper">
+                {content}
+            </div>
         </main>
     )
 }

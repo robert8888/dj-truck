@@ -1,0 +1,21 @@
+@mixin aspect($name, $value){
+  .aspect-#{$name}{
+    padding-top: $value;
+    position: relative;
+    & > div{
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+}
+
+@include aspect("square", 100%);
+
+@for $i from 1 to 9 {
+  $value : $i * 10;
+  @include aspect($value, $value * 1%)
+}
+

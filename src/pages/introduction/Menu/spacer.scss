@@ -1,0 +1,63 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/mixins.scss";
+
+.spacer{
+  @include flexColumn();
+  flex: 1;
+  &__stairs-fill{
+    height: 100%;
+    width: 100%;
+    background: white;
+    overflow: hidden;
+    border-top: 3px solid $primary;
+    border-right: 3px solid $primary;
+
+    @supports ((clip-path: polygon(0 0 ,0 0, 0 0)) or (-webkit-clip-path: polygon(0 0 ,0 0, 0 0))) {
+      background: transparent;
+      border: none;
+      $width: 3px;
+      $leap: 20px;
+      &:after, &:before{
+        content: "";
+        display: block;
+        @include fill();
+        background: $primary;
+        clip-path: polygon(
+                        0 0,
+                        #{$width} 0,
+                        $leap $leap,
+                        calc(100% - #{$leap * 2}) $leap,
+                        100% $leap * 3,
+                        100% 100%,
+                        0 100%
+        );
+      }
+      &:after{
+        background: white;
+        clip-path: polygon(
+                        0 $width / 2,
+                        $width / 2 $width,
+                        calc(#{$leap} - #{$width / 2}) calc(#{$leap} + #{$width}),
+                        calc(100% - #{$leap * 2} - #{$width / 2}) calc(#{$leap} + #{$width}) ,
+                        calc(100% - #{$width}) calc(#{$leap * 3} + #{$width / 2}),
+                        calc(100% - #{$width}) 105%,
+                        0 105%
+        );
+      }
+    }
+  }
+
+  &__full-height-fill{ display: none };
+  @media screen and (min-width: 992px) {
+    &__full-height-fill{
+      flex: 1;
+      display: block;
+      margin-top: -10px;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-right: 3px solid $primary;
+    }
+  }
+
+}

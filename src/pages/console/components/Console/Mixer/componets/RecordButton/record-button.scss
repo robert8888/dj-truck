@@ -38,6 +38,7 @@
                 left: 85px;
                 border: 2px solid $primary-dark;
                 border-radius: 2px;
+                z-index: 10000;
             }
         }
         &:disabled:hover:active::after{

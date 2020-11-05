@@ -9,8 +9,8 @@ import "./recorder.scss";
 
 
 const Recorder = ({ recordingState, startRecording, endRecording , userLogged, recName }) =>{
-    const [buttonDisabled, setButtonDisabled] = useState(false);
-    const [inputDisabled, setInputDisabled] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+    const [inputDisabled, setInputDisabled] = useState(true);
     const [timeRunning, setTimeRunning] = useState(false)
     const [preparing, setPreparing] = useState(false)
     const [_recName , setRecName] = useState("");
@@ -21,10 +21,11 @@ const Recorder = ({ recordingState, startRecording, endRecording , userLogged, r
         setRecName(recName);
     },[recName, setRecName])
 
+
     useEffect(()=>{
-        setInputDisabled(!userLogged);
         setButtonDisabled(!userLogged);
-    }, [userLogged, setButtonDisabled, setInputDisabled])
+        setInputDisabled(!userLogged);
+    }, [userLogged, setInputDisabled])
 
     const assignClearHandler = useCallback( handler => {
         setClearTimeHandler(() => handler)
@@ -75,7 +76,7 @@ const Recorder = ({ recordingState, startRecording, endRecording , userLogged, r
     return (
         <div className="recorder">
             <div className="label">REC</div>
-            <RecordButton 
+            <RecordButton
                 onChange={recordStateChange}
                 disabled={buttonDisabled} />
             <RecordNameInput 

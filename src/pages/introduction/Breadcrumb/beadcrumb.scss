@@ -1,0 +1,26 @@
+@import "./../../../css/colors";
+
+
+.breadcrumb{
+  background: transparent;
+
+  padding: 8px 4px;
+
+  border-bottom: 3px solid $primary;
+  margin: 20px 0 -3px 40px;
+
+  &-item{
+    a, span {
+      display: inline-block;
+      font-size: 1rem;
+      &:first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  @media screen and (min-width: 992px){
+    margin: 50px 10px 0;
+    border-bottom: none;
+  }
+}

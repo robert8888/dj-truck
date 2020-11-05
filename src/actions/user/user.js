@@ -16,6 +16,7 @@ export function removeUser(){
 }
 
 export function setUserProfile(user){
+    console.log("set user")
     return {
         type: ACTIONS.SET_USER_PROFILE,
         user, 

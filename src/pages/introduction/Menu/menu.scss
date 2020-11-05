@@ -1,13 +1,21 @@
 @import "./../../../css/colors.scss";
-
+@import "./../../../css/mixins.scss";
+@import "./menu-mixins";
 
 .introduction__menu{
-  background: $primary-dark;
+  background: transparent;
+  position: relative;
   height: 100%;
+  padding-top: 25px;
+  z-index: 2;
+  @include flexColumn();
+  @include squareBox(35px);
+  @include leftFillUp();
+
   .menu{
     padding: 0;
-    margin: 0;
-    height: 100%;
+    border-left: 3px solid $primary;
+    //margin: 25px 1px 0;
 
     &__list{
       margin: 0;
@@ -20,7 +28,7 @@
       @for $i from 0 through 4 {
         &--depth-#{$i}  > *{
           text-indent: $i * 25px + 25px;
-          background: lighten($primary-dark, $i * 5% );
+        //  background: lighten($primary-dark, $i * 5% );
         }
       }
     }
@@ -43,8 +51,22 @@
         display: none;
       }
 
-      &:not(&--catalog):hover{
-        background: $secondary;
+      &:not(&--catalog):hover {
+        background: rgba(0,0,0,0.3);
+      }
+      &:hover > * , &:hover > * > *{
+        color: $dark-red;
+      }
+
+
+      &--last:hover:after{
+          z-index: -1;
+          content: "";
+          display: block;
+          width: 100%;
+          height: 150px;
+          background: rgba(0,0,0,0.3);
+          position: absolute;
       }
 
       &--current:not(:hover) > a,
@@ -58,6 +80,7 @@
           margin: 0;
           padding: 10px 0;
           line-height: 2;
+          cursor: pointer;
         }
         i{
           position: absolute;
@@ -85,5 +108,9 @@
         transform: rotate(45deg);
       }
     }
+
   }
+
+
 }
+

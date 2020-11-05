@@ -1,0 +1,40 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/mixins.scss";
+
+@mixin squareBox($size: 35px){
+  &:after{ // square box
+    --size: #{$size};
+    content: "";
+    display: block;
+    width: var(--size);
+    height: var(--size);
+    border: 3px solid $primary;
+    position: absolute;
+    //top: calc(-0.65 * var(--size));
+    top: 2px;
+    left: 2px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: 1;
+  }
+}
+
+@mixin leftFillUp(){
+  --chamfering: 20px;
+  margin-left: 16px;
+  &:before{
+    content: "";
+    display: block;
+    position: absolute;
+    top: 3px;
+    height: calc(100% + 22px);
+    background: white;
+    left: calc(-50vw);
+    width: 50vw;
+    clip-path: polygon(0 0, calc(100% - var(--chamfering)) 0, 100% var(--chamfering), 100% 100%, 0 100%);
+  }
+  @media screen and (min-width: 992px) {
+    &:before{
+      display: none;
+    }
+  }
+}

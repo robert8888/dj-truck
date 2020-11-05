@@ -1,9 +1,10 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {Link} from "react-router-dom";
 import {set} from "lodash/object";
 import UUID from "uuidjs";
 import "./menu.scss"
 import usePath from "../Hooks/usePath";
+import Spacer from "./Spacer";
 
 const getMarkups = () => require.context('./../markups', true, /\.*.md$/).keys();
 
@@ -11,6 +12,7 @@ const Menu = () => {
     const [markups, setMarkups] = useState();
     const [structure, setStructure] = useState();
     const [currentPath] = usePath();
+    const menu = useRef();
 
     const escapeNumberRegex = useMemo(() => /^\d?\./, [])
 
@@ -85,9 +87,28 @@ const Menu = () => {
         )
     }, [renderSublistItem, renderListItem])
 
+
+    const updateLast = () => {
+        setTimeout(() =>{
+            for(let item of menu.current.querySelectorAll(".menu__list__item--last")){
+                item.classList.remove(".menu__list__item--last")
+            }
+
+            let last = Array.from(menu.current.querySelectorAll(".menu__item:last-of-type"));
+            last.forEach(item => {
+                if(item.parentElement.closest(".menu__item:last-of-type") || !item.parentElement.closest(".menu__item")){
+                    console.log("the last item", item)
+                    item.classList.add("menu__item--last")
+                }
+            })
+        }, 100)
+    }
+
     const content = useMemo(()=>{
         if(!structure) return null;
-        return renderList(structure, [])
+        const result = renderList(structure, [])
+        updateLast();
+        return result;
     }, [structure, renderList])
 
     useEffect(()=>{
@@ -110,9 +131,10 @@ const Menu = () => {
 
     return (
         <aside className="introduction__menu">
-            <nav className="menu">
+            <nav className="menu" ref={menu}>
                 {content}
             </nav>
+            <Spacer/>
         </aside>
     )
 }
