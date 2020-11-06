@@ -8,14 +8,19 @@
   height: 100%;
   padding-top: 25px;
   z-index: 2;
+  font-size: 0.9em;
   @include flexColumn();
   @include squareBox(35px);
   @include leftFillUp();
-
+  &__wrapper{
+    @include flexColumn();
+    flex: 1;
+    overflow: hidden;
+    z-index: 1;
+  }
   .menu{
     padding: 0;
     border-left: 3px solid $primary;
-    //margin: 25px 1px 0;
 
     &__list{
       margin: 0;
@@ -28,13 +33,12 @@
       @for $i from 0 through 4 {
         &--depth-#{$i}  > *{
           text-indent: $i * 25px + 25px;
-        //  background: lighten($primary-dark, $i * 5% );
         }
       }
     }
 
     &__item{
-      line-height: 2;
+      line-height: 1.5rem;
       color: $secondary-dark;
       border-top: 1px solid lighten($secondary-dark, 20%);
 
@@ -42,7 +46,7 @@
         padding-top: 10px;
         padding-bottom: 10px;
         display: block;
-        line-height: 2;
+        line-height: 1.5rem;
       }
       &:first-letter{
         text-transform: uppercase;
@@ -79,7 +83,7 @@
         h6{
           margin: 0;
           padding: 10px 0;
-          line-height: 2;
+          line-height: 1.5rem;
           cursor: pointer;
         }
         i{

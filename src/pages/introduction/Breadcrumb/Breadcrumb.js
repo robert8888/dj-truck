@@ -19,7 +19,7 @@ const Breadcrumb = () => {
         const current = index === path.length - 1;
         return (
             <li key={item} className={"breadcrumb-item"}>
-                {current ? getSpan(item) : getLink(item, path, index)}
+                {getSpan(item)}
             </li>
         )
     })

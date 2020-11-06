@@ -4,45 +4,56 @@
 .spacer{
   @include flexColumn();
   flex: 1;
-  &__stairs-fill{
-    height: 100%;
-    width: 100%;
-    background: white;
-    overflow: hidden;
-    border-top: 3px solid $primary;
-    border-right: 3px solid $primary;
+  &__stairs {
+    position: relative;
+    &:before{
+      @include pseudoAbsolute();
+      height: 100%;
+      width: 5px;
+      left: -3px;
+      background: white;
+      z-index: -1;
+    }
+    &__fill {
+      height: 100%;
+      width: 100%;
+      background: white;
+      overflow: hidden;
+      border-top: 3px solid $primary;
+      border-right: 3px solid $primary;
 
-    @supports ((clip-path: polygon(0 0 ,0 0, 0 0)) or (-webkit-clip-path: polygon(0 0 ,0 0, 0 0))) {
-      background: transparent;
-      border: none;
-      $width: 3px;
-      $leap: 20px;
-      &:after, &:before{
-        content: "";
-        display: block;
-        @include fill();
-        background: $primary;
-        clip-path: polygon(
-                        0 0,
-                        #{$width} 0,
-                        $leap $leap,
-                        calc(100% - #{$leap * 2}) $leap,
-                        100% $leap * 3,
-                        100% 100%,
-                        0 100%
-        );
-      }
-      &:after{
-        background: white;
-        clip-path: polygon(
-                        0 $width / 2,
-                        $width / 2 $width,
-                        calc(#{$leap} - #{$width / 2}) calc(#{$leap} + #{$width}),
-                        calc(100% - #{$leap * 2} - #{$width / 2}) calc(#{$leap} + #{$width}) ,
-                        calc(100% - #{$width}) calc(#{$leap * 3} + #{$width / 2}),
-                        calc(100% - #{$width}) 105%,
-                        0 105%
-        );
+      @supports ((clip-path: polygon(0 0 ,0 0, 0 0)) or (-webkit-clip-path: polygon(0 0 ,0 0, 0 0))) {
+        background: transparent;
+        border: none;
+        $width: 3px;
+        $leap: 20px;
+        &:after, &:before {
+          content: "";
+          display: block;
+          @include fill();
+          background: $primary;
+          clip-path: polygon(
+                          0 0,
+                          #{$width} 0,
+                          $leap $leap,
+                          calc(100% - #{$leap * 2}) $leap,
+                          100% $leap * 3,
+                          100% 100%,
+                          0 100%
+          );
+        }
+        &:after {
+          background: white;
+          clip-path: polygon(
+                          0 $width / 2,
+                          $width / 2 $width,
+                          calc(#{$leap} - #{$width / 2}) calc(#{$leap} + #{$width}),
+                          calc(100% - #{$leap * 2} - #{$width / 2}) calc(#{$leap} + #{$width}),
+                          calc(100% - #{$width}) calc(#{$leap * 3} + #{$width / 2}),
+                          calc(100% - #{$width}) 105%,
+                          0 105%
+          );
+        }
       }
     }
   }

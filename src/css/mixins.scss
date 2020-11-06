@@ -25,6 +25,14 @@
     flex-direction: column;
 }
 
+@mixin pseudoAbsolute(){
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 @mixin button-transparent($color:""){
     &,
     &:hover,

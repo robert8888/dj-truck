@@ -12,16 +12,14 @@ const propTypes = {
 const Separator = ({placement, content}) =>{
     const square = useRef();
     const separator = useRef();
+
     useEffect(()=>{
-        if(!square.current || !separator.current) return;
-        const updateSize = debounce( e => {
+        const observer =  new ResizeObserver(() =>{
             const left = separator.current.getBoundingClientRect().left
             square.current.style.width = (left || 0) + "px";
-        }, 32);
-        window.addEventListener("resize", updateSize);
-        updateSize();
-        return () => window.removeEventListener("resize", updateSize)
-    }, [square, separator])
+        })
+        observer.observe(document.body)
+    }, [])
 
     return (
         <div className={"separator__wrapper separator__wrapper--" + placement}>

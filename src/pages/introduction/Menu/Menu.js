@@ -131,10 +131,12 @@ const Menu = () => {
 
     return (
         <aside className="introduction__menu">
-            <nav className="menu" ref={menu}>
-                {content}
-            </nav>
-            <Spacer/>
+            <div className={"introduction__menu__wrapper"}>
+                <nav className="menu" ref={menu}>
+                    {content}
+                </nav>
+                <Spacer/>
+            </div>
         </aside>
     )
 }
