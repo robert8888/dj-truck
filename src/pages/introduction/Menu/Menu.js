@@ -88,8 +88,9 @@ const Menu = () => {
     }, [renderSublistItem, renderListItem])
 
 
-    const updateLast = () => {
+    const updateLast = useCallback(() => {
         setTimeout(() =>{
+            if(!menu.current) return;
             for(let item of menu.current.querySelectorAll(".menu__list__item--last")){
                 item.classList.remove(".menu__list__item--last")
             }
@@ -97,12 +98,11 @@ const Menu = () => {
             let last = Array.from(menu.current.querySelectorAll(".menu__item:last-of-type"));
             last.forEach(item => {
                 if(item.parentElement.closest(".menu__item:last-of-type") || !item.parentElement.closest(".menu__item")){
-                    console.log("the last item", item)
                     item.classList.add("menu__item--last")
                 }
             })
         }, 100)
-    }
+    }, [menu])
 
     const content = useMemo(()=>{
         if(!structure) return null;

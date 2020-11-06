@@ -9,15 +9,30 @@ body.page-explorer {
         position: relative;
         .record-search {
             padding: 0;
-            position: absolute;
-            top: 40%;
+            display: block;
+            position: relative;
             left: 2.5%;
             width: 95%;
-            transform: translateY(-50%)
+            //transform: translateY(-50%)
         }
+    }
+
+    .c-explorer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: calc(var(--vh) * 100 - 75px);
+        width: 100%;
+        &__link{
+            margin-top: 50px;
+            letter-spacing: 1px;
+            text-decoration: underline;
+        }
+    }
+
+    .top-genres{
+        margin-top: 25px;
     }
 }
 
-.explor{
-    min-height: calc(var(--vh) * 80);
-}

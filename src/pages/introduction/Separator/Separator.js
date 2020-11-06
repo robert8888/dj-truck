@@ -1,8 +1,7 @@
-import React, {useRef, useEffect, useMemo} from "react";
+import React, {useRef, useEffect} from "react";
 import PropTypes from "prop-types";
 import "./separator.scss";
 import {Container} from "react-bootstrap";
-import debounce from "lodash/debounce";
 
 const propTypes = {
     placement: PropTypes.oneOf(["top", "bottom"]).isRequired,

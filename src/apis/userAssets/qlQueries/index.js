@@ -31,6 +31,7 @@ export {default as updateCommentQl} from "./records/updateComment";
 export {default as deleteCommentQl} from "./records/deleteComment";
 export {default as addToFavoriteQl} from "./records/favorite/addToFavorite";
 export {default as removeFromFavoriteQl} from "./records/favorite/removeFromFavorite";
+export {default as getGenresListQl} from "./records/getGenresList";
 
 //------------- control profiles -------
 export {default as createControlProfileQl} from "./controlProfile/createProfile";

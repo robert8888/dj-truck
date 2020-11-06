@@ -35,7 +35,7 @@ const UserRecords = React.memo(({
     const { loading, isAuthenticated } = useAuth0();
     const [pageTitle, setPageTitle] = useState("Records");
     const [displaySearch, setSearchDisplaing] = useState(false);
-    const [getSerachUrl] = useRecordSearchUrl();
+    const [getSearchUrl] = useRecordSearchUrl();
     const history = useHistory();
     const { user: nickname, genres } = useParams();
 
@@ -146,13 +146,13 @@ const UserRecords = React.memo(({
         if(!queryStr){
             history.push("/records")
         }
-        const url = getSerachUrl(queryStr, {
+        const url = getSearchUrl(queryStr, {
             searchOpt,
             searchParams: { genres: [genres, _genres] }
         })
 
         history.push(url);
-    }, [history, getSerachUrl, _genres, genres])
+    }, [history, getSearchUrl, _genres, genres])
 
     
     return (

@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import RecordSearch from "../common/components/RecordSearch/RecordSearch";
 import useRecordSearchUrl from "../common/Hooks/useRecordSearchURL";
 import {Container} from "react-bootstrap";
-
+import TopGenres from "../common/components/TopGenres/TopGenres";
 import "./explorer.scss";
+
 
 const Explorer = props =>{
     const history = useHistory();
@@ -24,8 +25,10 @@ const Explorer = props =>{
     
     return (
         <Container className="app layout container-xl" >
-            <div className="explor">
-                <RecordSearch title="Dj Trucks" onSearch={onSearch}/>
+            <div className="c-explorer">
+                <RecordSearch title="Dj Truck records" onSearch={onSearch}/>
+                <TopGenres/>
+                <Link to={"/genres"} className={"c-explorer__link"}>See all genres</Link>
             </div>
         </Container>
     )

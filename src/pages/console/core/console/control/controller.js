@@ -24,6 +24,9 @@ export default class Controller{
         const id = this.type === "midi"
             ? state.currentMidiProfileId
             : state.currentKbdProfileId;
+
+        if(!id) return null;
+
         return state.profiles[id].map;
     }
 
@@ -34,7 +37,7 @@ export default class Controller{
     _getAction(key){
         const map = this._getProfileMap();
         const actions = this._getActions();
-
+        if(!map) return null;
         const actionId = map.toAction[key];
         if(!actionId) return null;
         if(!actions[actionId.split("-")[0]]) return null;

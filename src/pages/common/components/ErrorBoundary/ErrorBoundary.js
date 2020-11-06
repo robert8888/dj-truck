@@ -44,7 +44,7 @@ class ErrorBoundary extends React.Component{
         if(this.state.hasError){
             return (
                 <div className="componet-error-container">
-                    <h6>Sorry. Someting went wrong. Componet dosn't work correctly.</h6>
+                    <h6>Sorry. Something went wrong. Component does not work correctly.</h6>
                     <Button onClick={this.clearError.bind(this)}><FontAwesomeIcon icon={faSyncAlt}/></Button>
                 </div>
             )

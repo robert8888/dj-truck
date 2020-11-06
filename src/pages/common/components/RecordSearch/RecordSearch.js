@@ -30,7 +30,7 @@ const RecordSearch = ({onSearch, title}) =>{
         <ErrorBoundary>
             <div className="record-search">
                 <div className="record-search-container">
-                    <h4>{title}</h4>
+                    <h4 className={"record-search__title"}>{title}</h4>
                     <Form.Control 
                         className="record-search-control" 
                         type="text" 

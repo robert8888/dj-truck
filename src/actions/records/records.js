@@ -26,8 +26,9 @@ const ACTIONS = {
     RECS_REQ_ADD_FAVORITE: "request to add record to user favorite",
     RECS_ADD_FAVORITE: "add record to favorite",
     RECS_REQ_RM_FAVORITE: "request to remove record from favorite 'list' ",
-    RECS_RM_FAVORITE: "remove record from favorite"
+    RECS_RM_FAVORITE: "remove record from favorite",
 }
+
 export { ACTIONS as RECORDS_ACTIONS };
 
 export function reqRecs(pageSize, page, where) {

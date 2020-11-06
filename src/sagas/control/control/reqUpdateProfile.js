@@ -85,7 +85,6 @@ function* handleUpdateMap(action){
         const query = queries.updateControlProfileMapQl;
         const response = yield callQuery(query, token, {...vars})
 
-        console.log(response)
         if (response.errors || !response?.data?.updateControlProfileMap) {
             throw new Error("Server response contains errors " + errorParser(response.errors));
         }

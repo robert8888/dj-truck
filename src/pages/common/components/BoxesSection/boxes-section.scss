@@ -1,0 +1,38 @@
+@import "./../../../../css/colors.scss";
+
+.boxes-section{
+  --boxSize: 150px;
+  --inRow: 4;
+
+  &__container{
+    max-width: calc(var(--boxSize) * var(--inRow));
+  }
+
+  &__row{
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item > a{
+    --marginHorizonatl: 15px;
+    min-width: calc(var(--boxSize) - 2 * var(--marginHorizonatl));
+    height: calc(var(--boxSize) - 2 * var(--marginHorizonatl));
+    padding: 5px;
+    border: 2px solid rgba($primary, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px var(--marginHorizonatl);
+    border-radius: 10px;
+    transition: box-shadow .4s ease-in-out;
+    &:hover{
+      border: 2px solid rgba($primary, 0.7);
+      box-shadow: 0 0 5px 0 rgba($primary, 0.5);
+      transition: box-shadow 0.2s ease-in-out;
+    }
+  }
+}

@@ -37,13 +37,8 @@ export default function useRecordSearchUrl(){
                 default: return null;
             } 
         }
-        
-        if(search.length){
-            if(!params) {
-                params += "?"
-            } 
-            params += search.join("&")
-        }
+
+        params += "&" + search.join("&")
 
         return '/records?search=' + queryStr + params;
     }

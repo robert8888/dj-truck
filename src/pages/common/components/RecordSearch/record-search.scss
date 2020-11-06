@@ -1,14 +1,25 @@
 @import "./../../../../css/colors.scss";
 @import "./../../../../css/mixins.scss";
 
+@font-face {
+    font-family: "Anton-Regular";
+    src: local("Anton-Regular"),
+    url("./fonts/Anton-Regular.ttf") format("truetype");
+    font-weight: normal;
+}
+
 .record-search{
     padding: 50px 0;
+
+    &__title{
+        margin: 24px 0;
+        font-family: Anton-Regular, serif;
+        letter-spacing: 3px;
+    }
     .record-search-container{
         width: 100%;
         text-align: center;
-        h4{
-            margin: 20px 0;
-        }
+
         input.record-search-control{
             @include input();
             // &, :active, :hover{
@@ -17,11 +28,12 @@
 
             
             width: 60%;
+            max-width: 700px;
             margin: 0 auto;
         }
 
         .record-search-options{
-            margin: 10px 0;
+            margin: 15px 0;
             h5{
                 font-size: 1.0em;
                 display: inline-block;
@@ -33,6 +45,7 @@
             }
             .search-option{
                 @include checkBox();
+                margin: 0 10px;
             }
 
         }

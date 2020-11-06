@@ -2,7 +2,6 @@ import {setMidiMapValue} from "./../../../../../actions"
 import MidiTranslator from "./MidiTranslator/midiTranslator";
 import STATUS from "./MidiTranslator/midiStatus";
 import Controller from "./controller";
-import store from "./../../../../../store";
 
 export default class MidiController extends Controller{
     constructor() {
