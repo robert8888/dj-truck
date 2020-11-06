@@ -1,8 +1,21 @@
 import * as graphQlQueries from "./qlQueries";
-
+import ApiCache from "./apiCache";
+import hash from "hash-string";
 const url = process.env.REACT_APP_USER_ASSETS_API;
 
+const cache = new ApiCache();
+
 export async function callQuery(query, token, variables) {
+    const body = JSON.stringify({
+        query: query,
+        variables: variables
+    })
+
+    const key = hash(body);
+    if(cache.has(key)){
+        return cache.get(key)
+    }
+
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -11,13 +24,12 @@ export async function callQuery(query, token, variables) {
             'Accept': 'application/json',
 
         },
-        body: JSON.stringify({
-            query: query,
-            variables: variables
-        }),
+        body
     })
-    let json = await response.json();
-    return json;
+    let data = await response.json();
+
+    cache.set(key, data)
+    return data;
 }
 
 export async function callQueryUploadSingle(query, token, variables){

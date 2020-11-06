@@ -20,6 +20,7 @@
     "dotenv": "^8.2.0",
     "express-static-gzip": "^2.0.6",
     "gzipper": "^3.7.0",
+    "hash-string": "^1.0.0",
     "imer": "0.0.1",
     "install": "^0.13.0",
     "lodash": "^4.17.15",
