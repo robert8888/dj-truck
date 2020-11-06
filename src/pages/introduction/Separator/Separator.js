@@ -19,6 +19,9 @@ const Separator = ({placement, content}) =>{
             square.current.style.width = (left || 0) + "px";
         })
         observer.observe(document.body)
+        return () => {
+            observer.disconnect()
+        }
     }, [])
 
     return (

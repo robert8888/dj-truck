@@ -1,6 +1,7 @@
 @import "./../../css/colors.scss";
 
 .introduction{
+  padding-top: 50px;
   .row, .row > *{
     padding:0;
     margin: 0;
@@ -65,7 +66,7 @@
         right: calc(-1 * var(--size));
         width: var(--size);
         top: 3px;
-        height: calc(100% - 3px);
+        height: 100%;
         background: white;
         clip-path: polygon(0 0, 100% var(--size), 100% 100%, 0 100%);
       }

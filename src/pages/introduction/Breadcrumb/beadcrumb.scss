@@ -1,15 +1,15 @@
 @import "./../../../css/colors";
-
+@import "./../../../css/mixins";
 
 .breadcrumb{
   background: transparent;
 
-  padding: 8px 4px;
+  padding:  4px 4px;
 
   border-bottom: 3px solid $primary;
   margin: 20px 0 -3px 40px;
 
-  &-item{
+  &__item{
     a, span {
       display: inline-block;
       font-size: 1rem;
@@ -17,10 +17,40 @@
         text-transform: uppercase;
       }
     }
+
+    position: relative;
+
+    &:not(:last-of-type):after{
+      display: inline-block;
+      padding-right: .5rem;
+      padding-left: .5rem;
+      color: #6c757d;
+      content: "/";
+    }
   }
 
-  @media screen and (min-width: 992px){
-    margin: 50px 10px 0;
+  @media screen and (min-width: 992px) {
+    margin: 50px 10px 0 -35px;
     border-bottom: none;
+    &__item{
+      padding: 4px 16px;
+      position: relative;
+      margin-right: 3px;
+      &:first-of-type {
+        padding-left: 35px;
+      }
+    }
+
+   .breadcrumb__item:after{
+     @include pseudoAbsolute();
+     content: "";
+     left: unset;
+     right: 0;
+     bottom: 0;
+     width: 100%;
+     border-right: dotted 3px rgba($primary, .3);
+     border-top: dotted 3px rgba($primary, .3);
+     transform: skewX(45deg);
+   }
   }
 }

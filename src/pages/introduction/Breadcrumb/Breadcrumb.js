@@ -18,7 +18,7 @@ const Breadcrumb = () => {
     const renderItem = useCallback((item, index, path) => {
         const current = index === path.length - 1;
         return (
-            <li key={item} className={"breadcrumb-item"}>
+            <li key={item} className={"breadcrumb__item"}>
                 {getSpan(item)}
             </li>
         )
