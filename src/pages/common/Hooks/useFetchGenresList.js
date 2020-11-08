@@ -1,9 +1,8 @@
-import React, {useState, useCallback} from "react"
+import  {useState, useCallback} from "react"
 import {getApi} from "../../../apis/apiProvider";
 import {Log, Logger} from "../../../utils/logger/logger";
 
 export default  function (preSetLimit){
-
     const [items, setItems] = useState(null)
 
     const getLink = useCallback(to => `/records/genres/${to}`, [])
@@ -13,7 +12,7 @@ export default  function (preSetLimit){
             title: genre.name,
             link:  getLink(genre.name)
         })))
-    }, [setItems])
+    }, [setItems, getLink])
 
     const fetchGenres = useCallback((limit = preSetLimit) => {
         (async () =>{

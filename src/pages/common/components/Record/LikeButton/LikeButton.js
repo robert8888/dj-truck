@@ -1,6 +1,6 @@
 import React, {useCallback} from "react";
-import {connect, useDispatch, useSelector} from "react-redux";
-import {reqAddRecordToFavorite, reqRemoveRecordFromFavorite} from "./../../../../../actions"
+import {useDispatch, useSelector} from "react-redux";
+import {reqAddRecordToFavorite, reqRemoveRecordFromFavorite} from "../../../../../actions"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
 import className from "classnames";
@@ -19,7 +19,7 @@ const LikeButton = ({recordId}) =>{
         state ?
               dispatch(reqRemoveRecordFromFavorite(recordId))
             : dispatch(reqAddRecordToFavorite(recordId));
-    }, [state])
+    }, [state, dispatch, recordId])
 
     return (
         <button className={classNames} onClick={toggle}>

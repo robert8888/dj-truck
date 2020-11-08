@@ -29,7 +29,7 @@ const Explorer = props =>{
         } else {
             setFooterType("none")
         }
-    }, [setShowPlayer, setFooterType])
+    }, [setShowPlayer, setFooterType, player])
 
     return (
         <div className={"page"}>

@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import UUID from "uuidjs";
 import style from "./slider.scss"
-import UUDI from "uuidjs";
 
 const rmLast = (arr, direction) => {
     direction = direction < 0 ? "next" : "prev";

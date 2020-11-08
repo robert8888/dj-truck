@@ -109,7 +109,7 @@ const Menu = () => {
         const result = renderList(structure, [])
         updateLast();
         return result;
-    }, [structure, renderList])
+    }, [structure, renderList, updateLast])
 
     useEffect(()=>{
         if(!content) return;

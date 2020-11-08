@@ -143,7 +143,7 @@ const UserRecords = React.memo(({userId, isCurrentUser,}) => {
         <Container className="app layout container-xl" >
             <div className="user-records">
                 <ErrorBoundary>
-                    {nickname && <UserProfile nickname={nickname} withGenres/> || null}
+                    {(nickname && <UserProfile nickname={nickname} withGenres/>) || null}
                 </ErrorBoundary>
                 {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
                 <div className="user-records-top-bar">
@@ -170,10 +170,10 @@ const UserRecords = React.memo(({userId, isCurrentUser,}) => {
                         ]}/>
                 </div>
                 <ErrorBoundary>
-                    {countAll !== 0 && <RecordsList
+                    {(countAll !== 0 && <RecordsList
                         list={recordsList}
                         controls={controls}
-                        player={player} /> || null}
+                        player={player} /> )|| null}
                 </ErrorBoundary>
                 <Pagin
                     current={_page}

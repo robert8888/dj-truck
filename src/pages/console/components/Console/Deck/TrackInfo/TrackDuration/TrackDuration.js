@@ -7,12 +7,12 @@ const TrackDuration = ({duration, pitch}) => {
     const container = useRef(null);
 
     useEffect(()=>{
+        let seconds = duration;
         if(typeof duration === "string"){
-            duration = formater.ptToSeconds(duration);
+            seconds = formater.ptToSeconds(duration);
         }
 
-        container.current.textContent = formater.secondsToStr(duration / (1 + pitch / 100));
-
+        container.current.textContent = formater.secondsToStr(seconds / (1 + pitch / 100));
     }, [ container, duration, pitch])
 
     return (

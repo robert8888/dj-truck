@@ -6,7 +6,7 @@ export default function(){
     const dispatch = useDispatch()
     const setFooter = useCallback((type)=>{
          dispatch(setFooterType((type)))
-    }, [])
+    }, [dispatch])
 
     return [setFooter];
 }

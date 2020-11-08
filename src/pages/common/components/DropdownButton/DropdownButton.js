@@ -24,9 +24,8 @@ const DropdownButton = React.memo(({onChange, values = [], value, className}) =>
                 </Dropdown.Item>
             ))) || null
         )
-    }, [values])
+    }, [values, onChange])
 
-    console.log(values, value)
     return (
         <BootstrapDropdownButton
             alignRight

@@ -1,7 +1,6 @@
 import {ACTIONS, MAPPING} from "./../../actions";
 import {produce} from "imer";
 import _omitBy from "lodash/omitBy";
-import _invert from "lodash/invert"
 
 const initState = {
     port: null,
@@ -20,7 +19,6 @@ const initState = {
                 fullName : key,
             }
         }
-        console.log("call buil daciotns")
         return _actions;
     })(),
 

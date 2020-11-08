@@ -7,7 +7,7 @@ import {Col, Container, Row} from "react-bootstrap";
 
 const Genres = () =>{
     const [items, fetchItems] = useFetchGenresList();
-    useEffect(() => fetchItems() ,  [])
+    useEffect(() => fetchItems() ,  [fetchItems])
 
     if(!items) return null;
 

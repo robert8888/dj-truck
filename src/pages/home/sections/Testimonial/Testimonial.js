@@ -17,7 +17,7 @@ const Testimonial = React.memo(({
 }) => {
     const [authorImageSrc, setAuthorImageSrc] = useState("/testimonials/user-anonymous");
     useEffect(()=>{
-        const image = <img scr={authorImage} onError={() => console.log("can find image")} onLoad={() => {
+        const img = <img scr={authorImage} alt={""} onError={() => console.log("can find image")} onLoad={() => {
             setAuthorImageSrc(authorImage)
         }}/>
     }, [setAuthorImageSrc, authorImage])

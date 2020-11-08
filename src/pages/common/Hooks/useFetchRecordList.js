@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from "react"
+import {useState, useCallback} from "react"
 import {getApi} from "../../../apis/apiProvider";
 import {Log, Logger} from "../../../utils/logger/logger";
 import {useDispatch, useSelector} from "react-redux";
@@ -40,7 +40,7 @@ export default  function (){
             }
 
         })()
-    }, [setList, token])
+    }, [setList, token, dispatch])
 
     return [list, fetchRecords]
 }

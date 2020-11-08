@@ -171,7 +171,7 @@ const ControlMenu = ({
             </li>
         ))
         return items;
-    }, [setMappingMode, mappingMode, deleteProfile, setModalState,
+    }, [setMappingMode, mappingMode, deleteProfile, setModalState, kbdProfiles.length, midiProfiles.length,
         currentMidiProfileId, currentKbdProfileId, profilesList, setModalType]);
 
     const profilesMenuItems = useCallback((type)=>{

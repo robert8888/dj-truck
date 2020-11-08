@@ -6,7 +6,7 @@ import useFetchGenresList from "../../Hooks/useFetchGenresList";
 
 const TopGenres = () =>{
     const [items, fetchItems] = useFetchGenresList(7);
-    useEffect(() => fetchItems() ,  [])
+    useEffect(() => fetchItems() ,  [fetchItems])
 
     if(!items) return null;
 
