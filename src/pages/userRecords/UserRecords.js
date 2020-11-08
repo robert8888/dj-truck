@@ -1,22 +1,22 @@
 import queryString from "query-string";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {Container, Dropdown, DropdownButton} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import {loadRecords, reqRecs, setFooterType} from "./../../actions";
-import { useAuth0 } from "./../../auth0/react-auth0-spa";
+import { useAuth0 } from "../../auth0/react-auth0-spa";
 import Pagin from "./../common/components/Pagin/Pagin";
 import PlayerControls from "./../common/components/PlayerControls/PlayerControls";
 import RecordsList from "./../common/components/RecordList/RecordList";
 import RecordSearch from "./../common/components/RecordSearch/RecordSearch";
 import UserProfile from "./../common/components/UserProfile/UserProfile";
-import { usePlayer } from "./../common/Hooks/usePlayer";
+import { usePlayer } from "../common/Hooks/usePlayer";
 import useRecordSearchUrl from "./../common/Hooks/useRecordSearchURL";
-import "./user-records.scss";
 import useNextPageUrl from "../../reducers/records/useNextPageUrl";
 import useFetchRecordList from "../common/Hooks/useFetchRecordList";
 import useDynamicFooter from "../common/Hooks/useDynamicFooter";
 import ErrorBoundary from "../common/components/ErrorBoundary/ErrorBoundary";
+import DropdonwButton from "../common/components/DropdownButton/DropdownButton";
+import "./user-records.scss";
 
 const UserRecords = React.memo(({userId, isCurrentUser,}) => {
     const [controls, player] = usePlayer();
@@ -33,7 +33,7 @@ const UserRecords = React.memo(({userId, isCurrentUser,}) => {
 
     const [_pageSize, setPageSize] = useState(20);
     const [_page, setPage] = useState(0);
-
+    const [_order, setOrder] = useState(['createdAt', 'DESC'])
     useEffect(() => {
         setFooter("player")
     }, [setFooter])
@@ -61,7 +61,9 @@ const UserRecords = React.memo(({userId, isCurrentUser,}) => {
 
         let searchConsole = true;
 
-        const where = {};
+        const where = {
+            orderBy: {column: _order[0], type: _order[1]}
+        };
         if (searchQuery) {
             where.query = searchQuery;
             if (searchOpt) {
@@ -69,7 +71,6 @@ const UserRecords = React.memo(({userId, isCurrentUser,}) => {
                 where.queryOpt = opt;
             }
             setPageTitle("Search: " + searchQuery)
-
         }
 
         if (genres) {
@@ -100,6 +101,7 @@ const UserRecords = React.memo(({userId, isCurrentUser,}) => {
     }, [userId,
         fetchRecords,
         _pageSize,
+        _order,
         page,
         pageSize,
         preloaded,
@@ -146,17 +148,26 @@ const UserRecords = React.memo(({userId, isCurrentUser,}) => {
                 {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
                 <div className="user-records-top-bar">
                     <h2 className="title">{pageTitle}</h2>
-                    <DropdownButton
-                        alignRight
-                        className="btn-pagger"
-                        title={_pageSize + " on page "}>
-                        <Dropdown.Item onClick={changePageSize.bind(null, 10)}> 10 </Dropdown.Item>
-                        <Dropdown.Item onClick={changePageSize.bind(null, 20)}> 20 </Dropdown.Item>
-                        <Dropdown.Item onClick={changePageSize.bind(null, 30)}> 30 </Dropdown.Item>
-                        <Dropdown.Item onClick={changePageSize.bind(null, 50)}> 50 </Dropdown.Item>
-                        <Dropdown.Item onClick={changePageSize.bind(null, 75)}> 75 </Dropdown.Item>
-                        <Dropdown.Item onClick={changePageSize.bind(null, 100)}> 100 </Dropdown.Item>
-                    </DropdownButton>
+                    <DropdonwButton
+                        onChange={setOrder}
+                        value={_order}
+                        values={[
+                            {value: ['createdAt', 'DESC'], label: "Sort by  - creation \u2191 "},
+                            {value: ['createdAt', 'ASC'], label: "Sort by - creation \u2193 "},
+                            {value: ['title', 'ASC'], label: "Sort by  - Title A-Z"},
+                            {value: ['title', 'DESC'], label: "Sort by -  Title Z-A"},
+                        ]}/>
+                    <DropdonwButton
+                        onChange={changePageSize}
+                        value={_pageSize}
+                        values={[
+                            {value: 10, label: "10 on page"},
+                            {value: 20, label: "20 on page"},
+                            {value: 30, label: "30 on page"},
+                            {value: 50, label: "50 on page"},
+                            {value: 75, label: "75 on page"},
+                            {value: 100, label: "100 on page"}
+                        ]}/>
                 </div>
                 <ErrorBoundary>
                     {countAll !== 0 && <RecordsList

@@ -5,11 +5,14 @@
     padding-bottom: 100px;
     .user-records-top-bar{
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        justify-content: flex-start;
         align-items: center;
         border-bottom: 1px solid $primary;
+        margin-top: 75px;
         .title{
-            padding: 5px 30px;
+            padding: 5px 5px;
+            width: 100%;
             margin-bottom: 0;
             letter-spacing: 1px;
             overflow: hidden;
@@ -17,22 +20,16 @@
             font-size: x-large;
             text-overflow: ellipsis;
             vertical-align: bottom;
-
-        }
-
-        .btn-pagger{
-            margin-bottom: 5px;
-            .btn{
-                @include drop-down-button();
-                & + div.dropdown-menu{
-                    min-width: 100px;
-                }
-            }
-           
         }
     }
 
-
-
-
+    @media screen and(min-width: 420px) {
+        .user-records-top-bar{
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            &>div:first-of-type{
+                margin-left: auto;
+            }
+        }
+    }
 }

@@ -19,7 +19,6 @@ const getTracklist = state =>
             end: track.end
         }))
         .map(track => {
-            console.log(track)
             if (!track.end) {
                 track.end = (new Date().getTime() - state.recorder.startTime) / 1000;
             }
@@ -45,6 +44,8 @@ function* handel(action) {
             variables.tracks = tracks;
 
             const response = yield callQuery(query, token, variables);
+
+            console.log(response)
 
             if (response.errors) {
                 throw new Error('Server response contains errors ', + errorParser(response.errors))

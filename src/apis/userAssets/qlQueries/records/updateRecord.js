@@ -4,7 +4,7 @@ export default  `
         $duration : Float!
         $peaks: [Float]!
         $fileSize: String!
-        $tracks: [recordTracks]
+        $tracks: [recordTracksInput]
         ){
         updateRecord(id: $id input : {
             peaks: $peaks

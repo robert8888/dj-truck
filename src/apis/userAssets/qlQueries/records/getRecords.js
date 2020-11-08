@@ -9,6 +9,7 @@ export default `
         $id: Int
         $query: String
         $queryOpt: [String]
+        $orderBy: recordsOrderInput
     ){
         records(input : {
             userId: $userId
@@ -22,6 +23,7 @@ export default `
                 pageSize: $pageSize
                 page: $page
             }
+            orderBy: $orderBy 
         }){
             records {
                 id

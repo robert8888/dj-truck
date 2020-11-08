@@ -1,0 +1,14 @@
+@import "./../../../../css/colors.scss";
+@import "./../../../../css/mixins.scss";
+
+
+.btn--dropdown{
+  margin-bottom: 5px;
+  .btn.btn-primary{
+    @include drop-down-button();
+    & + div.dropdown-menu{
+      min-width: 100px;
+    }
+  }
+
+}

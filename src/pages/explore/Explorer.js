@@ -35,7 +35,7 @@ const Explorer = props =>{
         <div className={"page"}>
         <Container className="app layout container-xl" >
             <div className="c-explorer">
-                <RecordSearch title="Dj Truck records" onSearch={onSearch}/>
+                <RecordSearch title="Dj Truck Records" onSearch={onSearch}/>
                 <TopGenres/>
                 <Link to={"/genres"} className={"c-explorer__link"}>See all genres</Link>
             </div>

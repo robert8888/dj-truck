@@ -33,6 +33,14 @@
     left: 0;
 }
 
+@mixin boxShadowNone(){
+    &, &:active, &:focus, &:hover,
+    &:active:focus, &:hover:focus,
+    &:hover:focus, &:active:hover:focus{
+        box-shadow: none;
+    }
+}
+
 @mixin button-transparent($color:""){
     &,
     &:hover,
