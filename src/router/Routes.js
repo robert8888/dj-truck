@@ -11,7 +11,7 @@ const Profile = React.lazy(()=> import(/* webpackChunkName: "profile" */ "./../p
 const UserRecords = React.lazy(()=> import(/* webpackChunkName: "users_records" */ "./../pages/userRecords/UserRecords"));
 const UserRecord = React.lazy(() => import(/* webpackChunkName: "record" */ "./../pages/userRecord/UserRecord"));
 const Explorer = React.lazy(() => import(/* webpackChunkName: "explorer" */ "./../pages/explore/Explorer"));
-
+const Genres =  React.lazy(() => import(/* webpackChunkName: "genres" */ "./../pages/genres/Genres"));
 
 const Routes = props => {
     return (
@@ -20,6 +20,7 @@ const Routes = props => {
                 <Route path="/" exact component={Home}/>
                 <Route path="/introduction/:slug*" component={Introduction}/>
                 <Route path="/exploring" exact component={Explorer} />
+                <Route path="/genres" exact component={Genres} />
                 <PrivateRoute path="/console" exact component={Console} />
                 <PrivateRoute path="/my/playlist" exact component={Playlist}/>
                 <PrivateRoute path="/my/profile" exact component={Profile} />
@@ -37,7 +38,7 @@ const Routes = props => {
                     }/>
                 <Route path="/record/:user/:title/:id?" exact component={UserRecord} />
                 
-                <Route path="/test" exact render={() => <h1>Test</h1>} />
+
             </>
         </Suspense>
 
