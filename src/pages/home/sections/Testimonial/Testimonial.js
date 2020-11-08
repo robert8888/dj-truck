@@ -30,7 +30,13 @@ const Testimonial = ({
                 {text}
             </p>
             <footer className="testimonial__author">
-                <img src={authorImage || "/testimonials/user-anonymous.png"} alt="testimonial author"/>
+                <picture>
+                    <source srcSet={authorImage + ".webp"} type={"image/webp"}/>
+                    <source srcSet={authorImage + ".png"} type={"image/png"}/>
+                    <source srcSet={"/testimonials/user-anonymous.webp"} type={"image/webp"}/>
+                    <source srcSet={"/testimonials/user-anonymous.png"} type={"image/png"}/>
+                    <img src={"/testimonials/user-anonymous.png"} alt="testimonial author"/>
+                </picture>
                 <h5 className="testimonial__author__name">{authorName}</h5>
                 <h6 className="testimonial__author__position">{authorPosition}</h6>
             </footer>

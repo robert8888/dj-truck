@@ -3,6 +3,7 @@
     "text": "im in fucking shock. it don't belived that is posible",
     "author":{
         "name": "Adam",
-        "position": "Dj, Producer"
+        "position": "Dj, Producer",
+        "image": "./path/to/author/image"
     }
 }
