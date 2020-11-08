@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import UUID from "uuidjs";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar as fillStar, faQuoteRight} from "@fortawesome/free-solid-svg-icons";
 import {faStar as emptyStar} from "@fortawesome/free-regular-svg-icons";
 
-const Testimonial = ({
+const Testimonial = React.memo(({
     data : {
         stars,
         text,
@@ -15,6 +15,13 @@ const Testimonial = ({
         } = {}
     } = {}
 }) => {
+    const [authorImageSrc, setAuthorImageSrc] = useState("/testimonials/user-anonymous");
+    useEffect(()=>{
+        const image = <img scr={authorImage} onError={() => console.log("can find image")} onLoad={() => {
+            setAuthorImageSrc(authorImage)
+        }}/>
+    }, [setAuthorImageSrc, authorImage])
+
 
     return (
         <div className="testimonial">
@@ -31,10 +38,8 @@ const Testimonial = ({
             </p>
             <footer className="testimonial__author">
                 <picture>
-                    <source srcSet={authorImage + ".webp"} type={"image/webp"}/>
-                    <source srcSet={authorImage + ".png"} type={"image/png"}/>
-                    <source srcSet={"/testimonials/user-anonymous.webp"} type={"image/webp"}/>
-                    <source srcSet={"/testimonials/user-anonymous.png"} type={"image/png"}/>
+                    <source srcSet={(authorImageSrc || "/testimonials/user-anonymous") + ".webp"} type={"image/webp"}/>
+                    <source srcSet={(authorImageSrc ||"/testimonials/user-anonymous") + ".png"} type={"image/png"}/>
                     <img src={"/testimonials/user-anonymous.png"} alt="testimonial author"/>
                 </picture>
                 <h5 className="testimonial__author__name">{authorName}</h5>
@@ -42,6 +47,6 @@ const Testimonial = ({
             </footer>
         </div>
     )
-}
+}, () => true)
 
 export default Testimonial;

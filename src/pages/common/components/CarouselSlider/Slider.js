@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import UUID from "uuidjs";
 import style from "./slider.scss"
+import UUDI from "uuidjs";
 
 const rmLast = (arr, direction) => {
     direction = direction < 0 ? "next" : "prev";
@@ -116,7 +117,15 @@ const Slider = ({
         }
         setActive(true);
 
-        let slides = [].concat(Array(overLapRatio * 2 + 1).fill(1).map(() => initSlides)).flat();
+        const slides = Array((initSlides.length + 1) *  overLapRatio * 2 ).fill(1).map((_, index) =>{
+            const slide = initSlides[index % initSlides.length];
+            return React.cloneElement(
+                slide,
+                {
+                    id : UUID.genV4().toString(),
+                }
+            )
+        })
         setSlides(slides);
     }, [visibleSlides, setActive, initSlides, setSlides, overLapRatio])
 
@@ -310,7 +319,6 @@ const Slider = ({
         }
     }, [next, auto, isDragged])
 
-
     return (
         <div className="carousel-slider-container">
             <ul className="carousel-slider" ref={slider} onMouseDown={mouseDown} onTouchStart={mouseDown}
@@ -320,8 +328,13 @@ const Slider = ({
                     if (visibleSlides % 2 !== 0 && index === Math.abs(balancedShift.current) + Math.floor(visibleSlides / 2)) {
                         classes += " slide--mid";
                     }
-                    return (<li key={UUID.genV1()} className={classes}
-                                style={{width: minSlideWidth || "initial"}}>{slide}</li>)
+                    return (
+                        <li key={slide.props.id || UUID.genV4()}
+                            className={classes}
+                            style={{width: minSlideWidth || "initial"}}>
+                                {slide}
+                        </li>
+                    )
                 })}
             </ul>
         </div>
