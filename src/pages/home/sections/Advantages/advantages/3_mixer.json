@@ -5,12 +5,12 @@
   },
 
   "text" : ["Two channels mixer with cue section, three band ",
-    "equalization and build in filters with resonans adjust. ",
+    "equalization and build in filters with resonance adjust. ",
     "Each channel have own level peak meter that will ",
-    "help you control loudnes."],
+    "help you control loudness."],
   "link" : {
     "to": "./introduction",
     "text": "Read mixer description"
   },
-  "image" : "/advantages/advantage-mixer.png"
+  "image" : "/advantages/advantage-mixer"
 }

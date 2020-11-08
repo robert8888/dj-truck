@@ -22,7 +22,11 @@ const Advantage = ({ header, text, link, image, side = "left" }) => {
         if (!image) return null;
         return (
             <div className="advantage-section__image">
-                <img src={image} alt="advantages section" />
+                <picture>
+                    <source srcSet={image + ".webp"} type="image/webp"/>
+                    <source srcSet={image + ".png"} type="image/png"/>
+                    <img src={image + ".png"} alt="Advantages section"/>
+                </picture>
             </div>
         )
     }, [image])
