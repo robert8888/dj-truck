@@ -2,7 +2,7 @@ import React, {useState, useCallback} from "react"
 import {getApi} from "../../../apis/apiProvider";
 import {Log, Logger} from "../../../utils/logger/logger";
 
-export default  function (limit){
+export default  function (preSetLimit){
 
     const [items, setItems] = useState(null)
 
@@ -15,12 +15,12 @@ export default  function (limit){
         })))
     }, [setItems])
 
-    const fetchGenres = useCallback((limit) => {
+    const fetchGenres = useCallback((limit = preSetLimit) => {
         (async () =>{
             try{
                 const { callQuery, queries } = getApi("UserAssets");
                 const query = queries.getGenresListQl;
-                const response = await callQuery(query, null , {limit})
+                const response = await callQuery(query, null , {limit}, true)
                 if(response.errors){
                     throw new Error(response.errors.map(error => error.message).join(" || "))
                 } else {
@@ -28,14 +28,14 @@ export default  function (limit){
                 }
             } catch(error){
                 Logger.push(Log.Error(
-                    ["component", "top genres", "fetch genres list"],
-                    "Can't read genre list from server" + error.message,
+                    ["hooks", "fetch genres list"],
+                    "Can't fetch genre list from server" + error.message,
                     error
                 ))
             }
 
         })()
-    }, [updateItems, limit])
+    }, [updateItems, preSetLimit])
 
     return [items, fetchGenres]
 }

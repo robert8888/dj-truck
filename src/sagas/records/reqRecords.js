@@ -1,7 +1,7 @@
 import { put, select, takeEvery } from "redux-saga/effects";
 import { ACTIONS, loadRecords, pushLog, recReqFails } from "../../actions";
-import { getApi } from "./../../apis/apiProvider";
-import { Log } from "./../../utils/logger/logger";
+import { getApi } from "../../apis/apiProvider";
+import { Log } from "../../utils/logger/logger";
 import errorParser from "./../../utils/serverErrorParser/errorParser";
 
 export default function* requestUserRecords() {
@@ -28,7 +28,7 @@ function* handel(action) {
             throw new Error("Server response contains errors" + errorParser(response.errors));
         }
         if (!records) {
-            throw new Error("Can't load reacords from database, response don't contains records object")
+            throw new Error("Can't load records from database, response don't contains records object")
         }
 
         yield put(loadRecords(records, countAll))

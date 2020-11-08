@@ -1,3 +1,7 @@
 .top-genres{
-
+  width: 100%;
+  .boxes-section{
+    --boxSize: 150px;
+    --inRow: 4;
+  }
 }

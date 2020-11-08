@@ -26,7 +26,7 @@ class PlayerBus {
         buffered: 0,
     };
 
-    playbackSubscirbers = {}
+    playbackSubscribers = {}
     progressSubscribers = {}
     bufferedSubscribers = []
     progressProviders = {};
@@ -57,16 +57,16 @@ class PlayerBus {
     }
 
     subscribePlayback(id, handler) {
-        this.playbackSubscirbers[id] = handler;
+        this.playbackSubscribers[id] = handler;
     }
 
     unSubscribePlayback(id) {
-        delete this.playbackSubscirbers[id]
+        delete this.playbackSubscribers[id]
     }
 
     setPlaybackState(id, state) {
-        if (this.playbackSubscirbers[id]) {
-            this.playbackSubscirbers[id](state)
+        if (this.playbackSubscribers[id]) {
+            this.playbackSubscribers[id](state)
         }
     }
 

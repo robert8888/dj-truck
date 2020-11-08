@@ -12,7 +12,10 @@ import "./content.scss";
 
 const getMarkups = () => require.context('./../markups', true, /\.*md/).keys()
 
-const load = (module) => import(`./../markups/${module}`).then( module => module.default);
+const load = (module) => import(
+    /* webpackChunkName: "chunk-[request][index]" */
+    `./../markups/${module}`
+    ).then( module => module.default);
 
 const Content = () => {
     const [currentPath] = usePath();

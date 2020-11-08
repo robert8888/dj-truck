@@ -46,7 +46,7 @@ const Record = ({ record, controls: { seek, playback }, player, simple }) => {
                 {record &&
                     <Fragment>
                         <PlaybackButton playback={playback} id={record.id} player={player} />
-                        <LikeButton recordId={record.id} state={record.favorited}/>
+                        <LikeButton recordId={record.id}/>
                         <WaveSurrferPlayer seek={seek} record={record} key={record.id} player={player} />
                         <Time record={record} player={player} />
                         <Created date={record.createdAt}/>

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {Container, Dropdown, DropdownButton} from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { reqRecs, setFooterType } from "./../../actions";
+import {loadRecords, reqRecs, setFooterType} from "./../../actions";
 import { useAuth0 } from "./../../auth0/react-auth0-spa";
 import Pagin from "./../common/components/Pagin/Pagin";
 import PlayerControls from "./../common/components/PlayerControls/PlayerControls";
@@ -13,32 +13,30 @@ import UserProfile from "./../common/components/UserProfile/UserProfile";
 import { usePlayer } from "./../common/Hooks/usePlayer";
 import useRecordSearchUrl from "./../common/Hooks/useRecordSearchURL";
 import "./user-records.scss";
+import useNextPageUrl from "../../reducers/records/useNextPageUrl";
+import useFetchRecordList from "../common/Hooks/useFetchRecordList";
+import useDynamicFooter from "../common/Hooks/useDynamicFooter";
+import ErrorBoundary from "../common/components/ErrorBoundary/ErrorBoundary";
 
-const UserRecords = React.memo(({
-    setFooter,
-    requestList,
-    userId,
-    isCurrentUser,
-   // searchQuery,
-    recordsList,
-    countAll }) => {
-    ///-----------Turn of footer--------------------
-
-    useEffect(() => {
-        console.log("settin ffoter player")
-        setFooter("player")
-    }, [setFooter])
-    //--------------------------------
-
+const UserRecords = React.memo(({userId, isCurrentUser,}) => {
     const [controls, player] = usePlayer();
-    //-------------------------
-    const { loading, isAuthenticated } = useAuth0();
-    const [pageTitle, setPageTitle] = useState("Records");
-    const [displaySearch, setSearchDisplaing] = useState(false);
+    const {loading, isAuthenticated } = useAuth0();
     const [getSearchUrl] = useRecordSearchUrl();
+    const getNextPageUrl = useNextPageUrl();
+    const [setFooter] = useDynamicFooter();
+    const [{records: recordsList = [], countAll = 0}, fetchRecords] = useFetchRecordList();
     const history = useHistory();
     const { user: nickname, genres } = useParams();
 
+    const [pageTitle, setPageTitle] = useState("Records");
+    const [displaySearch, setSearchDisplaying] = useState(false);
+
+    const [_pageSize, setPageSize] = useState(20);
+    const [_page, setPage] = useState(0);
+
+    useEffect(() => {
+        setFooter("player")
+    }, [setFooter])
 
     const queryStr = useLocation().search;
     let { pageSize, page, preloaded, searchOpt, _genres , search:searchQuery} = useMemo(() => {
@@ -53,10 +51,6 @@ const UserRecords = React.memo(({
             search: values.search
         }
     }, [queryStr])
-
-    const [_pageSize, setPageSize] = useState(20);
-    const [_page, setPage] = useState(0);
-
 
     useEffect(() => {
         if ((preloaded && recordsList.length > 0) || loading) { return }
@@ -97,14 +91,14 @@ const UserRecords = React.memo(({
         }
         
 
-        setSearchDisplaing(searchConsole);
+        setSearchDisplaying(searchConsole);
 
-        requestList(pgSize, pg, where);
+        fetchRecords(pgSize, pg, where)
         setPageSize(pgSize);
         setPage(pg)
 
     }, [userId,
-        requestList,
+        fetchRecords,
         _pageSize,
         page,
         pageSize,
@@ -121,18 +115,6 @@ const UserRecords = React.memo(({
         recordsList.length,
     ])
 
-    const getNextPageUrl = useCallback((page, pageSize) => {
-        let url = window.location.pathname;
-        url += '?pageSize=' + pageSize;
-        url += '&page=' + page;
-        let search = window.location.search;
-        search = search.replace(/pageSize=\d+/, '');
-        search = search.replace(/&page=\d+/, '');
-        search = search.replace('?', '&');
-        url += search;
-        url = url.replace(/&{2,}/g, "&");
-        return url;
-    }, [])
 
     const changePageSize = useCallback((pageSize) => {
         history.push(getNextPageUrl(_page, pageSize));
@@ -154,11 +136,13 @@ const UserRecords = React.memo(({
         history.push(url);
     }, [history, getSearchUrl, _genres, genres])
 
-    
+
     return (
         <Container className="app layout container-xl" >
             <div className="user-records">
-                {nickname && <UserProfile nickname={nickname} withGenres/>}
+                <ErrorBoundary>
+                    {nickname && <UserProfile nickname={nickname} withGenres/> || null}
+                </ErrorBoundary>
                 {displaySearch && <RecordSearch title="Dj Truck Records" onSearch={onSearch} />}
                 <div className="user-records-top-bar">
                     <h2 className="title">{pageTitle}</h2>
@@ -174,11 +158,12 @@ const UserRecords = React.memo(({
                         <Dropdown.Item onClick={changePageSize.bind(null, 100)}> 100 </Dropdown.Item>
                     </DropdownButton>
                 </div>
-
-                <RecordsList
-                    list={recordsList}
-                    controls={controls}
-                    player={player} />
+                <ErrorBoundary>
+                    {countAll !== 0 && <RecordsList
+                        list={recordsList}
+                        controls={controls}
+                        player={player} /> || null}
+                </ErrorBoundary>
                 <Pagin
                     current={_page}
                     call={goToPage}
@@ -190,21 +175,11 @@ const UserRecords = React.memo(({
             </div>
         </Container>
     )
-    
-
-
 })
 
 const mapStateToProps = state => ({
-    recordsList: state.records.list,
-    countAll: state.records.countAll,
     userId: state.user.dbId,
     userNickname: state.user.nickname,
 })
 
-const mapDispatchToProps = dispatch => ({
-    requestList: (pageSize, page, where) => dispatch(reqRecs(pageSize, page, where)),
-    setFooter : (type) => dispatch(setFooterType(type))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserRecords)
+export default connect(mapStateToProps)(UserRecords)

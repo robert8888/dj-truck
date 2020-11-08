@@ -1,9 +1,8 @@
 @import "./../../../../css/colors.scss";
 
 .boxes-section{
-  --boxSize: 150px;
-  --inRow: 4;
-
+  display: flex;
+  justify-content: center;
   &__container{
     max-width: calc(var(--boxSize) * var(--inRow));
   }

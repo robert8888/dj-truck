@@ -2,12 +2,14 @@ import {ACTIONS} from "./../../actions";
 
 
 const initState ={
+    loading: true,
     logged: false,
     id : null,
     email : null,
     nickname : null,
 
     token: null,
+
 }
 
 
@@ -18,7 +20,8 @@ function userReducer(state = initState, action){
                 return {
                     ...state, 
                     ...action.user,
-                    token: action.token
+                    token: action.token,
+                    loading: false,
                 }
             }
             else return initState;

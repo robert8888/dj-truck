@@ -5,14 +5,14 @@ const url = process.env.REACT_APP_USER_ASSETS_API;
 
 const cache = new ApiCache();
 
-export async function callQuery(query, token, variables) {
+export async function callQuery(query, token, variables, caching = false) {
     const body = JSON.stringify({
         query: query,
         variables: variables
     })
 
     const key = hash(body);
-    if(cache.has(key)){
+    if(cache.has(key) && caching){
         return cache.get(key)
     }
 

@@ -7,9 +7,13 @@ import RecordDetails from "./RecordDetails/RecordDetails";
 import Volume from "./Volume/Volume";
 import ErrorBoundary from './../ErrorBoundary/ErrorBoundary'
 
+const lastRecordCache = {
+    current: null,
+}
+
 const PlayerControls = ({controls, player,  list}) => {
     const [currentRecord , setCurrentRecord] = useState(null);
-    const [currentRecordDetails, setCurrentRecordDetails] = useState(null);
+    const [currentRecordDetails, setCurrentRecordDetails] = useState(lastRecordCache.current);
 
     useEffect(() => {
         if(!player){
@@ -37,7 +41,7 @@ const PlayerControls = ({controls, player,  list}) => {
         if(!current) return; 
         
         setCurrentRecordDetails(current)
-        
+        lastRecordCache.current = current;
     }, [player, list, currentRecord, setCurrentRecordDetails])
 
     return (

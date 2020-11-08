@@ -20,6 +20,7 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
     const [description, setDescription] = useState("");
     const [genres, setGenres] = useState([]);
 
+    const form = useRef();
     const descriptionTextArea = useRef();
     const [autoResizeTextArea] = useAutoHeightTextarea();
 
@@ -74,12 +75,23 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
         setGenres(event.target.value)
     }, [setGenres])
 
+    const setCustomValidationMessages = useCallback(() => {
+        if(!form.current) return;
+        const genres = form.current.elements.genres;
+        genres && genres.validity.patternMismatch ?
+              genres.setCustomValidity("Genre name can contains letters and &,- signs and have to be separate  by coma signe")
+            : genres.setCustomValidity("");
+
+    }, [form])
+
     const updateRecordDetails = useCallback(event => {
         event.preventDefault();
         const title = event.target.elements.title.value;
         const description = event.target.elements.description.value;
         const genres = event.target.elements.genres.value || "";
-        const genresArr = genres.split(",").filter(str => str !== "").map(str => str.trim().toLowerCase());
+        const genresArr = genres.split(",")
+            .filter(((regex) => str => !regex.test(str))(/^(\s|[,])*$/))
+            .map(str => str.trim().toLowerCase());
         requestUpdate(record.id, {
             title,
             description,
@@ -108,7 +120,7 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
 
     return (
         <ErrorBoundary>
-            <Form className="record-details" onSubmit={updateRecordDetails}>
+            <Form className="record-details" onSubmit={updateRecordDetails} ref={form}>
                 {editable && <IconBar className="record-details-icons" items={{
                     edit: toggleMode,
                     download: downloadCurrent,
@@ -146,10 +158,10 @@ const RecordDetails = ({ record, userId, requestUpdate, requestDelete, deleteSta
                         name="genres"
                         value={genres}
                         onChange={updateGenres}
-                        pattern="^(?:[A-Za-z&]{1,25}(?:,\s*)?)+$"
+                        pattern="^(?:[A-Za-z&-]{1,25}(?:,\s*)?)+$"
                         disabled={!editMode} />
                 </Form.Group>
-                {editMode && <Button type="submit"> Save </Button>}
+                {editMode && <Button type="submit" onClick={setCustomValidationMessages}> Save </Button>}
             </Form>
         </ErrorBoundary>
     )
