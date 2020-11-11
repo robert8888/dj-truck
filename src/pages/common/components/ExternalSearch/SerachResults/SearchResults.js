@@ -46,8 +46,8 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispachToProps = dispach => ({
+const mapDispatchToProps = dispach => ({
     addToListHandle: (playlist, track) => dispach(pushTrackToListRequest(track, playlist)),
 })
 
-export default connect(mapStateToProps, mapDispachToProps)(SearchResults);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);

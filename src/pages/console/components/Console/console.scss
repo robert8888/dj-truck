@@ -12,7 +12,7 @@
 .collapse-button{
   &__container{
     position: absolute;
-    top: calc(100%);
+    top: 100%;
     right: -1px;
     @include panel-border(0.2);
     border-top: none;

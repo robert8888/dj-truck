@@ -335,7 +335,7 @@ function playListReducer(state = initState, action) {
                 return state;
             }
             list = Array.from(list);
-            console.log(id, list)
+
             const index = list.findIndex(track => track.id === id);
             if (index === -1) {
                 return state;

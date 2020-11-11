@@ -17,11 +17,11 @@ const apisMap = {
     "YouTube": {
         type: API_TYPES.MIUSIC_SOURCE,
         api: youTubeApi,
-        default: true
     },
     "SoundCloud": {
         type: API_TYPES.MIUSIC_SOURCE,
         api: soundCloudApi,
+        default: true
     },
 
     "UserAssets": {

@@ -9,7 +9,7 @@ import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
 import ErrorBoundary from "./../../../common/components/ErrorBoundary/ErrorBoundary";
 import ControlMenu from "./Control/ControlMenu";
-import CollapseButton from "./CollapseButton/CollpaseButton";
+import CollapseButton from "./Settings/CollapseButton/CollpaseButton";
 import ConsoleCtx from "./ConsoleCtx";
 import "./console.scss";
 

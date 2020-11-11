@@ -40,7 +40,7 @@ const Search = ({
     }, [])
 
     const controlKeyPress = useCallback((event) => {
-        if (event.key !== "Enter") return
+        if (event.key !== "Enter") return;
         searchStart(queryString, source, limit)
     }, [queryString, source, limit, searchStart])
 
@@ -66,7 +66,9 @@ const Search = ({
                         onChange={event => setQuery(event.target.value)}
                         onKeyPress={controlKeyPress}
                         onFocus={openList}
-                        value={queryString} />
+                        value={queryString}
+                        data-rtg-search-input
+                    />
                     {resultOpen && 
                         <Button className="btn-search-clear" onClick={clear}> 
                             Clear 

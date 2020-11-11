@@ -1,0 +1,32 @@
+@import "./../../../../../css/colors.scss";
+
+.rtg{
+  &__container{
+    --primary-color: #{$primary};
+    --pin-color: #0fa9d0;
+    --arrow-size: 15px;
+  }
+  &__backdrop{
+    z-index: 100;
+  }
+  &__modal{
+    z-index: 101;
+    background: $primary-dark;
+    p {
+      color: white;
+    }
+    max-width: 350px;
+    //border: 1px solid $primary;
+    filter: drop-shadow(0 0 1px $primary);
+    text-align: left;
+    letter-spacing: 1px;
+    font-size: 0.8em;
+  }
+  &__button{
+    background: $primary-dark;
+  }
+
+  &__badge > span{
+    color: $primary-dark;
+  }
+}
