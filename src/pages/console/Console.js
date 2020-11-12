@@ -22,7 +22,7 @@ const PageConsole = () => {
 
       window.localStorage.setItem("tour-guide-flag-id--" + userId, true)
       return true;
-  }, [tutorial])
+  }, [tutorial, userId])
 
   return (
       <DndProvider backend={Backend}>

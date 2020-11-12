@@ -1,0 +1,31 @@
+@import "./../../../../../../css/colors";
+@import "./../../../../../../css/mixins";
+
+
+.c-scroll-snap-button{
+  &__container{
+
+  }
+  &__wrapper{
+   // background: $secondary-dark;
+    padding: 6px 12px;
+    @include tooltip(false);
+    &:hover:before{
+      white-space: nowrap;
+      top: 0;
+      letter-spacing: 2px;
+      color: darken($primary , 20%)
+    }
+  }
+  &.btn-switch{
+    --width: 30px;
+    --height: 15px;
+    --slider-color:#{darken($secondary-dark, 5%)};
+    --slider-checked-color: white;
+    --thumb-color: #{$primary};
+    --thumb-hover-color: #{darken($primary, 15%)};
+
+
+    --thumb-position-max: 100%;
+  }
+}

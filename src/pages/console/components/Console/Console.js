@@ -13,6 +13,7 @@ import CollapseButton from "./Settings/CollapseButton/CollpaseButton";
 import ConsoleCtx from "./ConsoleCtx";
 import "./console.scss";
 import useDynamicFooter from "../../../common/Hooks/useDynamicFooter";
+import ScrollSnapButton from "./Settings/ScrollSnapButton/ScrollSnapButton";
 
 const Console = ({callStopAll, consoleCollapse }) => {
     const setFooter = useDynamicFooter()
@@ -47,6 +48,7 @@ const Console = ({callStopAll, consoleCollapse }) => {
 
                     <Effector channel={2} />
                     <Deck name="B">B</Deck>
+                    <ScrollSnapButton/>
                     <CollapseButton/>
                 </div>
             </ConsoleCtx.Provider>

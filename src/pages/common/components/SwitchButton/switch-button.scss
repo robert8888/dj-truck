@@ -1,0 +1,45 @@
+.btn-switch{
+  position: relative;
+  --width: 30px;
+  --height: 15px;
+  --slider-color: #626262;
+  --slider-checked-color: #626262;
+  --thumb-color: white;
+  --thumb-hover-color: #cbcbcb;
+
+  --thumb-position: 0;
+  --thumb-position-max: 100%;
+  width: var(--width);
+  height: var(--height);
+
+  &:checked{
+    --thumb-position: 100%;// var(--thumb-position-max);
+    &:before{
+      background: var(--slider-checked-color);
+    }
+  }
+
+  &:hover:after{
+    background: var(--thumb-hover-color);
+  }
+
+  &:before{
+    content: "";
+    position: absolute;
+    width: var(--width);
+    height: var(--height);
+    background: var(--slider-color);
+    border-radius: 7.5px;
+    transition: background-color 0.4s ease-in-out;
+  }
+  &:after{
+    content: "";
+    position: absolute;
+    height: inherit;
+    width: calc(var(--height));
+    background: var(--thumb-color);
+    border-radius: 50%;
+    transition: transform .2s ease-in-out;
+    transform: translateX(var(--thumb-position));
+  }
+}
