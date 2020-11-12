@@ -116,13 +116,15 @@ class Slider extends React.Component {
 
   updateStyles(){
     let position = this.stickiPostion(this.state.sliderCurrentPosition);
-    if (this.props.horizontal) {
-      this.sliderThumbElement.current.style.left = position + "px";
-      this.sliderThumbElement.current.style.top = null;
-    } else {
-      this.sliderThumbElement.current.style.top = position + "px";
-      this.sliderThumbElement.current.style.left = null;
-    }
+    requestAnimationFrame(()=>{
+      if (this.props.horizontal) {
+        this.sliderThumbElement.current.style.left = position + "px";
+        this.sliderThumbElement.current.style.top = null;
+      } else {
+        this.sliderThumbElement.current.style.top = position + "px";
+        this.sliderThumbElement.current.style.left = null;
+      }
+    })
   }
   
   mouseDownHandle = event => {
@@ -200,32 +202,34 @@ class Slider extends React.Component {
   };
 
   updateState(){
-    if(!this.sliderThumbElement.current || !this.sliderAreaElement) return;
-    
-    const thumbRect = this.sliderThumbElement.current.getBoundingClientRect();
-    const areaRect = this.sliderAreaElement.current.getBoundingClientRect();
-    const rangeRect = this.sliderRangeElement.current.getBoundingClientRect();
+    requestAnimationFrame(() => {
+      if(!this.sliderThumbElement.current || !this.sliderAreaElement) return;
 
-    this.setState(
-      state => {
-        const _state = { ...state };
-        if (this.props.horizontal) {
-          _state.sliderRange = rangeRect.width;
-          _state.sliderAreaOffset = areaRect.left;
-          _state.thumbSize = thumbRect.width;
-        } else {
-          _state.sliderRange = rangeRect.height;
-          _state.sliderAreaOffset = areaRect.top;
-          _state.thumbSize = thumbRect.height;
-        }
-        return _state;
-      },
-      () => {
-        if (this.props.value !== undefined) {
-          this.setValue(this.props.value);
-        }
-      }
-    );
+      const thumbRect = this.sliderThumbElement.current.getBoundingClientRect();
+      const areaRect = this.sliderAreaElement.current.getBoundingClientRect();
+      const rangeRect = this.sliderRangeElement.current.getBoundingClientRect();
+
+      this.setState(
+          state => {
+            const _state = { ...state };
+            if (this.props.horizontal) {
+              _state.sliderRange = rangeRect.width;
+              _state.sliderAreaOffset = areaRect.left;
+              _state.thumbSize = thumbRect.width;
+            } else {
+              _state.sliderRange = rangeRect.height;
+              _state.sliderAreaOffset = areaRect.top;
+              _state.thumbSize = thumbRect.height;
+            }
+            return _state;
+          },
+          () => {
+            if (this.props.value !== undefined) {
+              this.setValue(this.props.value);
+            }
+          }
+      );
+    })
   };
 
   componentDidMount() {

@@ -29,18 +29,24 @@ const VolumePeakLevelMeter = ({
     const thumb = useRef();
 
     useEffect(()=>{
-        setAreaRect(areaRef.current.getBoundingClientRect())
+        requestAnimationFrame(()=>{
+            setAreaRect(areaRef.current.getBoundingClientRect())
+        })
     }, [areaRef, updateFlag])
 
     const updateAreaRect = useCallback(ref => {
-        ref && !areaRect && setAreaRect(ref.getBoundingClientRect())
+        requestAnimationFrame(() =>{
+            ref && !areaRect && setAreaRect(ref.getBoundingClientRect())
+        })
         areaRef.current = ref;
     }, [setAreaRect, areaRect, areaRef])
 
     const thumbRef = useCallback( ref => {
         if(!ref) return ;
         thumb.current = ref;
-        setThumbRect(ref.getBoundingClientRect());
+        requestAnimationFrame(() => {
+            setThumbRect(ref.getBoundingClientRect());
+        })
     }, [thumb])
 
     const zero = useMemo(()=> {
@@ -53,7 +59,9 @@ const VolumePeakLevelMeter = ({
 
     useEffect(function onAspectChange(){
         setVertical(aspect === "vertical")
-        thumb.current && setThumbRect(thumb.current.getBoundingClientRect());
+        requestAnimationFrame(()=>{
+            thumb.current && setThumbRect(thumb.current.getBoundingClientRect());
+        })
     }, [aspect, thumb, setThumbRect])
 
     useEffect(function updateAreaRectOnResize(){
@@ -74,15 +82,17 @@ const VolumePeakLevelMeter = ({
 
     const setThumbState = useCallback( state => {
         if(!thumb.current) return;
-        if(state === "dragged"){
-            thumb.current.classList.add("thumb--active");
-            isDraggedRef.current = true;
-            setIsDragged(true)
-        } else {
-            thumb.current.classList.remove("thumb--active");
-            isDraggedRef.current = false;
-            setIsDragged(false);
-        }
+        requestAnimationFrame(()=>{
+            if(state === "dragged"){
+                thumb.current.classList.add("thumb--active");
+                isDraggedRef.current = true;
+                setIsDragged(true)
+            } else {
+                thumb.current.classList.remove("thumb--active");
+                isDraggedRef.current = false;
+                setIsDragged(false);
+            }
+        })
     }, [thumb, isDraggedRef, setIsDragged])
 
     const valueFromPosition = useCallback(position => {
@@ -188,4 +198,4 @@ const mapDispatchToProps = (dispatch, {set, update}) => ({
     update : (value) => (update && update(value)) || (set && dispatch(set(value)))
 })
 
-export default  withControlMapping(connect(mapStateToProps, mapDispatchToProps)(VolumePeakLevelMeter));
+export default  connect(mapStateToProps, mapDispatchToProps)(VolumePeakLevelMeter);

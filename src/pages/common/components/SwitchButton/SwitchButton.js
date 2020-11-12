@@ -8,8 +8,8 @@ const SwitchButton = ({value, onChange, className, ...props}) => {
             {...props}
             className={"btn-switch " + className}
             type="checkbox"
-            value={!value}
-            onChange={e => onChange(e.target.value === "true")}/>
+            checked={value}
+            onChange={e => onChange(e.target.checked)}/>
     )
 }
 

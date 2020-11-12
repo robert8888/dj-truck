@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import SwitchButton from "../../../../../common/components/SwitchButton/SwitchButton";
 import "./scoll-snap-button.scss";
+import {useSelector} from "react-redux";
 
 const ScrollSnapButton = () => {
+    const userId = useSelector(state => state.user.id);
     const [scroll, setScroll] = useState(false);
 
     useEffect(()=>{
@@ -15,12 +17,21 @@ const ScrollSnapButton = () => {
         }
     }, [scroll])
 
+    const updateScroll = useCallback((value)=>{
+        setScroll(value)
+        localStorage.setItem("scroll-snap-" + userId, value)
+    }, [setScroll, userId])
+
+    useEffect(() => {
+        setScroll(localStorage.getItem("scroll-snap-" + userId) === "true")
+    }, [setScroll, userId])
+
     return (
         <div className={"c-scroll-snap-button__container"}>
             <div className={"c-scroll-snap-button__wrapper"} data-tooltip={"Scroll snap " + (scroll ? "on" : "off")}>
                 <SwitchButton
                     className={"c-scroll-snap-button"}
-                    onChange={setScroll}
+                    onChange={updateScroll}
                     value={scroll}/>
             </div>
         </div>

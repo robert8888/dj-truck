@@ -17,7 +17,7 @@ const PageConsole = () => {
 
   const isOpenTourGuideActive = useMemo(()=>{
       if(tutorial === "false") return false;
-      if(process.env.NODE_ENV === "development" || tutorial) return true;
+      if(/*process.env.NODE_ENV === "development" ||*/ tutorial === "true") return true;
       if(window.localStorage.getItem("tour-guide-flag-id--" + userId)) return false;
 
       window.localStorage.setItem("tour-guide-flag-id--" + userId, true)
