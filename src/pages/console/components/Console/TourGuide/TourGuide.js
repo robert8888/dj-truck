@@ -27,10 +27,10 @@ import useStep_19 from "./Steps/Step_19";
 import useStep_20 from "./Steps/Step_20";
 import useStep_21 from "./Steps/Step_21";
 
-const TourGuide = ((isOpen) => {
+const TourGuide = ({isOpen}) => {
     const [open, setOpen] = useState(isOpen);
 
-    useEffect(()=>setOpen(isOpen), [isOpen])
+    useEffect(()=> setOpen(isOpen), [isOpen])
 
     const renderControls = useCallback((props)=>{
         return <Controls {...props}/>
@@ -65,6 +65,6 @@ const TourGuide = ((isOpen) => {
             {steps}
         </Tour>
     )
-})
+}
 
 export default TourGuide

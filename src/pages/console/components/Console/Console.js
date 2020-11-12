@@ -12,21 +12,22 @@ import ControlMenu from "./Control/ControlMenu";
 import CollapseButton from "./Settings/CollapseButton/CollpaseButton";
 import ConsoleCtx from "./ConsoleCtx";
 import "./console.scss";
+import useDynamicFooter from "../../../common/Hooks/useDynamicFooter";
 
-const Console = ({callStopAll, updateFooterType, consoleCollapse }) => {
+const Console = ({callStopAll, consoleCollapse }) => {
+    const setFooter = useDynamicFooter()
     const [control] = usePlayer();
 
     useEffect(() =>{
         control.stop();
          return () => {
-             console.log("call top all")
             callStopAll()
         }   
     }, [control, callStopAll])
 
     useEffect(()=> {
-        updateFooterType()
-    }, [updateFooterType])
+        setFooterType("default")
+    }, [setFooter])
 
 
     return (
@@ -58,7 +59,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>({
-    updateFooterType : () => dispatch(setFooterType("default")),
     callStopAll : () => dispatch(consoleStopAll())
 })
 

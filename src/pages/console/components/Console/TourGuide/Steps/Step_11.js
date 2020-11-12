@@ -33,7 +33,7 @@ export default function useStep_11(){
                 callback: () => loopLengthAnimation.state === "finished"
             }}>
             <p>
-                Now you can adjust length and turn on loop.
+                Adjust loop length and turn it on
             </p>
             <p>
                 loop work in full sync. feel free to change it length in any moment

@@ -23,7 +23,7 @@ export default function useStep_10(){
             })({fired:false})}
         >
             <p>
-                Now you can set this track as master.
+                Mark this track as master
             </p>
             <p>
                 Master is a track to witch will be sync second one by press sync button
