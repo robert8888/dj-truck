@@ -23,7 +23,10 @@ export default function useStateValueAnimator({action, from, to, duration, resol
             }
         }, timeout)
 
-        setTimeout(() => clearInterval(intervalHandler.current), duration * 1.1)
+        setTimeout(() => {
+            clearInterval(intervalHandler.current)
+            state.current = "finished"
+        }, duration * 1.1)
     }, [dispatch, onEndRef, value, intervalHandler, state,
          from, to , action, duration, resolution])
 

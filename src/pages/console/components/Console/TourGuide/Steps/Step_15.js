@@ -7,20 +7,28 @@ import {useDispatch} from "react-redux";
 export default function useStep_15(){
     const dispatch = useDispatch()
     const deckBPaused  = useRefSelector(state => state?.console.channel.B.playBackState.paused)
+    const deckBReady = useRefSelector(state => state?.console.channel.B.playBackState.ready)
 
     return useMemo(() => (
         <Step
             key={"Step_15"}
             placement={"top-left"}
             selector={".controls__playback--B .btn--play"}
-            onBeforeNext={() => setTimeout(() => {
+            onBeforeNext={() =>{
+                if(!deckBReady.current) return false;
+                setTimeout(() => {
                 if(deckBPaused.current)
                     dispatch(deckPlayAction("B", true))
-            }, 0)
-            }
+                }, 0)
+                return true;
+            }}
             approve={{
                 event: "click",
                 target: ".controls__playback--B .btn--play",
+                callback: () => {
+                    console.log("is b redy", deckBReady.current)
+                    return deckBReady.current
+                }
             }}
         >
             <p>

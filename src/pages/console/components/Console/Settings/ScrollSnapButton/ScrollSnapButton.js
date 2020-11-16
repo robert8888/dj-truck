@@ -27,10 +27,10 @@ const ScrollSnapButton = () => {
     }, [setScroll, userId])
 
     return (
-        <div className={"c-scroll-snap-button__container"}>
-            <div className={"c-scroll-snap-button__wrapper"} data-tooltip={"Scroll snap " + (scroll ? "on" : "off")}>
+        <div className={"c-scroll-snap-switch__container"}>
+            <div className={"c-scroll-snap-switch__wrapper"} data-tooltip={"Scroll snap " + (scroll ? "on" : "off")}>
                 <SwitchButton
-                    className={"c-scroll-snap-button"}
+                    className={"c-scroll-snap-switch"}
                     onChange={updateScroll}
                     value={scroll}/>
             </div>

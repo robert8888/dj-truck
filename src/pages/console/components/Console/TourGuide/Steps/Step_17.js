@@ -18,7 +18,10 @@ export default function useStep_17(){
             placement={"top-right"}
             selector={".fader.mixer-fader"}
             onBeforeShow={() => faderToCenterAnimation.start()}
-            onBeforeNext={() => faderToCenterAnimation.state === "finished"}
+            onBeforeNext={() => {
+                console.log(faderToCenterAnimation.state )
+                return faderToCenterAnimation.state === "finished"
+            }}
         >
             <p>
                 Yeah !!!

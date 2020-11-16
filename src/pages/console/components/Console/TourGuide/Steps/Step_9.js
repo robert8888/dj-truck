@@ -18,7 +18,10 @@ export default function useStep_9(){
             placement={"top-right"}
             selector={".fader.mixer-fader"}
             onBeforeShow={() => faderToLeftAnimation.start()}
-            onBeforeNext={() => faderToLeftAnimation.state === "finished"}
+            onBeforeNext={() => {
+                console.log(faderToLeftAnimation.state)
+                return faderToLeftAnimation.state === "finished"
+            }}
         >
             <p>
                 Now you can use fader to channel A, so that only the right channel will be heard.

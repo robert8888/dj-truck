@@ -2,7 +2,8 @@
 @import "./../../../../../../css/mixins";
 
 
-.c-scroll-snap-button{
+.c-scroll-snap-switch{
+
   &__container{
 
   }
@@ -17,7 +18,7 @@
       color: darken($primary , 20%)
     }
   }
-  &.btn-switch{
+  &.c-switch{
     --width: 30px;
     --height: 15px;
     --slider-color:#{darken($secondary-dark, 5%)};
