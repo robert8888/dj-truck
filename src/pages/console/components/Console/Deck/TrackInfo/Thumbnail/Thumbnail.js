@@ -1,19 +1,19 @@
 import React, { useRef, useEffect } from "react"
 import { connect } from "react-redux";
 
-const Thumbnail = props => {
+const Thumbnail = ({thumbnailURL}) => {
     const container = useRef(null);
 
     useEffect(()=>{
-        if(props.thumbnailURL){
-            container.current.src = props.thumbnailURL;
+        if(thumbnailURL){
+            container.current.src = thumbnailURL;
         }
 
-    }, [ container, props.thumbnailURL])
+    }, [ container, thumbnailURL])
 
     return (
         <div className="track-info-thumbnail">
-            {(props.thumbnailURL && <img alt="track thumbnails" ref={container}/>)}
+            {(thumbnailURL && <img alt="track thumbnails" ref={container}/>)}
         </div>
     )
 }

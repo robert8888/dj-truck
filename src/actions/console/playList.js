@@ -30,7 +30,8 @@ const ACTIONS = {
     PL_COPY_TRACK_TO_LIST: "Add track to list (from drag and drop)",
     PL_UPDATE_TRACK_POSITION_REQUST: "Update track position in database after swaping",
     PL_SWAP_TRACK_ON_CURRENT: "Swap elements on current play list",
-    PL_INIT_CALC_BPM: "Start calculating bpm for track", 
+    PL_INIT_CALC_BPM: "Start calculating bpm for track",
+    PL_INIT_SEARCH_BPM: "Start searching for bpm in external source",
     PL_SET_BPM_AND_OFFSET: "Update Bpm and Offset track on playlist",
     PL_DELETE_TRACK_REQUEST: "Call to api to delete track of given id from current plalist",
     PL_DELETE_TRACK: "Remove track of given index from current playlist",
@@ -93,7 +94,7 @@ export function setPlaylistContent(playlistContent, path) {
 export function resetCurrentPlaylistContent(list) {
     return { type: ACTIONS.PL_RESET_CURRENT_PLAYLIST_CONTETN, list }
 }
-//-------------- elemenet selction and change element hierarych actions
+//-------------- element selection and change element hierarchy actions
 
 export function setSelection(path) {
     return { type: ACTIONS.PL_SET_SELECTION, path }
@@ -147,6 +148,10 @@ export function swapTrackOnList(from, to) {
 
 export function startCalcBpm(track, playlist) {
     return { type: ACTIONS.PL_INIT_CALC_BPM, track, playlist }
+}
+
+export function startSearchBpm(track, playlist){
+    return {type: ACTIONS.PL_INIT_SEARCH_BPM, track, playlist}
 }
 
 export function setBpmAndOffset(id, playlist, bpm, offset) {

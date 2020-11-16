@@ -1,7 +1,6 @@
 import React from "react";
 import "./track-info.scss";
 
-
 import TrackDuration from "./TrackDuration/TrackDuration";
 import TrackTitle from "./TrackTitle/TrackTitle";
 import TimeLeft from "./TimeLeft/TimeLeft";
@@ -10,29 +9,26 @@ import CurrentBpm from "./CurrentBpm/CurrentBpm";
 import Pitch from "./Pitch/Pitch";
 import Bpm from "./Bpm/Bpm";
 
-const TrackInfo = props => {
+const TrackInfo = ({name}) => {
 
- 
     return (
-        <div className={"track-info info-deck-" + props.name}>
-            <Thumbnail name={props.name} />
+        <div className={"track-info info-deck-" + name}>
+            <Thumbnail name={name} />
             <div className="track-info-description">
-                 <TrackTitle name={props.name}/>
+                 {/*<TrackTitle name={name}/>*/}
             </div>
             <div className="track-info-time">
-                <TimeLeft name={props.name}/>
-                <TrackDuration name={props.name}/>
+                <TimeLeft name={name}/>
+                <TrackDuration name={name}/>
             </div>
             <div className="track-info-bpm">
-                <CurrentBpm name={props.name}/>
-                <Pitch name={props.name}/>
-                <Bpm name={props.name}/>
+                <CurrentBpm name={name}/>
+                <Pitch name={name}/>
+                <Bpm name={name}/>
             </div>
         </div>
     )
 }
-
-
 
 
 export default TrackInfo;

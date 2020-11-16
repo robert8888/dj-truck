@@ -72,6 +72,8 @@ const ControlMenu = ({
     }, [reqProfileList, userId])
 
     useEffect(()=>{
+        if(typeof navigator.requestMIDIAccess !== "function") return;
+
         navigator.requestMIDIAccess({sysex:true})
             .then((webMidi)=>{
                 const ports = [];
@@ -102,7 +104,8 @@ const ControlMenu = ({
         })
     }, [midiIns, setPort, currentPort])
 
-    const deleteProfile = useCallback((type) => {
+    const deleteProfile = useCallback((type, e) => {
+        e.stopPropagation();
         const id = type === "midi" ? currentMidiProfileId : currentKbdProfileId;
         const profile = profilesList.find(profile => profile.id === id);
         reqDeleteProfile(profile);
@@ -128,7 +131,8 @@ const ControlMenu = ({
         items.push((
             <li key={"control-nav-item-create"}
                 className={"control__nav__item control__nav__item--create"}
-                onClick={() => {
+                onClick={(e) => {
+                    e.stopPropagation();
                     setModalState("visible");
                     profileType.current = type;
                     setModalType("create");
@@ -144,7 +148,10 @@ const ControlMenu = ({
             <li key={"control-nav-item-edit"}
                 className={"control__nav__item control__nav__item--edit" +
                           (mappingMode === type ? "control__nav__item-active" : "")}
-                onClick={()=>{ setMappingMode(mappingMode === type ? null : type)}} >
+                onClick={(e)=>{
+                    e.stopPropagation();
+                    setMappingMode(mappingMode === type ? null : type)
+                }} >
                 {((mappingMode === type) ? "Finish " : "") + "Edit"}
 
             </li>
@@ -152,7 +159,8 @@ const ControlMenu = ({
         items.push((
             <li key={"control-nav-item-rename"}
                 className={"control__nav__item control__nav__item--rename"}
-                onClick={() => {
+                onClick={(e) => {
+                    e.stopPropagation();
                     setModalState("visible");
                     profileNameInput.current.value = profilesList.find( profile =>
                            (type === "midi" && profile.id === currentMidiProfileId)

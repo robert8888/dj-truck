@@ -1,6 +1,7 @@
 import React from "react";
 
 const PlaylistTable = props =>{
+    console.log("reder play list  table")
     return (           
         <table className="playlist-table"  >
             <thead className="palylist-table-header">

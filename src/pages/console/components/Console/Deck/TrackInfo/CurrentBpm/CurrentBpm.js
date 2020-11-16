@@ -1,21 +1,19 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useMemo } from "react"
 import { calcBpm } from "./../../../../../../../utils/bpm/converter";
 import { connect } from "react-redux";
 
 
 const CurrentBpm = ({pitch, bpm}) => {
-    const container = useRef(null);
-
-    useEffect(()=>{
+    const value = useMemo(()=>{
         let currentBpm = "000";
         if(bpm && bpm !== "calculating"){
             currentBpm = calcBpm(bpm, pitch).toFixed(2);
         } 
-        container.current.textContent = currentBpm;
-    }, [bpm, container, pitch])
+        return currentBpm;
+    }, [bpm,  pitch])
     
     return (
-        <span className="track-bpm-current" ref={container}/>
+        <span className="track-bpm-current">{value}</span>
     )
 }
 

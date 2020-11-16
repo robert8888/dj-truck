@@ -2,7 +2,8 @@
 import { all } from "redux-saga/effects";
 import requestSearchResultsSaga from "./externalSearch/reqSearchResultSaga";
 import printLog from "./logger/print";
-import calcBpmSaga from "./playlists/calcBpmSaga";
+import requestCalcBpmSaga from "./playlists/reqCalcBpmSaga";
+import requestSearchBpmSaga from "./playlists/reqSearchBpmSaga";
 import requestAddTrack from "./playlists/reqAddTrackSaga";
 import requestCopyTrackSaga from "./playlists/reqCopySaga";
 import requestCreateDirSaga from "./playlists/reqCreateDirSaga";
@@ -58,7 +59,8 @@ function* rootSaga(){
         requestUpdateTrackPositionSaga(),
         requestDeleteTrackSaga(),
         toogleDirSaga(),
-        calcBpmSaga(),
+        requestSearchBpmSaga(),
+        requestCalcBpmSaga(),
         // -- control - midi and kbd profiles
         controlSaga(),
         //--- recorder

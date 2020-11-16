@@ -1,16 +1,9 @@
-import React, { useRef, useEffect } from "react"
+import React from "react"
 import { connect } from "react-redux";
 
-
-const Pitch = props => {
-    const container = useRef(null);
-
-    useEffect(()=>{
-        container.current.textContent = props.pitch.toFixed(2);
-    }, [container, props.pitch])
-
+const Pitch = ({pitch}) => {
     return (
-        <span className="track-bpm-pitch" ref={container}/>
+        <span className="track-bpm-pitch">{pitch.toFixed(2)}</span>
     )
 }
 

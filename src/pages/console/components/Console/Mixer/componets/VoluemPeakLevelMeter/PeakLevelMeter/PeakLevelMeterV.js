@@ -69,6 +69,7 @@ class PeakLevelMater extends React.PureComponent {
 
     componentWillUnmount() {
         this.breakFlag = true;
+        if(this.props.interface) return;
         this.props.interface.stopUpdating();
     }
 

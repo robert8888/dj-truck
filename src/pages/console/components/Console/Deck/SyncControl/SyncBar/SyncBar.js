@@ -11,42 +11,41 @@ class SyncBar extends React.Component {
     this.break = true;
   }
 
-
   update() {
     if(this.break){
       return;
     } 
 
-    setTimeout( () => requestAnimationFrame(this.update.bind(this), 50));
-    const now = new Date().getTime();
+    setTimeout( () => this.update.bind(this), 100);
 
-    if (now - this.lastCall > 100) {
-      this.lastCall = now;
-      const position = this.channelInterface.getSyncBarPosition();
-      this.applyStyle(position);
-    }
+    const position = this.channelInterface.getSyncBarPosition();
+    this.applyStyle(position);
   }
 
   applyStyle(position) {
-
     let scale = 2 * position;
     let translateX = -((1 - scale) / 2 * 100);
 
     if (position < 0) {
-      scale *= -1;
+        scale *= -1;
     }
-
-    this.thumbElement.current.style.transform = "translateX(" + translateX + "%) scaleX(" + scale + ")"
+    requestAnimationFrame(() => {
+      this.thumbElement.current.style.transform = "translateX(" + translateX + "%) scaleX(" + scale + ")"
+    })
   }
 
   activate() {
-    this.thumbElement.current.style.opacity = "1";
+    requestAnimationFrame(() => {
+      this.thumbElement.current.style.opacity = "1";
+      this.update();
+    })
     this.break = false;
-    this.update();
   }
 
   deActivate() {
-    this.thumbElement.current.style.opacity = "0";
+    requestAnimationFrame(()=>{
+      this.thumbElement.current && (this.thumbElement.current.style.opacity = "0");
+    })
     this.break = true;
   }
 

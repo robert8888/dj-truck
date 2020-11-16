@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useMemo} from "react";
 import { connect } from "react-redux";
 import {toggleSync, setMaster, MAPPING} from './../../../../../../actions';
 import SyncBar from "./SyncBar/SyncBar";
@@ -8,11 +8,8 @@ import "./sync-control.scss";
 
 const SyncControl = ({isMaster, noMaster, channel}) => {
 
-    let isActive = useCallback(()=>{
-        if(isMaster || noMaster){
-            return false;
-        } 
-        return true;
+    let isActive = useMemo(()=>{
+        return !(isMaster || noMaster);
     }, [isMaster, noMaster])
 
     return (
@@ -24,7 +21,7 @@ const SyncControl = ({isMaster, noMaster, channel}) => {
             <MasterButton get={state => state.console.master === channel}
                           set={setMaster(channel, null)}
                           role={MAPPING[`DECK_CHANNEL_${channel}_MASTER`]}/>
-            <SyncBar className="sync-bar" active={ isActive} name={channel}/>
+            <SyncBar className="sync-bar" active={isActive} name={channel}/>
         </div>
     )
 }

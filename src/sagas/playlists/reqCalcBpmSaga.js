@@ -10,7 +10,7 @@ export default function* watcher() {
 }
 
 function* calcBpmAsync(action) {
-    const path = ['saga', 'calcBpm', 'calculatin bpm']
+    const path = ['saga', 'calcBpm', 'calculating bpm']
     try{
         const {sourceId: id, source, duration} = action.track;
         if(duration > 60 * 20) // 20 min;

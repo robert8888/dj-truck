@@ -2,7 +2,15 @@ import React, { Fragment } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { connect } from "react-redux";
 import CtxMenu from "../../../../common/components/ContextMenu/ContextMenu";
-import { deleteTrackRequest, loadTrack, resetCurrentPlaylistContent, startCalcBpm, swapTrackOnList, updateTrackPositionRequest } from "./../../../../../actions";
+import {
+    deleteTrackRequest,
+    loadTrack,
+    resetCurrentPlaylistContent,
+    startCalcBpm,
+    swapTrackOnList,
+    updateTrackPositionRequest,
+    startSearchBpm
+} from "../../../../../actions";
 import EmptyListInfo from "./EmptList/EmptyList";
 import "./play-list.scss";
 import PlaylistCtx from "./PlaylistContext";
@@ -59,6 +67,15 @@ class PlayList extends React.Component {
         this.forceUpdate();
     }
 
+    searchBpm(){
+        if (this.currentHoverElement === -1) return;
+
+        this.props.startSearchBpm(
+            this.props.playlist[this.currentHoverElement],
+            this.props.currentPlaylist
+        )
+    }
+
 
     makeListSnapshot() {
         this.playlistSnapshot = this.props.playlist;
@@ -88,11 +105,16 @@ class PlayList extends React.Component {
         if (prevProps.refreshFlag !== this.props.refreshFlag) {
             this.forceUpdate();
         }
+        this.channelPaused = {
+            A: this.props.channelPausedA,
+            B: this.props.channelPausedB,
+        }
     }
 
     getContextMenuItems(){
         let items =  {
             "Calc BPM": this.reCalcBpm.bind(this),
+            "Get Bpm": this.searchBpm.bind(this),
             "Delete": this.deleteTrack.bind(this)
         }
         if(this.props.page === "console"){
@@ -105,13 +127,6 @@ class PlayList extends React.Component {
         return items;
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return (
-            Object.keys(this.props.channelPaused).some(channel =>
-                this.props.channelPaused[channel] !== nextProps.channelPaused[channel]
-            ))
-        || (this.props.playlist !== nextProps.playlist)
-    }
 
     render() {
         return (
@@ -132,7 +147,7 @@ class PlayList extends React.Component {
                                             endOutside={this.resetList.bind(this)}
                                             endWithin={this.acceptListOrder.bind(this)}
                                             withSends={this.props.page === "console"}
-                                            channelPaused={this.props.channelPaused}
+                                            channelPaused={this.channelPaused}
                                             load={this.props.load}
                                             key={item.id}
                                         />
@@ -160,10 +175,8 @@ const mapStateToProps = (state) => ({
     playlist: state.playList.list,
     currentPlaylist: state.playList.currentPlaylist,
     refreshFlag: state.playList.refreshFalg,
-    channelPaused : {
-        A : state.console.channel.A.playBackState.paused,
-        B : state.console.channel.B.playBackState.paused
-    }
+    channelPausedA: state.console.channel.A.playBackState.paused,
+    channelPausedB: state.console.channel.B.playBackState.paused,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -171,6 +184,7 @@ const mapDispatchToProps = dispatch => ({
     delete: (index, id) => dispatch(deleteTrackRequest(index, id)),
     swapTrack: (from, to) => dispatch(swapTrackOnList(from, to)),
     reCalcBpm: (track, playlist) => dispatch(startCalcBpm(track, playlist)),
+    startSearchBpm: (track, playlist) => dispatch(startSearchBpm(track, playlist)),
     resetList: (list) => dispatch(resetCurrentPlaylistContent(list)),
     updateTracksPositions : (tracksPositions) => dispatch(updateTrackPositionRequest(tracksPositions))
 })

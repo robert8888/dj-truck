@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState} from "react"
-import { formater } from "./../../../../../../../utils/time/timeFromater";
+import { formater } from "../../../../../../../utils/time/timeFromater";
 import { connect } from "react-redux";
 import Console from "./../../../../../core/console/console";
 
@@ -13,7 +13,6 @@ const TimeLeft = ({duration, paused, name}) => {
         Console.Get().then( instance => {
             setChannelInterface(instance.getChannelInterface(name))
         })
-      //  setChannelInterface(Console.Get().getChannelInterface(name));
     }, [setChannelInterface, name])
 
     useEffect(()=>{
@@ -21,10 +20,12 @@ const TimeLeft = ({duration, paused, name}) => {
 
         if(!paused){
             intervalHandler.current = setInterval(()=>{
-                let left = channelInterface.getCurrentTime().left;
-                left = formater.secondsToStr(left);
-                if(!container.current) return;
-                container.current.textContent = left;
+                requestAnimationFrame(() => {
+                    let left = channelInterface.getCurrentTime().left;
+                    left = formater.secondsToStr(left);
+                    if(!container.current) return;
+                    container.current.textContent = left;
+                })
             }, 500)
         } else {
             clearInterval(intervalHandler.current);

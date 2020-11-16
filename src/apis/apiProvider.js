@@ -2,6 +2,7 @@ import recordStoreApi from "./recordsStore/recStoreApi";
 import soundCloudApi from "./sc/scApi";
 import userAssetsApi from "./userAssets/userApi";
 import youTubeApi from "./yt/ytApi";
+import spotifyAnalyserApi from "./spotifyAnalyser/spotifyAnalyserApi";
 
 export const API_TYPES = {
     MIUSIC_SOURCE: "Source of miusic",
@@ -22,6 +23,11 @@ const apisMap = {
         type: API_TYPES.MIUSIC_SOURCE,
         api: soundCloudApi,
         default: true
+    },
+
+    "SpotifyAnalyser":{
+        type: API_TYPES.DATA_SOURCE.REST,
+        api: spotifyAnalyserApi,
     },
 
     "UserAssets": {

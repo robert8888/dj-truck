@@ -4,7 +4,7 @@ const apiUrl = process.env.REACT_APP_YT_API_URL;
 const maxResults = 10
 
 export async function search(query = "", limit = maxResults){
-    const publicErrorMsg =  `Sorry during conectig to youtube api occured problem. Searching the youtube database is not posible in this moment`
+    const publicErrorMsg =  `Sorry during connecting to youtube api occurred problem. Searching the youtube database is not possible in this moment`
    
     const comand =  "/api/search?q=";
     const options = '&maxResults=' + limit ;

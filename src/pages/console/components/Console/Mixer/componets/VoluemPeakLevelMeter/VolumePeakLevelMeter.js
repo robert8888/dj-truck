@@ -29,24 +29,25 @@ const VolumePeakLevelMeter = ({
     const thumb = useRef();
 
     useEffect(()=>{
-        requestAnimationFrame(()=>{
-            setAreaRect(areaRef.current.getBoundingClientRect())
+       requestAnimationFrame(()=>{
+           if(!areaRef.current) return;
+           setAreaRect(areaRef.current.getBoundingClientRect())
         })
     }, [areaRef, updateFlag])
 
     const updateAreaRect = useCallback(ref => {
-        requestAnimationFrame(() =>{
+        setTimeout(requestAnimationFrame(() =>{
             ref && !areaRect && setAreaRect(ref.getBoundingClientRect())
-        })
+        }), Math.random() * 100)
         areaRef.current = ref;
     }, [setAreaRect, areaRect, areaRef])
 
     const thumbRef = useCallback( ref => {
         if(!ref) return ;
         thumb.current = ref;
-        requestAnimationFrame(() => {
+        setTimeout(() => requestAnimationFrame(() => {
             setThumbRect(ref.getBoundingClientRect());
-        })
+        }), Math.random() * 100)
     }, [thumb])
 
     const zero = useMemo(()=> {
@@ -59,9 +60,9 @@ const VolumePeakLevelMeter = ({
 
     useEffect(function onAspectChange(){
         setVertical(aspect === "vertical")
-        requestAnimationFrame(()=>{
+        setTimeout(() => requestAnimationFrame(()=>{
             thumb.current && setThumbRect(thumb.current.getBoundingClientRect());
-        })
+        }), Math.random())
     }, [aspect, thumb, setThumbRect])
 
     useEffect(function updateAreaRectOnResize(){
@@ -127,12 +128,16 @@ const VolumePeakLevelMeter = ({
         updateValue(position);
     }, [vertical, thumb ,normalize, updateValue])
 
-    const mouseMove = useCallback((shift,{clientX, clientY})=>{
+    const mouseMove = useCallback((shift, event)=>{
+        event.stopPropagation();
+        const {clientX, clientY} = event;
         const position = (vertical ? clientY - areaRect.top : clientX - areaRect.left) - shift;
         updatePosition(position);
     }, [vertical, areaRect,  updatePosition])
 
-    const mouseDown = useCallback(({target, clientX, clientY}) => {
+    const mouseDown = useCallback((event) => {
+        event.stopPropagation();
+        const {target, clientX, clientY} = event
         let shift;
         setThumbState("dragged");
         if(target.matches(".thumb")){

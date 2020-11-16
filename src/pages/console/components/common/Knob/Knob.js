@@ -36,7 +36,7 @@ class Knob extends React.Component{
         this.setState({...this.state, snapShotPosition: this.state.position})
     }
 
-    normalizePostion(position){
+    normalizePosition(position){
         if(this.props.symmetric || this.props.asymmetric){
             return Math.min(Math.max(position, -100), 100)
         } 
@@ -114,7 +114,7 @@ class Knob extends React.Component{
     }
 
     setPosition(position, silent){
-        position =  this.normalizePostion(position);
+        position =  this.normalizePosition(position);
         const value = this.evalValue(position);
         /**
          * Warning uncomment below !!!
@@ -209,11 +209,9 @@ class Knob extends React.Component{
     // -------------- events below
 
     mouseDown(event){
-
-        const startY = event.clientY;
-        let mouseMove = this.mouseMove.bind(this, startY);
+        event.stopPropagation();
+        const mouseMove = this.mouseMove.bind(this, event.clientY);
         this.snap();
-
         const removeListener = () =>{
             document.body.removeEventListener('mousemove', mouseMove);
             document.body.removeEventListener('mouseup', removeListener);
@@ -225,7 +223,6 @@ class Knob extends React.Component{
             })
             
         }
-
         document.body.addEventListener('mousemove', mouseMove)
         document.body.addEventListener('mouseup', removeListener);
         document.body.addEventListener('mouseleave', removeListener);
@@ -235,19 +232,21 @@ class Knob extends React.Component{
 
     mouseMove(startY, event){
         event.stopPropagation();
-        let responsFactor = this.props.responsFactor || 1;
-        let position = this.state.snapShotPosition - (event.clientY  - startY) * responsFactor;
+        let responseFactor = this.props.responsFactor || 1;
+        let position = this.state.snapShotPosition - (event.clientY  - startY) * responseFactor;
         this.setPosition(position);
     }
 
-    mouseEnter(){
+    mouseEnter(event){
+        event.stopPropagation();
         this.isMouseOver = true;
         if(this.state.isDragged ||  this.isMouseOver){
             this.setActive(true);
         }
     }
 
-    mouseLeve(){
+    mouseLeve(event){
+        event.stopPropagation();
         this.isMouseOver = false;
         if(!this.state.isDragged &&  !this.isMouseOver){
             this.setActive(false)

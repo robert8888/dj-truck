@@ -5,7 +5,7 @@ import ExplorerTree from "./ExplorerTree/ExplorerTree";
 import ErrorBoundary from "./../../ErrorBoundary/ErrorBoundary";
 
 const Explorer = props => {
-
+    console.log("reder exp")
     return (
         <div className="explorer">
             <ErrorBoundary>
