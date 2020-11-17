@@ -7,10 +7,14 @@ import { useFormatRelative } from "./../../Hooks/useFormatDate";
 import Edit from "./Edit/Edit";
 import "./user-profile.scss";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import useDynamicFooter from "../../Hooks/useDynamicFooter";
 
 const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onChange = ifEmpty => null }) => {
     const location = useLocation();
     const [formatRelative] = useFormatRelative();
+    const [setFooter] = useDynamicFooter();
+
+    useEffect(()=>{setFooter("default")}, [setFooter])
 
     useEffect(() => {
         if ((nickname && !profile) || profile.user.nickname !== nickname) {
@@ -18,7 +22,7 @@ const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onC
         }
     }, [nickname, profile, reqProfile])
 
-    const parsePirctureUrl = useCallback((url) => {
+    const parsePictureUrl = useCallback((url) => {
         if (url.startsWith("https://platform-lookaside.fbsbx.com")) {
             const asid = url.match(/asid=(?<asid>\d+)/).groups.asid;
             url = `https://graph.facebook.com/v2.5/${asid}/picture?type=large`
@@ -42,7 +46,7 @@ const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onC
                 <main>
                 <div className="user-picture">
                     <Edit active={editable} type="image" onChange={onChange.bind(null, 'picture')}>
-                        <img src={parsePirctureUrl(profile.user.picture)} alt="user avatar" />
+                        <img src={parsePictureUrl(profile.user.picture)} alt="user avatar" />
                     </Edit>
                 </div>
                 <section>
@@ -52,7 +56,7 @@ const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onC
                         </Edit>
                     </div>
                     <div className="user-joined">
-                            <h5>{formatRelative(profile.user.createdAt, {timezone :true})}</h5>
+                            <h6>{formatRelative(profile.user.createdAt, {timezone :true})}</h6>
                     </div>
                     <div className="user-record-stat">
                         <span>{`${profile.records} records`}</span>

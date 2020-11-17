@@ -15,7 +15,7 @@ const TrackInfo = ({name}) => {
         <div className={"track-info info-deck-" + name}>
             <Thumbnail name={name} />
             <div className="track-info-description">
-                 {/*<TrackTitle name={name}/>*/}
+                 <TrackTitle name={name}/>
             </div>
             <div className="track-info-time">
                 <TimeLeft name={name}/>

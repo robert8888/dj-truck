@@ -13,6 +13,7 @@ function* calcBpmAsync(action) {
     const path = ['saga', 'calcBpm', 'calculating bpm']
     try{
         const {sourceId: id, source, duration} = action.track;
+        console.log(action)
         if(duration > 60 * 20) // 20 min;
         {
             const priv = "Can't calculating bpm track duration is to big: " + duration;

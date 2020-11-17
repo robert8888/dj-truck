@@ -5,6 +5,7 @@ import SyncBar from "./SyncBar/SyncBar";
 import SyncButton from "./SyncButton";
 import MasterButton from "./MaterButton";
 import "./sync-control.scss";
+import BeatOffsetButton from "./BeatOffsetButton/BeatOffsetButton";
 
 const SyncControl = ({isMaster, noMaster, channel}) => {
 
@@ -22,6 +23,7 @@ const SyncControl = ({isMaster, noMaster, channel}) => {
                           set={setMaster(channel, null)}
                           role={MAPPING[`DECK_CHANNEL_${channel}_MASTER`]}/>
             <SyncBar className="sync-bar" active={isActive} name={channel}/>
+            <BeatOffsetButton/>
         </div>
     )
 }

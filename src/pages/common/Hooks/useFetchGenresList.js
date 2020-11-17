@@ -1,8 +1,9 @@
-import  {useState, useCallback} from "react"
+import  {useState, useCallback, useRef} from "react"
 import {getApi} from "../../../apis/apiProvider";
 import {Log, Logger} from "../../../utils/logger/logger";
 
 export default  function (preSetLimit){
+    const aboard = useRef(false);
     const [items, setItems] = useState(null)
 
     const getLink = useCallback(to => `/records/genres/${to}`, [])
@@ -15,6 +16,7 @@ export default  function (preSetLimit){
     }, [setItems, getLink])
 
     const fetchGenres = useCallback((limit = preSetLimit) => {
+        aboard.current = false;
         (async () =>{
             try{
                 const { callQuery, queries } = getApi("UserAssets");
@@ -23,6 +25,7 @@ export default  function (preSetLimit){
                 if(response.errors){
                     throw new Error(response.errors.map(error => error.message).join(" || "))
                 } else {
+                    if(!aboard.current)
                     updateItems(response.data.genres)
                 }
             } catch(error){
@@ -34,7 +37,7 @@ export default  function (preSetLimit){
             }
 
         })()
-    }, [updateItems, preSetLimit])
+    }, [updateItems, preSetLimit, aboard])
 
-    return [items, fetchGenres]
+    return [items, fetchGenres, aboard]
 }

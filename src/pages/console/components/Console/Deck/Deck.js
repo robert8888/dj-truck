@@ -48,7 +48,6 @@ const Deck = ({name: channel, loadTrack}) => {
                     <TrackInfo name={channel} />
                     <div className={"deck__group"}>
                         <SyncControl channel={channel} />
-                        {/*<PitchInKeyButton/>*/}
                     </div>
                     <div className="player-container">
                         <Player name={channel} />

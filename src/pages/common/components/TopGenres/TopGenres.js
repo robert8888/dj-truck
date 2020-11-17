@@ -5,8 +5,13 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import useFetchGenresList from "../../Hooks/useFetchGenresList";
 
 const TopGenres = () =>{
-    const [items, fetchItems] = useFetchGenresList(7);
-    useEffect(() => fetchItems() ,  [fetchItems])
+    const [items, fetchItems, aboard] = useFetchGenresList(7);
+    useEffect(() => {
+        fetchItems()
+        return () => {
+            aboard.current = true;
+        }
+    } ,  [fetchItems, aboard])
 
     if(!items) return null;
 

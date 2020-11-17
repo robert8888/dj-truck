@@ -94,6 +94,7 @@ export default class Console{
 
             //----BPM AND SYNC
             case STATUS.BPM_AND_OFFSET_READY : {
+                console.log("bar sync", diff.channel)
                 this.channels.createBars(diff.channel, diff.currentValue);
                 break;
             }

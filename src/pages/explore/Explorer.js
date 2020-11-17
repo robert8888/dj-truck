@@ -27,7 +27,7 @@ const Explorer = props =>{
             setShowPlayer(true);
             setFooterType("player")
         } else {
-            setFooterType("none")
+            setFooterType("default")
         }
     }, [setShowPlayer, setFooterType, player])
 

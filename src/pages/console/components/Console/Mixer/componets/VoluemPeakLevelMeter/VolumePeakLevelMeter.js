@@ -1,8 +1,7 @@
-import React, {useCallback,  useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import {connect} from "react-redux";
 import PeakLevelMeterH from "./PeakLevelMeter/PeakLevelMeterH";
 import PeakLevelMeterV from "./PeakLevelMeter/PeakLevelMeterV";
-import withControlMapping from "../../../Control/withControlMapping";
 import Thumb from "./Thumb/Thumb";
 import {toRange} from "../../../../../../../utils/math/argRanges";
 import _throttle from "lodash/throttle";
@@ -26,29 +25,27 @@ const VolumePeakLevelMeter = ({
     const areaRef = useRef();
     const currentValue = useRef();
     const isDraggedRef = useRef();
-    const thumb = useRef();
+    const thumbRef = useRef();
 
-    useEffect(()=>{
-       requestAnimationFrame(()=>{
-           if(!areaRef.current) return;
-           setAreaRect(areaRef.current.getBoundingClientRect())
-        })
+    useLayoutEffect(()=>{
+       if(!areaRef.current) return;
+       setAreaRect(areaRef.current.getBoundingClientRect())
     }, [areaRef, updateFlag])
 
-    const updateAreaRect = useCallback(ref => {
-        setTimeout(requestAnimationFrame(() =>{
-            ref && !areaRect && setAreaRect(ref.getBoundingClientRect())
-        }), Math.random() * 100)
-        areaRef.current = ref;
-    }, [setAreaRect, areaRect, areaRef])
+    useLayoutEffect(()=>{
+        areaRef.current && setAreaRect(areaRef.current.getBoundingClientRect())
+    }, [setAreaRect, areaRef])
 
-    const thumbRef = useCallback( ref => {
-        if(!ref) return ;
-        thumb.current = ref;
-        setTimeout(() => requestAnimationFrame(() => {
-            setThumbRect(ref.getBoundingClientRect());
-        }), Math.random() * 100)
-    }, [thumb])
+    useLayoutEffect(()=>{
+        thumbRef.current && setThumbRect(thumbRef.current.getBoundingClientRect());
+    }, [thumbRef, setThumbRect])
+    // const thumbRef = useCallback( ref => {
+    //     if(!ref) return ;
+    //     thumb.current = ref;
+    //     setTimeout(() => requestAnimationFrame(() => {
+    //         setThumbRect(ref.getBoundingClientRect());
+    //     }), Math.random() * 100)
+    // }, [thumb])
 
     const zero = useMemo(()=> {
         return vertical
@@ -58,12 +55,10 @@ const VolumePeakLevelMeter = ({
 
     const throttledUpdate = useMemo(() => _throttle(update, 50), [update])
 
-    useEffect(function onAspectChange(){
+    useLayoutEffect(function onAspectChange(){
         setVertical(aspect === "vertical")
-        setTimeout(() => requestAnimationFrame(()=>{
-            thumb.current && setThumbRect(thumb.current.getBoundingClientRect());
-        }), Math.random())
-    }, [aspect, thumb, setThumbRect])
+        thumbRef.current && setThumbRect(thumbRef.current.getBoundingClientRect());
+    }, [aspect, thumbRef, setThumbRect])
 
     useEffect(function updateAreaRectOnResize(){
         const resetSize = () => setAreaRect(null);
@@ -82,19 +77,19 @@ const VolumePeakLevelMeter = ({
     }, [areaRect,thumbRect, setMaxPosition, vertical])
 
     const setThumbState = useCallback( state => {
-        if(!thumb.current) return;
+        if(!thumbRef.current) return;
         requestAnimationFrame(()=>{
             if(state === "dragged"){
-                thumb.current.classList.add("thumb--active");
+                thumbRef.current.classList.add("thumb--active");
                 isDraggedRef.current = true;
                 setIsDragged(true)
             } else {
-                thumb.current.classList.remove("thumb--active");
+                thumbRef.current.classList.remove("thumb--active");
                 isDraggedRef.current = false;
                 setIsDragged(false);
             }
         })
-    }, [thumb, isDraggedRef, setIsDragged])
+    }, [thumbRef, isDraggedRef, setIsDragged])
 
     const valueFromPosition = useCallback(position => {
         return vertical
@@ -120,13 +115,13 @@ const VolumePeakLevelMeter = ({
     }, [maxPosition])
 
     const updatePosition = useCallback((position)=>{
-        if(!thumb.current) return;
+        if(!thumbRef.current) return;
         position = normalize(position);
         window.requestAnimationFrame(()=>{
-            thumb.current.style.transform = `translate${vertical ? "Y" : "X"}(${position}px)`
+            thumbRef.current.style.transform = `translate${vertical ? "Y" : "X"}(${position}px)`
         })
         updateValue(position);
-    }, [vertical, thumb ,normalize, updateValue])
+    }, [vertical, thumbRef ,normalize, updateValue])
 
     const mouseMove = useCallback((shift, event)=>{
         event.stopPropagation();
@@ -179,7 +174,7 @@ const VolumePeakLevelMeter = ({
     }, [isDragged, value, currentValue, updatePosition, positionFromValue])
 
     return (
-        <div ref={updateAreaRect}
+        <div ref={areaRef}
              onMouseDown={mouseDown}
              onDoubleClick={mouseDoubleClick}
              onDragStart={ e => e.preventDefault()}

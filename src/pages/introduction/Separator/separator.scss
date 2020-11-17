@@ -14,6 +14,9 @@
     &--bottom > .container>  div {
       order: -1;
     }
+    &--bottom .footer{
+      position: unset;
+    }
   }
 
   &--bottom {
@@ -21,6 +24,9 @@
     height: 25px;
     border-top: 3px solid $primary;
   }
+
+
+
 
   &__pre-square{
     position: absolute;

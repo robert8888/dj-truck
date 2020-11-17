@@ -40,6 +40,9 @@ export default class ChannelBuilder {
   }
 
   createBars(channel, { bpm, offset }) {
+    if(channel.bars){
+        channel.bars.remove()
+    }
 
     let wrapper = channel.master.drawer.wrapper;
     let styleApply = WaveSurfer.Drawer.style;
@@ -82,6 +85,7 @@ export default class ChannelBuilder {
       channel.barsElements.push(bar);
     });
 
+    channel.bars = container;
     wrapper.appendChild(container);
   }
 }

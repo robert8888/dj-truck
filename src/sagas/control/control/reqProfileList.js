@@ -1,7 +1,7 @@
 import { put, takeEvery, select } from "redux-saga/effects";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import {ACTIONS, setControlProfileList, pushLog, reqControlProfile} from "../../../actions";
-import { Log } from "./../../../utils/logger/logger";
+import { Log } from "../../../utils/logger/logger";
 import {getApi} from "../../../apis/apiProvider";
 import errorParser from "../../../utils/serverErrorParser/errorParser";
 
@@ -13,8 +13,7 @@ export default function* watcher(){
 
 const getToken = state => state.user.token
 
-function* handle(action){
-    console.log("call profie list saga")
+function* handle(){
     const token = yield select(getToken);
 
     if(!token) return;

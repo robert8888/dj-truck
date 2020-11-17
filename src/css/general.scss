@@ -1,5 +1,9 @@
 @import "./colors.scss";
 
+html, body {
+    height: 100%;
+    width: 100%;
+}
 
 h1,h2,h3,h4,h5,h6, p,a, a:active, a:visited, a:link, a:hover, span {
     color: $primary-text-color;

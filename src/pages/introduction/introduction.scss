@@ -1,5 +1,9 @@
 @import "./../../css/colors.scss";
 
+.page--introduction .main-container{
+  padding-bottom: 0;
+}
+
 .introduction{
   padding-top: 50px;
   .row, .row > *{

@@ -1,17 +1,11 @@
-import React, { useRef, useEffect } from "react"
+import React from "react"
 import { stripHtml } from "../../../../../../../utils/html/htmlHelper";
 import { connect } from "react-redux";
 
 
 const TrackTitle = ({title}) => {
-    const container = useRef(null);
-
-    useEffect(()=>{
-        container.current.textContent = (title) ? stripHtml(title) : "";
-    }, [container, title])
-
     return (
-        <span className="track-info-title" ref={container}/>
+        <span className="track-info-title" >{stripHtml(title)}</span>
     )
 }
 

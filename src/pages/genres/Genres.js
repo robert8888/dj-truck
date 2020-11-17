@@ -4,10 +4,21 @@ import ErrorBoundary from "../common/components/ErrorBoundary/ErrorBoundary";
 import BoxesSection from "../common/components/BoxesSection/BoxesSection";
 import useFetchGenresList from "../common/Hooks/useFetchGenresList";
 import {Col, Container, Row} from "react-bootstrap";
+import useDynamicFooter from "../common/Hooks/useDynamicFooter";
 
 const Genres = () =>{
-    const [items, fetchItems] = useFetchGenresList();
-    useEffect(() => fetchItems() ,  [fetchItems])
+    const [items, fetchItems, aboard] = useFetchGenresList();
+    const [setFooter] = useDynamicFooter();
+
+    useEffect(() => {
+        fetchItems()
+        return () => {
+            aboard.current = true;
+        }
+    },  [fetchItems, aboard])
+
+    useEffect(()=>{setFooter("default")}, [setFooter])
+
 
     if(!items) return null;
 

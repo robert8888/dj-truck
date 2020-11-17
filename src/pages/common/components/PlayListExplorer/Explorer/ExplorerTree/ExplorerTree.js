@@ -17,7 +17,6 @@ import { useDoubleClick } from "./useDoubleClick";
 import RenameInput from "./RenameInput/RenameInput";
 import DirElement from "./DirElement/DirElement";
 import FileElement from "./FileElement/FileElement";
-import _isEqual from "lodash/isEqual"
 import "./explorer-tree.scss";
 
 const ExplorerTree =({
@@ -134,7 +133,6 @@ const ExplorerTree =({
     }, [renderDirElements])
 
 
-    console.log("reder expolrere tree")
     return (
         <Fragment>
             <ContextMenuTrigger id="explorer_context_menu" holdToDisplay={-1}>

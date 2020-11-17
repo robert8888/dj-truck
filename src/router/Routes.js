@@ -1,5 +1,5 @@
 import React, {Suspense } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useLocation} from "react-router-dom";
 import Loading from "./../pages/common/components/Loading/Loding";
 import PrivateRoute from "./PrivateRoute";
 
@@ -14,6 +14,13 @@ const Explorer = React.lazy(() => import(/* webpackChunkName: "explorer" */ "./.
 const Genres =  React.lazy(() => import(/* webpackChunkName: "genres" */ "./../pages/genres/Genres"));
 
 const Routes = props => {
+    const location = useLocation();
+
+    React.useEffect(() => {
+        const pathBase = location.pathname.split("/")[1];
+        document.body.classList = "page--" + pathBase;
+    }, [location]);
+
     return (
         <Suspense fallback={<Loading/>}>
             <>

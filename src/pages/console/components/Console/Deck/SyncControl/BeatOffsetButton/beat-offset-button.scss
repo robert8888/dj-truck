@@ -1,0 +1,26 @@
+@import "../../../../../../../css/colors";
+@import "../../../../../../../css/mixins";
+
+
+.btn{
+  &--beat-offset{
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    z-index: 50;
+    &:not(:disabled){
+      @include tooltip();
+      position: absolute;
+    }
+  }
+
+  @each $channel, $colors in $deck-colors{
+    &--#{$channel}{
+      @include  button--small(map-get($colors, "primary"));
+      width: 42px;
+      margin-left: 5px;
+    }
+    &--#{$channel} &--pressed-filed{
+      box-shadow: none;
+    }
+  }
+}

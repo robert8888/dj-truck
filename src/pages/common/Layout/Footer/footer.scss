@@ -1,7 +1,15 @@
 @import "./../../../../css/colors.scss";
 
 
+body{
+    padding-bottom: 50px;
+}
+
+
 .footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     .col{
         padding-top: 50px;
         .footer-content{

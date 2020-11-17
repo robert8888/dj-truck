@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
@@ -9,11 +9,15 @@ import TourGuide from "./components/Console/TourGuide/TourGuide";
 import "./console.scss"
 import {useSelector} from "react-redux";
 import useLocationSearchParams from "../common/Hooks/useLocationSearchParams";
+import useDynamicFooter from "../common/Hooks/useDynamicFooter";
 
 const PageConsole = () => {
   const page = useMemo(()=> "console", [])
   const {tutorial} = useLocationSearchParams()
   const userId = useSelector(state => state.user.id);
+  const [setFooter] = useDynamicFooter();
+
+  useEffect(()=>{setFooter("default")}, [setFooter])
 
   const isOpenTourGuideActive = useMemo(()=>{
       if(tutorial === "false") return false;

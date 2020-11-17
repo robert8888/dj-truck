@@ -39,5 +39,5 @@ export default function useStep_15(){
                 Push play
             </p>
         </Step>
-    ), [deckBPaused, dispatch])
+    ), [deckBPaused,deckBReady, dispatch])
 }

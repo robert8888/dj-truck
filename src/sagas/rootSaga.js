@@ -4,6 +4,7 @@ import requestSearchResultsSaga from "./externalSearch/reqSearchResultSaga";
 import printLog from "./logger/print";
 import requestCalcBpmSaga from "./playlists/reqCalcBpmSaga";
 import requestSearchBpmSaga from "./playlists/reqSearchBpmSaga";
+import requestUpdateBpmOrOffsetSaga from "./playlists/reqUpdateBpmOrOffset";
 import requestAddTrack from "./playlists/reqAddTrackSaga";
 import requestCopyTrackSaga from "./playlists/reqCopySaga";
 import requestCreateDirSaga from "./playlists/reqCreateDirSaga";
@@ -17,14 +18,14 @@ import requestRenameSelectedSaga from "./playlists/reqRenameSelectedSaga";
 import requestRootDirSaga from "./playlists/reqRootDirSaga";
 import requestUpdateBpmSaga from "./playlists/reqUpdateBpmSaga";
 import requestUpdateTrackPositionSaga from "./playlists/reqUpdateTrackPositionSaga";
-import toogleDirSaga from "./playlists/toogleDirSaga";
+import toggleDirSaga from "./playlists/toogleDirSaga";
 import requestUserProfileSaga from "./profile/reqProfileSaqa";
 import stopAllSaga from "./recorder/onStopAllSaga";
 import requestCreatedRecordSaga from "./recorder/reqCreateRecord";
 import requestUpdateRecordSaga from "./recorder/reqUpdateRecord";
 import tracklistRoot from './recorder/tracklist/tracklistRootSaga';
 import requestCreateCommentSaga from "./records/comments/reqCreateComment";
-import reuqestDeleteCommentSaga from "./records/comments/reqDeleteComment";
+import requestDeleteCommentSaga from "./records/comments/reqDeleteComment";
 import requestUpdateCommentSaga from "./records/comments/reqUpdateComment";
 import requestFavoriteSaga from "./records/favorite/reqFavorite";
 import requestRecordDelete from "./records/reqDeleteRecord";
@@ -55,10 +56,11 @@ function* rootSaga(){
         requestReadPlaylistSaga(),
         requestAddTrack(),
         requestUpdateBpmSaga(),
+        requestUpdateBpmOrOffsetSaga(),
         requestCopyTrackSaga(),
         requestUpdateTrackPositionSaga(),
         requestDeleteTrackSaga(),
-        toogleDirSaga(),
+        toggleDirSaga(),
         requestSearchBpmSaga(),
         requestCalcBpmSaga(),
         // -- control - midi and kbd profiles
@@ -76,7 +78,7 @@ function* rootSaga(){
         requestRecordDelete(),
         requestCreateCommentSaga(),
         requestUpdateCommentSaga(),
-        reuqestDeleteCommentSaga(),
+        requestDeleteCommentSaga(),
         requestFavoriteSaga(),
 
         //--- profiles

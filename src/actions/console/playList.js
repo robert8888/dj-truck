@@ -33,10 +33,11 @@ const ACTIONS = {
     PL_INIT_CALC_BPM: "Start calculating bpm for track",
     PL_INIT_SEARCH_BPM: "Start searching for bpm in external source",
     PL_SET_BPM_AND_OFFSET: "Update Bpm and Offset track on playlist",
-    PL_DELETE_TRACK_REQUEST: "Call to api to delete track of given id from current plalist",
+    PL_SET_DECK_BPM_OR_OFFSET: "Update Bpm in relation to Offset or vice versa for track on destination deck",
+    PL_DELETE_TRACK_REQUEST: "Call to api to delete track of given id from current playlist",
     PL_DELETE_TRACK: "Remove track of given index from current playlist",
-
 }
+
 export { ACTIONS as PLAY_LIST_ACTIONS }
 
 //------------- managing dir actions
@@ -156,6 +157,10 @@ export function startSearchBpm(track, playlist){
 
 export function setBpmAndOffset(id, playlist, bpm, offset) {
     return { type: ACTIONS.PL_SET_BPM_AND_OFFSET, id, playlist, bpm, offset, }
+}
+
+export function setBpmOrOffsetDeck(destination, bpm, offset){
+    return { type: ACTIONS.PL_SET_DECK_BPM_OR_OFFSET, destination, bpm, offset}
 }
 
 export function deleteTrackRequest(index, id) {

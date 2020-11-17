@@ -449,8 +449,9 @@
             top: -100%;
             left: 100%;
             background: white;
-            color: $primary;
-            font-size: 0.8em;
+            color: darken($primary, 20%);
+            font-size: 1em;
+            letter-spacing: 1px;
             line-height: 1.0em;
             padding: 5px 8px;
             z-index: 5000;

@@ -193,7 +193,7 @@ export default class Mixer {
             returns.forEach((returnNode, index) => {
                 returnNode.gain.value = 0;
                 channelNodes.sendAndReturns[index].return = returnNode;
-                returnNode.connect(channelNodes.mainGainNode);
+                returnNode.connect(channelNodes.volumeNode);
             })
         }
 
