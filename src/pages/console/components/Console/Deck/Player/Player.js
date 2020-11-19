@@ -2,6 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import Console from "./../../../../core/console/console";
 import "./player.scss";
+import ZoomControls from "./ZoomControls/ZoomControls";
+import {setZoom} from "../../../../../../actions";
+import Loading from "./Loading/Loading";
 
 class Player extends React.Component {
   constructor() {
@@ -20,15 +23,18 @@ class Player extends React.Component {
     });
   }
 
-  render() {
+  handleZoom(direction){
+    this.props.zoom(direction)
+  }
 
+  render() {
     return (
       <div className={"player player-" + this.props.name}>
-        {this.props.loadingProgress < 100 && this.props.loadingProgress > 0 && (
-          <div className="player__loading">
-            <span>Loading {this.props.loadingProgress} % </span>
-          </div>
-        )}
+        <Loading name={this.props.name}/>
+        <ZoomControls
+            zoomIn={this.handleZoom.bind(this, "decrement")}
+            zoomOut={this.handleZoom.bind(this, "increment")}
+            className={"scale-controls--" + this.props.name}/>
         <div className="player__master" ref={this.masterContainer} />
         <div className="player__slave" ref={this.slaveContainer} />
       </div>
@@ -36,9 +42,9 @@ class Player extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  loadingProgress : state.console.channel[ownProps.name].playBackState.loadingProgress,
-});
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  zoom: (direction) => dispatch(setZoom(ownProps.name, direction))
+})
 
-export default connect(mapStateToProps)(Player);
+export default connect(null, mapDispatchToProps)(Player);

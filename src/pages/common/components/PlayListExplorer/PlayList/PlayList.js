@@ -105,10 +105,6 @@ class PlayList extends React.Component {
         if (prevProps.refreshFlag !== this.props.refreshFlag) {
             this.forceUpdate();
         }
-        this.channelPaused = {
-            A: this.props.channelPausedA,
-            B: this.props.channelPausedB,
-        }
     }
 
     getContextMenuItems(){
@@ -147,7 +143,10 @@ class PlayList extends React.Component {
                                             endOutside={this.resetList.bind(this)}
                                             endWithin={this.acceptListOrder.bind(this)}
                                             withSends={this.props.page === "console"}
-                                            channelPaused={this.channelPaused}
+                                            channelPaused={{
+                                                A: this.props.channelPausedA,
+                                                B: this.props.channelPausedB,
+                                            }}
                                             load={this.props.load}
                                             key={item.id}
                                         />

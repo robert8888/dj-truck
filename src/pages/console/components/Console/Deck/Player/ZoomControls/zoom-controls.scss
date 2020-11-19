@@ -1,0 +1,39 @@
+
+@import "./../../../../../../../css/colors.scss";
+@import "./../../../../../../../css/mixins.scss";
+@import "./../../../../../../../css/utils.scss";
+
+@each $deck, $colors in $deck-colors{
+  .scale-controls.scale-controls--#{$deck}{
+    --deck-color: #{toRgb(map-get($colors, "primary"))}
+  }
+}
+
+
+.scale-controls{
+  --deck-color: transparent;
+  &__button{
+    &--zoom-in{}
+    &--zoom-out{}
+    margin-right: 1px;
+    @include button-transparent();
+    & {
+      background: rgba(var(--deck-color), 0.1);
+      font-size: .5rem;
+      padding: 2px 12px;
+      &:focus:hover:active{
+        background: rgba(var(--deck-color), 0.8);
+      }
+      &:hover, &:active:hover, &:focus:hover{
+        background:  rgba(var(--deck-color), 0.6);
+      }
+      &:focus, &:active {
+        background: rgba(var(--deck-color), 0.4);
+      }
+    }
+    background: $primary;
+
+
+  }
+}
+

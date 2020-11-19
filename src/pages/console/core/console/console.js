@@ -92,9 +92,19 @@ export default class Console{
                 break;
             }
 
+            //---- Wave image zoom
+
+            case STATUS.ZOOM_CHANGE: {
+                this.channels.zoom(diff.channel, diff.currentValue);
+                this.channels.createBars(diff.channel, diff.sync);
+                if(diff.loop.state){
+                    this.channels.updateLoop(diff.channel, diff.loop);
+                }
+                break;
+            }
+
             //----BPM AND SYNC
             case STATUS.BPM_AND_OFFSET_READY : {
-                console.log("bar sync", diff.channel)
                 this.channels.createBars(diff.channel, diff.currentValue);
                 break;
             }

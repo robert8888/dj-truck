@@ -2,6 +2,7 @@
 export { default as bpmAndOffset } from "./bpmAndOffset";
 export { default as currentEffect } from "./currentEffect";
 export { default as cueActive } from "./deckCue";
+export { default as deckZoom} from "./zoom"
 // effector
 export { default as dryWet } from "./dryWet";
 export { default as effectParameter } from "./effectParameter";

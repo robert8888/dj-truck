@@ -1,6 +1,7 @@
 import { produce } from "imer";
 import { ACTIONS } from "./../../actions";
 import _set from "lodash/set";
+import _get from "lodash/get";
 import {toRange} from "../../utils/math/argRanges";
 import {evalValue} from "./utils/evalMidiValue";
 
@@ -47,7 +48,12 @@ const initDeckState = {
             max: 12,
             current: 8,
         },
-        inKey: false,
+        zoom: {
+            min: 1,
+            max: 8,
+            default: 3,
+            current: 3,
+        },
     }
 }
 
@@ -62,6 +68,16 @@ const initState = {
             ...initDeckState
         }
     },
+}
+
+function selectRange(state, path){
+    const value = _get(state, ["channel", ...path]);
+    return {
+        min: value.min,
+        max: value.max,
+        current: value.current,
+        default: value.default
+    }
 }
 
 function nextState(part) {
@@ -283,15 +299,6 @@ function consoleReducer(state = initState, action) {
             return nextPlayBackState(state, action.destination, true, { loop: newValue });
         }
 
-        case ACTIONS.SET_IN_KEY: {
-            const {value, destination} = action;
-            if(!destination || value === undefined || value === null){
-                return state;
-            }
-            return nextDeckState(state, destination, false, {inKey: value} )
-        }
-
-
         case ACTIONS.SET_LOOP_LENGTH: {
             let {value} = action;
             if(value === undefined) return state;
@@ -324,6 +331,18 @@ function consoleReducer(state = initState, action) {
             return nextDeckState(state, action.destination, false, { loopLength: value }, true);
         }
 
+        case ACTIONS.SET_ZOOM: {
+            let {destination, operation} = action;
+            operation = operation === "increment" ? -1 : 1;
+
+            const {min, max, current} = selectRange(state, [destination, "deckState", "zoom"])
+
+            let value = current + operation;
+
+            value = toRange(value, min, max);
+
+            return nextDeckState(state, destination, false, {zoom: value}, true)
+        }
 
         default: return state;
     }

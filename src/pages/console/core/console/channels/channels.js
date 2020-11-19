@@ -142,6 +142,15 @@ export default class Channels {
       time: channel.getCurrentTime() / channel.getPlaybackRate(),
       left: (channel.getDuration() - channel.getCurrentTime()) / channel.getPlaybackRate()
     }
-    
+  }
+
+  zoom(channelName, value){
+    let waveSurfer= this.getChannel(channelName);
+    if(waveSurfer.getDuration()){
+      waveSurfer.zoom(value * 50);
+    } else {
+      waveSurfer.params.minPxPerSec = value * 50;
+    }
+
   }
 }

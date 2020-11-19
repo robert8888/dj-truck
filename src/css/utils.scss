@@ -19,3 +19,6 @@
   @include aspect($value, $value * 1%)
 }
 
+@function toRgb($color){
+  @return red($color), green($color), blue($color)
+}
