@@ -14,9 +14,10 @@ import logger from "./logger/loggerReducer";
 import profile from "./profile/profileReducer";
 import records from "./records/recordsReducer";
 import user from "./user/userReducer";
-
+import notifier from "./notifier/notifier";
 
 export default combineReducers({
+    notifier,
     logger,
     searchReducer,
     console, 

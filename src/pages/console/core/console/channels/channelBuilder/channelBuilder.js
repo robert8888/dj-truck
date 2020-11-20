@@ -31,6 +31,11 @@ export default class ChannelBuilder {
       this.load(...args);
     };
 
+    channel.master.__proto__.loadBlobWithEvent =function(...args){
+      this.fireEvent("load");
+      this.loadBlob(...args);
+    }
+
     channel.slave = WaveSurfer.create(channel.slaveConfig);
     // addAnimationFrame(channel.slave);
 

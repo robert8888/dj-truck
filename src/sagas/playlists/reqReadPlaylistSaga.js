@@ -24,7 +24,8 @@ export function* handle(action) {
     const playlist = yield select(getCurrentPlaylist);
 
     if (playlist._loaded || !token) {
-        return yield put(openCurrentPlaylist(action.path))
+        if(action.open)
+            yield put(openCurrentPlaylist(action.path));
     } else {
         try {
             yield put(showLoading());
@@ -42,14 +43,17 @@ export function* handle(action) {
                 yield put(setPlaylistContent(response.data.playlist, action.path));
             }
 
-            yield put(openCurrentPlaylist(action.path));
+            if(action.open){
+                yield put(openCurrentPlaylist(action.path));
+            }
+            yield put(pushLog(new Log("Playlist successful read from database", path)))
 
-            yield put(pushLog(new Log("Playlist sucessful readed from database", path)))
+            return response.data.playlist;
         } catch (error) {
             yield put(pushLog(Log.Error(
                 path,
                 "Can't read playlist" + error.message,
-                "Sorry. During process renaming occurred a problem",
+                "Sorry. During process loading playlist content occurred a problem",
                 error
             )))
         } finally {

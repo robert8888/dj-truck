@@ -42,12 +42,12 @@ const Console = ({callStopAll, consoleCollapse }) => {
                     <Recorder />
 
                     <Effector channel={1} />
-                    <Deck name="A">A</Deck>
+                    <Deck name="A"/>
 
                     <Mixer />
 
                     <Effector channel={2} />
-                    <Deck name="B">B</Deck>
+                    <Deck name="B"/>
                     <ScrollSnapButton/>
                     <CollapseButton/>
                 </div>

@@ -28,6 +28,8 @@ const PageConsole = () => {
       return true;
   }, [tutorial, userId])
 
+
+
   return (
       <DndProvider backend={Backend}>
           <TourGuide isOpen={isOpenTourGuideActive}/>

@@ -3,19 +3,20 @@
 const ACTIONS = {
 
     PL_ROOT_REQUEST: "Call to api for root dir content",
-    PL_LOAD_DIR_REQUEST: "call to api for dir conent",
-    PL_PUSH_DIR_CONTENT: "Push  director contetn loaded  from api",
+    PL_LOAD_DIR_REQUEST: "call to api for dir content",
+    PL_PUSH_DIR_CONTENT: "Push  director content loaded  from api",
     PL_CREATE_DIR_REQEST: "Call to api and create dir",
     PL_CREATE_DIR: "Create dir in current",
-    PL_TOGGLE_DIR_REQUEST: "If is not loade load and then open",
+    PL_TOGGLE_DIR_REQUEST: "If is not loaded then load and after this open dir",
     PL_TOGGLE_DIR: "Open if is closed an vice versa by path",
 
     PL_CREATE_PLAYLIST_REQUEST: "Call to api to create playlist in current selected dir of name",
     PL_CREATE_PLAYLIST: "Create play list in current selected dir of name",
     PL_LOAD_PLAYLIST_REQUEST: "Call to api to get current playlist content",
     PL_OPEN_CURRENT_PLAY_LIST: "Open/explore current play list",
-    PL_SET_PLAYLIST_CONTENT: "Settinng content of current playlist from api",
+    PL_SET_PLAYLIST_CONTENT: "Set content of current playlist from api",
     PL_RESET_CURRENT_PLAYLIST_CONTETN: "Resetting playlist content after changing position from unsuccess dragging",
+    PL_PREFETCH_PLAYLIST: "Prefetch playlist track and store in indexDb",
 
     PL_SET_SELECTION: "Set current selected dir and playlist if is selected playlist",
     PL_RENAME_SELECTED_REQUEST: "Call to api to rename current selected",
@@ -28,7 +29,7 @@ const ACTIONS = {
     PL_PUSH_TRACK_REQUEST: "Call to api and add track to current playlist",
     PL_PUSH_TRACK: "Push track on end of list",
     PL_COPY_TRACK_TO_LIST: "Add track to list (from drag and drop)",
-    PL_UPDATE_TRACK_POSITION_REQUST: "Update track position in database after swaping",
+    PL_UPDATE_TRACK_POSITION_REQUST: "Update track position in database after swapping",
     PL_SWAP_TRACK_ON_CURRENT: "Swap elements on current play list",
     PL_INIT_CALC_BPM: "Start calculating bpm for track",
     PL_INIT_SEARCH_BPM: "Start searching for bpm in external source",
@@ -80,8 +81,8 @@ export function createPlaylist(name, id, renameMode, setCurrent) {
     return { type: ACTIONS.PL_CREATE_PLAYLIST, name, id, renameMode, setCurrent }
 }
 
-export function openPlaylistRequest(path) {
-    return { type: ACTIONS.PL_LOAD_PLAYLIST_REQUEST, path }
+export function openPlaylistRequest(path, open = true) {
+    return { type: ACTIONS.PL_LOAD_PLAYLIST_REQUEST, path, open }
 }
 
 export function openCurrentPlaylist() {
@@ -95,6 +96,12 @@ export function setPlaylistContent(playlistContent, path) {
 export function resetCurrentPlaylistContent(list) {
     return { type: ACTIONS.PL_RESET_CURRENT_PLAYLIST_CONTETN, list }
 }
+
+export function preFetchPlaylistContent(playlist) {
+    return { type: ACTIONS.PL_PREFETCH_PLAYLIST, playlist }
+}
+
+
 //-------------- element selection and change element hierarchy actions
 
 export function setSelection(path) {

@@ -27,25 +27,11 @@ const VolumePeakLevelMeter = ({
     const isDraggedRef = useRef();
     const thumbRef = useRef();
 
-    useLayoutEffect(()=>{
-       if(!areaRef.current) return;
-       setAreaRect(areaRef.current.getBoundingClientRect())
-    }, [areaRef, updateFlag])
 
-    useLayoutEffect(()=>{
-        areaRef.current && setAreaRect(areaRef.current.getBoundingClientRect())
-    }, [setAreaRect, areaRef])
-
-    useLayoutEffect(()=>{
+    useEffect(()=>{
         thumbRef.current && setThumbRect(thumbRef.current.getBoundingClientRect());
-    }, [thumbRef, setThumbRect])
-    // const thumbRef = useCallback( ref => {
-    //     if(!ref) return ;
-    //     thumb.current = ref;
-    //     setTimeout(() => requestAnimationFrame(() => {
-    //         setThumbRect(ref.getBoundingClientRect());
-    //     }), Math.random() * 100)
-    // }, [thumb])
+    }, [aspect, thumbRef, setThumbRect, areaRef, setAreaRect])
+
 
     const zero = useMemo(()=> {
         return vertical
@@ -55,18 +41,20 @@ const VolumePeakLevelMeter = ({
 
     const throttledUpdate = useMemo(() => _throttle(update, 50), [update])
 
-    useLayoutEffect(function onAspectChange(){
-        setVertical(aspect === "vertical")
-        thumbRef.current && setThumbRect(thumbRef.current.getBoundingClientRect());
-    }, [aspect, thumbRef, setThumbRect])
 
-    useEffect(function updateAreaRectOnResize(){
-        const resetSize = () => setAreaRect(null);
-        window.addEventListener("resize", resetSize);
+    useEffect(()=>{
+        if(!areaRef.current) return;
+        const resizeObserver = new ResizeObserver( entires => {
+
+            for(let entry of entires) {
+                setAreaRect(entry.target.getBoundingClientRect())
+            }
+        });
+        resizeObserver.observe(areaRef.current, { box : 'border-box' })
         return () => {
-            window.removeEventListener("resize", resetSize);
+            resizeObserver.disconnect();
         }
-    }, [setAreaRect])
+    }, [areaRef, setAreaRect])
 
 
     useEffect(function updateMaxPosition() {
@@ -145,10 +133,11 @@ const VolumePeakLevelMeter = ({
             updatePosition(position);
         }
         const mMove = mouseMove.bind(null, shift);
-        const onMouseUp = () => {
+        const onMouseUp = (event) => {
             window.removeEventListener('mousemove', mMove);
             window.removeEventListener('mouseup', onMouseUp);
             window.removeEventListener('mouseleave', onMouseUp);
+            mMove(event);
             setThumbState(null);
         }
         window.addEventListener('mousemove', mMove);

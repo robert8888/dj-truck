@@ -29,7 +29,6 @@ function* sendDataToApi(action) {
             };
 
             const response = yield callQuery(queries.updateTrackQl, token, variables);
-            console.log(response)
             if(response.errors){
                 throw new Error('Server response contains errors '+ errorParser(response.errors))
             }

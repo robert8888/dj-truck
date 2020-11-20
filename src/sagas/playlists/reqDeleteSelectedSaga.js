@@ -27,6 +27,10 @@ function* handel(action) {
         yield put(showLoading());
         const { callQuery, queries } = getApi("UserAssets");
         const currentSelection = yield select(getCurrentSelection);
+
+        if(currentSelection.length <= 1) // prevent to deleting root dir
+            return;
+
         const current = yield select(getCurrent, currentSelection);
 
         const id = current._id;

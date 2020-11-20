@@ -1,4 +1,4 @@
-import React, { useCallback, useState, Fragment, useEffect} from "react";
+import React, { useCallback, useState, Fragment, useEffect, useMemo} from "react";
 import UUID from "uuidjs";
 import { connect } from "react-redux";
 import ExplorerContextMenu from "./../../../../../common/components/ContextMenu/ContextMenu";
@@ -10,13 +10,14 @@ import {
     renameSelectedRequest,
     deleteSelectedRequest,
     createDirRequest,
-    createPlaylistRequest
+    createPlaylistRequest, preFetchPlaylistContent
 } from "../../../../../../actions"
 import { isEmpty, sortObj } from "../../../../../../utils/objects/helpers";
 import { useDoubleClick } from "./useDoubleClick";
 import RenameInput from "./RenameInput/RenameInput";
 import DirElement from "./DirElement/DirElement";
 import FileElement from "./FileElement/FileElement";
+import _get from "lodash/get";
 import "./explorer-tree.scss";
 
 const ExplorerTree =({
@@ -28,6 +29,9 @@ const ExplorerTree =({
     createPlaylist,
     createDir,
     deleteSelected,
+    prefetchPlaylist,
+    currentSelection,
+    currentSelectedType,
     root }) => {
 
     const [_renameMode, setRenameMode] = useState(false);
@@ -133,6 +137,28 @@ const ExplorerTree =({
     }, [renderDirElements])
 
 
+    const contextMenuItems = useMemo(()=>{
+        const items = {
+            "Add Playlist": () => {
+                createPlaylist();
+            },
+            "Add folder": () => {
+                createDir();
+            }
+        }
+        if(currentSelection.length > 1){
+            items["Rename"] = setRenameMode.bind(null, true);
+            items["Delete"] = deleteSelected.bind(null);
+
+        }
+        if(currentSelectedType === "playlist"){
+            items["____"] = "separator";
+            items["Fetch playlist"] =  prefetchPlaylist;
+        }
+        return items;
+    }, [currentSelection, createPlaylist, createDir,
+        setRenameMode, deleteSelected, prefetchPlaylist, currentSelectedType])
+
     return (
         <Fragment>
             <ContextMenuTrigger id="explorer_context_menu" holdToDisplay={-1}>
@@ -143,18 +169,7 @@ const ExplorerTree =({
 
             <ExplorerContextMenu
                 id="explorer_context_menu"
-                items={{
-                    "Add Playlist": () => {
-                        createPlaylist();
-                        //setRenameMode(true)
-                    },
-                    "Add folder": () => {
-                        createDir();
-                        // setRenameMode(true);
-                    },
-                    "Rename": setRenameMode.bind(null, true),
-                    "Delete": deleteSelected.bind(null),
-                }} />
+                items={contextMenuItems} />
         </Fragment>
     )
 }
@@ -163,6 +178,7 @@ const mapStateToProps = state => ({
     root: state.playList.root,
     currentSelection: state.playList.currentSelection,
     renameMode: state.playList.renameMode,
+    currentSelectedType: _get(state.playList, state.playList.currentSelection)?._type
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -173,6 +189,7 @@ const mapDispatchToProps = dispatch => ({
     deleteSelected: () => dispatch(deleteSelectedRequest()),//
     createDir: () => dispatch(createDirRequest(null)),//
     createPlaylist: () => dispatch(createPlaylistRequest(null)),//
+    prefetchPlaylist: () => dispatch(preFetchPlaylistContent())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExplorerTree);

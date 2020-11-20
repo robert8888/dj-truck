@@ -1,4 +1,7 @@
 import { analyze, guess } from "web-audio-beat-detector";
+import {Logger, Log} from "../logger/logger";
+import cacheFile from "./audioCache";
+
 
 export function calcBpm(url) {
   return fetch(url)
@@ -24,7 +27,13 @@ export function calcBpmAndOffset(url) {
 
 export function calcAccurateBpmAndOffset(url) {
   return fetch(url)
-    .then(response => response.arrayBuffer())
+    .then(response => {
+        cacheFile(url, response.clone()).catch(err => {
+            console.log(err)
+            Logger.push(Log.Warning(["Bpm analyser", "caching local audio tracks"]))
+        })
+        return response.arrayBuffer()
+    })
     .then(arrayBuffer => new AudioContext().decodeAudioData(arrayBuffer))
     .then(audioBuffer => Promise.all(
         [guess(audioBuffer), 

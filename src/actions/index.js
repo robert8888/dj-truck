@@ -11,6 +11,7 @@ import { PROFILE_ACTIONS as userProfileActions } from "./profile/profile";
 import { RECORDS_ACTIONS as recordsActios } from "./records/records";
 import { USER_ACTIONS as userActions } from "./user/user";
 import { CONTROL_ACTIONS as controlAction } from "./control/control.js";
+import { NOTIFIER_ACTIONS as notifierActions } from "./notifications/notifications.js";
 
 export { default as MAPPING} from "./control/MAPPING";
 
@@ -25,11 +26,13 @@ export const ACTIONS = {
     ...masteringActionTypes,
     ...recorderActionTypes,
     ...controlAction,
+    ...notifierActions,
 
     ...userActions,
     ...userProfileActions,
 
     ...recordsActios
+
 }
 
 export * from "./console/consoleDecks";
@@ -45,7 +48,7 @@ export * from "./profile/profile";
 export * from "./records/records";
 export * from "./user/user";
 export * from "./control/control";
-
+export * from "./notifications/notifications";
 
 
 

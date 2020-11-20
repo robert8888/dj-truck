@@ -44,17 +44,19 @@ class PeakLevelMater extends React.PureComponent {
             this.leftRefs[i].current.classList.toggle("led--on", (i <= ledOn))
             this.rightRefs[i].current.classList.toggle("led--on", (i <= ledOn))
         }
+        if(!this.breakFlag){
+            requestAnimationFrame(() => this.updateLedStates.call(this))
+        }
     }
 
     checkActive(){
         if(this.props.active && this.props.interface){
             this.breakFlag = false;
             this.props.interface.startUpdating();
-            this.intervalHandle = setInterval(() => requestAnimationFrame(this.updateLedStates.bind(this)), 40);
+            this.updateLedStates();
         } else {
             this.breakFlag = true;
             if(!this.props.interface) return;
-            clearInterval(this.intervalHandle);
             this.props.interface.stopUpdating();
         }
     }

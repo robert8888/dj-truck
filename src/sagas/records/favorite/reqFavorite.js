@@ -8,7 +8,7 @@ import errorParser from "./../../../utils/serverErrorParser/errorParser";
 export default function* requestAddToFavorite() {
 
     const { queries } = getApi("UserAssets");
-    const handelAdd = handel.bind(null, {
+    const handleAdd = handel.bind(null, {
         query: queries.addToFavoriteQl,
         resultRoot: 'addToFavorite',
         successAction: addRecordToFavorite,
@@ -16,7 +16,7 @@ export default function* requestAddToFavorite() {
         successMessage: "Record added to favorite collection",
     })
 
-    const handelRemove = handel.bind(null, {
+    const handleRemove = handel.bind(null, {
         query: queries.removeFromFavoriteQl,
         resultRoot: 'removeFavorite',
         successAction: removeRecordFromFavorite,
@@ -24,8 +24,8 @@ export default function* requestAddToFavorite() {
         successMessage: "Record removed from favorite collection",
     })
 
-    yield takeEvery(ACTIONS.RECS_REQ_ADD_FAVORITE, handelAdd)
-    yield takeEvery(ACTIONS.RECS_REQ_RM_FAVORITE, handelRemove);
+    yield takeEvery(ACTIONS.RECS_REQ_ADD_FAVORITE, handleAdd)
+    yield takeEvery(ACTIONS.RECS_REQ_RM_FAVORITE, handleRemove);
 
 
 }
@@ -36,6 +36,8 @@ function* handel({
     query, resultRoot, successAction, failMessage, successMessage
 }, action) {
     const token = yield select(getToken);
+
+    if(!token) return;
 
     try {
         const { callQuery } = getApi("UserAssets");

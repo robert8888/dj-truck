@@ -1,7 +1,6 @@
 import React , { useCallback, useRef, useEffect } from "react";
 import { ContextMenu, MenuItem } from "react-contextmenu";
 import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
-import UUID from "uuidjs";
 import "./context-menu.scss";
 
 
@@ -19,9 +18,12 @@ const CtxMenu = props => {
 
     const menuItems = useCallback(() => {
         return Object.entries(props.items).map(([text, handler], index) => 
-             (<MenuItem key={UUID.genV1()} onClick={handler}>
-                {text}
-            </MenuItem>)
+             (
+                text.startsWith("__") ?  <MenuItem key={text + index}  divider/> :
+                <MenuItem key={text + index} onClick={handler}>
+                    {text}
+                </MenuItem>
+             )
         )
     }, [props.items])
 

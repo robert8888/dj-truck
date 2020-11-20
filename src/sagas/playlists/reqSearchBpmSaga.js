@@ -2,6 +2,7 @@ import {put, takeEvery} from "redux-saga/effects";
 import {ACTIONS, pushLog, setBpmAndOffset} from "../../actions";
 import {getApi} from "../../apis/apiProvider";
 import {Log} from "../../utils/logger/logger";
+import {pushNotification} from "../../actions/notifications/notifications";
 
 
 export default function* watcher() {
@@ -12,12 +13,24 @@ export default function* watcher() {
 function *searchBpmAsync(action){
     const path = ['saga', 'calcBpm', 'calculating bpm'];
     try{
+
+
         const {id, playlist, title, duration} = action.track;
         const api = getApi("SpotifyAnalyser");
         const data = yield api.getBpmAndOffset(title, duration);
         const {bpm, offset} = data;
-        if(!bpm || !offset) return;
-        yield put(setBpmAndOffset(id, playlist, bpm, offset))
+        if(!bpm || !offset) {
+            yield put(pushNotification({
+                data: {
+                    title: "Searching bpm value",
+                    content: "Bpm value couldn't be found for track:  " + action.track.title,
+                },
+                timeout: 10_000,
+            }))
+        } else {
+            yield put(setBpmAndOffset(id, playlist, bpm, offset))
+        }
+
     } catch (error){
         yield put(pushLog(Log.Error(
             path,

@@ -1,13 +1,13 @@
 import store from "./../../../../../store/";
 import ChannelBuilder from "./channelBuilder/channelBuilder";
 import Synchronizer from "./sync/synchronizer";
-import {getApi} from "./../../../../../apis/apiProvider";
+import {getApi} from "../../../../../apis/apiProvider";
 import {setCuePoint, 
         setChannelReady, 
         setLoop,
-      } from "./../../../../../actions";
+      } from "../../../../../actions";
 import Looper from "./looper/looper";
-
+import localForage from "localforage"
 
 export default class Channels {
   constructor() {
@@ -65,11 +65,13 @@ export default class Channels {
 
     let channel = this.getChannel(channelName);
 
-    if (channel.loadWithEvent) {
-      channel.loadWithEvent(url);
-    } else {
-      channel.load(url);
-    }
+    localForage.getItem(url).then(blob => {
+      if(!blob){
+        channel.loadWithEvent(url);
+      } else if(blob){
+        channel.loadBlobWithEvent(blob)
+      }
+    });
   }
 
   togglePlay(channelName, currentValue) {
