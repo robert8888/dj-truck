@@ -1,9 +1,14 @@
 import store from "./../../../../../../store";
 import WaveSurfer from "wavesurfer";
-import { hexToRgb } from "./../../../../../../utils/colors/converter";
 import { getBeatLength } from "./../../../../../../utils/bpm/converter";
 
+
+
 export default class Looper {
+    set selfRender(value){
+        this.isSelfRender = value;
+    }
+
     makeLoop(channel, loopLength) {
         channel.loop = {}// namespace for loop variables;
         const state = store.getState();
@@ -85,28 +90,35 @@ export default class Looper {
 
     drawLoop(channel) {
         let { start, end } = channel.loop;
-        const wrapper = channel.master.drawer.wrapper;
-        const styleApply = WaveSurfer.Drawer.style;
-        const minPxPerSec = channel.master.params.minPxPerSec;
-        const color = hexToRgb(channel.master.params.waveColor);
+        if(this.isSelfRender){
+            const wrapper = channel.master.drawer.wrapper;
+            const styleApply = WaveSurfer.Drawer.style;
+            const minPxPerSec = channel.master.params.minPxPerSec;
 
-        const regionStyle = {
-            position: "absolute",
-            top: "0px",
-            height: "100%",
-            background: "rgba(" + color.r + "," + color.g + "," + color.b + ", 0.3)"
-        };
+            const regionStyle = {
+                position: "absolute",
+                top: "0px",
+                height: "100%",
+                background: channel.master.params.waveColor + "4C",
+            };
 
-        const region = document.createElement("div");
-        regionStyle.left = start * minPxPerSec + "px";
-        regionStyle.width = (end - start) * minPxPerSec + "px";
+            const region = document.createElement("div");
+            regionStyle.left = start * minPxPerSec + "px";
+            regionStyle.width = (end - start) * minPxPerSec + "px";
 
-        styleApply(region, regionStyle);
-        wrapper.appendChild(region);
-        channel.loop.region = region;
+            styleApply(region, regionStyle);
+            wrapper.appendChild(region);
+            channel.loop.region = region;
+        } else {
+            channel.master.drawer.setRegions(channel.loop);
+        }
     }
 
     clearDraw(channel) {
-        channel.loop.region.remove();
+        if(this.isSelfRender){
+            channel.loop.region.remove();
+        } else {
+            channel.master.drawer.setRegions(null);
+        }
     }
 }

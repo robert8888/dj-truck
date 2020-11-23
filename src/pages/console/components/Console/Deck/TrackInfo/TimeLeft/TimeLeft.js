@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState} from "react"
 import { formater } from "../../../../../../../utils/time/timeFromater";
-import { connect } from "react-redux";
+import {connect, useSelector} from "react-redux";
 import Console from "./../../../../../core/console/console";
 
-const TimeLeft = ({duration, paused, name}) => {
-    const container = useRef(null);
-    const intervalHandler = useRef(null)
-
+const TimeLeft = ({duration, name}) => {
+    const intervalHandler = useRef(null);
     const [channelInterface, setChannelInterface] =  useState(null);
+
+    const [value, setValue] = useState(0);
 
     useEffect(()=>{
         Console.Get().then( instance => {
@@ -16,41 +16,35 @@ const TimeLeft = ({duration, paused, name}) => {
     }, [setChannelInterface, name])
 
     useEffect(()=>{
-        if(!channelInterface || !container.current) return;
+        if(!channelInterface) return;
 
-        if(!paused){
-            intervalHandler.current = setInterval(()=>{
-                requestAnimationFrame(() => {
-                    let left = channelInterface.getCurrentTime().left;
-                    left = formater.secondsToStr(left);
-                    if(!container.current) return;
-                    container.current.textContent = left;
-                })
-            }, 500)
-        } else {
-            clearInterval(intervalHandler.current);
-            container.current.textContent = formater.secondsToStr(duration);
+        intervalHandler.current = setInterval(()=>{
+            let left = channelInterface.getCurrentTime().left || duration;
+            left = formater.secondsToStr(left);
+            setValue(left)
+        }, 500)
+
+        return () => {
+            clearInterval(intervalHandler.current)
         }
-    }, [paused,
+    }, [
         duration,
-        container,
+        setValue,
         intervalHandler,
         channelInterface])
 
     useEffect(()=>()=> {
-        if(intervalHandler.current){
-            clearInterval(intervalHandler.current)
-        }
+        clearInterval(intervalHandler.current)
     }, [intervalHandler]);
 
     return (
-        <span className="time-left" ref={container}/>
+        <span className="time-left" >{value}</span>
     )
 }
 
 const mapsStateToProps = (state, ownProps) => ({
     duration: state.console.channel[ownProps.name].track.duration,
-    paused: state.console.channel[ownProps.name].playBackState.paused,
+    ready: state.console.channel[ownProps.name].playBackState.ready,
 })
 
 export default connect(mapsStateToProps)(TimeLeft);

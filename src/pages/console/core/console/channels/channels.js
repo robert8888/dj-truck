@@ -9,11 +9,14 @@ import {setCuePoint,
 import Looper from "./looper/looper";
 import localForage from "localforage"
 
+const PARTIAL_RENDERER = process.env.REACT_APP_PLAYER_PARTIAL_RENDERER;
+
 export default class Channels {
   constructor() {
     this.channelBuilder = new ChannelBuilder();
     this.synchronizer = new Synchronizer(this);
     this.looper = new Looper();
+    this.looper.selfRender = PARTIAL_RENDERER !== "true";
     this.dispatch = store.dispatch;
     this.channels = {
       A: null,
@@ -32,11 +35,16 @@ export default class Channels {
   }
 
   createBars( channelName, values ){
-    this.channelBuilder.createBars( this.getFullChannel(channelName), values);
+    if(PARTIAL_RENDERER === "true"){
+      const ws = this.getChannel(channelName);
+      ws.drawer.setGrid(values)
+    } else {
+      this.channelBuilder.createBars( this.getFullChannel(channelName), values);
+    }
   }
 
   getChannel(channelName) {
-    return this.channels[channelName].master;
+    return this.channels[channelName]?.master;
   }
 
   getFullChannel(channelName){
@@ -140,6 +148,7 @@ export default class Channels {
 
   getCurrentTime(channelName){
     const channel = this.getChannel(channelName)
+    if(!channel) return {time: 0, left: 0};
     return {
       time: channel.getCurrentTime() / channel.getPlaybackRate(),
       left: (channel.getDuration() - channel.getCurrentTime()) / channel.getPlaybackRate()

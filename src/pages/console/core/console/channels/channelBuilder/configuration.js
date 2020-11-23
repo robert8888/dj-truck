@@ -1,7 +1,26 @@
 import colors from "./../../../../../../css/colors.scss";
 import style from "./../../../../components/Console/Deck/Player/player.scss"
+import WaveSurfer from "wavesurfer.js";
 
-const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + variable ]; 
+import WsZoomRenderer from "../wsRenderer/WsZoomRenderer";
+import ZoomRenderer from "../wsRenderer/ZoomRenderer";
+
+const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + variable ];
+
+const PARTIAL_RENDERER = process.env.REACT_APP_PLAYER_PARTIAL_RENDERER;
+
+
+// console.log(WaveSurfer.zoomRenderer)
+const zoomRenderer = (name) => ({
+    cursorColor: "#FFFFFFCC",
+    cursorWidth: 1,
+
+    beatBarColor: "#FFFFFF7D",
+    beatBarWidth: 1,
+    interact: true,
+    regionColor:  (name && getCssColor('Primary', name) + "4C") || 'white',
+    renderer: ZoomRenderer
+})
 
 const masterConfig = (container, name) => ({ // name deck A or B 
     container: container,
@@ -14,6 +33,9 @@ const masterConfig = (container, name) => ({ // name deck A or B
     height: style.masterHeight.slice(0, -2) || 100,
     minPxPerSec : 150,
     pixelRatio : 1,
+ //   partialRender: true,
+
+    ...(PARTIAL_RENDERER === "true"  ? zoomRenderer(name) : {})
 })
 
 const slaveConfig = (container, name) => ({
@@ -24,7 +46,6 @@ const slaveConfig = (container, name) => ({
     scrollParent : false,
     hideScrollbar: true,
     height: style.slaveHeight.slice(0, -2),
-    renderer: "Canvas"
 })
 
 export default {

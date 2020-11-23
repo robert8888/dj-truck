@@ -1,10 +1,12 @@
-import WaveSurfer from "wavesurfer";
+import WaveSurfer from "wavesurfer.js";
 import store from "./../../../../../../store";
 import { getBeatLength } from "./../../../../../../utils/bpm/converter";
 import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler";
 import config from "./configuration";
 //import addPitchInKey from "./pitchInKey";
 
+// import renderer from "./../wsRenderer/renderer"
+// WaveSurfer.Drawer.PartialRenderer = renderer
 
 export default class ChannelBuilder {
   constructor() {
