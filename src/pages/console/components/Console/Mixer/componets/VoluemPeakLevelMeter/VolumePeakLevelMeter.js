@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import {connect} from "react-redux";
-// import PeakLevelMeterH from "./PeakLevelMeter/PeakLevelMeterH";
-// import PeakLevelMeterV from "./PeakLevelMeter/PeakLevelMeterV";
+import PeakLevelMeterH from "./PeakLevelMeter/PeakLevelMeterH";
+import PeakLevelMeterV from "./PeakLevelMeter/PeakLevelMeterV";
 import Thumb from "./Thumb/Thumb";
 import {toRange} from "../../../../../../../utils/math/argRanges";
 import _throttle from "lodash/throttle";
 import {Log, Logger} from "../../../../../../../utils/logger/logger";
-import PeakLevelMeter from "./PeakLevelMeter/PeakLevelMeter";
+
 
 
 const VolumePeakLevelMeter = ({
