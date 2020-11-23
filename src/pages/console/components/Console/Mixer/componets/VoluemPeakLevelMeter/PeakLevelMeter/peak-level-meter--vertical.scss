@@ -1,7 +1,8 @@
 @import "./../../../../../../../../css/colors.scss";
 @import "./../../../../../../../../css/general.scss";
 
-
+$mixer-level-meter-safe: $mixer-level-meter-over;
+$mixer-level-meter-cliping: $mixer-level-meter-clipping;
 
 @mixin peak-level-meter-vertical($width){
     width: $width;

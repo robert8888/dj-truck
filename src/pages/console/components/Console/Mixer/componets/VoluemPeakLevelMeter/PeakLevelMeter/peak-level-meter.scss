@@ -1,0 +1,28 @@
+@import "./../../../../../../../../css/colors.scss";
+@import "./../../../../../../../../css/general.scss";
+
+:export {
+   barColor: darken($mixer-level-meter, 30%);
+   barColorLitUp: $mixer-primary;
+   barColorCliping: $mixer-level-meter-clipping;
+   barColorOver: $mixer-level-meter-over;
+   bgColor: $primary-dark;
+}
+
+.peak-level-meter{
+  display: flex;
+  background: $primary-dark;
+  padding: 1px;
+  &--vertical{
+    width: 30px;
+  }
+
+  &--horizontal{
+    height: 30px;
+  }
+
+  &__canvas{
+    width: 100%;
+    height: 100%;
+  }
+}
