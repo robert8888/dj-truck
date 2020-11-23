@@ -37,7 +37,7 @@ const Console = ({callStopAll, consoleCollapse }) => {
                 <div className={"component console console--" + (consoleCollapse ? "collapsed" : "expanded")}>
                     <div className={"configuration"}>
                         <ControlMenu/>
-                        {/*<Mastering />*/}
+                        <Mastering />
                     </div>
                     <Recorder />
 

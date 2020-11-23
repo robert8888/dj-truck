@@ -169,11 +169,10 @@ const VolumePeakLevelMeter = ({
              onDoubleClick={mouseDoubleClick}
              onDragStart={ e => e.preventDefault()}
              className={"peak-level-meter volume-plm volume-plm--" + aspect}>
-                {/*{ aspect === "horizontal"*/}
-                {/*   ? <PeakLevelMeterH {...props} aspect={aspect}/>*/}
-                {/*   : <PeakLevelMeterV {...props} aspect={aspect}/>*/}
-                {/*}*/}
-                <PeakLevelMeter aspect={aspect} {...props}/>
+                { aspect === "horizontal"
+                   ? <PeakLevelMeterH {...props} aspect={aspect}/>
+                   : <PeakLevelMeterV {...props} aspect={aspect}/>
+                }
             <Thumb aspect={aspect}
                    ref={thumbRef}
                    onMouseDown={mouseDown}/>
