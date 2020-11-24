@@ -2,8 +2,10 @@
   "name": "djtruck",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "12.x"
+  },
   "dependencies": {
-    "node": "12.19.1",
     "@auth0/auth0-spa-js": "^1.6.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
