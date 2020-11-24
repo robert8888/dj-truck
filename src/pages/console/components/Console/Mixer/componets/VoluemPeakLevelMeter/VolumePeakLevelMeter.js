@@ -7,8 +7,6 @@ import {toRange} from "../../../../../../../utils/math/argRanges";
 import _throttle from "lodash/throttle";
 import {Log, Logger} from "../../../../../../../utils/logger/logger";
 
-
-
 const VolumePeakLevelMeter = ({
       value,
       update = () => Logger.push(Log.Error("not implemented update function !!!")),
