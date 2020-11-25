@@ -6,7 +6,7 @@ const Breadcrumb = () => {
     const [path] = usePath();
     const fullPath = useMemo(()=> ["introduction", ...path], [path])
 
-    const getSpan = useCallback(text => <span>{text}</span>,[])
+    const getSpan = useCallback(text => <span>{text.replace(/_/g, " ")}</span>,[])
 
     const renderItem = useCallback((item, index, path) => {
         return (

@@ -6,6 +6,7 @@ import Thumb from "./Thumb/Thumb";
 import {toRange} from "../../../../../../../utils/math/argRanges";
 import _throttle from "lodash/throttle";
 import {Log, Logger} from "../../../../../../../utils/logger/logger";
+import withControlMapping from "../../../Control/withControlMapping";
 
 const VolumePeakLevelMeter = ({
       value,
@@ -13,6 +14,7 @@ const VolumePeakLevelMeter = ({
       aspect,
       doubleClickInit,
       updateFlag,
+      className,
       ...props
     }) => {
     const [shift] = useState(1/(30/5)); // check peek level zero db description
@@ -166,7 +168,7 @@ const VolumePeakLevelMeter = ({
              onMouseDown={mouseDown}
              onDoubleClick={mouseDoubleClick}
              onDragStart={ e => e.preventDefault()}
-             className={"peak-level-meter volume-plm volume-plm--" + aspect}>
+             className={"peak-level-meter volume-plm volume-plm--" + aspect + " " + className}>
                 { aspect === "horizontal"
                    ? <PeakLevelMeterH {...props} aspect={aspect}/>
                    : <PeakLevelMeterV {...props} aspect={aspect}/>
@@ -186,4 +188,4 @@ const mapDispatchToProps = (dispatch, {set, update}) => ({
     update : (value) => (update && update(value)) || (set && dispatch(set(value)))
 })
 
-export default  connect(mapStateToProps, mapDispatchToProps)(VolumePeakLevelMeter);
+export default  withControlMapping(connect(mapStateToProps, mapDispatchToProps)(VolumePeakLevelMeter));

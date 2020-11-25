@@ -19,7 +19,7 @@ const BeatOffsetButton = () => {
             const consoleInstance = await Console.Get();
             const channelInterface = consoleInstance.getChannelInterface(deckContext.channel);
             const currentTime = channelInterface.getCurrentTime();
-            dispatch(setBpmOrOffsetDeck(deckContext.channel, null, currentTime.time))
+            dispatch(setBpmOrOffsetDeck(deckContext.channel, null, currentTime.sampleTime))
         }
        asyncCallback().catch((err)=>{
            Logger.push(Log.Error(["console", "deck", "set offset button"], err))

@@ -151,7 +151,8 @@ export default class Channels {
     if(!channel) return {time: 0, left: 0};
     return {
       time: channel.getCurrentTime() / channel.getPlaybackRate(),
-      left: (channel.getDuration() - channel.getCurrentTime()) / channel.getPlaybackRate()
+      left: (channel.getDuration() - channel.getCurrentTime()) / channel.getPlaybackRate(),
+      sampleTime: channel.getCurrentTime(),
     }
   }
 

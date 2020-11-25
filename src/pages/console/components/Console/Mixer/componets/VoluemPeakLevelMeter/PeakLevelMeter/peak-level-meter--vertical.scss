@@ -1,17 +1,14 @@
 @import "./../../../../../../../../css/colors.scss";
 @import "./../../../../../../../../css/general.scss";
 
-$mixer-level-meter-safe: $mixer-level-meter-over;
-$mixer-level-meter-cliping: $mixer-level-meter-clipping;
-
-@mixin peak-level-meter-vertical($width){
+.peak-level-meter{
+    $width: 30px;
     width: $width;
     background: $primary-dark;
     display: flex;
     padding: 0.033 * $width;
     justify-content: center;
     .meter-channel{
-        
         display: flex;
         flex-direction: column-reverse;
         justify-content: flex-start;
@@ -22,22 +19,18 @@ $mixer-level-meter-cliping: $mixer-level-meter-clipping;
             min-width: 1px;
             height:  3.33%;
             border-radius: 0.1px;
-    
+
             background-color: darken($mixer-level-meter, 30%);
             &:nth-last-of-type(-n+5){
-                background-color: darken($mixer-level-meter-safe, 30%);
+                background-color: darken($mixer-level-meter-over, 30%);
                 &.led--on{
-                    background-color: $mixer-level-meter-cliping
+                    background-color: $mixer-level-meter-clipping
                 }
             }
-    
+
             &.led--on{
                 background-color: $mixer-primary;
             }
         }
     }
-}
-
-.peak-level-meter{
-    @include peak-level-meter-vertical(30px)
 }

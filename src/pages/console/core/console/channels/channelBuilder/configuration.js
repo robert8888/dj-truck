@@ -1,8 +1,6 @@
 import colors from "./../../../../../../css/colors.scss";
 import style from "./../../../../components/Console/Deck/Player/player.scss"
-import WaveSurfer from "wavesurfer.js";
 
-import WsZoomRenderer from "../wsRenderer/WsZoomRenderer";
 import ZoomRenderer from "../wsRenderer/ZoomRenderer";
 
 const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + variable ];
@@ -10,11 +8,9 @@ const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + var
 const PARTIAL_RENDERER = process.env.REACT_APP_PLAYER_PARTIAL_RENDERER;
 
 
-// console.log(WaveSurfer.zoomRenderer)
 const zoomRenderer = (name) => ({
     cursorColor: "#FFFFFFCC",
     cursorWidth: 1,
-
     beatBarColor: "#FFFFFF7D",
     beatBarWidth: 1,
     interact: true,

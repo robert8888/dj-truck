@@ -41,12 +41,7 @@ export default class EventHandler {
   onReady(channel) {
     channel.master.on("ready", () => {
       channel.currentDuration = channel.master.getDuration();
-      //resolution value is taken from manual test
-      // const resolution = 280;
-      // channel.slave.load(
-      //     null, 
-      //     channel.master.backend.getPeaks(resolution, 0, resolution) 
-      //   );
+
       const resolution = 280;
       const peaks = channel.master.backend.getPeaks(resolution, 0 , resolution);
       const start = 0;
@@ -62,16 +57,6 @@ export default class EventHandler {
 
     });
   }
-
-
-  // onPlay(channel){
-  //   channel.master.on("play", ()=>{
-  //       channel._clockHandle = setInterval(()=>{
-  //         const timeLeft = parseInt(channel.master.getDuration() - channel.master.getCurrentTime());
-  //         this.dispatch(setTimeLeft(channel.channelName, timeLeft))
-  //       }, 500)
-  //   })
-  // }
 
   onStop(channel){
     channel.master.on('pause', ()=>{
@@ -97,31 +82,10 @@ export default class EventHandler {
 
   onMasterSeek(channel) {
 
-    // updating time Left value
-    ///Because on seek event is called a 1000 time per second, is created watcher witch update
-    // value after 500 ms with last progress value
-    // let watcher = null;
-    // let lastCall = {
-    //   time: new Date().getTime(),
-    //   value: null
-    // };
-
     channel.master.on("seek", progress => {
       if(channel.master.isPlaying()){
         channel.master.play();
       }
-      // lastCall.time = new Date().getTime();
-      // lastCall.progress = progress;
-      // if (!watcher) {
-      //   watcher = setTimeout(() => {
-      //     if (new Date().getTime() - lastCall.time >= 100) {
-      //       const timeLeft = parseInt(channel.master.getDuration() * lastCall.progress);
-      //       this.dispatch(setTimeLeft(channel.channelName, timeLeft));
-      //       clearTimeout(watcher);
-      //       watcher = null;
-      //     }
-      //   }, 500);
-      // }
     });
 
     this.dispatch(setLoop(channel.channelName, false));
@@ -135,7 +99,6 @@ export default class EventHandler {
     });
   }
 
-  //---------------------------------------
   clearState(channel) {
     channel.slave.drawer.drawPeaks([], 0, 0, 0);
     if (channel.barsElements) {

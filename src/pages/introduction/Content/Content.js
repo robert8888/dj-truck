@@ -9,6 +9,7 @@ import rehypeReact  from "rehype-react"
 import remarkCustomBlocks from 'remark-custom-blocks'
 
 import "./content.scss";
+import "./markups.scss";
 
 const getMarkups = () => require.context('./../markups', true, /\.*md/).keys()
 

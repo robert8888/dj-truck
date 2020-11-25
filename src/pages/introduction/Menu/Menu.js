@@ -32,7 +32,7 @@ const Menu = () => {
     }, [markups, setStructure])
 
     const target = useCallback(path =>
-        "/introduction/" + path.map( slug => slug.replace(escapeNumberRegex, "")).join("/")
+        encodeURI("/introduction/" + path.map( slug => slug.replace(escapeNumberRegex, "")).join("/"))
         , [escapeNumberRegex])
 
     const name = useCallback( path =>
@@ -44,7 +44,7 @@ const Menu = () => {
             <li key={UUID.genV1()}
                 className={"menu__item menu__" + name([...path, slug])}>
                 <Link to={target([...path, slug])}>
-                    {slug.replace(escapeNumberRegex, "")}
+                    {slug.replace(escapeNumberRegex, "").replace(/_/g, " ")}
                 </Link>
             </li>
         )

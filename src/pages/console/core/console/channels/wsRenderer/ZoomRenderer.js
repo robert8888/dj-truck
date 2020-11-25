@@ -73,7 +73,6 @@ export default class ZoomRenderer extends Drawer{
             return true;
         }
 
-
         this.lastProgress = this.currentProgress;
         this.lastPeakLength = this.peaks.length;
         this.lastBeatOffset = this.beatOffset;
@@ -237,7 +236,6 @@ export default class ZoomRenderer extends Drawer{
             this._runingRenderLoop = true;
         }
     }
-
 
     progress(progress) {
         this.currentProgress = progress;

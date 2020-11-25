@@ -1,0 +1,109 @@
+@import "./../../../css/colors.scss";
+@import "./../../../css/mixins.scss";
+
+@mixin heading-line($color){
+  @include line-under(7.5px, $color, 3px, 110%)
+}
+
+
+.introduction__content{
+   h1, h2, h3, h4, h5, h6{
+     margin-bottom: 15px; // 25
+     font-weight: 800;
+     color: $primary-dark;
+     @include heading-line($secondary);
+   }
+
+   li, p, a {
+     letter-spacing: 1px;
+     color: lighten($secondary-dark, 10%);
+     text-shadow: 1px 1px 1px rgba($secondary-dark, .3);
+     line-height: 1.7em;
+   }
+  a {
+    color: $primary;
+  }
+   ol {
+     list-style: none;
+     padding: 5px;
+     & > li{
+       counter-increment: inst;
+       margin-bottom: 15px; // 20
+       margin-left: 35px;
+       &:before{
+         content: counter(inst);
+         display: inline-flex;
+         justify-content: center;
+         align-items: center;
+         color: white;
+         line-height: 10px;
+         font-weight: 600;
+         background: $primary-dark;
+         border-radius: 50%;
+         border: 2px solid $secondary;
+         width: 30px;
+         height: 30px;
+         margin-right: 10px;
+         margin-left: -40px;
+       }
+     }
+   }
+
+   p, ul, ol{
+     margin-bottom: 30px; // 65
+     &.content--center{
+       text-align: center;
+     }
+   };
+
+  li> ul, li > ol{
+    margin: 0;
+    padding-left: 15px;
+  }
+
+
+  a.button{
+    @include button($primary);
+    padding: 10px 20px;
+    text-align: center;
+    color: white;
+  }
+
+  img {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .page-title{
+     color: $secondary;
+     @include heading-line($primary-dark);
+     margin-bottom: 30px; // 50
+     display: block;
+  }
+
+  .subtitle{
+    margin: 0;
+    margin-top: -100px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .introduction__content{
+    h1, h2, h3, h4, h5, h6{
+      margin-bottom: 25px;
+    }
+
+    ol {
+      & > li {
+        margin-bottom: 20px;
+      }
+    }
+    p, ul, ol{
+      margin-bottom: 65px;
+    };
+
+    .page-title{
+      margin-bottom: 50px;
+    }
+  }
+}

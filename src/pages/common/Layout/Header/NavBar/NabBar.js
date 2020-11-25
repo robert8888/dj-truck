@@ -29,7 +29,7 @@ const NavBar = (props) => {
             <Link to="/exploring" >Explore</Link>
           </li>
           <li className="nav-sub__item nav__item--main nav__item--left  nav__item">
-            <Link to="/introduction" >Become a DJ</Link>
+            <Link to="/introduction/about" >Become a DJ</Link>
           </li>
           { isAuthenticated &&
             <li className="nav-sub__item nav__item--main nav__item--left  nav__item">

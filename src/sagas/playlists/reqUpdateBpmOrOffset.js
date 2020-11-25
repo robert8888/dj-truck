@@ -7,7 +7,7 @@ export default function* updateBpmOrOffset() {
 }
 
 const selectTrackOffset = (state, channel) =>{
-    return state.console.channel[channel].playBackState.offset;
+    return state.console.channel[channel].playBackState.offset ;
 }
 
 const selectTrackBpm = (state, channel) =>{

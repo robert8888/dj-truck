@@ -1,7 +1,6 @@
-@import "./peak-level-meter--vertical.scss";
 
-@mixin peak-level-meter-horizontal($height) {
-    @include peak-level-meter-vertical(1px);
+.peak-level-meter--horizontal{
+    $height: 30px;
     width: 100%;
     height: $height;
     flex-direction: column;
@@ -13,8 +12,4 @@
             height: 0.3 * $height;
         }
     }
-}
-
-.peak-level-meter--horizontal{
-    @include peak-level-meter-horizontal(30px);
 }

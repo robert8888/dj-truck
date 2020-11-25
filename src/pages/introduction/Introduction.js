@@ -12,12 +12,11 @@ import Footer from "../common/Layout/Footer/Footer";
 
 const Introduction = ({dispatch}) => {
     useEffect(() => {dispatch(setFooterType("none"))}, [dispatch])
-    const breadcrumb = useMemo(()=><Breadcrumb/>, [])
 
     return (
         <ErrorBoundary>
             <div className="introduction">
-                <Separator placement="top" content={breadcrumb}/>
+                <Separator placement="top" content={<Breadcrumb/>}/>
                 <div className={"introduction__background"}>
                     <Container className="container-xl">
                         <Row>

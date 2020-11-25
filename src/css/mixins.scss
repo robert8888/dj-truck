@@ -566,3 +566,17 @@
         }
     }
 }
+
+@mixin line-under($offset, $color, $height, $width){
+    position: relative;
+    display: inline-block;
+    &:after{
+        content: "";
+        position: absolute;
+        bottom: -$offset;
+        left: 0;
+        width: $width;
+        height: $height;
+        background: $color;
+    }
+}
