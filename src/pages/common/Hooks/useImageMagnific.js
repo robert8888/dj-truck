@@ -77,6 +77,7 @@ export default function useImageMagnific({
                     img.addEventListener("click", handle);
                 }
             }
+            return images;
         })
     }, [setObserved, mobileOnly])
 

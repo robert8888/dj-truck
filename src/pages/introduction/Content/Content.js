@@ -25,8 +25,8 @@ const Content = () => {
     const [md, setMd] = useState(null);
     const [content, setContent] = useState(null);
     const [container, popup, update] = useImageMagnific({
-        minResolution: 1240,
-        mobileOnly: true,
+        minResolution: 1920,
+        mobileOnly: false,
     })
 
     useEffect(()=>{

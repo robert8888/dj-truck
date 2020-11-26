@@ -108,7 +108,7 @@ const PlaylistItem = props => {
             />
           </td>
         }
-        <td className="track-list-table-col source">{props.listIndex + 1}</td>
+        <td className="track-list-table-col index">{props.listIndex + 1}</td>
         <td className="track-list-table-col source">{track.source}</td>
         <td className="track-list-table-col title overflow">{track.title}</td>
         <td className="track-list-table-col quality">{track.quality}</td>

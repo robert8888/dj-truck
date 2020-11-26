@@ -15,9 +15,36 @@
 
     .explorer{
         margin-right: 5px;
+        &__wrapper{
+            flex-grow: 1;
+        }
     }
 
     .playlist{
        flex-grow: 1;
+    }
+
+    .explorer__collapse-button{
+        display: none;
+    }
+
+    @media screen and(max-width: 992px) {
+        position: relative;
+        overflow: hidden;
+        .explorer{
+            z-index: 5;
+            position: absolute;
+            transform: translateX(0%);
+            border-right: 1px solid $primary;
+            height: auto;
+            bottom: 0;
+            top: 0;
+            margin: 5px 0;
+            width: 250px;
+            transition: transform .5s ease-in-out;
+            &--collapsed{
+                transform: translateX(-105%);
+            }
+        }
     }
 }

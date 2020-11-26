@@ -48,8 +48,13 @@
         display: block;
         line-height: 1.5rem;
       }
-      &:first-letter{
+      &::first-letter{
         text-transform: uppercase;
+      }
+      & h6, & a {
+        &::first-letter{
+          text-transform: uppercase;
+        }
       }
       &:not(.menu__item--open) > .menu__list {
         display: none;
@@ -67,10 +72,11 @@
           z-index: -1;
           content: "";
           display: block;
-          width: 100%;
+          width: calc(100% - 3px);
           height: 150px;
           background: rgba(0,0,0,0.3);
           position: absolute;
+
       }
 
       &--current:not(:hover) > a,

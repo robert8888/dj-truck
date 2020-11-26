@@ -8,6 +8,8 @@
     .search-controls{
         background-color: $secondary-dark;
         padding: 10px 5px;
+        display: flex;
+        justify-content: space-between;
         &>*{
             display: inline-block;
         }
@@ -17,12 +19,10 @@
                 &:after{
                     margin-left: .5em;
                 }
-                margin-right: 10px;
                 width: 130px;
             }
         }
         .btn-max-result-select {
-            float: right;
             .btn {
                 width: 80px;
                 & + div.dropdown-menu{
@@ -45,12 +45,19 @@
 
         .search-control{
             @include input();
+            flex: 1;
+            margin: 0 15px 2px;
 
-            width: calc(100% - 250px);
-            max-width: 450px;
-            margin: 0;
-            margin-bottom: 2px;
         }
+        @media screen and(max-width: 772px) {
+            flex-wrap: wrap;
+            .search-control {
+                order: 3;
+                min-width: calc(100% - 15px);
+                margin: 10px 5px 2px;
+            }
+        }
+
     }
 
 }

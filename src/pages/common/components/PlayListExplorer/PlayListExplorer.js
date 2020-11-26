@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { rootDirRequest } from "./../../../../actions";
 import Explorer from "./Explorer/Explorer";
 import "./play-list-explorer.scss";
 import PlayList from "./PlayList/PlayList";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import CollapseButton from "./Explorer/CollapseButton";
 
 const PlayListExplorer = ({logged, rootDirRequest, page, player, controls}) => {
+    const [explorerCollapseState, setExplorerCollapseState] = useState(true)
     useEffect(()=>{
         if(logged){
             rootDirRequest();
@@ -14,11 +16,25 @@ const PlayListExplorer = ({logged, rootDirRequest, page, player, controls}) => {
     }, [logged, rootDirRequest])
 
 
+    useEffect(()=>{
+        const handleClick = event => {
+            if(event.target.closest(".explorer, .explorer__collapse-button") ||
+                !event.target.closest("body"))
+                    return;
+            setExplorerCollapseState(true)
+        }
+        window.document.addEventListener("click", handleClick)
+        return () => {
+            window.document.removeEventListener("click", handleClick)
+        }
+    }, [setExplorerCollapseState])
+
     return (
         <ErrorBoundary>
+            <CollapseButton onClick={()=>setExplorerCollapseState(state => !state)}/>
             <div className="play-list-explorer">
                 <ErrorBoundary>
-                    <Explorer/>
+                    <Explorer collapse={explorerCollapseState}/>
                 </ErrorBoundary>
 
                 <ErrorBoundary>

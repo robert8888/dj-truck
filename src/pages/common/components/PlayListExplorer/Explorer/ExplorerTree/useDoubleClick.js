@@ -31,7 +31,7 @@ export function useDoubleClickSeparetly({ clickHandler, doubleClickHandler }) {
 export function useDoubleClick({ clickHandler, doubleClickHandler }) {
     const [lastClick, setLastClick] = useState(null);
 
-    const liClickHandler = useCallback((...args) => {
+    const _clickHandler = useCallback((...args) => {
         const now = new Date().getTime();
         if(args[args.length-1].stopPropagation){
             args[args.length-1].stopPropagation();
@@ -47,5 +47,5 @@ export function useDoubleClick({ clickHandler, doubleClickHandler }) {
         clickHandler,
         doubleClickHandler])
 
-    return [liClickHandler]
+    return [_clickHandler]
 }
