@@ -7,6 +7,7 @@ import parse from 'remark-parse';
 import remark2rehype from "remark-rehype";
 import rehypeReact  from "rehype-react"
 import remarkCustomBlocks from 'remark-custom-blocks'
+import picture from "rehype-picture"
 
 import "./content.scss";
 import "./markups.scss";
@@ -48,6 +49,9 @@ const Content = () => {
                 },
             })
             .use(remark2rehype)
+            .use(picture, {
+                png: {webp: 'image/webp'},
+            })
             .use(rehypeReact, {createElement: React.createElement})
             .processSync(md);
         setContent(processed.result);
