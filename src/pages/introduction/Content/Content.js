@@ -11,6 +11,7 @@ import picture from "rehype-picture"
 
 import "./content.scss";
 import "./markups.scss";
+import useImageMagnific from "../../common/Hooks/useImageMagnific";
 
 const getMarkups = () => require.context('./../markups', true, /\.*md/).keys()
 
@@ -23,6 +24,10 @@ const Content = () => {
     const [currentPath] = usePath();
     const [md, setMd] = useState(null);
     const [content, setContent] = useState(null);
+    const [container, popup, update] = useImageMagnific({
+        minResolution: 1240,
+        mobileOnly: true,
+    })
 
     useEffect(()=>{
         if(!currentPath.length) return;
@@ -58,12 +63,19 @@ const Content = () => {
     }, [md, setContent])
 
 
+    useEffect(()=>{
+        update();
+    }, [content, update])
+
     return (
+        <>
         <main className="introduction__content">
-            <div className="introduction__content__wrapper">
+            <div className="introduction__content__wrapper" ref={container}>
                 {content}
             </div>
         </main>
+        {popup}
+        </>
     )
 }
 
