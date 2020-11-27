@@ -19,7 +19,7 @@ const ProgressSlider = ({ player, seek}) => {
     const sliderArea = useRef(null);
     const sliderThumb = useRef(null);
     const sliderProgress = useRef(null);
-    const sliderBufferd = useRef(null);
+    const sliderBuffered = useRef(null);
     const sliderTimePreview = useRef(null);
 
     const sliderAreaRectCached = useRef();
@@ -56,18 +56,18 @@ const ProgressSlider = ({ player, seek}) => {
         sliderThumb.current.style.transform = `translateX(${position}px)`;
     }, [sliderThumb, getSliderAreaRect, getThumbAreaRect])
 
-    const setBuffredPosition = useCallback((buffered) => {
+    const setBufferedPosition = useCallback((buffered) => {
         const sliderAreaRect = getSliderAreaRect();
         if(!sliderAreaRect){
             return;
         }
         const position = sliderAreaRect.width * buffered;
-        sliderBufferd.current.style.transform = `scaleX(${position}) translateX(50%)`;
-    }, [sliderBufferd, getSliderAreaRect])
+        sliderBuffered.current.style.transform = `scaleX(${position}) translateX(50%)`;
+    }, [sliderBuffered, getSliderAreaRect])
 
     useEffect(()=>{
-        setBuffredPosition(buffered)
-    }, [buffered, setBuffredPosition])
+        setBufferedPosition(buffered)
+    }, [buffered, setBufferedPosition])
 
     useEffect(()=>{
         setCurrentTime(currentDuration * progress);
@@ -75,8 +75,8 @@ const ProgressSlider = ({ player, seek}) => {
      }, [progress, currentDuration, setCurrentTime, setThumbPosition])
 
     const refreshBuffered = useCallback(
-            () => setBuffredPosition(buffered), 
-            [buffered, setBuffredPosition]
+            () => setBufferedPosition(buffered),
+            [buffered, setBufferedPosition]
         );
         
     const refreshProgress = useCallback(
@@ -85,9 +85,10 @@ const ProgressSlider = ({ player, seek}) => {
         )
 
     useEffect(()=>{
+        sliderAreaRectCached.current = null;
         refreshBuffered();
         refreshProgress();
-    },[windowWidth, refreshBuffered, refreshProgress])
+    },[windowWidth, refreshBuffered, refreshProgress, sliderAreaRectCached])
 
 
     const setProgressHandler = useCallback((progress)=>{
@@ -207,7 +208,7 @@ const ProgressSlider = ({ player, seek}) => {
                  onMouseMove={areaMouseMove}
                  draggable="false">
                     <div className="slider-buffered" 
-                         ref={sliderBufferd} 
+                         ref={sliderBuffered}
                          draggable="false"/>
                     <div className="slider-progress" 
                          ref={sliderProgress} 

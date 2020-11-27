@@ -1,106 +1,118 @@
 @import "./../../../../../css/colors.scss";
 
 
-@mixin slider($width, $height, $color){
+.seek-slider{
+    $width: 100%;
+    $height: 30px;
+    $color: $primary;
     width: $width;
     height: $height;
     display: flex;
     flex-direction: row;
-        .slider-active-area{
-            position: relative;
+    .slider-active-area{
+        position: relative;
+        height: 100%;
+        flex-grow: 1;
+        margin: 0 10px;
+        &:before{
+            content: "";
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 0.1 * $height;
+            width: 100%;
+            background: $primary-dark;
+        }
+        .slider-thumb{
             height: 100%;
-            flex-grow: 1;
-            margin: 0 10px;
-            &:before{
+            width: 0.5 * $height;
+            transform: translateX(0px);
+            z-index: 1;
+            &:after{
                 content: "";
                 display: block;
-                position: absolute;
-                top: 50%;
-                left: 0;
-                transform: translateY(-50%);
-                height: 0.1 * $height;
-                width: 100%;
-                background: $primary-dark;
-            }
-            .slider-thumb{
-                height: 100%;
                 width: 0.5 * $height;
-                transform: translateX(0px);
-                z-index: 1;
-                &:after{
-                    content: "";
-                    display: block;
-                    width: 0.5 * $height;
-                    height: 0.5 * $height;
-                    border-radius: 50%;
-                    background: $color;
-                    border: 0.1 * $height white solid;
-                    position: relative;
-                    top:50%;
-                    transform: translateY(-50%);
-                    z-index: 3;
-                }
-            }
-
-            .slider-progress{
-                position: absolute;
-                height: 100%;
-                width: 1px;
-                //transform: scaleX(231) translateX(50%);
-                &:after{
-                    content: "";
-                    position: absolute;
-                    top:50%;
-                    height: 0.15 * $height;
-                    background-color: $secondary;
-                    transform: translateY(-50%);
-                    width: 100%
-                }
-            }
-            .slider-buffered{
-                position: absolute;
-                height: 100%;
-                width: 1px;
-                //transform: scaleX(231) translateX(50%);
-                &:after{
-                    content: "";
-                    position: absolute;
-                    top:50%;
-                    height: 0.1 * $height;
-                    background-color: $primary;
-                    transform: translateY(-50%);
-                    width: 100%
-                }
-            }
-
-            .slider-time-preview{
-                position: absolute;
-                top:0;
-                left: 0;
-                height: 0;
-                background-color: red;
-                transform: translateX(0px);
-                &:after{
-                    content: attr(data-value);
-                    background: white;
-                    display: none;
-                    padding: 1px 3px;
-                    top:0;
-                    transform: translate(calc(#{$height /2 }), -100%);
-                }
-
-                &.preview--visible:not([data-value='']):after{
-                    display: inline-block;
-                }
+                height: 0.5 * $height;
+                border-radius: 50%;
+                background: $color;
+                border: 0.1 * $height white solid;
+                position: relative;
+                top:50%;
+                transform: translateY(-50%);
+                z-index: 3;
             }
         }
+
+        .slider-progress{
+            position: absolute;
+            height: 100%;
+            width: 1px;
+            //transform: scaleX(231) translateX(50%);
+            &:after{
+                content: "";
+                position: absolute;
+                top:50%;
+                height: 0.15 * $height;
+                background-color: $secondary;
+                transform: translateY(-50%);
+                width: 100%
+            }
+        }
+        .slider-buffered{
+            position: absolute;
+            height: 100%;
+            width: 1px;
+            //transform: scaleX(231) translateX(50%);
+            &:after{
+                content: "";
+                position: absolute;
+                top:50%;
+                height: 0.1 * $height;
+                background-color: $primary;
+                transform: translateY(-50%);
+                width: 100%
+            }
+        }
+
+        .slider-time-preview{
+            position: absolute;
+            top:0;
+            left: 0;
+            height: 0;
+            background-color: red;
+            transform: translateX(0px);
+            &:after{
+                content: attr(data-value);
+                background: white;
+                display: none;
+                padding: 1px 3px;
+                top:0;
+                transform: translate(calc(#{$height /2 }), -100%);
+            }
+
+            &.preview--visible:not([data-value='']):after{
+                display: inline-block;
+            }
+        }
+    }
+
     .slider-time{
         font-size: 1em;
         line-height: $height;
         margin: 0 10px;
     }
+
+    @media screen and (max-width: 575px) {
+        .slider-active-area {
+            position: fixed;
+            width: 100%;
+            bottom: 45px;
+            height: 20px;
+            left: 0;
+            margin: 0;
+        }
+    }
 }
 
-.seek-slider{
-    @include slider(100%,  30px, $primary)
-}
