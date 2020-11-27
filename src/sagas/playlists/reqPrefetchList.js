@@ -1,10 +1,10 @@
 
 import { takeEvery, select, call, put } from "redux-saga/effects";
-import { ACTIONS, pushLog, pushNotification } from "../../actions";
+import {ACTIONS, pushLog, pushNotification, setCacheState} from "../../actions";
 import _get from "lodash/get";
 import {getApi} from "../../apis/apiProvider";
 import {handle as loadPlaylist} from "./reqReadPlaylistSaga";
-import {cacheFromUrls} from "../../utils/bpm/audioCache";
+import {cacheTracks} from "../../utils/bpm/audioCache";
 import {Log} from "../../utils/logger/logger";
 
 export default function* renameSelectedRequestSaga() {
@@ -17,10 +17,13 @@ const selectCurrentPlaylistContent = (state, playlistPath) => {
     return _get(state.playList, playlistPath || state.playList.currentSelection)
 }
 
-const getUrls = (playlist) =>{
+const getTracks = (playlist) =>{
     return playlist._content.map(track => {
         const api = getApi(track.source);
-        return api.getUrl(track.sourceId)
+        return {
+            url: api.getUrl(track.sourceId),
+            id: track.id,
+        }
     })
 }
 
@@ -37,19 +40,28 @@ function* handle(action){
             const content = yield call(loadPlaylist, {path: currentSelected})
             playlist._content = content.tracks;
         }
-        const urls = getUrls(playlist);
+        const tracks = getTracks(playlist);
         yield put(pushNotification({
             data: {
                 title: "Pre fetching tracks",
-                content: `Downloading ${urls.length} tracks from playlist: ${currentSelected[currentSelected.length - 1]} in progress`
+                content: `Downloading ${tracks.length} tracks from playlist: ${currentSelected[currentSelected.length - 1]} in progress`
             }
         }))
 
-        const cached = yield call(cacheFromUrls, urls)
-        const stored = cached.reduce((acc, cur) => {
-            return acc + (cur.stored.type.startsWith("audio") ? 1 : 0)
+        const cached = yield call(cacheTracks, tracks)
+
+        const cachedTracks = cached.map(track => ({
+            id: track.id,
+            cached: track.store.data.type.startsWith(("audio"))
+        }))
+
+        const storedLength = cachedTracks.reduce((acc, cur) => {
+            return acc + +cur.cached
         }, 0)
-        const amount = stored === cached.length ? "All" : stored;
+        const amount = storedLength === cached.length ? "All" : storedLength;
+
+        console.log(cachedTracks)
+        yield put(setCacheState(currentSelected, cachedTracks))
 
         yield put(pushNotification({
             data: {

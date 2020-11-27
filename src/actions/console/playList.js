@@ -37,6 +37,8 @@ const ACTIONS = {
     PL_SET_DECK_BPM_OR_OFFSET: "Update Bpm in relation to Offset or vice versa for track on destination deck",
     PL_DELETE_TRACK_REQUEST: "Call to api to delete track of given id from current playlist",
     PL_DELETE_TRACK: "Remove track of given index from current playlist",
+
+    PL_SET_CACHE_STATE: "Set is track in local cache"
 }
 
 export { ACTIONS as PLAY_LIST_ACTIONS }
@@ -177,5 +179,10 @@ export function deleteTrackRequest(index, id) {
 export function deleteTrack(index) {
     return { type: ACTIONS.PL_DELETE_TRACK, index }
 }
+
+export function setCacheState(playlist, tracks) {
+    return { type: ACTIONS.PL_SET_CACHE_STATE, playlist, tracks }
+}
+
 
 

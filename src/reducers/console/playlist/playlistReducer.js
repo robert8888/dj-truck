@@ -187,12 +187,12 @@ function playListReducer(state = initState, action) {
             return produce(state, draftState => draftState.currentSelection = action.path)
         }
 
-        case ACTIONS.PL_SET_CURRENT_PLAYLIST: {
-            return produce(state, draftState => {
-                draftState.currentPlayList = action.path;
-                draftState.list = Array.from(get(state, [action.path]));
-            })
-        }
+        // case ACTIONS.PL_SET_CURRENT_PLAYLIST: {
+        //     return produce(state, draftState => {
+        //         draftState.currentPlayList = action.path;
+        //         draftState.list = Array.from(get(state, [action.path]));
+        //     })
+        // }
 
         case ACTIONS.PL_RENAME_SELECTED: {
             const content = get(state, state.currentSelection);
@@ -328,6 +328,27 @@ function playListReducer(state = initState, action) {
             })
         }
 
+        case ACTIONS.PL_SET_CACHE_STATE: {
+            const {playlist, tracks} = action;
+            const valueMap = new Map();
+            tracks.forEach(track => valueMap.set(track.id, track.cached))
+            return produce(state, draftState =>{
+                const content = get(state, [...playlist, "_content"])
+                const draftContent = content.map(track => {
+                    if(valueMap.has(track.id)){
+                        return {
+                            ...track,
+                            cached: valueMap.get(track.id)
+                        }
+                    } else {
+                        return track
+                    }
+                })
+                set(draftState, [...playlist, "_content"], draftContent)
+            })
+
+        }
+
         case ACTIONS.LOAD_TRACK: {
             const {track: {id}} = action;
             let list = get(state, [...state.currentPlaylist, "_content"]) // ?? check
@@ -347,6 +368,8 @@ function playListReducer(state = initState, action) {
                 draftState.refreshFalg = Math.random();
             })
         }
+
+
 
         default: return state;
     }

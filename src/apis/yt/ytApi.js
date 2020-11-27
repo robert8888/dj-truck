@@ -6,9 +6,9 @@ const maxResults = 10
 export async function search(query = "", limit = maxResults){
     const publicErrorMsg =  `Sorry during connecting to youtube api occurred problem. Searching the youtube database is not possible in this moment`
    
-    const comand =  "/api/search?q=";
+    const command =  "/api/search?q=";
     const options = '&maxResults=' + limit ;
-    const url = apiUrl + comand + encodeURI(query) + options;
+    const url = apiUrl + command + encodeURI(query) + options;
 
     let data = await fetch(url).then(res => res.json()).catch( error => {
         Logger.push(Log.Error(
