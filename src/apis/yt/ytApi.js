@@ -13,7 +13,7 @@ export async function search(query = "", limit = maxResults){
     let data = await fetch(url).then(res => res.json()).catch( error => {
         Logger.push(Log.Error(
             ['api', 'youtube', 'search'],
-            "Can't recive search data from youtube" + error.message,
+            "Can't receive search data from youtube" + error.message,
             publicErrorMsg,
             error
         ))

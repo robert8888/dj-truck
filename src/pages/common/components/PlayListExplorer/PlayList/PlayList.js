@@ -9,13 +9,14 @@ import {
     startCalcBpm,
     swapTrackOnList,
     updateTrackPositionRequest,
-    startSearchBpm
+    startSearchBpm, preFetchPlaylistContent
 } from "../../../../../actions";
 import EmptyListInfo from "./EmptList/EmptyList";
 import "./play-list.scss";
 import PlaylistCtx from "./PlaylistContext";
 import PlaylistTable from "./PlaylistTable/PlaylistTable";
 import PlaylistItem from "./Playlist_Item/PlaylistItem";
+import {getApi} from "../../../../../apis/apiProvider";
 
 
 
@@ -45,6 +46,17 @@ class PlayList extends React.Component {
 
         const track = this.props.playlist[this.currentHoverElement];
         this.props.load(track, destination)
+    }
+
+    cacheTrack(){
+        if(this.currentHoverElement === -1) return;
+
+        const track = this.props.playlist[this.currentHoverElement];
+        const url = getApi(track.source).getUrl(track.sourceId);
+        this.props.cache(this.props.currentPlaylist, [{
+            id: track.id,
+            url
+        }])
     }
 
     deleteTrack() {
@@ -111,7 +123,8 @@ class PlayList extends React.Component {
         let items =  {
             "Calc BPM": this.reCalcBpm.bind(this),
             "Get Bpm": this.searchBpm.bind(this),
-            "Delete": this.deleteTrack.bind(this)
+            "Delete": this.deleteTrack.bind(this),
+            "Cache": this.cacheTrack.bind(this),
         }
         if(this.props.page === "console"){
             items = {
@@ -129,7 +142,9 @@ class PlayList extends React.Component {
             <Fragment>
                 <div className="playlist">
                     <ContextMenuTrigger id="playlist_ctx_menu" className="playlist" holdToDisplay={-1}>
-                        <PlaylistCtx.Provider value={{ setHover: this.setCurrentHover.bind(this) }}>
+                        <PlaylistCtx.Provider value={{
+                            setHover: this.setCurrentHover.bind(this),
+                        }}>
                             <Fragment>
                                 <PlaylistTable headers={this.headers}>
                                     {this.props.playlist && this.props.playlist.map((item, index) =>
@@ -181,6 +196,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
     load: (track, destination) => dispatch(loadTrack(track, destination)),
     delete: (index, id) => dispatch(deleteTrackRequest(index, id)),
+    cache: (playlist, tracks) => dispatch(preFetchPlaylistContent(playlist, tracks)),
     swapTrack: (from, to) => dispatch(swapTrackOnList(from, to)),
     reCalcBpm: (track, playlist) => dispatch(startCalcBpm(track, playlist)),
     startSearchBpm: (track, playlist) => dispatch(startSearchBpm(track, playlist)),

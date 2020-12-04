@@ -25,13 +25,14 @@ export function calcBpmAndOffset(url) {
     .catch(error => ({ bpm: 0, offset: 0 }));
 }
 
-export function calcAccurateBpmAndOffset(url) {
+export function calcAccurateBpmAndOffset(url, cache = false) {
+    console.log("cacl for url", url)
   return fetch(url)
     .then(response => {
-        cacheFile(url, response.clone()).catch(err => {
-            console.log(err)
-            Logger.push(Log.Warning(["Bpm analyser", "caching local audio tracks"]))
-        })
+        if(cache)
+            cacheFile(url, response.clone()).catch(err => {
+                Logger.push(Log.Warning(["Bpm analyser", "caching local audio tracks"]))
+            })
         return response.arrayBuffer()
     })
     .then(arrayBuffer => new AudioContext().decodeAudioData(arrayBuffer))

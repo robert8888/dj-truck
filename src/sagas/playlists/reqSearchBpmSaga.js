@@ -13,11 +13,12 @@ export default function* watcher() {
 function *searchBpmAsync(action){
     const path = ['saga', 'calcBpm', 'calculating bpm'];
     try{
-
-
         const {id, playlist, title, duration} = action.track;
         const api = getApi("SpotifyAnalyser");
         const data = yield api.getBpmAndOffset(title, duration);
+
+        if(!data) return;
+
         const {bpm, offset} = data;
         if(!bpm || !offset) {
             yield put(pushNotification({

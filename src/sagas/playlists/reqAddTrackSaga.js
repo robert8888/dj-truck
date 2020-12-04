@@ -65,11 +65,6 @@ function* handle(action) {
             id: trackId
         }, action.playlist));
 
-        const currentPlaylistPath = yield select(getPlaylistPath);
-        action.track.id = trackId;
-        yield put(startCalcBpm(action.track, currentPlaylistPath));
-
-
         yield put(pushLog(
             new Log(`Added track id:${action.track.id}to playlist id:${playlistId} successful`, path)
         ))

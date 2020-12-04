@@ -1,10 +1,11 @@
 import { get } from "lodash/object";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import { ACTIONS, openCurrentPlaylist, pushLog, setPlaylistContent } from "../../actions";
+import {ACTIONS, openCurrentPlaylist, pushLog, setCacheState, setPlaylistContent} from "../../actions";
 import { getApi } from "./../../apis/apiProvider";
 import { Log } from "./../../utils/logger/logger";
 import errorParser from "./../../utils/serverErrorParser/errorParser";
+import * as localForage from "localforage";
 
 export default function* loadPlaylistRequest() {
     yield takeEvery(ACTIONS.PL_LOAD_PLAYLIST_REQUEST, handle)
@@ -48,6 +49,10 @@ export function* handle(action) {
             }
             yield put(pushLog(new Log("Playlist successful read from database", path)))
 
+            const checkCachedRequest = yield call(checkCache, response.data.playlist.tracks);
+            const cached = yield  checkCachedRequest;
+            yield put(setCacheState(action.path, cached))
+
             return response.data.playlist;
         } catch (error) {
             yield put(pushLog(Log.Error(
@@ -62,3 +67,27 @@ export function* handle(action) {
     }
 }
 
+
+function checkCache(tracks){
+    return Promise.all(tracks.map(track => ({
+        id: track.id,
+        url: getApi(track.source).getUrl(track.sourceId)
+    })).map(track => new Promise((res, rej) =>{
+        localForage.getItem(track.url).then(stored => {
+            if(stored.type.startsWith("audio")){
+                res({
+                    id: track.id,
+                    cached: true,
+                })
+            } else {
+                res({
+                    id: track.id,
+                    cached: false,
+                })
+            }
+        }).catch(e=> res({
+            id: track.id,
+            cached: false,
+        }))
+    })))
+}

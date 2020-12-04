@@ -379,8 +379,12 @@
            text-overflow: ellipsis;
        }
    }
-   tr.lowlight{
+   tr[class*="--darken"]{
        color: rgba($primary-text-color, .5);
+   }
+
+   tr[class$="--highlighted"] > td {
+       background: darken(desaturate($primary, 45%), 40%);
    }
 
    tr:hover td{

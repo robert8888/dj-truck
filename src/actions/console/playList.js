@@ -99,8 +99,8 @@ export function resetCurrentPlaylistContent(list) {
     return { type: ACTIONS.PL_RESET_CURRENT_PLAYLIST_CONTETN, list }
 }
 
-export function preFetchPlaylistContent(playlist) {
-    return { type: ACTIONS.PL_PREFETCH_PLAYLIST, playlist }
+export function preFetchPlaylistContent(playlist, tracks) {
+    return { type: ACTIONS.PL_PREFETCH_PLAYLIST, playlist, tracks}
 }
 
 

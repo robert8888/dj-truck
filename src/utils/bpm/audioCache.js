@@ -2,7 +2,7 @@ import localForage from "localforage"
 
 export default async function cacheFile(key, response){
     const blob = await response.blob();
-    const data = await localForage.setItem(key, blob)
+    const data = await localForage.setItem(key, blob);
     return {
         key, data
     }

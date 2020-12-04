@@ -28,6 +28,7 @@ const getTracks = (playlist) =>{
 }
 
 function* handle(action){
+    const path = ["saga", "request cache playlist"];
     const currentSelected = yield select(selectCurrentSelection)
     try {
         let {playlist} = action;
@@ -40,10 +41,10 @@ function* handle(action){
             const content = yield call(loadPlaylist, {path: currentSelected})
             playlist._content = content.tracks;
         }
-        const tracks = getTracks(playlist);
+        const tracks = action.tracks || getTracks(playlist);
         yield put(pushNotification({
             data: {
-                title: "Pre fetching tracks",
+                title: "Caching tracks",
                 content: `Downloading ${tracks.length} tracks from playlist: ${currentSelected[currentSelected.length - 1]} in progress`
             }
         }))
@@ -58,9 +59,8 @@ function* handle(action){
         const storedLength = cachedTracks.reduce((acc, cur) => {
             return acc + +cur.cached
         }, 0)
-        const amount = storedLength === cached.length ? "All" : storedLength;
+        const amount = storedLength === cached.length ? "All requested" : storedLength;
 
-        console.log(cachedTracks)
         yield put(setCacheState(currentSelected, cachedTracks))
 
         yield put(pushNotification({
@@ -70,6 +70,10 @@ function* handle(action){
             },
             timeout: 5_000
         }))
+
+        yield put(pushLog(
+            new Log(`Cached tracks ids:${tracks.map(track => track.id).join()}to local cache`, path)
+        ))
     } catch(error) {
         yield put(pushNotification({
             data: {
@@ -78,8 +82,7 @@ function* handle(action){
             },
             timeout: 5_000
         }))
-        yield put(pushLog(Log.Error(
-            ["saga", "request pre fetch list"],
+        yield put(pushLog(Log.Error(path,
             "Unable download tracks from playlist" + error.message,
         )))
     }

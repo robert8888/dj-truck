@@ -12,7 +12,7 @@ import requestCreatePlaylistSaga from "./playlists/reqCreatePlaylistSaga";
 import requestDeleteSelectedSaga from "./playlists/reqDeleteSelectedSaga";
 import requestDeleteTrackSaga from "./playlists/reqDeleteTrackSaga";
 import requestMoveToSaga from "./playlists/reqMoveToSaga";
-import requestPrefetchPlaylist from "./playlists/reqPrefetchList";
+import requestCachePlaylist from "./playlists/reqCacheList";
 import reqReadDirSaga from "./playlists/reqReadDirSaga";
 import requestReadPlaylistSaga from "./playlists/reqReadPlaylistSaga";
 import requestRenameSelectedSaga from "./playlists/reqRenameSelectedSaga";
@@ -54,7 +54,7 @@ function* rootSaga(){
         requestRenameSelectedSaga(),
         requestDeleteSelectedSaga(),
         requestMoveToSaga(),
-        requestPrefetchPlaylist(),
+        requestCachePlaylist(),
         requestReadPlaylistSaga(),
         requestAddTrack(),
         requestUpdateBpmSaga(),

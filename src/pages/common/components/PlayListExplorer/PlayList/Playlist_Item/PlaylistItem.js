@@ -1,11 +1,12 @@
 import React, { useContext, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Spin } from "react-loading-io";
-import { formater } from "./../../../../../../utils/time/timeFromater";
+import { formater } from "../../../../../../utils/time/timeFromater";
 import ItemTypes from "./../../../../DndItemTypes";
 import PlaybackButton from "./../../../PlaybackButton/PlaybackButton";
 import PlaylistContext from "./../PlaylistContext";
 import {Button} from "react-bootstrap";
+import classNames from "classnames"
 
 const PlaylistItem = props => {
   const ref = useRef(null)
@@ -14,6 +15,7 @@ const PlaylistItem = props => {
   let track = {
     ...props.item
   }
+
 
   const [{ isDragging }, drag] = useDrag({
     item: {
@@ -94,7 +96,12 @@ const PlaylistItem = props => {
   return (
     <tr
       ref={ref}
-      className={"track-list-table-row " + (track.wasLoaded ? "lowlight" : "")}
+      className={classNames(
+          "track-list-table-row",{
+            "track-list-table-row--darken" : track.wasLoaded ,
+            "track-list-table-row--highlighted" : track.cached ,
+          }
+      )}
       style={style}
       onMouseEnter={ctx.setHover.bind(null, props.listIndex)}>
         {props.player && 

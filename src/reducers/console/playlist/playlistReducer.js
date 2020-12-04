@@ -1,6 +1,7 @@
 import { ACTIONS } from "../../../actions";
 import { produce } from "imer";
-import { unset, set, get } from "lodash/object";
+import { unset as _unset, set as _set, get as _get } from "lodash/object";
+import _isEqual from "lodash/isEqual"
 import { findClosesDir, generateTemplateName } from "./utils"
 
 const initState = {
@@ -95,7 +96,7 @@ function playListReducer(state = initState, action) {
             } else {
                 const path = action.path;
                 return produce(state, draftState => {
-                    set(draftState, path, {
+                    _set(draftState, path, {
                         _id: action.dirContent.dir.id,
                         _type: "dir",
                         _loaded: true,
@@ -114,11 +115,11 @@ function playListReducer(state = initState, action) {
                 name = generateTemplateName(state, pathToDir, "New folder")
             }
             return produce(state, draftState => {
-                set(draftState, [...pathToDir, name], {
+                _set(draftState, [...pathToDir, name], {
                     _id: id,
                     _type: "dir",
                 });
-                set(draftState, [...pathToDir, "_open"], true); // parent
+                _set(draftState, [...pathToDir, "_open"], true); // parent
                 draftState.currentSelection = [...pathToDir, name];
                 if (renameMode) {
                     draftState.renameMode = renameMode;
@@ -127,27 +128,27 @@ function playListReducer(state = initState, action) {
         }
 
         case ACTIONS.PL_TOGGLE_DIR: {
-            const open = get(state, [...action.path, "_open"])
-            return produce(state, draftState => set(draftState, [...action.path, "_open"], !open))
+            const open = _get(state, [...action.path, "_open"])
+            return produce(state, draftState => _set(draftState, [...action.path, "_open"], !open))
         }
 
         // ------ playlist section -------------------------------   
 
         case ACTIONS.PL_CREATE_PLAYLIST: {
-            let { name, id, renameMode, setCurrent } = action;
+            let { name, id, renameMode, _setCurrent } = action;
             const pathToDir = findClosesDir(state, state.currentSelection);
             if (!name) {
                 name = generateTemplateName(state, pathToDir, "New Playlist")
             }
             return produce(state, draftState => {
-                set(draftState, [...pathToDir, name], {
+                _set(draftState, [...pathToDir, name], {
                     _id: id,
                     _type: "playlist",
                     _content: []
                 })
-                set(draftState, [...pathToDir, "_open"], true); // open parent dir
-                draftState.currentSelection = [...pathToDir, name]; // set focus on new element 
-                if (setCurrent) {
+                _set(draftState, [...pathToDir, "_open"], true); // open parent dir
+                draftState.currentSelection = [...pathToDir, name]; // _set focus on new element 
+                if (_setCurrent) {
                     draftState.currentPlaylist = [...pathToDir, name];
                 }
                 if (renameMode) {
@@ -158,7 +159,7 @@ function playListReducer(state = initState, action) {
 
         case ACTIONS.PL_OPEN_CURRENT_PLAY_LIST: {
             return produce(state, draftState => {
-                draftState.list = get(state, [...state.currentSelection, "_content"]);
+                draftState.list = _get(state, [...state.currentSelection, "_content"]);
                 draftState.currentPlaylist = state.currentSelection;
             })
         }
@@ -167,7 +168,7 @@ function playListReducer(state = initState, action) {
             const tracks = action.playlistContent.tracks;
             tracks.sort((a, b) => a.position - b.position);
             return produce(state, draftState => {
-                set(draftState,
+                _set(draftState,
                     [...action.path, "_content"],
                     tracks
                 );
@@ -177,7 +178,7 @@ function playListReducer(state = initState, action) {
         case ACTIONS.PL_RESET_CURRENT_PLAYLIST_CONTETN: {
             return produce(state, draftState => {
                 draftState.list = action.list;
-                set(draftState, [...state.currentPlaylist, "_contetnt"], action.list);
+                _set(draftState, [...state.currentPlaylist, "_contetnt"], action.list);
             })
         }
 
@@ -190,35 +191,35 @@ function playListReducer(state = initState, action) {
         // case ACTIONS.PL_SET_CURRENT_PLAYLIST: {
         //     return produce(state, draftState => {
         //         draftState.currentPlayList = action.path;
-        //         draftState.list = Array.from(get(state, [action.path]));
+        //         draftState.list = Array.from(_get(state, [action.path]));
         //     })
         // }
 
         case ACTIONS.PL_RENAME_SELECTED: {
-            const content = get(state, state.currentSelection);
+            const content = _get(state, state.currentSelection);
             return produce(state, draftState => {
-                unset(draftState, state.currentSelection);
+                _unset(draftState, state.currentSelection);
                 const newCurrent = draftState.currentSelection;
                 newCurrent.pop();
                 newCurrent.push(action.name);
                 draftState.currentSelection = newCurrent;
-                set(draftState, newCurrent, content);
+                _set(draftState, newCurrent, content);
                 draftState.renameMode = false;
             })
         }
 
         case ACTIONS.PL_MOVE_TO: {
             const { pathFrom, pathTo } = action;
-            const content = get(state, pathFrom);
+            const content = _get(state, pathFrom);
             const name = pathFrom.pop();
-            //if target and source are the same don't do anything
+            //if tar_get and source are the same don't do anything
             if (pathFrom.length === pathTo.length &&
                 pathFrom.every((e, i) => e === pathTo[i])) {
                 return state;
             }
             return produce(state, draftState => {
-                set(draftState, [...pathTo, name], content);
-                unset(draftState, [...pathFrom, name]);
+                _set(draftState, [...pathTo, name], content);
+                _unset(draftState, [...pathFrom, name]);
                 if([...pathFrom, name].join("") === state.currentPlaylist.join("")){
                     draftState.currentPlaylist = [...pathTo, name]; 
                 }
@@ -227,7 +228,7 @@ function playListReducer(state = initState, action) {
 
         case ACTIONS.PL_DELETE_SELECTED: {
             return produce(state, draftState => {
-                unset(draftState, state.currentSelection);
+                _unset(draftState, state.currentSelection);
                 draftState.currentSelection = ['root'];
                 if(state.currentSelection.every((el, i) => el === state.currentPlaylist[i])){
                     draftState.list  = [];
@@ -247,33 +248,33 @@ function playListReducer(state = initState, action) {
                 const name = generateTemplateName(state, pathToDir, "New Playlist");
                 const fullPath = [...pathToDir, name];
                 return produce(state, draftState => { // ?? check
-                    set(draftState, fullPath, {
+                    _set(draftState, fullPath, {
                         _type: "playlist",
                         _content: []
                     })
-                    set(draftState, [...pathToDir, "_open"], true);
+                    _set(draftState, [...pathToDir, "_open"], true);
                     draftState.currentSelection = fullPath
                     draftState.currentPlaylist = fullPath;
-                    const playlist = Array.from(get(draftState, fullPath));
+                    const playlist = Array.from(_get(draftState, fullPath));
                     playlist.push(action.track);
                     draftState.list = playlist;
-                    set(draftState, fullPath, playlist);
+                    _set(draftState, fullPath, playlist);
                 })
             }
             return produce(state, draftState => {
                 const list = Array.from(draftState.list);
                 list.push(action.track)
                 draftState.list = list;
-                set(draftState, [...state.currentPlaylist, "_content"], Array.from(draftState.list));
+                _set(draftState, [...state.currentPlaylist, "_content"], Array.from(draftState.list));
             })
         }
 
         case ACTIONS.PL_COPY_TRACK_TO_LIST: {
-            const list = get(state, [...action.path, "_content"]);
+            const list = _get(state, [...action.path, "_content"]);
             if (!list) return state;
             return produce(state, draftState => {
                 list.push(action.track);
-                set(draftState, [...action.path, "_content"], list);
+                _set(draftState, [...action.path, "_content"], list);
             })
         }
 
@@ -286,18 +287,18 @@ function playListReducer(state = initState, action) {
                 newList[action.to] = trackFrom;
 
                 draftState.list = newList;
-                set(draftState, [...draftState.currentPlaylist, "_content"], newList)
+                _set(draftState, [...draftState.currentPlaylist, "_content"], newList)
             })
         }
 
         case ACTIONS.PL_SET_BPM_AND_OFFSET: {
-            let { id, playlist, bpm, offset } = action;
+            let { id, playlist, bpm, off_set } = action;
             let isCurrent = false;
             if (playlist === undefined || playlist.length === 0) {
                 isCurrent = true;
                 playlist = state.currentPlaylist;
             }
-            let list = get(state, [...playlist, "_content"]) // ?? check
+            let list = _get(state, [...playlist, "_content"]) // ?? check
             if (!list) {
                 return state;
             }
@@ -307,11 +308,11 @@ function playListReducer(state = initState, action) {
                 return state;
             }
             list[index].bpm = bpm;
-            if (offset) {
-                list[index].offset = offset;
+            if (off_set) {
+                list[index].off_set = off_set;
             }
             return produce(state, draftState => {
-                set(draftState, [...playlist, "_content"], list); // ?? check
+                _set(draftState, [...playlist, "_content"], list); // ?? check
                 if (isCurrent) {
                     draftState.list = list;
                 }
@@ -324,16 +325,17 @@ function playListReducer(state = initState, action) {
                 const newList = [...state.list];
                 newList.splice(action.index, 1);
                 draftState.list = newList
-                set(draftState, [...draftState.currentPlaylist, "_content"], newList) //?? check
+                _set(draftState, [...draftState.currentPlaylist, "_content"], newList) //?? check
             })
         }
 
         case ACTIONS.PL_SET_CACHE_STATE: {
+            console.log(action)
             const {playlist, tracks} = action;
             const valueMap = new Map();
             tracks.forEach(track => valueMap.set(track.id, track.cached))
             return produce(state, draftState =>{
-                const content = get(state, [...playlist, "_content"])
+                const content = _get(state, [...playlist, "_content"])
                 const draftContent = content.map(track => {
                     if(valueMap.has(track.id)){
                         return {
@@ -344,14 +346,17 @@ function playListReducer(state = initState, action) {
                         return track
                     }
                 })
-                set(draftState, [...playlist, "_content"], draftContent)
+                if(_isEqual(playlist, state.currentPlaylist)){
+                    draftState.list = draftContent
+                }
+                _set(draftState, [...playlist, "_content"], draftContent)
             })
 
         }
 
         case ACTIONS.LOAD_TRACK: {
             const {track: {id}} = action;
-            let list = get(state, [...state.currentPlaylist, "_content"]) // ?? check
+            let list = _get(state, [...state.currentPlaylist, "_content"]) // ?? check
             if (!list) {
                 return state;
             }
@@ -363,7 +368,7 @@ function playListReducer(state = initState, action) {
             }
             list[index].wasLoaded = true;
             return produce(state, draftState => {
-                set(draftState, [...state.currentPlaylist, "_content"], list);
+                _set(draftState, [...state.currentPlaylist, "_content"], list);
                 draftState.list = list;
                 draftState.refreshFalg = Math.random();
             })

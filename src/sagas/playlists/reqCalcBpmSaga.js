@@ -1,12 +1,12 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { ACTIONS, pushLog, setBpmAndOffset } from "../../actions";
-import { getApi } from "./../../apis/apiProvider";
-import { calcAccurateBpmAndOffset } from './../../utils/bpm/analyzer';
-import { Log } from "./../../utils/logger/logger";
+import {ACTIONS, pushLog, setBpmAndOffset, setCacheState} from "../../actions";
+import { getApi } from "../../apis/apiProvider";
+import { calcAccurateBpmAndOffset } from '../../utils/bpm/analyzer';
+import { Log } from "../../utils/logger/logger";
 
 export default function* watcher() {
     yield takeEvery(ACTIONS.PL_INIT_CALC_BPM, calcBpmAsync);
-    yield takeEvery(ACTIONS.PL_PUSH_TRACK, calcBpmAsync);
+   // yield takeEvery(ACTIONS.PL_PUSH_TRACK, calcBpmAsync);
 }
 
 function* calcBpmAsync(action) {
@@ -29,9 +29,11 @@ function* calcBpmAsync(action) {
         const url = api.getUrl(id);
 
         yield put(setBpmAndOffset(action.track.id, action.playlist, "calculating", null))
-        let { offset, bpm } = yield call(calcAccurateBpmAndOffset, url);
+        let { offset, bpm } = yield call(calcAccurateBpmAndOffset, url, true);
         yield put(setBpmAndOffset(action.track.id, action.playlist, bpm, offset))
-        
+
+        yield put(setCacheState(action.playlist, [{id: action.track.id, cached: true}]))
+
         yield put(pushLog(new Log(`Track id: ${id} bpm and offset successful updated`, path)))
     } catch (error){
         yield put(pushLog(Log.Error(
