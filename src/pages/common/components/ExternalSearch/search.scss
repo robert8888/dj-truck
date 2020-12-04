@@ -33,28 +33,46 @@
         }
         
         .btn.btn-search-clear{
-            @include std-button();
+            @include std-button($secondary);
             &.btn{
                 display: inline-block;
-                margin: 0;
-                margin-left: 15px;
+                margin: 0 25px 0 0px;
                 vertical-align: top;
             }
-
         }
 
         .search-control{
-            @include input();
+            position: relative;
+            &__input{
+                @include input();
+            }
+            &--fail input{
+                @include input(red)
+            }
+            &__spinner{
+                @include loading-io-spin();
+                &__container{
+                    position: absolute;
+                    right: 25px;
+                    top: 8px;
+                }
+            }
             flex: 1;
             margin: 0 15px 2px;
 
         }
         @media screen and(max-width: 772px) {
             flex-wrap: wrap;
+            position: relative;
             .search-control {
                 order: 3;
                 min-width: calc(100% - 15px);
-                margin: 10px 5px 2px;
+                margin: 10px 5px 10px 0;
+            }
+            .btn-search-clear{
+                order: 4;
+                margin-top: 50px;
+                min-width: calc(100%);
             }
         }
 

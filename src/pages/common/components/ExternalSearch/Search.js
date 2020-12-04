@@ -2,15 +2,17 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Dropdown, DropdownButton, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
 import { clearSearch, searchInput, searchStart } from "../../../../actions";
-import { API_TYPES, getApisName } from "./../../../../apis/apiProvider";
+import { API_TYPES, getApisName } from "../../../../apis/apiProvider";
+import { Spin } from "react-loading-io";
 import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
-import "./search.scss";
+import classNames from "classnames"
 import SearchResults from './SerachResults/SearchResults.js';
-
+import "./search.scss";
 
 const Search = ({
     clearSearch,
     searchStart,
+    searchStatus,
     setQuery,
     queryString,
     controls,
@@ -49,6 +51,12 @@ const Search = ({
         setResultOpen(false);
     },[clearSearch, setResultOpen])
 
+    const onInputBlur = useCallback(e => {
+        if(!queryString)
+            clear();
+    }, [queryString, clear])
+
+
     return (
         <ErrorBoundary>
             <div className="search">
@@ -59,17 +67,27 @@ const Search = ({
                         title={source || ""}>
                         {apiList}
                     </DropdownButton>
-                    <FormControl
-                        className="search-control"
-                        type="text"
-                        placeholder="Tap in to serach on youtube"
-                        onChange={event => setQuery(event.target.value)}
-                        onKeyPress={controlKeyPress}
-                        onFocus={openList}
-                        value={queryString}
-                        data-rtg-search-input
-                    />
-                    {resultOpen && 
+                    <div className={classNames(
+                        "search-control",
+                            {"search-control--fail": searchStatus === "fail"}
+                        )}>
+                        <FormControl
+                            className="search-control__input"
+                            type="text"
+                            placeholder={"Enter to search on " + source}
+                            onChange={event => setQuery(event.target.value)}
+                            onKeyPress={controlKeyPress}
+                            onFocus={openList}
+                            onBlur={onInputBlur}
+                            value={queryString}
+                            data-rtg-search-input
+                        />
+                        <div className={"search-control__spinner__container"}>
+                            {searchStatus === "fetching" && <Spin className="search-control__spinner" />}
+                        </div>
+                    </div>
+
+                    {resultOpen && queryString &&
                         <Button className="btn-search-clear" onClick={clear}> 
                             Clear 
                         </Button>}
@@ -94,7 +112,8 @@ const Search = ({
 }
 
 const mapStateToProps = state => ({
-    queryString: state.searchReducer.searchString
+    queryString: state.search.searchString,
+    searchStatus: state.search.status,
 })
 
 const mapDispatchToProps = dispatch => ({

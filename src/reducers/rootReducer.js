@@ -8,7 +8,7 @@ import mixer from "./console/mixerReducer";
 import control from "./control/controlReducer";
 import playList from "./console/playlist/playlistReducer";
 import recorder from "./console/recorder/recorderReducer";
-import searchReducer from "./console/searchReducer";
+import search from "./search/searchReducer";
 import layout from "./layout/layoutReducer";
 import logger from "./logger/loggerReducer";
 import profile from "./profile/profileReducer";
@@ -19,7 +19,7 @@ import notifier from "./notifier/notifier";
 export default combineReducers({
     notifier,
     logger,
-    searchReducer,
+    search,
     console, 
     playList,
     mixer,

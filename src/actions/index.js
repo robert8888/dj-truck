@@ -4,11 +4,11 @@ import { MASTERING_ACTIONS as masteringActionTypes } from "./console/mastering";
 import { MIXER_ACTIONS as mixerActionTypes } from "./console/mixer";
 import { PLAY_LIST_ACTIONS as playListActionTypes } from "./console/playList";
 import { RECORDER_ACTIONS as recorderActionTypes } from "./console/recorder";
-import { SEARCHING_ACTIONS as searchActionTypes } from "./externalSearch/searching";
+import { SEARCHING_ACTIONS as searchActionTypes } from "./searching/searching";
 import { LAYOUT_ACTIONS as layoutActionTypes } from "./layout/layout";
 import { LOGGER_ACTIONS as loggerActionTypes } from "./logger/logger";
 import { PROFILE_ACTIONS as userProfileActions } from "./profile/profile";
-import { RECORDS_ACTIONS as recordsActios } from "./records/records";
+import { RECORDS_ACTIONS as recordsActions } from "./records/records";
 import { USER_ACTIONS as userActions } from "./user/user";
 import { CONTROL_ACTIONS as controlAction } from "./control/control.js";
 import { NOTIFIER_ACTIONS as notifierActions } from "./notifications/notifications.js";
@@ -31,7 +31,7 @@ export const ACTIONS = {
     ...userActions,
     ...userProfileActions,
 
-    ...recordsActios
+    ...recordsActions
 
 }
 
@@ -41,7 +41,7 @@ export * from "./console/mastering";
 export * from "./console/mixer";
 export * from "./console/playList";
 export * from "./console/recorder";
-export * from "./externalSearch/searching";
+export * from "./searching/searching";
 export * from "./layout/layout";
 export * from "./logger/logger";
 export * from "./profile/profile";

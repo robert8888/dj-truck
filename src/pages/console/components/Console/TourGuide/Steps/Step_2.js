@@ -5,7 +5,7 @@ import useTapeIn from "../utils/useTapeIn";
 
 export default function useStep_2(){
     const tapeIn = useTapeIn()
-    const searchResultLength = useSelector(state => state?.searchReducer?.searchResults?.length);
+    const searchResultLength = useSelector(state => state?.search?.searchResults?.length);
     const secondStepPromiseResolver = useRef();
     const once = useRef(false)
 

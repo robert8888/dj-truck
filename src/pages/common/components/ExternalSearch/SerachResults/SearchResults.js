@@ -39,15 +39,13 @@ class SearchResults extends React.Component {
     }
 };
 
-const mapStateToProps = state => {
-    return {
-        searchList: state.searchReducer.searchResults,
-        currentPlaylist: state.playList.currentPlaylist,
-    }
-}
+const mapStateToProps = state => ({
+    searchList: state.search.searchResults,
+    currentPlaylist: state.playList.currentPlaylist,
+})
 
-const mapDispatchToProps = dispach => ({
-    addToListHandle: (playlist, track) => dispach(pushTrackToListRequest(track, playlist)),
+const mapDispatchToProps = dispatch => ({
+    addToListHandle: (playlist, track) => dispatch(pushTrackToListRequest(track, playlist)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);

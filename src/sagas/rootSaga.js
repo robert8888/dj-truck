@@ -1,6 +1,6 @@
 
 import { all } from "redux-saga/effects";
-import requestSearchResultsSaga from "./externalSearch/reqSearchResultSaga";
+import requestSearchResultsSaga from "./search/reqSearchResultSaga";
 import printLog from "./logger/print";
 import requestCalcBpmSaga from "./playlists/reqCalcBpmSaga";
 import requestSearchBpmSaga from "./playlists/reqSearchBpmSaga";

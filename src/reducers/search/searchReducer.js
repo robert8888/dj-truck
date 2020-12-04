@@ -2,7 +2,8 @@ import { ACTIONS } from "../../actions";
 
 const initState = {
     searchString: "",
-    searchResults: []
+    searchResults: [],
+    status: "idle",
 }
 
 function searchReducer(state = initState, action){
@@ -10,16 +11,26 @@ function searchReducer(state = initState, action){
         case ACTIONS.SEARCH_INPUT : 
         return {
             ...state, 
-            searchString : action.text
+            searchString : action.text,
+            status: "idle"
         }
 
         case ACTIONS.SET_SEARCH_RESULTS : 
         return {
             ...state,
             searchResults : action.results,
+            status: "idle"
         }
 
-        case ACTIONS.CLEAR_SERACH : 
+        case ACTIONS.SET_SEARCH_STATUS:{
+            const {status} = action;
+            return {
+                ...state,
+                status
+            }
+        }
+
+        case ACTIONS.CLEAR_SEARCH :
         return {
             ...initState
         }

@@ -330,7 +330,6 @@ function playListReducer(state = initState, action) {
         }
 
         case ACTIONS.PL_SET_CACHE_STATE: {
-            console.log(action)
             const {playlist, tracks} = action;
             const valueMap = new Map();
             tracks.forEach(track => valueMap.set(track.id, track.cached))

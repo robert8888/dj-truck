@@ -2,10 +2,11 @@
 //--------- Serching----------------
 
 const ACTIONS = {
-    SEARCH_INPUT : "Update query text from serach component",
-    CLEAR_SERACH : "Clear search string and serach result set",
-    SEARCH_START : "Fire seraching request",
+    SEARCH_INPUT : "Update query text from search component",
+    CLEAR_SEARCH : "Clear search string and search result set",
+    SEARCH_START : "Fire searching request",
     SET_SEARCH_RESULTS : "Update search results in store",
+    SET_SEARCH_STATUS: "Update search status in store",
 }
 export { ACTIONS as SEARCHING_ACTIONS };
 
@@ -33,7 +34,9 @@ export function setSearchResults(results){
 }
 
 export function clearSearch(){
-    return {
-        type : ACTIONS.CLEAR_SERACH
-    }
+    return {type : ACTIONS.CLEAR_SEARCH}
+}
+
+export function setSearchStatus(status){
+    return {type : ACTIONS.SET_SEARCH_STATUS, status}
 }
