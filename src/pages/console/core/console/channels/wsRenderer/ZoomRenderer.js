@@ -25,11 +25,10 @@ export default class ZoomRenderer extends Drawer{
 
         if(!this.peaks || !this.peaks.length) return 0;
 
-        //this.fireEvent("interaction")
 
         const x = (clientX - bbox.left) * this.params.pixelRatio;
         const ratio = bbox.width / this.waveCc.canvas.width
-        const shiftAboutSeconds  = (x - ((this.cursorShift || this.cursor) * ratio)) / (this.params.minPxPerSec * ratio);
+        const shiftAboutSeconds  = (x - ((this.cursorShift || this.cursor) * ratio)) / (this.minPxPerSec * ratio);
 
         this.cursorShift = x / ratio;
         this.justClicked = true;
@@ -59,7 +58,9 @@ export default class ZoomRenderer extends Drawer{
 
     clearWave() {
         if(!this.waveCc) return;
-
+        this.cursorShift = undefined;
+        this.bpm = undefined;
+        this.beatOffset = undefined;
         this.waveCc.clearRect(0, 0, this.waveCc.canvas.width, this.waveCc.canvas.height);
     }
 
@@ -81,12 +82,23 @@ export default class ZoomRenderer extends Drawer{
     }
 
 
+    runRender(){
+        if(this._runingRenderLoop) return;
+
+        this.render();
+        this._runingRenderLoop = true;
+    }
+
+    stopRender(){
+        this._runingRenderLoop = false;
+    }
+
     render(){
-        requestAnimationFrame(() => this.render())
+        this._runingRenderLoop && requestAnimationFrame(() => this.render())
 
         if(this.isWaveEqual()) return;
 
-
+        const minPxPerSec = this.minPxPerSec;
         const peaks = this.peaks;
         const width =  this.waveCc.canvas.width;
 
@@ -95,7 +107,7 @@ export default class ZoomRenderer extends Drawer{
         cursor = ~~(this.cursorShift || cursor);
 
 
-        const correction =  (((width / 2 ) - cursor) / this.params.minPxPerSec ) / this.duration ;
+        const correction =  (((width / 2 ) - cursor) / minPxPerSec ) / this.duration ;
 
         let start = evenFloor(Math.max(this.peaks.length / 2 * (this.currentProgress + correction)  - (width / 2) , 0));
         let end = start + (width * 2);
@@ -113,7 +125,7 @@ export default class ZoomRenderer extends Drawer{
         let cc = this.waveCc;
         if (!cc) { return; }
 
-        this.clearWave();
+        this.waveCc.clearRect(0, 0, this.waveCc.canvas.width, this.waveCc.canvas.height);
 
         const progress = evenFloor(cursor / width * length / 2 + start);
 
@@ -146,8 +158,8 @@ export default class ZoomRenderer extends Drawer{
             this.waveCc.fillStyle = this.params.beatBarColor;
 
             const progressPosition = start /  peaks.length  * 2;
-            const barGap = 60 / this.bpm * this.params.minPxPerSec;
-            const barOffset = (this.beatOffset - (this.duration * progressPosition)) * this.params.minPxPerSec % barGap;
+            const barGap = 60 / this.bpm * minPxPerSec;
+            const barOffset = (this.beatOffset - (this.duration * progressPosition)) * minPxPerSec % barGap;
 
             for(let pos = barOffset; pos < width; pos += barGap){
                 cc.fillRect(pos, 0,  this.params.beatBarWidth, this.waveCc.canvas.height);
@@ -164,9 +176,9 @@ export default class ZoomRenderer extends Drawer{
         const renderRegion = (region) =>{
             this.waveCc.fillStyle = this.params.regionColor;
             const {start: from, end: to} = region;
-            const startTime = (start / this.params.minPxPerSec );
-            const fromPos = Math.max((from - startTime) * this.params.minPxPerSec - 1, 0);
-            const toPos = Math.min((to - startTime) * this.params.minPxPerSec - 1, width);
+            const startTime = (start / minPxPerSec );
+            const fromPos = Math.max((from - startTime) * minPxPerSec - 1, 0);
+            const toPos = Math.min((to - startTime) * minPxPerSec - 1, width);
             cc.fillRect(fromPos, 0, toPos - fromPos, this.waveCc.canvas.height);
         }
 
@@ -198,10 +210,7 @@ export default class ZoomRenderer extends Drawer{
 
 
     prepareRender(){
-        this.cursorShift = undefined;
-        this.bpm = undefined;
-        this.beatOffset = undefined;
-
+        this.minPxPerSec = this.params.minPxPerSec;
         // Support arrays without negative
         let peaks = this.peaks;
         let hasMinValues = [].some.call(peaks, function (val) { return val < 0; });
@@ -231,10 +240,7 @@ export default class ZoomRenderer extends Drawer{
 
         this.prepareRender();
 
-        if(!this._runingRenderLoop){
-            this.render();
-            this._runingRenderLoop = true;
-        }
+        this.runRender();
     }
 
     progress(progress) {

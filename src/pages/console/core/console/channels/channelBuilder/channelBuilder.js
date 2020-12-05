@@ -1,13 +1,13 @@
 import WaveSurfer from "wavesurfer.js";
 import store from "./../../../../../../store";
 import { getBeatLength } from "../../../../../../utils/bpm/converter";
-import ChannelEvnetHandler from "./../channelEvnetHandler/channelEvnetHandler";
+import ChannelEventHandler from "./../channelEvnetHandler/channelEvnetHandler";
 import config from "./configuration";
 
 
 export default class ChannelBuilder {
   constructor() {
-    this.eventHandler = new ChannelEvnetHandler();
+    this.eventHandler = new ChannelEventHandler();
     this.dispatch = store.dispatch;
   }
 
@@ -21,22 +21,18 @@ export default class ChannelBuilder {
     //--master waveSurfer obj
     channel.masterConfig.audioContext = mainAudioContext;
     channel.master = WaveSurfer.create(channel.masterConfig);
-   // addPitchInKey(channel.master);
-
-    // addAnimationFrame(channel.master);
 
     channel.master.__proto__.loadWithEvent = function (...args) {
       this.fireEvent("load");
       this.load(...args);
     };
 
-    channel.master.__proto__.loadBlobWithEvent =function(...args){
+    channel.master.__proto__.loadBlobWithEvent = function(...args){
       this.fireEvent("load");
       this.loadBlob(...args);
     }
 
     channel.slave = WaveSurfer.create(channel.slaveConfig);
-    // addAnimationFrame(channel.slave);
 
     this.eventHandler.CreateEventHandling(channel)
 

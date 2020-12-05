@@ -38,24 +38,52 @@ export default class EventHandler {
     });
   }
 
+  // sync
+  // onReady(channel) {
+  //   channel.master.on("ready", () => {
+  //     channel.currentDuration = channel.master.getDuration();
+  //
+  //     const resolution = 280;
+  //     const peaks = channel.master.backend.getPeaks(resolution, 0 , resolution);
+  //     const start = 0;
+  //     const end = peaks.length / 2;
+  //     const width = channel.slave.params.container.getBoundingClientRect().width
+  //     channel.slave.drawer.drawPeaks(peaks, width, start, end);
+  //
+  //
+  //     this.dispatch(setLoadingProgress(channel.channelName, 100));
+  //     this.dispatch(setChannelReady(true, channel.channelName));
+  //
+  //     this.startSync(channel);
+  //
+  //   });
+  // }
+
+
+
+
   onReady(channel) {
     channel.master.on("ready", () => {
       channel.currentDuration = channel.master.getDuration();
 
+      this.dispatch(setLoadingProgress(channel.channelName, 100));
+      this.dispatch(setChannelReady(true, channel.channelName));
+
+      this.startSync(channel);
+    });
+
+
+    const haveBufferedEvents = channel.master.initialisedPluginList.PeaksPromisfication;
+    channel.master.on(["ready","buffered"][+!!haveBufferedEvents],  () => {
       const resolution = 280;
       const peaks = channel.master.backend.getPeaks(resolution, 0 , resolution);
       const start = 0;
       const end = peaks.length / 2;
       const width = channel.slave.params.container.getBoundingClientRect().width
       channel.slave.drawer.drawPeaks(peaks, width, start, end);
-      
-
-      this.dispatch(setLoadingProgress(channel.channelName, 100));
-      this.dispatch(setChannelReady(true, channel.channelName));
-
-      this.startSync(channel);
-
     });
+
+
   }
 
   onStop(channel){

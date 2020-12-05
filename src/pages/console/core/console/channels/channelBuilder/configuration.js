@@ -2,10 +2,11 @@ import colors from "./../../../../../../css/colors.scss";
 import style from "./../../../../components/Console/Deck/Player/player.scss"
 
 import ZoomRenderer from "../wsRenderer/ZoomRenderer";
+import PeaksPromisficationPlugin from "../wsPeaksPromisficationPlugin/wsPeaksPromisficationPlugin";
 
 const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + variable ];
 
-const PARTIAL_RENDERER = process.env.REACT_APP_PLAYER_PARTIAL_RENDERER;
+const ZOOM_RENDERER = process.env.REACT_APP_PLAYER_PARTIAL_RENDERER;
 
 
 const zoomRenderer = (name) => ({
@@ -15,7 +16,8 @@ const zoomRenderer = (name) => ({
     beatBarWidth: 1,
     interact: true,
     regionColor:  (name && getCssColor('Primary', name) + "4C") || 'white',
-    renderer: ZoomRenderer
+    renderer: ZoomRenderer,
+    plugins: [PeaksPromisficationPlugin.create()]
 })
 
 const masterConfig = (container, name) => ({ // name deck A or B 
@@ -29,9 +31,9 @@ const masterConfig = (container, name) => ({ // name deck A or B
     height: style.masterHeight.slice(0, -2) || 100,
     minPxPerSec : 150,
     pixelRatio : 1,
- //   partialRender: true,
+    //partialRender: true,
 
-    ...(PARTIAL_RENDERER === "true"  ? zoomRenderer(name) : {})
+    ...(ZOOM_RENDERER === "true"  ? zoomRenderer(name) : {})
 })
 
 const slaveConfig = (container, name) => ({

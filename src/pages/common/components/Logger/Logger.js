@@ -30,7 +30,7 @@ const Logger = ({ log }) => {
         
         switch(log.type){
             case LOG_TYPES.ERROR : {
-                return createHeader("Error:", "logger-header-error");
+                return createHeader("Ops. Something go wrong:", "logger-header-error");
             }
             case LOG_TYPES.WARNING: {
                 return createHeader("Warning:", "logger-header-warning")
