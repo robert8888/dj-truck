@@ -82,19 +82,8 @@ export default class ZoomRenderer extends Drawer{
     }
 
 
-    runRender(){
-        if(this._runingRenderLoop) return;
-
-        this.render();
-        this._runingRenderLoop = true;
-    }
-
-    stopRender(){
-        this._runingRenderLoop = false;
-    }
-
     render(){
-        this._runingRenderLoop && requestAnimationFrame(() => this.render())
+        requestAnimationFrame(() => this.render())
 
         if(this.isWaveEqual()) return;
 
@@ -240,7 +229,10 @@ export default class ZoomRenderer extends Drawer{
 
         this.prepareRender();
 
-        this.runRender();
+        if(!this._runingRenderLoop){
+            this.render();
+            this._runingRenderLoop = true;
+        }
     }
 
     progress(progress) {

@@ -1,8 +1,7 @@
 import colors from "./../../../../../../css/colors.scss";
 import style from "./../../../../components/Console/Deck/Player/player.scss"
-
+import WaveSurferAsync from "wavesurfer.js-async";
 import ZoomRenderer from "../wsRenderer/ZoomRenderer";
-import PeaksPromisficationPlugin from "../wsPeaksPromisficationPlugin/wsPeaksPromisficationPlugin";
 
 const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + variable ];
 
@@ -17,7 +16,7 @@ const zoomRenderer = (name) => ({
     interact: true,
     regionColor:  (name && getCssColor('Primary', name) + "4C") || 'white',
     renderer: ZoomRenderer,
-    plugins: [PeaksPromisficationPlugin.create()]
+    plugins: [WaveSurferAsync.create()]
 })
 
 const masterConfig = (container, name) => ({ // name deck A or B 
