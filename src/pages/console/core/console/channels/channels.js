@@ -34,6 +34,11 @@ export default class Channels {
       this.channels[channelName] = this.channelBuilder.create( channelName, ...args);
   }
 
+  destroyChannel(channelName){
+    const channel = this.getFullChannel(channelName)
+    this.channelBuilder.destroy(channel)
+  }
+
   createBars( channelName, values ){
     if(PARTIAL_RENDERER === "true"){
       const ws = this.getChannel(channelName);

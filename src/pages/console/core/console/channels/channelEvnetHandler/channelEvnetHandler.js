@@ -47,12 +47,15 @@ export default class EventHandler {
 
     const haveBufferedEvents = channel.master.initialisedPluginList.PeaksAsyncPlugin;
     channel.master.on(["ready","buffered"][+!!haveBufferedEvents],  () => {
+      const width = channel.slave.params.container.getBoundingClientRect().width
       const resolution = 280;
       const peaks = channel.master.backend.getPeaks(resolution, 0 , resolution);
       const start = 0;
       const end = peaks.length / 2;
-      const width = channel.slave.params.container.getBoundingClientRect().width
-      channel.slave.drawer.drawPeaks(peaks, width, start, end);
+
+      const drawArguments = [peaks, width, start, end]
+      channel.slave.drawer.drawPeaks(...drawArguments);
+      channel.slave.drawer._drawArguments = drawArguments;
     });
 
   }

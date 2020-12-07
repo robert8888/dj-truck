@@ -15,7 +15,7 @@ class Player extends React.Component {
   }
 
   componentDidMount() {
-    Console.Get().then( console => {
+     Console.Get().then( console => {
       console.createChannel(
           this.props.name,
           this.masterContainer.current,
@@ -24,7 +24,12 @@ class Player extends React.Component {
     });
   }
 
-  handleZoom(direction){
+  componentWillUnmount() {
+      Console.Get().then(console => console.destroyChannel(this.props.name))
+  }
+
+
+    handleZoom(direction){
     this.props.zoom(direction)
   }
 

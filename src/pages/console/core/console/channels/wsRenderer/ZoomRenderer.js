@@ -1,6 +1,6 @@
 import Drawer from "wavesurfer.js/src/drawer";
-import Max from "wavesurfer.js/src/util/max";
-import Min from "wavesurfer.js/src/util/min";
+import max from "wavesurfer.js/src/util/max";
+import min from "wavesurfer.js/src/util/min";
 
 const evenFloor = value => (~~( value / 2)) * 2;
 
@@ -16,6 +16,10 @@ export default class ZoomRenderer extends Drawer{
         this.createElements();
     }
 
+    destroy() {
+        super.destroy();
+        this.resizeObserver.disconnect()
+    }
 
     handleEvent(e, noPrevent) {
         !noPrevent && e.preventDefault();
@@ -49,6 +53,10 @@ export default class ZoomRenderer extends Drawer{
             })
         );
         this.waveCc = waveCanvas.getContext('2d');
+        this.resizeObserver = new ResizeObserver(entries => {
+            this.waveCc.canvas.width = entries[0].contentRect.width
+        });
+        this.resizeObserver.observe(waveCanvas);
     }
 
     updateSize() {
@@ -80,7 +88,6 @@ export default class ZoomRenderer extends Drawer{
         this.lastBpm = this.bpm;
         return false;
     }
-
 
     render(){
         requestAnimationFrame(() => this.render())
@@ -197,7 +204,6 @@ export default class ZoomRenderer extends Drawer{
         }
     }
 
-
     prepareRender(){
         this.minPxPerSec = this.params.minPxPerSec;
         // Support arrays without negative
@@ -213,8 +219,8 @@ export default class ZoomRenderer extends Drawer{
         }
 
         if (this.params.normalize) {
-            let max = Max(peaks);
-            let min =  Min(peaks);
+            let max = max(peaks);
+            let min =  min(peaks);
             this.absmax = -min > max ? -min : max;
         } else {
             this.absmax = 1;
@@ -233,6 +239,7 @@ export default class ZoomRenderer extends Drawer{
             this.render();
             this._runingRenderLoop = true;
         }
+
     }
 
     progress(progress) {

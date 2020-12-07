@@ -22,6 +22,7 @@ export default class Console{
         this.mixer.connect(this.effector);
         this.midiControler = new MidiController();
         this.kbdControler = new KbdController();
+
     }
 
     static Get(){
@@ -64,6 +65,10 @@ export default class Console{
     
         setTimeout(buildChannel.bind(this), 0);
 
+    }
+
+    destroyChannel(channelName){
+        this.channels.destroyChannel(channelName);
     }
 
     handleChange(){

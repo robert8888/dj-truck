@@ -36,8 +36,25 @@ export default class ChannelBuilder {
 
     this.eventHandler.CreateEventHandling(channel)
 
+    channel.slave.resizeObserver = new ResizeObserver( entries => {
+        if(channel.slave.drawer._drawArguments){
+          const args = channel.slave.drawer._drawArguments;
+          args[1] = entries[0].contentRect.width;
+          channel.slave.drawer.drawPeaks(...args);
+        }
+    })
+
+    channel.slave.resizeObserver.observe(channel.slave.params.container)
     return channel;
   }
+
+  destroy(channel){
+    channel.slave.resizeObserver.disconnect();
+
+    for(let key in channel) { delete channel[key];}
+  }
+
+
 
   createBars(channel, { bpm, offset }) {
     if(channel.bars){
