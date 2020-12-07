@@ -33,10 +33,41 @@ $slave-height: 50px;
         border-top: 1px solid $secondary-dark;
     }
 
+    &__wrapper{
+        position: relative;
+    }
+
+    &__warning-overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        pointer-events: none;
+        mix-blend-mode: hue;
+        background: $primary;
+
+        animation: .9s cubic-bezier(.6,.01,.16,1) 0s infinite alternate forwards running blinking;
+        @keyframes blinking {
+            from{
+                opacity: 0;
+            }
+            to{
+                opacity: 1;
+            }
+        }
+
+        &--hidden{
+            animation-play-state: paused;
+            display: none;
+        }
+    }
+
     .scale-controls{
         position: absolute;
         left: 0;
         bottom: 50px;
-        z-index: 10;
+        z-index: 20;
     }
 }

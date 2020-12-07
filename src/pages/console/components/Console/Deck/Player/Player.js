@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import Console from "./../../../../core/console/console";
-import "./player.scss";
 import ZoomControls from "./ZoomControls/ZoomControls";
-import {setZoom} from "../../../../../../actions";
 import Loading from "./Loading/Loading";
+import {setZoom} from "../../../../../../actions";
+import classNames from "classnames";
+import "./player.scss";
 
 class Player extends React.Component {
   constructor() {
@@ -28,6 +29,10 @@ class Player extends React.Component {
   }
 
   render() {
+    const overlayClasses = classNames("player__warning-overlay",
+            {"player__warning-overlay--hidden": !this.props.timeWarning}
+        )
+
     return (
       <div className={"player player-" + this.props.name}>
         <Loading name={this.props.name}/>
@@ -35,16 +40,26 @@ class Player extends React.Component {
             zoomIn={this.handleZoom.bind(this, "decrement")}
             zoomOut={this.handleZoom.bind(this, "increment")}
             className={"scale-controls--" + this.props.name}/>
-        <div className="player__master" ref={this.masterContainer} />
-        <div className="player__slave" ref={this.slaveContainer} />
+        <div className={"player__wrapper"}>
+          <div className="player__master" ref={this.masterContainer} />
+          <div className={overlayClasses}/>
+        </div>
+        <div className={"player__wrapper"}>
+          <div className="player__slave" ref={this.slaveContainer} />
+          <div className={overlayClasses}/>
+        </div>
       </div>
     );
   }
 }
 
+const mapStateToProps = (state, ownProps) => ({
+    timeWarning: state.console.channel[ownProps.name].playBackState.timeWarning &&
+        !state.console.channel[ownProps.name].playBackState.paused
+})
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   zoom: (direction) => dispatch(setZoom(ownProps.name, direction))
 })
 
-export default connect(null, mapDispatchToProps)(Player);
+export default connect(mapStateToProps, mapDispatchToProps)(Player);

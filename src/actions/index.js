@@ -1,4 +1,4 @@
-import { CONSOLE_ACTIONS as consoleActionTypes } from "./console/consoleDecks";
+import { CONSOLE_ACTIONS as consoleActionTypes } from "./console/player";
 import { EFFECTOR_ACTIONS as effectorActionTypes } from "./console/effector";
 import { MASTERING_ACTIONS as masteringActionTypes } from "./console/mastering";
 import { MIXER_ACTIONS as mixerActionTypes } from "./console/mixer";
@@ -35,7 +35,7 @@ export const ACTIONS = {
 
 }
 
-export * from "./console/consoleDecks";
+export * from "./console/player";
 export * from "./console/effector";
 export * from "./console/mastering";
 export * from "./console/mixer";

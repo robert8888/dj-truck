@@ -1,13 +1,23 @@
-import React, { useRef, useEffect, useState} from "react"
+import React, { useRef, useEffect, useState, useCallback} from "react"
 import { formater } from "../../../../../../../utils/time/timeFromater";
-import {connect, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import Console from "./../../../../../core/console/console";
+import {setTimeWarning} from "../../../../../../../actions";
 
-const TimeLeft = ({duration, name}) => {
+const timeWarningLimit = 30;// seconds
+
+const TimeLeft = ({duration, name,timeWarning, setTimeWarning}) => {
     const intervalHandler = useRef(null);
     const [channelInterface, setChannelInterface] =  useState(null);
 
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState( formater.secondsToStr(duration));
+
+    const timeWarningRef = useRef(timeWarning);
+    useEffect(()=> { timeWarningRef.current = timeWarning }, [timeWarning]);
+    const updateTimeWarning = useCallback((value) => {
+         if(timeWarningRef.current !== value)
+             setTimeWarning(value)
+    }, [timeWarningRef, setTimeWarning])
 
     useEffect(()=>{
         Console.Get().then( instance => {
@@ -20,6 +30,7 @@ const TimeLeft = ({duration, name}) => {
 
         intervalHandler.current = setInterval(()=>{
             let left = channelInterface.getCurrentTime().left || duration;
+            (left && left < timeWarningLimit) ? updateTimeWarning(true) : updateTimeWarning(false);
             left = formater.secondsToStr(left);
             setValue(left)
         }, 500)
@@ -29,6 +40,7 @@ const TimeLeft = ({duration, name}) => {
         }
     }, [
         duration,
+        timeWarningLimit,
         setValue,
         intervalHandler,
         channelInterface])
@@ -37,14 +49,21 @@ const TimeLeft = ({duration, name}) => {
         clearInterval(intervalHandler.current)
     }, [intervalHandler]);
 
+
     return (
-        <span className="time-left" >{value}</span>
+        <span className={"time-left " + ["", "time-left--warning"][+!!timeWarning]} >{value}</span>
     )
 }
 
 const mapsStateToProps = (state, ownProps) => ({
     duration: state.console.channel[ownProps.name].track.duration,
     ready: state.console.channel[ownProps.name].playBackState.ready,
+    timeWarning: state.console.channel[ownProps.name].playBackState.timeWarning &&
+        !state.console.channel[ownProps.name].playBackState.paused
 })
 
-export default connect(mapsStateToProps)(TimeLeft);
+const mapStateToProps = (dispatch , onwProps) => ({
+    setTimeWarning: value => dispatch(setTimeWarning(onwProps.name, value))
+})
+
+export default connect(mapsStateToProps, mapStateToProps)(TimeLeft);

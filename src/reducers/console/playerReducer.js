@@ -30,6 +30,7 @@ const initDeckState = {
             current: 0,
         },
         timeLeft: null,
+        timeWarning: false,
         offset: null, // move this to track now is in both
         sync: false,
         loop: false,
@@ -101,7 +102,7 @@ function nextState(part) {
     }
 }
 
-const nextPlayBackState = nextState('playBackState');
+const nextPlaybackState = nextState('playBackState');
 const nextTrackState = nextState('track');
 const nextDeckState = nextState('deckState');
 
@@ -152,11 +153,11 @@ function consoleReducer(state = initState, action) {
         }
 
         case ACTIONS.SET_LOADING_PROGRESS: {
-            return nextPlayBackState(state, action.destination, false, { loadingProgress: action.value })
+            return nextPlaybackState(state, action.destination, false, { loadingProgress: action.value })
         }
 
         case ACTIONS.SET_READY: {
-            return nextPlayBackState(state, action.destination, false, { ready: action.value })
+            return nextPlaybackState(state, action.destination, false, { ready: action.value })
         }
 
         case ACTIONS.SET_PITCH: {
@@ -169,19 +170,19 @@ function consoleReducer(state = initState, action) {
                 value = evalValue(value, min,  max, current)
             }
             value = toRange(value, min, max);
-            return nextPlayBackState(state, destination, false, { pitch: value }, true)
+            return nextPlaybackState(state, destination, false, { pitch: value }, true)
         }
 
         case ACTIONS.INCREASE_PITCH: {
             let prevPitch = state.channel[action.destination]?.playBackState?.pitch.current;
             if (prevPitch === undefined) return state;
-            return nextPlayBackState(state, action.destination, false, { pitch: prevPitch + action.amount }, true)
+            return nextPlaybackState(state, action.destination, false, { pitch: prevPitch + action.amount }, true)
         }
 
         case ACTIONS.DECREASE_PITCH: {
             let prevPitch = state.channel[action.destination]?.playBackState?.pitch.current;
             if (prevPitch === undefined) return state;
-            return nextPlayBackState(state, action.destination, false, { pitch: prevPitch - action.amount }, true)
+            return nextPlaybackState(state, action.destination, false, { pitch: prevPitch - action.amount }, true)
         }
 
 
@@ -195,7 +196,7 @@ function consoleReducer(state = initState, action) {
 
             let prevPause = state.channel[action.destination]?.playBackState?.paused;
             prevPause = (prevPause === undefined) ? true : prevPause;
-            return nextPlayBackState(state, action.destination, true, { paused: !prevPause })
+            return nextPlaybackState(state, action.destination, true, { paused: !prevPause })
         }
 
 
@@ -204,18 +205,22 @@ function consoleReducer(state = initState, action) {
             if(typeof  value === "string") return;
             let prevCue = state.channel[action.destination]?.playBackState?.cueActive;
             prevCue = (prevCue === undefined) ? false : prevCue;
-            return nextPlayBackState(state, action.destination, true, { cueActive: !prevCue })
+            return nextPlaybackState(state, action.destination, true, { cueActive: !prevCue })
         }
 
         case ACTIONS.CANCEL_CUE_AND_PLAY: {
-            return nextPlayBackState(state, action.destination, true, {
+            return nextPlaybackState(state, action.destination, true, {
                 cueActive: false,
                 paused: false,
             })
         }
 
         case ACTIONS.SET_CUE_POINT: {
-            return nextPlayBackState(state, action.destination, true, { cuePoint: action.position })
+            return nextPlaybackState(state, action.destination, true, { cuePoint: action.position })
+        }
+
+        case ACTIONS.SET_TIME_WARNING: {
+            return nextPlaybackState(state,action.destination, false, {timeWarning: action.value})
         }
 
 
@@ -241,7 +246,7 @@ function consoleReducer(state = initState, action) {
             let offset = state.channel[action.destination]?.playBackState?.offset;
             if (!offset && !prevSync) return state// can't turn on sync if offset is not calculated 
 
-            return nextPlayBackState(state, action.destination, true, { sync: !prevSync })
+            return nextPlaybackState(state, action.destination, true, { sync: !prevSync })
         }
 
         case ACTIONS.SET_SYNC: {
@@ -249,7 +254,7 @@ function consoleReducer(state = initState, action) {
             if(value === undefined || value === null) return state;
             let offset = state.channel[action.destination]?.playBackState?.offset;
             if (!offset) return state;// can't turn on sync if offset is not calculated 
-            return nextPlayBackState(state, action.destination, true, { sync: action.value });
+            return nextPlaybackState(state, action.destination, true, { sync: action.value });
         }
 
 
@@ -268,7 +273,7 @@ function consoleReducer(state = initState, action) {
 
             return channels.reduce((prevState, channelName) => {
                 let trackState = nextTrackState(prevState, channelName, false, { bpm: action.bpm, offset:action.offset });
-                return nextPlayBackState(trackState, channelName, false, { offset: action.offset })
+                return nextPlaybackState(trackState, channelName, false, { offset: action.offset })
             }, state);
         }
 
@@ -296,7 +301,7 @@ function consoleReducer(state = initState, action) {
             if (paused || !bpm || offset === null) {
                 newValue = false;
             }
-            return nextPlayBackState(state, action.destination, true, { loop: newValue });
+            return nextPlaybackState(state, action.destination, true, { loop: newValue });
         }
 
         case ACTIONS.SET_LOOP_LENGTH: {

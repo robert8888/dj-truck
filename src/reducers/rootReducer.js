@@ -1,7 +1,7 @@
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import { combineReducers } from "redux";
 import configuration from "./console/configurationReducer";
-import console from "./console/decksReducer";
+import console from "./console/playerReducer";
 import effector from "./console/effectorReducer";
 import mastering from "./console/masteringReducer";
 import mixer from "./console/mixerReducer";

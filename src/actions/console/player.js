@@ -3,19 +3,20 @@ const  ACTIONS = {
     LOAD_TRACK : "Load $track to $destination channel",
     SET_LOADING_PROGRESS : "set $value of loading progress to $destination channel",
     SET_READY : "Set channel ready playBackStatus",
-    SET_PITCH : "Settin $pitch to $destiantion channel", 
+    SET_PITCH : "Setting $pitch to $destination channel",
     SET_TIME_LEFT: "Sett $timeLEft to $destination channel",
-    TOGGLE_PLAY : "Toggle $paused in  $destination chanell",
-    TOGGLE_CUE : "Toggle $active_cue in  $destination chanel",
-    CANCEL_CUE_AND_PLAY : "Set paused to false what triger play and after that set cueActive to false",
-    SET_CUE_POINT : "Setting cue point from actual tarck position",
-    INCREASE_PITCH : "Increasing Bpm on destination chanel",
-    DECREASE_PITCH : "Decreasing Bpm on destination chanel",
-    TOGGLE_SYNC: "Toggle $isSync state on $destynation channel",
-    SET_MASTER: "set $master valeu to $destynation channel",
+    SET_TIME_WARNING: "Setting $value of tracks is ending warning for $destination channel",
+    TOGGLE_PLAY : "Toggle $paused in  $destination channel",
+    TOGGLE_CUE : "Toggle $active_cue in  $destination channel",
+    CANCEL_CUE_AND_PLAY : "Set paused to false what trigger play and after that set cueActive to false",
+    SET_CUE_POINT : "Setting cue point from actual track position",
+    INCREASE_PITCH : "Increasing Bpm on destination channel",
+    DECREASE_PITCH : "Decreasing Bpm on destination channel",
+    TOGGLE_SYNC: "Toggle $isSync state on $destination channel",
+    SET_MASTER: "set $master value to $destination channel",
     SET_SYNC: "set sync $value to $destination channel ",
     SET_LOOP: "set $value to loop variable on $destination channel",
-    SET_LOOP_LENGTH : "set $loopLenght to $destination channel",
+    SET_LOOP_LENGTH : "set $loopLength to $destination channel",
     SET_ZOOM: "set value of zoom fot $destination channel",
 
 
@@ -92,12 +93,14 @@ export function setCuePoint(destination, position){
 }
 
 export function setTimeLeft(destination, timeLeft){
-    return {
-        type: ACTIONS.SET_TIME_LEFT,
-        destination : destination, 
-        timeLeft : timeLeft
-    }
+    return {type: ACTIONS.SET_TIME_LEFT, destination , timeLeft}
 }
+
+
+export function setTimeWarning(destination, value){
+    return {type: ACTIONS.SET_TIME_WARNING, destination, value}
+}
+
 
 export function increasePitch(destination, amount){
     return {
