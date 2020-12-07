@@ -1,4 +1,4 @@
-import {toGainCurve} from "../../../../../utils/sound/converter";
+import {toGainCurve} from "utils/sound/converter";
 
 const Equaliztion = {
 

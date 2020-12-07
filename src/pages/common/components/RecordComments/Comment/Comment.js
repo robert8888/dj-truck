@@ -1,9 +1,9 @@
 import React, { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import useAutoHeightTextarea from "../../../Hooks/useAutoHeightTextarea";
-import useEmoticons from "../../../Hooks/useEmoticons";
-import { useFormatRelative } from "./../../../Hooks/useFormatDate";
-import IconBar from "./../../IconBar/IconBar";
+import useAutoHeightTextarea from "pages/common/Hooks/useAutoHeightTextarea";
+import useEmoticons from "pages/common/Hooks/useEmoticons";
+import { useFormatRelative } from "pages/common/Hooks/useFormatDate";
+import IconBar from "pages/common/components/IconBar/IconBar";
 import "./comment.scss";
 
 const CommentContent = ({

@@ -1,4 +1,4 @@
-import { ACTIONS } from "../../../actions";
+import { ACTIONS } from "actions";
 import { produce } from "imer";
 import { unset as _unset, set as _set, get as _get } from "lodash/object";
 import _isEqual from "lodash/isEqual"

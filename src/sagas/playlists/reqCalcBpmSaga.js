@@ -1,8 +1,8 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import {ACTIONS, pushLog, setBpmAndOffset, setCacheState} from "../../actions";
-import { getApi } from "../../apis/apiProvider";
-import { calcAccurateBpmAndOffset } from '../../utils/bpm/analyzer';
-import { Log } from "../../utils/logger/logger";
+import {ACTIONS, pushLog, setBpmAndOffset, setCacheState} from "actions";
+import { getApi } from "apis/apiProvider";
+import { calcAccurateBpmAndOffset } from 'utils/bpm/analyzer';
+import { Log } from "utils/logger/logger";
 
 export default function* watcher() {
     yield takeEvery(ACTIONS.PL_INIT_CALC_BPM, calcBpmAsync);

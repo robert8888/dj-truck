@@ -1,8 +1,8 @@
 import { produce } from "imer";
-import { ACTIONS } from "./../../actions";
+import { ACTIONS } from "actions";
 import _set from "lodash/set";
 import _get from "lodash/get";
-import {toRange} from "../../utils/math/argRanges";
+import {toRange} from "utils/math/argRanges";
 import {evalValue} from "./utils/evalMidiValue";
 
 const initDeckState = {

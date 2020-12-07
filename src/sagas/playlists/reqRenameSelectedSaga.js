@@ -1,7 +1,7 @@
 import { get } from "lodash/object";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { put, select, takeEvery } from "redux-saga/effects";
-import { ACTIONS, pushLog, renameSelected } from "../../actions";
+import { ACTIONS, pushLog, renameSelected } from "actions";
 import { getApi } from "./../../apis/apiProvider";
 import { findClosesDir, generateTemplateName as generateName } from "./../../reducers/console/playlist/utils";
 import { Log } from "./../../utils/logger/logger";

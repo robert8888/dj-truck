@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { ContextMenuTrigger } from "react-contextmenu";
 import { connect } from "react-redux";
-import CtxMenu from "../../../../common/components/ContextMenu/ContextMenu";
+import CtxMenu from "pages/common/components/ContextMenu/ContextMenu";
 import {
     deleteTrackRequest,
     loadTrack,
@@ -10,13 +10,13 @@ import {
     swapTrackOnList,
     updateTrackPositionRequest,
     startSearchBpm, preFetchPlaylistContent
-} from "../../../../../actions";
+} from "actions";
 import EmptyListInfo from "./EmptList/EmptyList";
 import "./play-list.scss";
 import PlaylistCtx from "./PlaylistContext";
 import PlaylistTable from "./PlaylistTable/PlaylistTable";
 import PlaylistItem from "./Playlist_Item/PlaylistItem";
-import {getApi} from "../../../../../apis/apiProvider";
+import {getApi} from "apis/apiProvider";
 
 
 

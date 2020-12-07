@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef} from "react";
 import {Step} from "react-rtg";
 import useEventDispatcher from "../utils/useEventDispatcher";
-import useRefSelector from "../../../../../common/Hooks/useRefSelector";
+import useRefSelector from "pages/common/Hooks/useRefSelector";
 
 export default function useStep_14(){
     const dispatchEvent = useEventDispatcher()

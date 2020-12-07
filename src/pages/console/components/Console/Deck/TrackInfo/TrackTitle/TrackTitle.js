@@ -1,5 +1,5 @@
 import React from "react"
-import { stripHtml } from "../../../../../../../utils/html/htmlHelper";
+import { stripHtml } from "utils/html/htmlHelper";
 import { connect } from "react-redux";
 
 

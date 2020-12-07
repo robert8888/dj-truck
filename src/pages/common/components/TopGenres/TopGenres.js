@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import BoxesSection from "../BoxesSection/BoxesSection";
 import "./top-genres.scss";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import useFetchGenresList from "../../Hooks/useFetchGenresList";
+import useFetchGenresList from "pages/common/Hooks/useFetchGenresList";
 
 const TopGenres = () =>{
     const [items, fetchItems, aboard] = useFetchGenresList(7);

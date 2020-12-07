@@ -11,8 +11,8 @@ import {
     deleteSelectedRequest,
     createDirRequest,
     createPlaylistRequest, preFetchPlaylistContent
-} from "../../../../../../actions"
-import { isEmpty, sortObj } from "../../../../../../utils/objects/helpers";
+} from "actions"
+import { isEmpty, sortObj } from "utils/objects/helpers";
 import { useDoubleClick } from "./useDoubleClick";
 import RenameInput from "./RenameInput/RenameInput";
 import DirElement from "./DirElement/DirElement";

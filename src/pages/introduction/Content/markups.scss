@@ -1,5 +1,5 @@
-@import "./../../../css/colors.scss";
-@import "./../../../css/mixins.scss";
+@import "css/colors.scss";
+@import "css/mixins.scss";
 
 @mixin heading-line($color){
   @include line-under(7.5px, $color, 3px, 110%)

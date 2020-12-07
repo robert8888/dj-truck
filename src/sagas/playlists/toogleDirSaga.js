@@ -1,6 +1,6 @@
 import { get } from "lodash/object";
 import { put, putResolve, select, takeEvery } from "redux-saga/effects";
-import { ACTIONS, loadDirRequest, pushLog, toggleDir } from "../../actions";
+import { ACTIONS, loadDirRequest, pushLog, toggleDir } from "actions";
 import { Log } from "./../../utils/logger/logger";
 
 export default function* openAndLoadDirRequest() {

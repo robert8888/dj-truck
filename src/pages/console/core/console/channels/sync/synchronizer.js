@@ -1,6 +1,6 @@
-import store from "./../../../../../../store/";
-import { getBeatLength, calcBpm } from "../../../../../../utils/bpm/converter";
-import { setPitch, setSync } from "../../../../../../actions";
+import store from "store";
+import { getBeatLength, calcBpm } from "utils/bpm/converter";
+import { setPitch, setSync } from "actions";
 
 export default class Synchronizer {
   constructor(channels) {

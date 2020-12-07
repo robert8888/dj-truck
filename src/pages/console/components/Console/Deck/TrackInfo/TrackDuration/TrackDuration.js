@@ -1,5 +1,5 @@
 import React, { useMemo } from "react"
-import { formater } from "../../../../../../../utils/time/timeFromater";
+import { formater } from "utils/time/timeFromater";
 import { connect } from "react-redux";
 
 

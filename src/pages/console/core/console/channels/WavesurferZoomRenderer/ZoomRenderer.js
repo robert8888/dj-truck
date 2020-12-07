@@ -1,14 +1,10 @@
 import Drawer from "wavesurfer.js/src/drawer";
-import max from "wavesurfer.js/src/util/max";
-import min from "wavesurfer.js/src/util/min";
+import getMax from "wavesurfer.js/src/util/max";
+import getMin from "wavesurfer.js/src/util/min";
 
 const evenFloor = value => (~~( value / 2)) * 2;
 
 export default class ZoomRenderer extends Drawer{
-    constructor(...args) {
-        super(...args);
-
-    }
 
     init() {
         this.regions = [];
@@ -75,10 +71,10 @@ export default class ZoomRenderer extends Drawer{
 
     isWaveEqual(){
         if((!this.peaks || !this.peaks.length) ||
-            this.lastProgress === this.currentProgress &&
+            (this.lastProgress === this.currentProgress &&
             this.lastPeakLength === this.peaks.length &&
             this.lastBpm === this.bpm &&
-            this.lastBeatOffset === this.beatOffset) {
+            this.lastBeatOffset === this.beatOffset)) {
             return true;
         }
 
@@ -219,8 +215,8 @@ export default class ZoomRenderer extends Drawer{
         }
 
         if (this.params.normalize) {
-            let max = max(peaks);
-            let min =  min(peaks);
+            let max = getMax(peaks);
+            let min =  getMin(peaks);
             this.absmax = -min > max ? -min : max;
         } else {
             this.absmax = 1;

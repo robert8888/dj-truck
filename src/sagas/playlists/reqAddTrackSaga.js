@@ -2,11 +2,11 @@ import { get } from "lodash/object";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import UUID from "uuidjs";
-import { ACTIONS, pushLog, pushTrackToList, startCalcBpm } from "../../actions";
-import { getApi } from "./../../apis/apiProvider";
-import { Log } from "./../../utils/logger/logger";
-import errorParser from "./../../utils/serverErrorParser/errorParser";
-import { formater } from "./../../utils/time/timeFromater";
+import { ACTIONS, pushLog, pushTrackToList, startCalcBpm } from "actions";
+import { getApi } from "apis/apiProvider";
+import { Log } from "utils/logger/logger";
+import errorParser from "utils/serverErrorParser/errorParser";
+import { formater } from "utils/time/timeFromater";
 import { handle as createNewPlaylist } from "./reqCreatePlaylistSaga";
 
 export default function* pushTrackToListSaga() {
@@ -14,8 +14,6 @@ export default function* pushTrackToListSaga() {
 }
 
 const getToken = state => state.user.token;
-
-const getPlaylistPath = state => state.playList.currentPlaylist;
 
 const getCurrent = (state, path) => get(state.playList, state.playList.currentPlaylist);
 

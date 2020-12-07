@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import MiniSlider from "./MiniSlider/MiniSlider";
 import "./looper.scss";
-import {MAPPING, setLoop, setLoopLength} from "../../../../../../actions";
+import {MAPPING, setLoop, setLoopLength} from "actions";
 import InButton from "./InButton";
 import OutButton from "./OutButton";
 

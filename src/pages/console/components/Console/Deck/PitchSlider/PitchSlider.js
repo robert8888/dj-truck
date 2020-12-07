@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setPitch, MAPPING } from "../../../../../../actions";
+import { setPitch, MAPPING } from "actions";
 import Slider from "./../../../common/RangeSlider/Slider";
 import "./pitch-slider.scss";
 import withControlMapping from "../../Control/withControlMapping";

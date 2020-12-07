@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from "react";
 import { useDrop } from 'react-dnd';
 import { connect } from "react-redux";
-import { loadTrack } from "./../../../../../actions";
+import { loadTrack } from "actions";
 import ItemTypes from "./../../../../common/DndItemTypes";
 import Looper from "./Looper/Looper";
 import PitchButtons from "./PitchButtons/PitchButtons";
@@ -10,7 +10,7 @@ import PlayBackControls from "./PlayBackControls/PlayBackControls";
 import Player from "./Player/Player";
 import SyncControl from "./SyncControl/SyncControl";
 import TrackInfo from "./TrackInfo/TrackInfo";
-import ErrorBoundary from "../../../../common/components/ErrorBoundary/ErrorBoundary";
+import ErrorBoundary from "pages/common/components/ErrorBoundary/ErrorBoundary";
 import DeckContext from "./DeckCtx";
 import ConsoleContext from "./../ConsoleCtx";
 import classNames from "classnames";

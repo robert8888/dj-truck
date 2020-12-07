@@ -1,5 +1,5 @@
 import store from "./../../../../../store";
-import {MAPPING} from "../../../../../actions";
+import {MAPPING} from "actions";
 
 export default class Controller{
     constructor(type) {

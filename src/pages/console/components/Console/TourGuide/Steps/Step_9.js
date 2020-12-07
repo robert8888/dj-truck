@@ -1,7 +1,7 @@
 import React, {useMemo} from "react";
 import {Step} from "react-rtg";
 import useStateValueAnimator from "../utils/useStateAnimator";
-import {setFader} from "../../../../../../actions";
+import {setFader} from "actions";
 
 export default function useStep_9(){
     const faderToLeftAnimation = useStateValueAnimator({

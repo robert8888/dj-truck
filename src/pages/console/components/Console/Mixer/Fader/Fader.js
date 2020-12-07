@@ -1,9 +1,9 @@
 import React, { useState, useEffect}from "react";
 import { connect } from "react-redux";
-import {MAPPING, setFader} from "../../../../../../actions";
+import {MAPPING, setFader} from "actions";
 import Slider from "./../../../common/RangeSlider/Slider";
 import "./fader-slider.scss";
-import generalStyle from "./../../../../../../css/general.scss";
+import generalStyle from "css/general.scss";
 import withControlMapping from "../../Control/withControlMapping";
 
 const Fader = props => {

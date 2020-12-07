@@ -1,5 +1,5 @@
 import { put, select, takeEvery } from "redux-saga/effects";
-import { ACTIONS, pushLog, updateEndTime, updateStartTime } from "../../../actions";
+import { ACTIONS, pushLog, updateEndTime, updateStartTime } from "actions";
 import RECORD_STATE from "./../../../reducers/console/recorder/stateDef";
 import { Log } from "./../../../utils/logger/logger";
 

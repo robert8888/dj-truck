@@ -1,6 +1,6 @@
 import React, {useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {reqAddRecordToFavorite, reqRemoveRecordFromFavorite} from "../../../../../actions"
+import {reqAddRecordToFavorite, reqRemoveRecordFromFavorite} from "actions"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
 import className from "classnames";

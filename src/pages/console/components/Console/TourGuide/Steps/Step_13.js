@@ -1,7 +1,7 @@
 import React, {useMemo} from "react";
 import {Step} from "react-rtg";
 import useStateValueAnimator from "../utils/useStateAnimator";
-import {setCurrentEffect, setDryWet} from "../../../../../../actions";
+import {setCurrentEffect, setDryWet} from "actions";
 import {useDispatch} from "react-redux";
 
 export default function useStep_13(){

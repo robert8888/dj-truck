@@ -1,8 +1,8 @@
 import {useState, useCallback} from "react"
-import {getApi} from "../../../apis/apiProvider";
-import {Log, Logger} from "../../../utils/logger/logger";
+import {getApi} from "apis/apiProvider";
+import {Log, Logger} from "utils/logger/logger";
 import {useDispatch, useSelector} from "react-redux";
-import {loadRecords} from "../../../actions";
+import {loadRecords} from "actions";
 
 export default  function (){
     const token = useSelector(state => state.user.token)

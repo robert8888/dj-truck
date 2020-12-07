@@ -1,7 +1,7 @@
 import React from "react";
 import Channel from "./Channel/Channel";
 import Fader from "./Fader/Fader";
-import ErrorBoundary from "../../../../common/components/ErrorBoundary/ErrorBoundary";
+import ErrorBoundary from "pages/common/components/ErrorBoundary/ErrorBoundary";
 import ConsoleCtx from "./../ConsoleCtx";
 import "./mixer.scss"
 

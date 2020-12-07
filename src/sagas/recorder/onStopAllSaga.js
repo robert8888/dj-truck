@@ -1,5 +1,5 @@
 import { put, select, takeEvery } from "redux-saga/effects";
-import { ACTIONS, consoleResetChannels, endRecording } from "../../actions";
+import { ACTIONS, consoleResetChannels, endRecording } from "actions";
 import RECORD_STATE from "./../../reducers/console/recorder/stateDef";
 
 

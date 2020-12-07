@@ -2,7 +2,7 @@ import { get } from "lodash/object";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import UUID from "uuidjs";
-import { ACTIONS, createPlaylist, pushLog } from "../../actions";
+import { ACTIONS, createPlaylist, pushLog } from "actions";
 import { getApi } from "./../../apis/apiProvider";
 import { findClosesDir, generateTemplateName as generateName } from "./../../reducers/console/playlist/utils";
 import { Log } from "./../../utils/logger/logger";

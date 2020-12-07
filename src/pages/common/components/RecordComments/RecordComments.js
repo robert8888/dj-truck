@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback } from "react";
 import { connect } from "react-redux";
-import { reqDeleteComment, reqPostComment, reqUpdateComment } from "./../../../../actions";
+import { reqDeleteComment, reqPostComment, reqUpdateComment } from "actions";
 import { usePlayer } from "./../../Hooks/usePlayer";
 import CommentContent from "./Comment/Comment";
 import "./record-comments.scss";

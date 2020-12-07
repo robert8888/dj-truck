@@ -1,11 +1,11 @@
-import store from "./../../../../../store/";
+import store from "store";
 import ChannelBuilder from "./channelBuilder/channelBuilder";
 import Synchronizer from "./sync/synchronizer";
-import {getApi} from "../../../../../apis/apiProvider";
+import {getApi} from "apis/apiProvider";
 import {setCuePoint, 
         setChannelReady, 
         setLoop,
-      } from "../../../../../actions";
+      } from "actions";
 import Looper from "./looper/looper";
 import localForage from "localforage"
 

@@ -1,5 +1,5 @@
 import React from "react";
-import withRefSize from "./../../../../../../common/components/HOC/withRefSize";
+import withRefSize from "pages/common/components/HOC/withRefSize";
 import withControlMapping from "../../../Control/withControlMapping";
 import "./mini-slider.scss";
 

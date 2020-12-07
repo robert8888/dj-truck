@@ -1,7 +1,7 @@
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer";
-import useWindowSize from "../../../Hooks/useWindowSize";
+import useWindowSize from "pages/common/Hooks/useWindowSize";
 import style from "./wave-surfer-player.scss";
 
 const WaveSurferPlayer = ({ record: { peaks, id, duration },  seek , player }) => {

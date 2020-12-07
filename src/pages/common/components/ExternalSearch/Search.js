@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Dropdown, DropdownButton, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
-import { clearSearch, searchInput, searchStart } from "../../../../actions";
-import { API_TYPES, getApisName } from "../../../../apis/apiProvider";
+import { clearSearch, searchInput, searchStart } from "actions";
+import { API_TYPES, getApisName } from "apis/apiProvider";
 import { Spin } from "react-loading-io";
 import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 import classNames from "classnames"

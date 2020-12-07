@@ -1,9 +1,9 @@
 import {put, select, takeEvery} from "redux-saga/effects";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
-import {ACTIONS, updateControlProfile, pushLog} from "../../../actions";
-import { Log } from "./../../../utils/logger/logger";
-import {getApi} from "../../../apis/apiProvider";
-import errorParser from "../../../utils/serverErrorParser/errorParser";
+import {ACTIONS, updateControlProfile, pushLog} from "actions";
+import { Log } from "utils/logger/logger";
+import {getApi} from "apis/apiProvider";
+import errorParser from "utils/serverErrorParser/errorParser";
 
 const path = ['saga', 'control', 'midi', 'update control profile']
 

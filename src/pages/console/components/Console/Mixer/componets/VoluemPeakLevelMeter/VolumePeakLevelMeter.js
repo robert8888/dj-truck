@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {connect} from "react-redux";
 import PeakLevelMeterH from "./PeakLevelMeter/PeakLevelMeterH";
 import PeakLevelMeterV from "./PeakLevelMeter/PeakLevelMeterV";
 import Thumb from "./Thumb/Thumb";
-import {toRange} from "../../../../../../../utils/math/argRanges";
+import {toRange} from "utils/math/argRanges";
 import _throttle from "lodash/throttle";
-import {Log, Logger} from "../../../../../../../utils/logger/logger";
+import {Log, Logger} from "utils/logger/logger";
 import withControlMapping from "../../../Control/withControlMapping";
 
 const VolumePeakLevelMeter = ({
@@ -18,7 +18,7 @@ const VolumePeakLevelMeter = ({
       ...props
     }) => {
     const [shift] = useState(1/(30/5)); // check peek level zero db description
-    const [vertical, setVertical] = useState(aspect === "vertical")
+    const [vertical] = useState(aspect === "vertical")
     const [areaRect, setAreaRect] = useState(null);
     const [thumbRect, setThumbRect] = useState(null);
     const [maxPosition, setMaxPosition] = useState(null);

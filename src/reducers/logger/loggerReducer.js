@@ -1,6 +1,6 @@
 import { produce } from "imer";
-import { ACTIONS } from "../../actions";
-import { LOG_TYPES } from "../../utils/logger/logger";
+import { ACTIONS } from "actions";
+import { LOG_TYPES } from "utils/logger/logger";
 
 const initState = {
     // shape of logs:

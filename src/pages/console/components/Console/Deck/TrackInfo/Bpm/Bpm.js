@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useEffect, useMemo, useState} from "react"
 import {connect, useDispatch, useSelector} from "react-redux";
 import DeckContext from "../../DeckCtx";
-import {setBpmOrOffsetDeck} from "../../../../../../../actions";
+import {setBpmOrOffsetDeck} from "actions";
 
 
 const Bpm = ({bpm}) => {

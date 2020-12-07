@@ -1,7 +1,7 @@
 import React, {useMemo} from "react";
 import {Step} from "react-rtg";
 import useStateValueAnimator from "../utils/useStateAnimator";
-import {setFilter} from "../../../../../../actions";
+import {setFilter} from "actions";
 
 export default function useStep_19(){
     const filterToHighAnimation = useStateValueAnimator({

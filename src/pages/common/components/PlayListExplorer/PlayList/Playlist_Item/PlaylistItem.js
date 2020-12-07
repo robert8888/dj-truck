@@ -1,8 +1,8 @@
 import React, { useContext, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Spin } from "react-loading-io";
-import { formater } from "../../../../../../utils/time/timeFromater";
-import ItemTypes from "./../../../../DndItemTypes";
+import { formater } from "utils/time/timeFromater";
+import ItemTypes from "pages/common/DndItemTypes";
 import PlaybackButton from "./../../../PlaybackButton/PlaybackButton";
 import PlaylistContext from "./../PlaylistContext";
 import {Button} from "react-bootstrap";

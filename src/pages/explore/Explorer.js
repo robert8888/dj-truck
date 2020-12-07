@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
-import RecordSearch from "../common/components/RecordSearch/RecordSearch";
-import useRecordSearchUrl from "../common/Hooks/useRecordSearchURL";
+import RecordSearch from "pages/common/components/RecordSearch/RecordSearch";
+import useRecordSearchUrl from "pages/common/Hooks/useRecordSearchURL";
 import {Container} from "react-bootstrap";
-import TopGenres from "../common/components/TopGenres/TopGenres";
+import TopGenres from "pages/common/components/TopGenres/TopGenres";
 import "./explorer.scss";
-import PlayerControls from "../common/components/PlayerControls/PlayerControls";
-import {usePlayer} from "../common/Hooks/usePlayer";
-import { PLAYBACK_STATE } from "../common/Hooks/usePlabackState";
-import useDynamicFooter from "../common/Hooks/useDynamicFooter";
+import PlayerControls from "pages/common/components/PlayerControls/PlayerControls";
+import {usePlayer} from "pages/common/Hooks/usePlayer";
+import { PLAYBACK_STATE } from "pages/common/Hooks/usePlabackState";
+import useDynamicFooter from "pages/common/Hooks/useDynamicFooter";
 
 const Explorer = props =>{
     const history = useHistory();

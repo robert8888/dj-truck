@@ -1,5 +1,5 @@
 @import "./../../../../common/KnobDescribed/knob-described.scss";
-@import "./../../../../../../../css/colors.scss";
+@import "css/colors.scss";
 
 .ratio-knob{
     @include knob-described($mixer-knob-primary,60px);

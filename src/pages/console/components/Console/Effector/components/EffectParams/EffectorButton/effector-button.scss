@@ -1,5 +1,5 @@
-@import "./../../../../../../../../css/colors.scss";
-@import "./../../../../../../../../css/mixins.scss";
+@import "css/colors.scss";
+@import "css/mixins.scss";
 
 .effector-btn > .btn, .effector-btn.btn{
     @include mixer-button($mixer-primary);

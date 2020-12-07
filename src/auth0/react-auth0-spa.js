@@ -1,6 +1,6 @@
 import createAuth0Client from "@auth0/auth0-spa-js";
 import React, { useContext, useEffect, useState } from "react";
-import { removeUser, setUserProfile } from "./../actions";
+import { removeUser, setUserProfile } from "actions";
 import store from "./../store";
 import {Logger, Log} from "./../utils/logger/logger";
 

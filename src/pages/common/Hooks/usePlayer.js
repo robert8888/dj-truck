@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
-import { Log, Logger } from "../../../utils/logger/logger";
-import { getApi } from "./../../../apis/apiProvider";
+import { Log, Logger } from "utils/logger/logger";
+import { getApi } from "apis/apiProvider";
 import { PLAYBACK_STATE } from "./usePlabackState";
 
 //getRecordUrl

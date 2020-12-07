@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {connect} from "react-redux";
-import {hideNotification as hideNotificationAction} from "../../../../actions/notifications/notifications";
+import {hideNotification as hideNotificationAction} from "actions";
 import Notification from "./Notification";
 import Portal from "./Portal";
 

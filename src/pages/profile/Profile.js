@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import UserProfile from "../common/components/UserProfile/UserProfile";
-import { reqUpdateDescription, reqUpdateNickname, reqUpdatePicture } from "./../../actions";
-import { useAuth0 } from "./../../auth0/react-auth0-spa";
+import { reqUpdateDescription, reqUpdateNickname, reqUpdatePicture } from "actions";
+import { useAuth0 } from "auth0/react-auth0-spa";
 import "./profile.scss";
 import {Container} from "react-bootstrap";
 

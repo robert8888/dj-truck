@@ -1,9 +1,9 @@
-import store from "./../../../../../store";
-import { recording, recordingRquestFail, recordFinalUpdate, roolbackRecord } from "../../../../../actions"
+import store from "store";
+import { recording, recordingRquestFail, recordFinalUpdate, roolbackRecord } from "actions"
 import STATUS from "./../observer/STATUS";
 import io from "socket.io-client";
-import { getApi } from "../../../../../apis/apiProvider";
-import { Logger, Log } from "../../../../../utils/logger/logger";
+import { getApi } from "apis/apiProvider";
+import { Logger, Log } from "utils/logger/logger";
 
 
 export default class Recorder {

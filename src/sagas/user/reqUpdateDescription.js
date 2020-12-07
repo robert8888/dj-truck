@@ -1,6 +1,6 @@
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { put, select, takeEvery } from 'redux-saga/effects';
-import { ACTIONS, pushLog, setProfileDescription } from "../../actions";
+import { ACTIONS, pushLog, setProfileDescription } from "actions";
 import { getApi } from "./../../apis/apiProvider";
 import { Log } from "./../../utils/logger/logger";
 import errorParser from "./../../utils/serverErrorParser/errorParser";

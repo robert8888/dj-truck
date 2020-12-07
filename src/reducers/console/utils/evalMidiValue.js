@@ -1,4 +1,4 @@
-import {toRange} from "../../../utils/math/argRanges";
+import {toRange} from "utils/math/argRanges";
 
 export const  evalValue = (value, min, max, current) => {
     if(value.match(/^[+-]/)){ //relative +1%

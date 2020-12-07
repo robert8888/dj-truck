@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { put, select, takeEvery } from "redux-saga/effects";
-import { ACTIONS, pushLog, recordingRquestFail, startRecording } from "../../actions";
+import { ACTIONS, pushLog, recordingRquestFail, startRecording } from "actions";
 import { getApi } from "./../../apis/apiProvider";
 import { Log } from "./../../utils/logger/logger";
 import errorParser from "./../../utils/serverErrorParser/errorParser";

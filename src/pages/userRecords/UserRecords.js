@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {Container} from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { useAuth0 } from "../../auth0/react-auth0-spa";
+import { useAuth0 } from "auth0/react-auth0-spa";
 import Pagin from "./../common/components/Pagin/Pagin";
 import PlayerControls from "./../common/components/PlayerControls/PlayerControls";
 import RecordsList from "./../common/components/RecordList/RecordList";
@@ -11,11 +11,11 @@ import RecordSearch from "./../common/components/RecordSearch/RecordSearch";
 import UserProfile from "./../common/components/UserProfile/UserProfile";
 import { usePlayer } from "../common/Hooks/usePlayer";
 import useRecordSearchUrl from "./../common/Hooks/useRecordSearchURL";
-import useNextPageUrl from "../../reducers/records/useNextPageUrl";
+import useNextPageUrl from "reducers/records/useNextPageUrl";
 import useFetchRecordList from "../common/Hooks/useFetchRecordList";
 import useDynamicFooter from "../common/Hooks/useDynamicFooter";
 import ErrorBoundary from "../common/components/ErrorBoundary/ErrorBoundary";
-import DropdonwButton from "../common/components/DropdownButton/DropdownButton";
+import DropdonwButton from "pages/common/components/DropdownButton/DropdownButton";
 import "./user-records.scss";
 
 const UserRecords = React.memo(({userId, isCurrentUser,}) => {

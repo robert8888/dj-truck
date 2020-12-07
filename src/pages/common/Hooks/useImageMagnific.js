@@ -1,9 +1,9 @@
-import React, {useRef, useEffect, useState, useCallback, useMemo} from "react"
+import React, {useRef, useEffect, useState, useCallback} from "react"
 import ReactDOM from "react-dom"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
-const PopupImage = ({children, onClose, src, alt}) =>{
+const PopupImage = ({onClose, src, alt}) =>{
     const container = {
         position: "fixed",
         display: "flex",
@@ -79,7 +79,7 @@ export default function useImageMagnific({
             }
             return images;
         })
-    }, [setObserved, mobileOnly])
+    }, [setObserved, mobileOnly, handle])
 
     useEffect(()=>{
         if(!minResolution){
@@ -112,12 +112,12 @@ export default function useImageMagnific({
         }
         travers(container.current)
         observe(images)
-    }, [])
+    }, [observe])
 
     useEffect(()=>{
         if(!isAttached || !container.current) return;
         update();
-    }, [isAttached, container])
+    }, [isAttached, container, update])
 
     return [container, popup , update]
 }

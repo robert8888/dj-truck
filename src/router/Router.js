@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch } from "react-router-dom"
-import Layout from "../pages/common/Layout/Layout";
+import Layout from "pages/common/Layout/Layout";
 
 
 const Router = props => {

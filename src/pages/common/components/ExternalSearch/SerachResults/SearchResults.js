@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { pushTrackToListRequest } from "../../../../../actions";
+import { pushTrackToListRequest } from "actions";
 import "./search-results.scss";
 import SearchItem from "./SearchItem/SearchItem";
 

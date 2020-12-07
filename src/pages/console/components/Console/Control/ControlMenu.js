@@ -8,7 +8,7 @@ import {
     reqDeleteControlProfile,
     reqCreateControlProfile,
     reqUpdateControlProfile,
-} from "../../../../../actions";
+} from "actions";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCogs} from "@fortawesome/free-solid-svg-icons"
 import {Button, Form} from "react-bootstrap";

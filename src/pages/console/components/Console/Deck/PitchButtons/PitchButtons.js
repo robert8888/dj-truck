@@ -1,7 +1,7 @@
 import React from "react"
 import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import {increasePitch, decreasePitch} from "./../../../../../../actions";
+import {increasePitch, decreasePitch} from "actions";
 import "./pitch-buttons.scss"
 
 const buttonStepAmount = 0.01;

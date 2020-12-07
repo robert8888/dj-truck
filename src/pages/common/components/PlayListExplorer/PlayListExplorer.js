@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react";
 import { connect } from "react-redux";
-import { rootDirRequest } from "./../../../../actions";
+import { rootDirRequest } from "actions";
 import Explorer from "./Explorer/Explorer";
 import "./play-list-explorer.scss";
 import PlayList from "./PlayList/PlayList";

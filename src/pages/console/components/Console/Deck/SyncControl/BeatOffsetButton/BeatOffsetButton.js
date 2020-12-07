@@ -1,13 +1,13 @@
 import React, {useContext, useCallback} from "react";
-import {setBpmOrOffsetDeck} from "../../../../../../../actions";
+import {setBpmOrOffsetDeck} from "actions";
 import DeckContext from "../../DeckCtx";
 import "./beat-offset-button.scss"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faICursor} from "@fortawesome/free-solid-svg-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "react-bootstrap";
-import Console from "../../../../../core/console/console";
-import {Logger, Log} from "../../../../../../../utils/logger/logger"
+import Console from "pages/console/core/console/console";
+import {Logger, Log} from "utils/logger/logger"
 
 const BeatOffsetButton = () => {
     const deckContext = useContext(DeckContext);

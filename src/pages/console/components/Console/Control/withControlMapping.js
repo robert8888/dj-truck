@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useCallback, useState} from "react";
 import {connect} from "react-redux";
 import classNames from "classnames"
 import "./control-mapping.scss";
-import {setCurrentMapping} from "../../../../../actions";
+import {setCurrentMapping} from "actions";
 import ResizableText from "./utils/ResizableText";
 
 export default function withControlMapping(Component){

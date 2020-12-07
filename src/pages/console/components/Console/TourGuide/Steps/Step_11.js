@@ -1,7 +1,7 @@
 import React, {useMemo} from "react";
 import {Step} from "react-rtg";
 import useStateValueAnimator from "../utils/useStateAnimator";
-import {setLoopLength} from "../../../../../../actions";
+import {setLoopLength} from "actions";
 import useEventDispatcher from "../utils/useEventDispatcher";
 
 export default function useStep_11(){

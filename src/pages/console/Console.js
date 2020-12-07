@@ -3,12 +3,12 @@ import {Col, Container, Row} from "react-bootstrap";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 import ExternalSearch from "./../common/components/ExternalSearch/Search";
-import PlayListExplorer from "./../common/components/PlayListExplorer/PlayListExplorer";
+import PlayListExplorer from "pages/common/components/PlayListExplorer/PlayListExplorer";
 import Console from "./components/Console/Console";
 import TourGuide from "./components/Console/TourGuide/TourGuide";
 import "./console.scss"
 import {useSelector} from "react-redux";
-import useLocationSearchParams from "../common/Hooks/useLocationSearchParams";
+import useLocationSearchParams from "pages/common/Hooks/useLocationSearchParams";
 import useDynamicFooter from "../common/Hooks/useDynamicFooter";
 
 const PageConsole = () => {

@@ -1,7 +1,7 @@
 import React from "react";
-import PlaybackButton from "../../../PlaybackButton/PlaybackButton";
-import { stripHtml } from "./../../../../../../utils/html/htmlHelper";
-import { formater } from "./../../../../../../utils/time/timeFromater";
+import PlaybackButton from "pages/common/components/PlaybackButton/PlaybackButton";
+import { stripHtml } from "utils/html/htmlHelper";
+import { formater } from "utils/time/timeFromater";
 
 const SearchListItem = (props) => {
 

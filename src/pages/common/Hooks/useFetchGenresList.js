@@ -1,6 +1,6 @@
 import  {useState, useCallback, useRef} from "react"
-import {getApi} from "../../../apis/apiProvider";
-import {Log, Logger} from "../../../utils/logger/logger";
+import {getApi} from "apis/apiProvider";
+import {Log, Logger} from "utils/logger/logger";
 
 export default  function (preSetLimit){
     const aboard = useRef(false);

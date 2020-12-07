@@ -2,12 +2,12 @@ import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import UUIDClass from "uuidjs";
-import { reqUserProfile } from "./../../../../actions";
-import { useFormatRelative } from "./../../Hooks/useFormatDate";
+import { reqUserProfile } from "actions";
+import { useFormatRelative } from "pages/common/Hooks/useFormatDate";
 import Edit from "./Edit/Edit";
 import "./user-profile.scss";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import useDynamicFooter from "../../Hooks/useDynamicFooter";
+import useDynamicFooter from "pages/common/Hooks/useDynamicFooter";
 
 const UserProfile = ({ nickname, profile, reqProfile, withGenres, editable , onChange = ifEmpty => null }) => {
     const location = useLocation();

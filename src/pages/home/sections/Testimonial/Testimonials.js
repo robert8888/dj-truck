@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useCallback, useRef} from "react";
 import Testimonial from "./Testimonial";
-import Slider from "../../../common/components/CarouselSlider/Slider";
+import Slider from "pages/common/components/CarouselSlider/Slider";
 import {Container, Row, Col} from "react-bootstrap"
 import "./testimonials.scss";
-import SliderControl from "../../../common/components/CarouselSlider/SliderControls";
+import SliderControl from "pages/common/components/CarouselSlider/SliderControls";
 
 const getTestimonials = () => require.context('./testimonials', true, /\.json$/).keys();
 

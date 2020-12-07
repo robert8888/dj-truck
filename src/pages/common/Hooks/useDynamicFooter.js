@@ -1,6 +1,6 @@
 import {useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {setFooterType} from "../../../actions";
+import {setFooterType} from "actions";
 
 export default function(){
     const dispatch = useDispatch()

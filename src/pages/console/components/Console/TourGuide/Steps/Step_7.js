@@ -1,6 +1,6 @@
 import React, {useMemo} from "react";
 import {Step} from "react-rtg";
-import useRefSelector from "../../../../../common/Hooks/useRefSelector";
+import useRefSelector from "pages/common/Hooks/useRefSelector";
 
 export default function useStep_7(){
     const deckAReady = useRefSelector(state => state?.console.channel.A.playBackState.ready)

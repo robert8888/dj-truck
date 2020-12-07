@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import useAutoHeightTextarea from "../../Hooks/useAutoHeightTextarea";
+import useAutoHeightTextarea from "pages/common/Hooks/useAutoHeightTextarea";
 import { reqDeleteRec, reqUpdateRec, setRecDeleteStatus } from "./../../../../actions";
 import { getApi } from "./.././../../../apis/apiProvider";
 import IconBar from "./../IconBar/IconBar";

@@ -1,18 +1,18 @@
 import React, {useEffect} from "react";
 import { connect } from "react-redux";
-import { consoleStopAll, setFooterType } from "./../../../../actions";
+import { consoleStopAll, setFooterType } from "actions";
 import { usePlayer } from "./../../../common/Hooks/usePlayer";
 import Deck from "./Deck/Deck";
 import Effector from "./Effector/Effector";
 import Mastering from "./Mixer/Master/Master";
 import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
-import ErrorBoundary from "./../../../common/components/ErrorBoundary/ErrorBoundary";
+import ErrorBoundary from "pages/common/components/ErrorBoundary/ErrorBoundary";
 import ControlMenu from "./Control/ControlMenu";
 import CollapseButton from "./Settings/CollapseButton/CollpaseButton";
 import ConsoleCtx from "./ConsoleCtx";
 import "./console.scss";
-import useDynamicFooter from "../../../common/Hooks/useDynamicFooter";
+import useDynamicFooter from "pages/common/Hooks/useDynamicFooter";
 import ScrollSnapButton from "./Settings/ScrollSnapButton/ScrollSnapButton";
 
 const Console = ({callStopAll, consoleCollapse }) => {

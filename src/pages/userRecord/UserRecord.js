@@ -4,11 +4,11 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import PlayerControls from "../common/components/PlayerControls/PlayerControls";
 import Record from "../common/components/Record/Record";
-import { loadRecords, reqRecData, reqRecs, setFooterType } from "./../../actions";
+import { loadRecords, reqRecData, reqRecs, setFooterType } from "actions";
 import RecordComments from "./../common/components/RecordComments/RecordComments";
 import RecordDetails from "./../common/components/RecordDetails/RecordDetails";
 import RecordTracklist from "./../common/components/RecordTracklist/RecordTracklist";
-import { usePlayer } from "./../common/Hooks/usePlayer";
+import { usePlayer } from "pages/common/Hooks/usePlayer";
 import "./user-record.scss";
 import SocialButton from "../common/components/SocialButton/SocialButton";
 

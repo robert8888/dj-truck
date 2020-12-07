@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState, useCallback} from "react"
-import { formater } from "../../../../../../../utils/time/timeFromater";
+import { formater } from "utils/time/timeFromater";
 import {connect} from "react-redux";
-import Console from "./../../../../../core/console/console";
-import {setTimeWarning} from "../../../../../../../actions";
+import Console from "pages/console/core/console/console";
+import {setTimeWarning} from "actions";
 
 const timeWarningLimit = 30;// seconds
 
@@ -40,9 +40,9 @@ const TimeLeft = ({duration, name,timeWarning, setTimeWarning}) => {
         }
     }, [
         duration,
-        timeWarningLimit,
         setValue,
         intervalHandler,
+        updateTimeWarning,
         channelInterface])
 
     useEffect(()=>()=> {

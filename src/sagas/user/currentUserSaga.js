@@ -1,5 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
-import { ACTIONS, pushLog, setUserProfileWithToken } from "../../actions";
+import { ACTIONS, pushLog, setUserProfileWithToken } from "actions";
 import { getApi } from "./../../apis/apiProvider";
 import { getToken } from "./../../auth0/getToken";
 import { Log } from "./../../utils/logger/logger";

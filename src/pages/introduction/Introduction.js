@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo} from "react";
-import {setFooterType} from "./../../actions";
+import React, {useEffect} from "react";
+import {setFooterType} from "actions";
 import {connect} from "react-redux";
 import {Col, Container, Row} from "react-bootstrap";
 import Content from "./Content/Content"

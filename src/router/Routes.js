@@ -1,17 +1,17 @@
 import React, {Suspense } from "react";
 import { Redirect, Route, useLocation} from "react-router-dom";
-import Loading from "./../pages/common/components/Loading/Loding";
+import Loading from "pages/common/components/Loading/Loding";
 import PrivateRoute from "./PrivateRoute";
 
-const Home = React.lazy(()=> import(/* webpackChunkName: "home" */ "./../pages/home/Home"));
-const Introduction = React.lazy(()=> import(/* webpackChunkName: "introduction" */ "./../pages/introduction/Introduction"));
-const Console = React.lazy(() => import(/* webpackChunkName: "console" */ "./../pages/console/Console"));
-const Playlist = React.lazy(() => import(/* webpackChunkName: "playlist" */ "./../pages/playlist/Playlist"));
-const Profile = React.lazy(()=> import(/* webpackChunkName: "profile" */ "./../pages/profile/Profile"));
-const UserRecords = React.lazy(()=> import(/* webpackChunkName: "users_records" */ "./../pages/userRecords/UserRecords"));
-const UserRecord = React.lazy(() => import(/* webpackChunkName: "record" */ "./../pages/userRecord/UserRecord"));
-const Explorer = React.lazy(() => import(/* webpackChunkName: "explorer" */ "./../pages/explore/Explorer"));
-const Genres =  React.lazy(() => import(/* webpackChunkName: "genres" */ "./../pages/genres/Genres"));
+const Home = React.lazy(()=> import(/* webpackChunkName: "home" */ "pages/home/Home"));
+const Introduction = React.lazy(()=> import(/* webpackChunkName: "introduction" */ "pages/introduction/Introduction"));
+const Console = React.lazy(() => import(/* webpackChunkName: "console" */ "pages/console/Console"));
+const Playlist = React.lazy(() => import(/* webpackChunkName: "playlist" */ "pages/playlist/Playlist"));
+const Profile = React.lazy(()=> import(/* webpackChunkName: "profile" */ "pages/profile/Profile"));
+const UserRecords = React.lazy(()=> import(/* webpackChunkName: "users_records" */ "pages/userRecords/UserRecords"));
+const UserRecord = React.lazy(() => import(/* webpackChunkName: "record" */ "pages/userRecord/UserRecord"));
+const Explorer = React.lazy(() => import(/* webpackChunkName: "explorer" */ "pages/explore/Explorer"));
+const Genres =  React.lazy(() => import(/* webpackChunkName: "genres" */ "pages/genres/Genres"));
 
 const Routes = props => {
     const location = useLocation();

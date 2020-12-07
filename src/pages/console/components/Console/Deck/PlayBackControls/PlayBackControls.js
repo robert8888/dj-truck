@@ -2,7 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {canelCueAndPlay, MAPPING, toggleCue, togglePlay}
-    from "../../../../../../actions";
+    from "actions";
 import PlayButton from "./PlayButton";
 import CueButton from "./CueButton";
 import "./play-back.scss";

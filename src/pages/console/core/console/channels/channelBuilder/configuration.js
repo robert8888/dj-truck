@@ -1,7 +1,7 @@
-import colors from "./../../../../../../css/colors.scss";
+import colors from "css/colors.scss";
 import style from "./../../../../components/Console/Deck/Player/player.scss"
 import WaveSurferAsync from "wavesurfer.js-async";
-import ZoomRenderer from "../wsRenderer/ZoomRenderer";
+import ZoomRenderer from "../WavesurferZoomRenderer/ZoomRenderer";
 
 const getCssColor= (variable, name) => colors[ "deck" + name.toUpperCase() + variable ];
 

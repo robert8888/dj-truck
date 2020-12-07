@@ -1,5 +1,5 @@
 import store from "./../../../../../store";
-import {setKbdMapValue} from "../../../../../actions";
+import {setKbdMapValue} from "actions";
 import Controller from "./controller";
 
 const selectMappingMode = state => state.control.mapping;

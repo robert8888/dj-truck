@@ -1,7 +1,7 @@
 import { get } from "lodash/object";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import {ACTIONS, openCurrentPlaylist, pushLog, setCacheState, setPlaylistContent} from "../../actions";
+import {ACTIONS, openCurrentPlaylist, pushLog, setCacheState, setPlaylistContent} from "actions";
 import { getApi } from "./../../apis/apiProvider";
 import { Log } from "./../../utils/logger/logger";
 import errorParser from "./../../utils/serverErrorParser/errorParser";

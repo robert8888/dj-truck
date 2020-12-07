@@ -3,9 +3,9 @@ import {connect} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faChevronUp, faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import consoleCtx from "../../ConsoleCtx";
-import {MAPPING, setConsoleState} from "../../../../../../actions"
+import {MAPPING, setConsoleState} from "actions"
 import "./collapse-button.scss";
-import BinaryButton from "../../../../../common/components/BinnaryButton/BinnaryButton";
+import BinaryButton from "pages/common/components/BinnaryButton/BinnaryButton";
 
 const CollapseButton = ({update}) => {
     const consoleContext = useContext(consoleCtx)

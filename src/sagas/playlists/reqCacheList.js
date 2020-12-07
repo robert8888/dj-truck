@@ -1,11 +1,11 @@
 
 import { takeEvery, select, call, put } from "redux-saga/effects";
-import {ACTIONS, pushLog, pushNotification, setCacheState} from "../../actions";
+import {ACTIONS, pushLog, pushNotification, setCacheState} from "actions";
 import _get from "lodash/get";
-import {getApi} from "../../apis/apiProvider";
+import {getApi} from "apis/apiProvider";
 import {handle as loadPlaylist} from "./reqReadPlaylistSaga";
-import {cacheTracks} from "../../utils/bpm/audioCache";
-import {Log} from "../../utils/logger/logger";
+import {cacheTracks} from "utils/bpm/audioCache";
+import {Log} from "utils/logger/logger";
 
 export default function* renameSelectedRequestSaga() {
     yield takeEvery(ACTIONS.PL_PREFETCH_PLAYLIST, handle)

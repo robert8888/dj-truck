@@ -7,7 +7,7 @@ import { Form } from "react-bootstrap";
 import {
     createDirRequest,
     createPlaylistRequest
-} from "./../../../../../../actions";
+} from "actions";
 
 const MenuBar = ({createElement}) => {
     const [type, setType] = useState(null);

@@ -1,6 +1,6 @@
 import React, {useMemo} from "react";
 import {Step} from "react-rtg";
-import {togglePlay as deckPlayAction} from "../../../../../../actions";
+import {togglePlay as deckPlayAction} from "actions";
 import useRefSelector from "../../../../../common/Hooks/useRefSelector";
 import {useDispatch} from "react-redux";
 

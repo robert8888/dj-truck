@@ -5,7 +5,7 @@ import React, { useCallback, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { connect } from "react-redux";
 import UUID from "uuidjs";
-import { moveToRequest } from "./../../../../../../../actions";
+import { moveToRequest } from "actions";
 import ItemTypes from "./../../../../../DndItemTypes";
 
 const DirElement = props => {

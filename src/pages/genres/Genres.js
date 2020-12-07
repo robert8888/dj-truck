@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import "./genres.scss";
-import ErrorBoundary from "../common/components/ErrorBoundary/ErrorBoundary";
+import ErrorBoundary from "pages/common/components/ErrorBoundary/ErrorBoundary";
 import BoxesSection from "../common/components/BoxesSection/BoxesSection";
 import useFetchGenresList from "../common/Hooks/useFetchGenresList";
 import {Col, Container, Row} from "react-bootstrap";

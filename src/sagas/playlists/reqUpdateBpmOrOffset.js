@@ -1,6 +1,6 @@
 import { put, select, takeEvery } from "redux-saga/effects";
-import {ACTIONS, pushLog, setBpmAndOffset} from "../../actions";
-import {Log} from "../../utils/logger/logger";
+import {ACTIONS, pushLog, setBpmAndOffset} from "actions";
+import {Log} from "utils/logger/logger";
 
 export default function* updateBpmOrOffset() {
     yield takeEvery(ACTIONS.PL_SET_DECK_BPM_OR_OFFSET, handle)

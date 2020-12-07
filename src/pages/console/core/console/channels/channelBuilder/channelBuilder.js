@@ -1,6 +1,6 @@
 import WaveSurfer from "wavesurfer.js";
-import store from "./../../../../../../store";
-import { getBeatLength } from "../../../../../../utils/bpm/converter";
+import store from "store";
+import { getBeatLength } from "utils/bpm/converter";
 import ChannelEventHandler from "./../channelEvnetHandler/channelEvnetHandler";
 import config from "./configuration";
 

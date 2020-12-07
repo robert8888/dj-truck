@@ -1,10 +1,10 @@
 import React, { useState,  useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import { createRecordinRequest , endRecording } from "./../../../../../../actions";
+import { createRecordinRequest , endRecording } from "actions";
 import RecordButton from "./../componets/RecordButton/RecordButton";
 import RecordNameInput from "./../componets/RecordNameInput/RecordNameInput";
 import RecordTime from "../componets/RecordTime/RecordTime";
-import RECORDER_STATE from "./../../../../../../reducers/console/recorder/stateDef";
+import RECORDER_STATE from "reducers/console/recorder/stateDef";
 import "./recorder.scss";
 
 

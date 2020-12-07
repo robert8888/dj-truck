@@ -1,9 +1,7 @@
 import {put, takeEvery} from "redux-saga/effects";
-import {ACTIONS, pushLog, setBpmAndOffset} from "../../actions";
-import {getApi} from "../../apis/apiProvider";
-import {Log} from "../../utils/logger/logger";
-import {pushNotification} from "../../actions/notifications/notifications";
-
+import {ACTIONS, pushLog, setBpmAndOffset, pushNotification} from "actions";
+import {getApi} from "apis/apiProvider";
+import {Log} from "utils/logger/logger";
 
 export default function* watcher() {
     yield takeEvery(ACTIONS.PL_INIT_SEARCH_BPM, searchBpmAsync);

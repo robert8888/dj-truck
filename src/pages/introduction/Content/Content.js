@@ -11,7 +11,7 @@ import picture from "rehype-picture"
 
 import "./content.scss";
 import "./markups.scss";
-import useImageMagnific from "../../common/Hooks/useImageMagnific";
+import useImageMagnific from "pages/common/Hooks/useImageMagnific";
 
 const getMarkups = () => require.context('./../markups', true, /\.*md/).keys()
 

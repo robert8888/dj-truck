@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import withControlMapping from "../../../console/components/Console/Control/withControlMapping";
 import {connect} from "react-redux";
 
 const BinaryButton = ({value, initValue, update, className, children, ...rest}) => {
@@ -47,4 +46,4 @@ const mapDispatchToProps = (dispatch, {set, update}) => ({
     update : (value) => ((update && update(value)) ?? (set && dispatch(set(value))))
 })
 
-export default withControlMapping(connect(mapStateToProps, mapDispatchToProps)(BinaryButton));
+export default connect(mapStateToProps, mapDispatchToProps)(BinaryButton);

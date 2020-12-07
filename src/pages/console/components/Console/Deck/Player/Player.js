@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Console from "./../../../../core/console/console";
 import ZoomControls from "./ZoomControls/ZoomControls";
 import Loading from "./Loading/Loading";
-import {setZoom} from "../../../../../../actions";
+import {setZoom} from "actions";
 import classNames from "classnames";
 import "./player.scss";
 
@@ -28,8 +28,7 @@ class Player extends React.Component {
       Console.Get().then(console => console.destroyChannel(this.props.name))
   }
 
-
-    handleZoom(direction){
+  handleZoom(direction){
     this.props.zoom(direction)
   }
 
@@ -59,7 +58,7 @@ class Player extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    timeWarning: state.console.channel[ownProps.name].playBackState.timeWarning &&
+  timeWarning: state.console.channel[ownProps.name].playBackState.timeWarning &&
         !state.console.channel[ownProps.name].playBackState.paused
 })
 

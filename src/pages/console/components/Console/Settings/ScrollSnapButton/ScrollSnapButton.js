@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import SwitchButton from "../../../../../common/components/SwitchButton/SwitchButton";
+import SwitchButton from "pages/common/components/SwitchButton/SwitchButton";
 import "./scoll-snap-button.scss";
 import {useSelector} from "react-redux";
 

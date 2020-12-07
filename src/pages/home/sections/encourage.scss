@@ -1,6 +1,6 @@
-@import "./../../../css/colors.scss";
-@import "./../../../css/mixins.scss";
-@import "./../../../css/general.scss";
+@import "css/colors.scss";
+@import "css/mixins.scss";
+@import "css/general.scss";
 
 .home > section.home-encourage{
   @include section--white();

@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from "react";
 import {connect} from "react-redux";
 import "./master.scss";
-import Console from "./../../../../core/console/console";
+import Console from "pages/console/core/console/console";
 import VolumePeekLevelMeter from "./../componets/VoluemPeakLevelMeter/VolumePeakLevelMeter";
 import ThresholdKnob from "../componets/ThresholdKnob/ThresholdKnob";
 import RatioKnob from "../componets/RatioKnob/RatioKnob";
@@ -14,8 +14,8 @@ import {
         setRatio,
         setAttack,
         setRelease 
-    } from "../../../../../../actions";
-import {toGainCurve} from "../../../../../../utils/sound/converter";
+    } from "actions";
+import {toGainCurve} from "utils/sound/converter";
 
 const Mastering = props => {
     const [_interface, setInterface] = useState();

@@ -1,8 +1,8 @@
 import { put, select, takeEvery } from "redux-saga/effects";
-import { ACTIONS, loadRecords, pushLog, recReqFails } from "../../actions";
-import { getApi } from "../../apis/apiProvider";
-import { Log } from "../../utils/logger/logger";
-import errorParser from "./../../utils/serverErrorParser/errorParser";
+import { ACTIONS, loadRecords, pushLog, recReqFails } from "actions";
+import { getApi } from "apis/apiProvider";
+import { Log } from "utils/logger/logger";
+import errorParser from "utils/serverErrorParser/errorParser";
 
 export default function* requestUserRecords() {
 

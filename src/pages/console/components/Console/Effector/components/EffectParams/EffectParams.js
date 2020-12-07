@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import {connect} from "react-redux";
 import EffectorKnob from "./EffectorKnob/EffectorKnob";
 import EffectorButton from "./EffectorButton/EffectorButton";
-import {MAPPING, setEffectParameter} from "../../../../../../../actions";
+import {MAPPING, setEffectParameter} from "actions";
 import _get from "lodash/get";
 
 const EffectParams = ({allEffects, channel, effects, current}) => {

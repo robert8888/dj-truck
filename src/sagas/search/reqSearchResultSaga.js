@@ -1,9 +1,9 @@
 
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import {ACTIONS, pushLog, setSearchResults, setSearchStatus} from "../../actions";
-import { getApi } from '../../apis/apiProvider';
-import { Log } from "../../utils/logger/logger";
+import {ACTIONS, pushLog, setSearchResults, setSearchStatus} from "actions";
+import { getApi } from 'apis/apiProvider';
+import { Log } from "utils/logger/logger";
 
 export default function* watcher() {
     yield takeEvery(ACTIONS.SEARCH_START, searchAsync);

@@ -1,7 +1,7 @@
 import React, {useMemo} from "react";
 import {Step} from "react-rtg";
-import useRefSelector from "../../../../../common/Hooks/useRefSelector";
-import {togglePlay as deckPlayAction} from "../../../../../../actions";
+import useRefSelector from "pages/common/Hooks/useRefSelector";
+import {togglePlay as deckPlayAction} from "actions";
 import {useDispatch} from "react-redux";
 
 export default function useStep_15(){

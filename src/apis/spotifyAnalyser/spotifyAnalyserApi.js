@@ -1,4 +1,4 @@
-import {Log, Logger} from "../../utils/logger/logger";
+import {Log, Logger} from "utils/logger/logger";
 
 const apiUrl = process.env.REACT_APP_SPOTIFY_API_URL;
 

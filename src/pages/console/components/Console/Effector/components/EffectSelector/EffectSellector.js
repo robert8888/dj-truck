@@ -1,6 +1,6 @@
 import React, {useMemo} from "react";
 import {Dropdown, DropdownButton} from "react-bootstrap";
-import {setCurrentEffect} from "../../../../../../../actions";
+import {setCurrentEffect} from "actions";
 import {connect} from "react-redux";
 import withControlMapping from "../../../Control/withControlMapping";
 
