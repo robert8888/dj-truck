@@ -4,7 +4,7 @@ import {
   setChannelReady,
   setLoadingProgress,
   togglePlay,
-  setLoop
+  setLoop, setProcessing
 } from "./../../../../../../actions";
 
 export default class EventHandler {
@@ -12,7 +12,7 @@ export default class EventHandler {
     this.dispatch = store.dispatch;
   }
 
-  CreateEventHandling(channel) {
+  createEventHandling(channel) {
     this.onLoad(channel);
     this.onLoading(channel);
     this.onReady(channel);
@@ -23,9 +23,18 @@ export default class EventHandler {
     this.onFinish(channel);
   }
 
+  destroy(channel){
+    clearInterval(channel.syncHandle)
+  }
+
+
   onLoad(channel) {
+    const haveProcessedEvent = channel.master.initialisedPluginList.PeaksAsyncPlugin;
     channel.master.on("load", () => {
       this.clearState(channel);
+      if(haveProcessedEvent){
+        this.dispatch(setProcessing(channel.channelName, true))
+      }
     });
   }
 
@@ -44,9 +53,15 @@ export default class EventHandler {
       this.startSync(channel);
     });
 
-
     const haveBufferedEvents = channel.master.initialisedPluginList.PeaksAsyncPlugin;
-    channel.master.on(["ready","buffered"][+!!haveBufferedEvents],  () => {
+
+    if(haveBufferedEvents){
+      channel.master.on("processed", () => {
+        this.dispatch(setProcessing(channel.channelName, false))
+      })
+    }
+
+    channel.master.on(haveBufferedEvents ? "buffered" : "ready",  () => {
       const width = channel.slave.params.container.getBoundingClientRect().width
       const resolution = 280;
       const peaks = channel.master.backend.getPeaks(resolution, 0 , resolution);

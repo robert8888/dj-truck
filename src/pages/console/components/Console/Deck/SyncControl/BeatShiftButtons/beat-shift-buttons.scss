@@ -1,0 +1,14 @@
+@import "css/colors";
+@import "css/mixins";
+
+.beat-shift{
+    position: absolute;
+    width: 100%;
+    top:0;
+    display: flex;
+    justify-content: space-between;
+    &__btn, &__btn > button{
+      @include button-flat(var(--deck-color-rgb));
+      width: clamp(30px, 10%, 50px);
+    }
+}

@@ -34,7 +34,7 @@ export default class ChannelBuilder {
 
     channel.slave = WaveSurfer.create(channel.slaveConfig);
 
-    this.eventHandler.CreateEventHandling(channel)
+    this.eventHandler.createEventHandling(channel)
 
     channel.slave.resizeObserver = new ResizeObserver( entries => {
         if(channel.slave.drawer._drawArguments){
@@ -49,6 +49,7 @@ export default class ChannelBuilder {
   }
 
   destroy(channel){
+    this.eventHandler.destroy(channel)
     channel.slave.resizeObserver.disconnect();
 
     for(let key in channel) { delete channel[key];}

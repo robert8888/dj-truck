@@ -42,7 +42,8 @@ export default class Controller{
         if(!actionId) return null;
         if(!actions[actionId.split("-")[0]]) return null;
         return {
-            reference: MAPPING[actions[actionId.split("-")[0]].fullName].action,
+            action: MAPPING[actions[actionId.split("-")[0]].fullName].action,
+            actionOff: MAPPING[actions[actionId.split("-")[0]].fullName].actionOff,
             method: actionId.split("-")[1] || "set"
         };
     }

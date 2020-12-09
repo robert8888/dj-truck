@@ -7,7 +7,7 @@ import {
     setPitch,
     setMaster, toggleSync,
     setDryWet, setCurrentEffect, setEffectParameter,
-    setConsoleState, setVolume
+    setConsoleState, setVolume, setPitchTemp
 } from '../';
 
 export default {
@@ -231,6 +231,38 @@ export default {
         description : "Deck channel B adjust pitch slider",
         type: Number,
         action: value => setPitch("B", value)
+    },
+
+    DECK_CHANNEL_A_FORWARD: {
+        id: "DCF_A",
+        description: "Move forward channel A by adjust pitch",
+        type: Boolean,
+        action: () => setPitchTemp("A", 5),
+        actionOff: () => setPitchTemp("A", 0)
+    },
+
+    DECK_CHANNEL_B_FORWARD: {
+        id: "DCF_B",
+        description: "Move forward channel B by adjust pitch",
+        type: Boolean,
+        action: () => setPitchTemp("B", 5),
+        actionOff: () => setPitchTemp("B", 0)
+    },
+
+    DECK_CHANNEL_A_BACKWARD: {
+        id: "DCB_A",
+        description: "Move backward channel A by adjust pitch",
+        type: Boolean,
+        action: () => setPitchTemp("A", -5),
+        actionOff: () => setPitchTemp("A", 0)
+    },
+
+    DECK_CHANNEL_B_BACKWARD: {
+        id: "DCB_B",
+        description: "Move backward channel B by adjust pitch",
+        type: Boolean,
+        action: () => setPitchTemp("B", -5),
+        actionOff: () => setPitchTemp("B", 0)
     },
 
     DECK_CHANNEL_A_SYNC : {

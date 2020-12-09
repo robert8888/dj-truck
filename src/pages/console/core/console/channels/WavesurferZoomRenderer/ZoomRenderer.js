@@ -98,11 +98,15 @@ export default class ZoomRenderer extends Drawer{
         this.cursor = cursor;
         cursor = ~~(this.cursorShift || cursor);
 
-
         const correction =  (((width / 2 ) - cursor) / minPxPerSec ) / this.duration ;
 
         let start = evenFloor(Math.max(this.peaks.length / 2 * (this.currentProgress + correction)  - (width / 2) , 0));
         let end = start + (width * 2);
+
+        if(start === 0 && this.cursor !== cursor && this.cursor < width / 2){
+            cursor = this.cursor;
+            this.cursorShift = cursor;
+        }
 
         let channelIndex = this.channelIndex;
 

@@ -136,19 +136,19 @@ export default function withControlMapping(Component){
         return(
             <div ref={updateAspect} className={"control-mapping__wrapper " + (className || "")}>
                 <Component {...props}/>
-                <div onClick={setAsCurrentMapping.bind(null, "up")}
+                <div onClick={setAsCurrentMapping.bind(null, "down")}
                      className={layerClasses + upLayerClasses}
-                     data-tooltip={value && (value.set || value.up)}>
+                     data-tooltip={value && (value.set || value.down)}>
                         <ResizableText>
-                            {content.set || content.up}
+                            {content.set || content.down}
                         </ResizableText>
                 </div>
 
-                <div onClick={setAsCurrentMapping.bind(null, "down")}
+                <div onClick={setAsCurrentMapping.bind(null, "up")}
                      className={layerClasses + downLayerClasses}
-                     data-tooltip={value && value.down}>
+                     data-tooltip={value && value.up}>
                         <ResizableText>
-                            {content.down}
+                            {content.up}
                         </ResizableText>
                 </div>
 

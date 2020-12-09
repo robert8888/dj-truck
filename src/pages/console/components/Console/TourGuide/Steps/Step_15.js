@@ -26,7 +26,6 @@ export default function useStep_15(){
                 event: "click",
                 target: ".controls__playback--B .btn--play",
                 callback: () => {
-                    console.log("is b redy", deckBReady.current)
                     return deckBReady.current
                 }
             }}

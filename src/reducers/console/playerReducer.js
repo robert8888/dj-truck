@@ -20,6 +20,7 @@ const initDeckState = {
     playBackState: {
         ready: false,
         loadingProgress: 0,
+        processing: false,
         paused: true,
         cuePoint: 0,
         cueActive: false,
@@ -28,6 +29,7 @@ const initDeckState = {
             max: 8,
             default: 0,
             current: 0,
+            back: null,
         },
         timeLeft: null,
         timeWarning: false,
@@ -91,7 +93,7 @@ function nextState(part) {
 
         const nextState = produce(state, (draftState) => {
             for (let [variable, value] of Object.entries(variables)) {
-                const path = [...base, variable];
+                const path = [...base, ...variable.split("/")];
                 if(depth){
                     path.push("current")
                 }
@@ -156,6 +158,10 @@ function consoleReducer(state = initState, action) {
             return nextPlaybackState(state, action.destination, false, { loadingProgress: action.value })
         }
 
+        case ACTIONS.SET_PROCESSING:{
+            return nextPlaybackState(state, action.destination, false, { processing: action.value })
+        }
+
         case ACTIONS.SET_READY: {
             return nextPlaybackState(state, action.destination, false, { ready: action.value })
         }
@@ -171,6 +177,25 @@ function consoleReducer(state = initState, action) {
             }
             value = toRange(value, min, max);
             return nextPlaybackState(state, destination, false, { pitch: value }, true)
+        }
+
+        case ACTIONS.SET_PITCH_TEMP : {
+            const {destination, about} = action;
+            if(!about){
+                const pitch = state.channel[destination].playBackState.pitch.back ||
+                    state.channel[destination].playBackState.pitch.default;
+                return nextPlaybackState(state, destination, false, {
+                    "pitch/current" : pitch,
+                    "pitch/back" : 0,
+                })
+            } else {
+                const pitch = state.channel[destination].playBackState.pitch.current;
+                const nextPitch = pitch + about;
+                return nextPlaybackState(state, destination, false, {
+                    "pitch/current" : nextPitch,
+                    "pitch/back" : pitch,
+                })
+            }
         }
 
         case ACTIONS.INCREASE_PITCH: {

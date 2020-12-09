@@ -175,7 +175,7 @@ function playListReducer(state = initState, action) {
             })
         }
 
-        case ACTIONS.PL_RESET_CURRENT_PLAYLIST_CONTETN: {
+        case ACTIONS.PL_RESET_CURRENT_PLAYLIST_CONTENT: {
             return produce(state, draftState => {
                 draftState.list = action.list;
                 _set(draftState, [...state.currentPlaylist, "_contetnt"], action.list);

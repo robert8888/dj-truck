@@ -21,7 +21,17 @@ export default class KbdController extends Controller{
             return;
         }
 
-        const {reference: action, method} = this._getAction(keyId) || {};
+        const {action, actionOff, method} = this._getAction(keyId) || {};
+        if(action && actionOff){
+           this.commit(action())
+           const that = this;
+           window.addEventListener("keyup", function keyup(){
+               that.commit(actionOff());
+               window.removeEventListener("keyup", keyup);
+           })
+           return;
+        }
+
         let value = null;
         if(method === "up"){
             value = "+10%";

@@ -25,11 +25,24 @@ export default class MidiController extends Controller{
             return;
         }
 
-        let action = this._getAction(msg.id)?.reference;
+        let {action, actionOff } = this._getAction(msg.id) || {};
         if(!action) return;
 
-        if(msg.name === STATUS.NOTE_ON && msg.velocity === 0) {
-            this.commit(action())
+        if(msg.name === STATUS.NOTE_ON){
+            if(msg.velocity !== 0) {
+                this.commit(action())
+            } else if(msg.velocity === 0 &&  actionOff){
+                this.commit(actionOff())
+            }
+            return;
+        }
+
+        if(action && actionOff){
+            if(msg.max) {
+                this.commit(action())
+            } else {
+                this.commit(actionOff())
+            }
             return;
         }
 

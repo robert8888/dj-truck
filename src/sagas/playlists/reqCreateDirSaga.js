@@ -10,7 +10,7 @@ import errorParser from "./../../utils/serverErrorParser/errorParser";
 import { handle as readDirSagaHandle } from "./reqReadDirSaga";
 
 export default function* createDirRequestSaga() {
-    yield takeEvery(ACTIONS.PL_CREATE_DIR_REQEST, callApi)
+    yield takeEvery(ACTIONS.PL_CREATE_DIR_REQUEST, callApi)
 }
 
 const getToken = state => state.user.token;

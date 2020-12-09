@@ -41,7 +41,7 @@
     }
 }
 
-@mixin button-transparent($color:""){
+@mixin button-transparent($color:"", $background: transparent){
     &,
     &:hover,
     &:focus,
@@ -49,7 +49,7 @@
     &:hover:focus,
     &:hover:active,
     &:hover:active:focus{
-        background: transparent;
+        background: $background;
         border: none;
         box-shadow: none;
         outline: none;
@@ -61,6 +61,22 @@
         }
     }
 }
+@mixin button-flat($background-rgb){
+    @include button-transparent();
+    & {
+        background: rgba( $background-rgb, 0.1);
+        &:focus:hover:active{
+            background: rgba($background-rgb, 0.8);
+        }
+        &:hover, &:active:hover, &:focus:hover, &[class*="--active"]{
+            background:  rgba($background-rgb, 0.6);
+        }
+        &:focus, &:active {
+            background: rgba($background-rgb, 0.4);
+        }
+    }
+}
+
 
 // std button 
 @mixin button($color) {

@@ -5,6 +5,7 @@
 
 .sync-control{
     width: calc(100% - 50px);
+    height: 100%;
     padding: 3px 0;
     line-height: 1;
     display: flex;
@@ -19,11 +20,16 @@
         }
     }
 
+    &__group{
+        width: 100%;
+        position: relative;
+        display: flex;
+        margin-right: 1px;
+        margin-left: 3px;
+    }
+
     &>.control-mapping__wrapper {
         display: flex;
-    }
-    button{
-        margin-right: 3px;
     }
 
 

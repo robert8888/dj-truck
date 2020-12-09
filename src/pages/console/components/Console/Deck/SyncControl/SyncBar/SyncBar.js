@@ -25,6 +25,16 @@ class SyncBar extends React.Component {
       this.lastCall = now;
       const position = this.channelInterface.getSyncBarPosition();
       this.applyStyle(position);
+      let sign = "idle";
+      if(position > .1){
+        sign = "ahead"
+      } else if(position < -.1){
+        sign = "delayed"
+      }
+      if(this.lastSign !== sign){
+        this.props.updateBeatPosition(sign)
+      }
+      this.lastSign = sign;
     }
   }
 
@@ -33,10 +43,9 @@ class SyncBar extends React.Component {
     let scale = 2 * position;
     let translateX = -((1 - scale) / 2 * 100);
 
-    if (position < 0) {
+    if (position > 0) {
       scale *= -1;
     }
-
     this.thumbElement.current.style.transform = "translateX(" + translateX + "%) scaleX(" + scale + ")"
   }
 

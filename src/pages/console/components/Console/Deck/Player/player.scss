@@ -1,4 +1,3 @@
-
 @import "css/colors.scss";
 
 $master-height: 130px;
@@ -17,6 +16,8 @@ $slave-height: 50px;
         left: 50%;
         top: $master-height / 2;
         transform: translate(-50%, -50%);
+        z-index: 500;
+        letter-spacing: 1px;
         span{
 
         }

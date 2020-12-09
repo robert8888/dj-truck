@@ -2,8 +2,10 @@
 const  ACTIONS = {
     LOAD_TRACK : "Load $track to $destination channel",
     SET_LOADING_PROGRESS : "set $value of loading progress to $destination channel",
+    SET_PROCESSING : "set $value of processing state to $destination channel",
     SET_READY : "Set channel ready playBackStatus",
     SET_PITCH : "Setting $pitch to $destination channel",
+    SET_PITCH_TEMP: "Set $pitch to $destination channel temporary",
     SET_TIME_LEFT: "Sett $timeLEft to $destination channel",
     SET_TIME_WARNING: "Setting $value of tracks is ending warning for $destination channel",
     TOGGLE_PLAY : "Toggle $paused in  $destination channel",
@@ -43,6 +45,12 @@ export function setLoadingProgress(destination, value){
     }
 }
 
+export function setProcessing(destination, value){
+    return {type: ACTIONS.SET_PROCESSING, destination, value}
+}
+
+
+
 export function setChannelReady(value, destination){
     return {
         type: ACTIONS.SET_READY,
@@ -59,6 +67,14 @@ export function setPitch( destination, pitch){
         destination: destination
     }
 }
+
+export function setPitchTemp( destination, about){
+    return {
+        type: ACTIONS.SET_PITCH_TEMP,
+        destination, about
+    }
+}
+
 
 export function togglePlay(destination, value){
     return {

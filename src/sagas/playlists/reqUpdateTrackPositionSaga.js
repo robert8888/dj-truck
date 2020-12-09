@@ -5,7 +5,7 @@ import { Log } from "./../../utils/logger/logger";
 import errorParser from "./../../utils/serverErrorParser/errorParser";
 
 export default function* renameSelectedRequestSaga() {
-    yield takeEvery(ACTIONS.PL_UPDATE_TRACK_POSITION_REQUST, handel)
+    yield takeEvery(ACTIONS.PL_UPDATE_TRACK_POSITION_REQUEST, handel)
 }
 
 function* handel(action){
