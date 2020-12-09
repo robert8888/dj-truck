@@ -28,6 +28,7 @@ const PlayListExplorer = ({logged, rootDirRequest, page, player, controls}) => {
             window.document.removeEventListener("click", handleClick)
         }
     }, [setExplorerCollapseState])
+    
 
     return (
         <ErrorBoundary>

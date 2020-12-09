@@ -1,4 +1,3 @@
-
 import { put, select, takeEvery } from "redux-saga/effects";
 import { ACTIONS, pushLog, updateRec, updateRecFail } from "actions";
 import { getApi } from "apis/apiProvider";
@@ -7,12 +6,12 @@ import errorParser from "utils/serverErrorParser/errorParser";
 
 export default function* requestRecordUpdate() {
 
-    yield takeEvery(ACTIONS.RECS_REQ_UPDATE, handel)
+    yield takeEvery(ACTIONS.RECS_REQ_UPDATE, handle)
 }
 
 const getToken = state => state.user.token
-//recordId,  recordChanges
-function* handel(action) {
+
+function* handle(action) {
     const token = yield select(getToken);
 
     if (token) {

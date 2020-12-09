@@ -1,6 +1,6 @@
-import {ACTIONS} from "./../../actions";
+import {ACTIONS} from "actions";
 import {takeEvery, call} from "redux-saga/effects"
-import {LOG_TYPES} from "./../../utils/logger/logger";
+import {LOG_TYPES} from "utils/logger/logger";
 
 const environment = process.env.NODE_ENV; 
 

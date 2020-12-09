@@ -23,7 +23,7 @@ const getParentPath = (state, currentSelection) =>
 const generateDirName = (state, parrentPath, base) =>
     generateName(state.playList, parrentPath, base);
 
-const getParrentId = (state, path) => get(state.playList, path);
+const getParentId = (state, path) => get(state.playList, path);
 
 function* callApi(action) {
     const path = ['saga', 'playlist', 'request created dir'];
@@ -40,22 +40,22 @@ function* callApi(action) {
         yield put(showLoading());
         const { callQuery, queries } = getApi("UserAssets");
         const currentSelection = yield select(getCurrentSelection);
-        const parrentPath = yield select(getParentPath, currentSelection);
+        const parentPath = yield select(getParentPath, currentSelection);
 
         let dirName;
         if (!action.name) {
-            dirName = yield select(generateDirName, parrentPath, "New folder");
+            dirName = yield select(generateDirName, parentPath, "New folder");
             renameMode = true;
         } else {
-            dirName = yield select(generateDirName, parrentPath, action.name);
+            dirName = yield select(generateDirName, parentPath, action.name);
         }
 
-        const parrent = yield select(getParrentId, parrentPath);
-        if (!parrent._loaded) {
-            yield call(readDirSagaHandle, { path: parrentPath })
+        const parent = yield select(getParentId, parentPath);
+        if (!parent._loaded) {
+            yield call(readDirSagaHandle, { path: parentPath })
         }
 
-        let response = yield callQuery(queries.createDirQl(parrent._id, dirName), token);
+        let response = yield callQuery(queries.createDirQl(parent._id, dirName), token);
 
         if(response.errors){
             throw new Error('Server response contains errors '+ errorParser(response.errors))

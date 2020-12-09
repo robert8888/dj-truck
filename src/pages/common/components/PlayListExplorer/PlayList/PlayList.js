@@ -12,12 +12,11 @@ import {
     startSearchBpm, preFetchPlaylistContent
 } from "actions";
 import EmptyListInfo from "./EmptList/EmptyList";
-import "./play-list.scss";
 import PlaylistCtx from "./PlaylistContext";
 import PlaylistTable from "./PlaylistTable/PlaylistTable";
 import PlaylistItem from "./Playlist_Item/PlaylistItem";
 import {getApi} from "apis/apiProvider";
-
+import "./play-list.scss";
 
 
 class PlayList extends React.Component {

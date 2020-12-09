@@ -1,7 +1,7 @@
 const ItemTypes = {
-    DIR : "a dir containg play lists",
+    DIR : "a dir containing play lists",
     FILE : "a play list file",
-    TRACK : "a object containg track (url, tilte...etc)"
+    TRACK : "a object containing track"
 }
 
 export default ItemTypes;

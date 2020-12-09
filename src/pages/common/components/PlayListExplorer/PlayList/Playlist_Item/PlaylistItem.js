@@ -16,7 +16,6 @@ const PlaylistItem = props => {
     ...props.item
   }
 
-
   const [{ isDragging }, drag] = useDrag({
     item: {
       type: ItemTypes.TRACK,
@@ -77,9 +76,6 @@ const PlaylistItem = props => {
 
   drag(drop(ref));
 
-  const style = {
-    opacity: (isDragging) ? 0 : 1
-  }
 
   const timeFormatting = time => formater.secondsToStr(time);
 
@@ -92,6 +88,7 @@ const PlaylistItem = props => {
       return bpm.toFixed(2)
     }
   }
+console.log(isDragging)
 
   return (
     <tr
@@ -102,7 +99,7 @@ const PlaylistItem = props => {
             "track-list-table-row--highlighted" : track.cached ,
           }
       )}
-      style={style}
+      style={{opacity: (isDragging) ? 0 : 1}}
       onMouseEnter={ctx.setHover.bind(null, props.listIndex)}>
         {props.player && 
           <td className="track-list-table-col btn-playback">
