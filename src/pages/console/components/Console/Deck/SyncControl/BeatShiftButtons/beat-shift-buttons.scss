@@ -10,5 +10,6 @@
     &__btn, &__btn > button{
       @include button-flat(var(--deck-color-rgb));
       width: clamp(30px, 10%, 50px);
+      color: $primary-dark;
     }
 }

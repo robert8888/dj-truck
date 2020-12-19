@@ -22,3 +22,27 @@
 @function toRgb($color){
   @return red($color), green($color), blue($color)
 }
+
+
+
+@function sassMapToJson($list-map) {
+  $list-map-length: length($list-map);
+  $iteration: 0;
+  $json: '{';
+
+  @each $propName, $propValue in $list-map {
+
+    $json: $json + '"#{$propName}"' + ':';
+
+    $json: $json + '"#{$propValue}"';
+
+    $iteration: $iteration + 1;
+    @if ($iteration < $list-map-length) {
+      $json: $json + ',';
+    }
+  }
+
+  $json: $json + '}';
+
+  @return $json;
+}

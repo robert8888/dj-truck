@@ -124,6 +124,12 @@
       grid-column: 2;
       grid-row: 1;
     }
+    .scale-controls{
+      display: none;
+    }
+    .player__loading{
+      top: 25px;
+    }
   }
 }
 

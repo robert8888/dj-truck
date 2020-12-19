@@ -208,14 +208,16 @@ class Knob extends React.Component{
 
     // -------------- events below
 
-    mouseDown(event){
+    pointerDown(event){
         event.stopPropagation();
-        const mouseMove = this.mouseMove.bind(this, event.clientY);
+        const pointerMove = this.pointerMove.bind(this, event.clientY || event.touches[0].clientY);
         this.snap();
         const removeListener = () =>{
-            document.body.removeEventListener('mousemove', mouseMove);
+            document.body.removeEventListener('mousemove', pointerMove);
+            document.body.removeEventListener('touchmove', pointerMove);
             document.body.removeEventListener('mouseup', removeListener);
             document.body.removeEventListener('mouseleave', removeListener);
+            document.body.removeEventListener('touchend', removeListener);
             this.setState({...this.setState, isDragged: false}, ()=>{
                 if(!this.state.isDragged &&  !this.isMouseOver){
                     this.setActive(false);
@@ -223,17 +225,21 @@ class Knob extends React.Component{
             })
             
         }
-        document.body.addEventListener('mousemove', mouseMove)
+        document.body.addEventListener('mousemove', pointerMove, )
+        document.body.addEventListener("touchmove", pointerMove, {passive: false})
         document.body.addEventListener('mouseup', removeListener);
         document.body.addEventListener('mouseleave', removeListener);
+        document.body.addEventListener('touchend', removeListener);
         this.setState({...this.setState, isDragged: true})
         this.setActive(true);
     }
 
-    mouseMove(startY, event){
+    pointerMove(startY, event){
         event.stopPropagation();
+        event.preventDefault();
         let responseFactor = this.props.responsFactor || 1;
-        let position = this.state.snapShotPosition - (event.clientY  - startY) * responseFactor;
+        const clintY = event.clientY || event.touches[0].clientY;
+        let position = this.state.snapShotPosition - (clintY  - startY) * responseFactor;
         this.setPosition(position);
     }
 
@@ -288,7 +294,8 @@ class Knob extends React.Component{
         return (
             <div 
                 className={"knob " + this.props.className} 
-                onMouseDown={this.mouseDown.bind(this)}
+                onMouseDown={this.pointerDown.bind(this)}
+                onTouchStart={this.pointerDown.bind(this)}
                 onDragStart={ e => e.preventDefault()}
                 onDoubleClick={this.mouseDoubleClick.bind(this)}
                 onMouseEnter={ this.mouseEnter.bind(this)}

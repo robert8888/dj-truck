@@ -3,6 +3,8 @@ import {connect} from "react-redux"
 import {Col, Container, Row} from "react-bootstrap";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
+import {isMobile} from "react-device-detect";
 import ExternalSearch from "./../common/components/ExternalSearch/Search";
 import PlayerControls from "./../common/components/PlayerControls/PlayerControls";
 import PlayListExplorer from "./../common/components/PlayListExplorer/PlayListExplorer";
@@ -16,7 +18,7 @@ const Playlist = ({currentPlaylistContent}) => {
         <>
         <Container className={"container-xl"}>
             <div className="page-playlist-container">
-                <DndProvider backend={Backend}>
+                <DndProvider backend={isMobile ? TouchBackend :Backend}>
                     <Row>
                         <Col>
                             <ExternalSearch controls={controls} player={player}/>

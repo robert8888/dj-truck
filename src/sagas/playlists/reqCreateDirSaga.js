@@ -18,10 +18,10 @@ const getToken = state => state.user.token;
 const getCurrentSelection = state => state.playList.currentSelection;
 
 const getParentPath = (state, currentSelection) =>
-    findClosesDir(state, currentSelection)
+    findClosesDir(state.playList, currentSelection)
 
-const generateDirName = (state, parrentPath, base) =>
-    generateName(state.playList, parrentPath, base);
+const generateDirName = (state, parentPath, base) =>
+    generateName(state.playList, parentPath, base);
 
 const getParentId = (state, path) => get(state.playList, path);
 
@@ -51,6 +51,7 @@ function* callApi(action) {
         }
 
         const parent = yield select(getParentId, parentPath);
+        console.log(parentPath, parent)
         if (!parent._loaded) {
             yield call(readDirSagaHandle, { path: parentPath })
         }

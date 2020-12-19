@@ -1,7 +1,7 @@
 import { get } from "lodash/object";
 
 export function findClosesDir(state, [...path]) {
-    if (get(state, path) instanceof Array) {
+    if (get(state, path) instanceof Array || get(state, path)?._type === "playlist") {
         path.pop();
         return findClosesDir(state, path)
     } else return path;

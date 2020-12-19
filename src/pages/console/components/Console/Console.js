@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useContext} from "react";
 import { connect } from "react-redux";
 import { consoleStopAll, setFooterType } from "actions";
-import { usePlayer } from "./../../../common/Hooks/usePlayer";
+import { usePlayer } from "pages/common/Hooks/usePlayer";
 import Deck from "./Deck/Deck";
 import Effector from "./Effector/Effector";
 import Mastering from "./Mixer/Master/Master";
@@ -10,14 +10,16 @@ import Recorder from "./Mixer/Recorder/Recorder";
 import ErrorBoundary from "pages/common/components/ErrorBoundary/ErrorBoundary";
 import ControlMenu from "./Control/ControlMenu";
 import CollapseButton from "./Settings/CollapseButton/CollpaseButton";
-import ConsoleCtx from "./ConsoleCtx";
-import "./console.scss";
 import useDynamicFooter from "pages/common/Hooks/useDynamicFooter";
 import ScrollSnapButton from "./Settings/ScrollSnapButton/ScrollSnapButton";
+import ConsoleCtx from "./ConsoleCtx";
+import LayoutContext from "../../../common/Layout/LayoutContext";
+import "./console.scss";
 
 const Console = ({callStopAll, consoleCollapse }) => {
     const setFooter = useDynamicFooter()
     const [control] = usePlayer();
+    const {mode} = useContext(LayoutContext);
 
     useEffect(() =>{
         control.stop();
@@ -33,8 +35,13 @@ const Console = ({callStopAll, consoleCollapse }) => {
 
     return (
         <ErrorBoundary>
-            <ConsoleCtx.Provider value={{collapse: consoleCollapse}}>
-                <div className={"component console console--" + (consoleCollapse ? "collapsed" : "expanded")}>
+            <ConsoleCtx.Provider value={{
+                collapse: consoleCollapse
+            }}>
+                <div className={"component console " +
+                    "console--" + (consoleCollapse ? "collapsed " : "expanded ") +
+                    "console--" + mode
+                }>
                     <div className={"configuration"}>
                         <ControlMenu/>
                         <Mastering />

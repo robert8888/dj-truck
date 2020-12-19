@@ -250,7 +250,6 @@ function consoleReducer(state = initState, action) {
 
 
         case ACTIONS.SET_MASTER: {
-            console.log("set master aciton", action)
             const {value} = action;
             if(value === undefined ||
               (value && value.match(/^[+-]/))||

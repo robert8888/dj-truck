@@ -2,6 +2,8 @@ import React, {useEffect, useMemo} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
+import {isMobile} from "react-device-detect";
 import ExternalSearch from "./../common/components/ExternalSearch/Search";
 import PlayListExplorer from "pages/common/components/PlayListExplorer/PlayListExplorer";
 import Console from "./components/Console/Console";
@@ -31,7 +33,7 @@ const PageConsole = () => {
 
 
   return (
-      <DndProvider backend={Backend}>
+      <DndProvider backend={isMobile ? TouchBackend : Backend}>
           <TourGuide isOpen={isOpenTourGuideActive}/>
           <Container className="app layout container-xl" >
             <Console />

@@ -88,7 +88,6 @@ const PlaylistItem = props => {
       return bpm.toFixed(2)
     }
   }
-console.log(isDragging)
 
   return (
     <tr

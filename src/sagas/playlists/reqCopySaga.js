@@ -2,10 +2,10 @@ import { get } from "lodash/object";
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { fork, put, select, takeEvery } from "redux-saga/effects";
 import { ACTIONS, pushLog } from "actions";
-import { getApi } from "./../../apis/apiProvider";
-import { Log } from "./../../utils/logger/logger";
-import errorParser from "./../../utils/serverErrorParser/errorParser";
-import { formater } from "./../../utils/time/timeFromater";
+import { getApi } from "apis/apiProvider";
+import { Log } from "utils/logger/logger";
+import errorParser from "utils/serverErrorParser/errorParser";
+import { formater } from "utils/time/timeFromater";
 
 export default function* copyTrackToListSaga() {
     yield takeEvery(ACTIONS.PL_COPY_TRACK_TO_LIST, forkHandle)
@@ -35,7 +35,6 @@ function* handle(action) {
             throw new Error("Internal error - playlist id not found")
         }
 
-        console.e.log("before calling")
         const response = yield callQuery(queries.createTrackQl, token, {
             playlist: playlistId,
             title: action.track.title,
@@ -50,7 +49,6 @@ function* handle(action) {
             thumbnails: action.track.thumbnails,
             position: playlistLength,
         });
-        console.log(response)
 
         if(response.errors){
             throw new Error('Server response contains errors '+ errorParser(response.errors))
@@ -62,7 +60,7 @@ function* handle(action) {
     } catch (error) {
         yield put(pushLog(Log.Error(
             path,
-            "Can't copy trakc " + error.message,
+            "Can't copy track " + error.message,
             "Sorry. During process of coping track to playlist occurred a problem",
             error
         )))

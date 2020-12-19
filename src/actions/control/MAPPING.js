@@ -168,6 +168,7 @@ export default {
         description: "Deck channel A cue",
         type: Boolean,
         action: (value) => toggleCue("A", value),
+        actionOff: (value) => toggleCue("A", value),
     },
 
     DECK_CHANNEL_B_CUE : {
@@ -175,6 +176,7 @@ export default {
         description: "Deck channel B cue",
         type: Boolean,
         action: (value) => toggleCue("B", value),
+        actionOff: (value) => toggleCue("B", value),
     },
 
     DECK_CHANNEL_A_LOOP_IN : {

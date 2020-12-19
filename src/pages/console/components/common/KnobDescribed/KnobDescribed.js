@@ -8,7 +8,7 @@ const KnobDescribed = (props) => {
     
     return (
         <div className={"knob-area " + props.className}>
-             <Knob {...rest}></Knob>
+             <Knob {...rest}/>
              <div className="knob-ring"/>
              <div className="knob-text">{text && text.toUpperCase()}</div>
 

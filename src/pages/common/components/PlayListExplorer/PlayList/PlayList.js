@@ -140,7 +140,7 @@ class PlayList extends React.Component {
         return (
             <Fragment>
                 <div className="playlist">
-                    <ContextMenuTrigger id="playlist_ctx_menu" className="playlist" holdToDisplay={-1}>
+                    <ContextMenuTrigger id="playlist_ctx_menu" className="playlist__menu" >
                         <PlaylistCtx.Provider value={{
                             setHover: this.setCurrentHover.bind(this),
                         }}>
