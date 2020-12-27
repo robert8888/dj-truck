@@ -4,6 +4,8 @@
 .recorder{
     position: relative;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     height: 70px;
     padding: 5px;
@@ -18,22 +20,41 @@
 
     .record-name-input{
         @include input();
-        width : calc(100% - 210px);
-        position: absolute;
-        top:50%;
-        transform: translateY(-50%);
+        flex: 1;
+        margin: 0 10px;
         left: 90px;
         user-select: none;
+        min-width: 20px;
     }
 
     .record-time{
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
         user-select: none;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    &--mobile, &--tablet{
+        height: 50px;
+        padding-left: 20px;
+        button {
+            @include button--mobile();
+        }
+        input{
+            height: 28px;
+
+        }
+        .record-time{
+            height: 28px;
+        }
+    }
+    &--xs{
+        .label{
+            display: none;
+        }
+        padding-left: 0;
+        button.btn.btn-primary{
+            margin-left: 5px;
+        }
     }
 }

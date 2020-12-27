@@ -31,7 +31,9 @@ export default class Channels {
   }
 
   createChannel( channelName, ...args ){
-      this.channels[channelName] = this.channelBuilder.create( channelName, ...args);
+      this.channels[channelName] = this.channelBuilder.create(
+          channelName, ...args, this.channels[channelName]?._preConfig
+      );
   }
 
   destroyChannel(channelName){
@@ -59,12 +61,29 @@ export default class Channels {
   getChannelInterface(channelName) {
     return {
       getSyncBarPosition: () => 
-        this.synchronizer.getSyncBarPostion.call(this.synchronizer,channelName), 
+        this.synchronizer.getSyncBarPosition.call(this.synchronizer,channelName),
       getCurrentTime: () => this.getCurrentTime(channelName),
     };
   }
 
-
+  updateWavesurferParams(channelName, player, params){
+    const channel = this.getFullChannel(channelName);
+    //if channel is not built then any configuration set is temporary
+    //store in preConfig
+    if(!channel || !channel.master || !channel.slave){
+      this.channels[channelName]= {
+        _preConfig : {
+           ...(this.channels[channelName]?._preConfig || {}),
+           [player] : params
+        }
+      }
+      return;
+    }
+    //if channel is built then is updated directly on wavesurfer
+    for(const key in params){
+      channel[player].params[key] = params[key];
+    }
+  }
 
   //--------------------------------------------
 

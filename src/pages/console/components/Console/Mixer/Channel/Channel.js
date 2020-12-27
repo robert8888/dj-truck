@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import Console from "./../../../../core/console/console";
+import Console from "pages/console/core/console/console";
 import EqKnob from "./../componets/EqKnob/EqKnob"
 import GainKnob from "./../componets/GainKnob/GainKnob";
 import FilterKnob from "./../componets/FilterKnob/FitlerKnob";
@@ -18,7 +18,7 @@ import {
     setFilterResonans,
     setCue,
     MAPPING,
-} from "./../../../../../../actions";
+} from "actions";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faHeadphones} from "@fortawesome/free-solid-svg-icons"
 import "./mixer-channel.scss";
@@ -42,7 +42,7 @@ class Channel extends React.Component {
 
     containerClassNames(){
         return classNames(
-            "mixer-channel",
+            "mixer-channel", `channel--${this.props.layout.mode}`, `channel--${this.props.layout.screen}`,
             "channel-" + this.props.name,{
                 "channel--collapsed": this.context.collapse,
                 "channel--expanded": !this.context.collapse,
@@ -117,20 +117,22 @@ class Channel extends React.Component {
                 </BinaryButton>
 
                 <div className="mixer-group group-fx">
-                    <BinaryButton
-                        className="btn-fx"
-                        get={state => state.mixer.channels[channel].sends[0]}
-                        set={value => setSend(channel, 1, value)}
-                        role={MAPPING[`MIXER_CHANNEL_${channel}_FX_1`]}>
-                            FX 1
-                    </BinaryButton>
-                    <BinaryButton
-                        className="btn-fx"
-                        get={state => state.mixer.channels[channel].sends[1]}
-                        set={value => setSend(channel, 2, value)}
-                        role={MAPPING[`MIXER_CHANNEL_${channel}_FX_2`]}>
-                            FX 2
-                    </BinaryButton>
+                    <div className={"group-fx__wrapper"}>
+                        <BinaryButton
+                            className="btn-fx"
+                            get={state => state.mixer.channels[channel].sends[0]}
+                            set={value => setSend(channel, 1, value)}
+                            role={MAPPING[`MIXER_CHANNEL_${channel}_FX_1`]}>
+                                FX 1
+                        </BinaryButton>
+                        <BinaryButton
+                            className="btn-fx"
+                            get={state => state.mixer.channels[channel].sends[1]}
+                            set={value => setSend(channel, 2, value)}
+                            role={MAPPING[`MIXER_CHANNEL_${channel}_FX_2`]}>
+                                FX 2
+                        </BinaryButton>
+                    </div>
                 </div>
             </div>
         )

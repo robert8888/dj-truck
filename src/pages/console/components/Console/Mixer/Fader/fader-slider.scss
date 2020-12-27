@@ -9,15 +9,8 @@
 
 .fader {
   .fader.slider {
-    @media screen and (min-width : $vertical-break-point-extra-small){
-      @include slider-horizontal(40px);
-    }
-    @media screen and (max-width : $vertical-break-point-extra-small) {
-      @include slider-vertical(40px);
-    }
-
+    @include slider-horizontal(40px);
     @include slider-color($mixer-primary);
-  
   }
 
   .slider.fader{

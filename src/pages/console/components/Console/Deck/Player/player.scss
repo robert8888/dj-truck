@@ -1,20 +1,39 @@
 @import "css/colors.scss";
-
-$master-height: 130px;
-$slave-height: 50px;
-
-:export{
-    masterHeight: $master-height;
-    slaveHeight: $slave-height;
-}
+@import "css/mixins.scss";
 
 .player{
+    --master-height: 150px;
+    --slave-height: 50px;
+    &--tablet{
+        --master-height: 120px;
+        --slave-height: 40px;
+    }
+    &--mobile{
+        --master-height: 90px;
+        --slave-height: 30px;
+    }
+
     position: relative;
-    width: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+
+    &--tablet, &--mobile{
+        &.player-A{
+            flex-direction: column-reverse;
+            .player__loading{
+                top: unset;
+                bottom: calc(var(--master-height) / 2 );
+                transform: translate(-50%, 50%);
+            }
+        }
+        .player__slave{
+            margin: 1px 0;
+        }
+    }
     &__loading{
         position: absolute;
         left: 50%;
-        top: $master-height / 2;
+        top: calc(var(--master-height) / 2 );
         transform: translate(-50%, -50%);
         z-index: 500;
         letter-spacing: 1px;
@@ -26,12 +45,13 @@ $slave-height: 50px;
         background: $primary-dark;
     }
     &__master{
-        height: $master-height;
+        height: var(--master-height);
         overflow: hidden;
+        border-top: 1px solid $secondary-dark;
+        border-bottom: 1px solid $secondary-dark;
     }
     &__slave{
-        height: $slave-height;
-        border-top: 1px solid $secondary-dark;
+        height: var(--slave-height);
     }
 
     &__wrapper{
@@ -72,3 +92,27 @@ $slave-height: 50px;
         z-index: 20;
     }
 }
+
+//.modal{
+//    &__group{
+//        display: flex;
+//        justify-content: space-between;
+//        align-items: center;
+//        &:not(:last-of-type){
+//            margin-bottom: 10px;
+//            padding-bottom: 15px;
+//            border-bottom: 1px solid lighten($secondary-dark, 10);
+//        }
+//    }
+//    &__text{
+//        margin: 0 20px 0 0;
+//        align-self: flex-end;
+//        font-size: 1.0em;
+//    }
+//    button.btn.btn-primary{
+//        font-size: 0.9em;
+//        letter-spacing: .5px;
+//        margin-left: auto;
+//        display: inline;
+//    }
+//}

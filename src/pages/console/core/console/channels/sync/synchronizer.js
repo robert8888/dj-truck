@@ -9,7 +9,7 @@ export default class Synchronizer {
     this.stdDivceDiff = {}
   }
 
-  getSyncBarPostion(channelName) {
+  getSyncBarPosition(channelName) {
     const data = this.getSyncData(channelName);
     if(!data) return null;
 
@@ -55,11 +55,11 @@ export default class Synchronizer {
     const slaveChannel = this.channels.getChannel(channelName);
     if (!masterChannel.isPlaying() || !slaveChannel.isPlaying()) return null;
 
-    // --- stabilization - beacuase :
+    // --- stabilization - cause :
     // masterChannel.getCurrentTime() - slaveChannel.getCurrentTime() is not stable as should be
-    // cause of this is calculated average diff and diviation from this diff.
+    // cause of this is calculated average diff and deviation from this diff.
     if (!this.stdDivceDiff[channelName]) {
-      //craete
+      //create
       this.stdDivceDiff = { ...this.stdDivceDiff, [channelName]: null };
       //set
       this.stdDivceDiff[channelName] = masterChannel.backend.ac.currentTime 

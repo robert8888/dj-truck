@@ -1,14 +1,15 @@
 import React from "react";
-import {Button} from "react-bootstrap";
 import withControlMapping from "../../Control/withControlMapping";
+import HoldButton from "pages/common/components/HoldButton/HoldButton";
 
-const CueButton = ({onMouseDown, active}) =>{
+const CueButton = ({onHold, onRelease, active}) =>{
     return (
-        <Button
-            className={"btn--cue " + ((active && "btn--pressed") || "")}
-            onMouseDown={onMouseDown} >
+        <HoldButton
+            className={"btn--cue btn btn-primary " + ((active && " btn--pressed-filed ") || "")}
+            onHold={onHold}
+            onRelease={onRelease}>
             Cue
-        </Button>
+        </HoldButton>
     )
 }
 

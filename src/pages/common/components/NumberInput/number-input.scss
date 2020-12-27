@@ -1,0 +1,36 @@
+@import "css/colors.scss";
+@import "css/mixins.scss";
+
+.number-input{
+  position: relative;
+  display: inline-block;
+  width: unset;
+  input{
+    @include input($primary);
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+    padding-right: 24px;
+    max-width: 100px;
+  }
+  button.btn.btn-primary{
+    @include button-transparent();
+    border-right: 0;
+    font-size: .8em;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+
+  &__controls
+  {
+    align-self: stretch;
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    position: absolute;
+    right: 8px;
+    top:0;
+    bottom: 0;
+  }
+}

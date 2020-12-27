@@ -132,7 +132,7 @@
         color: $primary-dark;
     }
 
-    &.btn--pressed-filed{
+    &.btn.btn--pressed-filed{
         background-color: $color;
         color: $primary-dark;
         -webkit-box-shadow: none;
@@ -208,9 +208,10 @@
     }
 }
 
-@mixin deck-sync-button($color){
-    @include button--small($color)
-}
+
+//@mixin deck-sync-button($color){
+//    @include button--small($color)
+//}
 
 @mixin block-like-button($color : $primary){
     @include deck-button($color);
@@ -225,6 +226,13 @@
 
 }
 
+
+@mixin button--mobile(){
+    &.btn.btn-primary{
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+}
 
 @mixin label {
     position: absolute;
@@ -598,5 +606,17 @@
         width: $width;
         height: $height;
         background: $color;
+    }
+}
+
+@mixin panel-shadow(){
+    box-shadow: 0 0 8px 1px rgba(255, 255, 255, .05) inset;
+}
+
+@mixin input-number-clean(){
+    -moz-appearance: textfield;
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button{
+        -webkit-appearance: none;
     }
 }

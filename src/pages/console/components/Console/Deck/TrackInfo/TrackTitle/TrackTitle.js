@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 const TrackTitle = ({title}) => {
     return (
-        <span className="track-info-title" >{stripHtml(title)}</span>
+        <p className="track-info-title" >{stripHtml(title)}</p>
     )
 }
 

@@ -8,7 +8,7 @@ import recorderSagas from "./recorder"
 import recordsSagas from "./records";
 import searchSagas from "./search";
 import userSagas from "./user";
-
+import effectorSagas from "./effector";
 
 function* rootSaga(){
     yield all([
@@ -21,6 +21,7 @@ function* rootSaga(){
         recordsSagas(),
         searchSagas(),
         userSagas(),
+        effectorSagas(),
     ])
 }
 

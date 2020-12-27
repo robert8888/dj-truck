@@ -1,8 +1,6 @@
-import React, { useCallback, useState, Fragment, useEffect, useMemo} from "react";
+import React, { useCallback, useState, Fragment, useEffect} from "react";
 import UUID from "uuidjs";
 import { connect } from "react-redux";
-import ExplorerContextMenu from "./../../../../../common/components/ContextMenu/ContextMenu";
-import { ContextMenuTrigger } from "react-contextmenu";
 import {
     toggleDirRequest,
     setSelection,
@@ -17,6 +15,7 @@ import { useDoubleClick } from "./useDoubleClick";
 import RenameInput from "./RenameInput/RenameInput";
 import DirElement from "./DirElement/DirElement";
 import FileElement from "./FileElement/FileElement";
+import {Item, Menu, Separator, useContextMenu} from "react-contexify";
 import _get from "lodash/get";
 import "./explorer-tree.scss";
 
@@ -33,7 +32,7 @@ const ExplorerTree =({
     currentSelection,
     currentSelectedType,
     root }) => {
-
+    const { show } = useContextMenu({id: "EXPLORER"})
     const [_renameMode, setRenameMode] = useState(false);
 
 
@@ -137,40 +136,30 @@ const ExplorerTree =({
     }, [renderDirElements])
 
 
-    const contextMenuItems = useMemo(()=>{
-        const items = {
-            "Add Playlist": () => {
-                createPlaylist();
-            },
-            "Add folder": () => {
-                createDir();
-            }
-        }
-        if(currentSelection.length > 1){
-            items["Rename"] = setRenameMode.bind(null, true);
-            items["Delete"] = deleteSelected.bind(null);
-
-        }
-        if(currentSelectedType === "playlist"){
-            items["____"] = "separator";
-            items["Fetch playlist"] =  prefetchPlaylist;
-        }
-        return items;
-    }, [currentSelection, createPlaylist, createDir,
-        setRenameMode, deleteSelected, prefetchPlaylist, currentSelectedType])
-
     return (
-        <Fragment>
-            <ContextMenuTrigger id="explorer_context_menu" holdToDisplay={-1}>
+        <>
+            <div id="EXPLORER" onContextMenu={show}>
                 <div className="explorer-tree" onClick={setSelection.bind(null, ["root"])}>
                     {renderDir(root, ['root'])}
                 </div>
-            </ContextMenuTrigger>
-
-            <ExplorerContextMenu
-                id="explorer_context_menu"
-                items={contextMenuItems} />
-        </Fragment>
+            </div>
+            <Menu id="EXPLORER">
+                <Item onClick={createPlaylist.bind(null)}>Add Playlist</Item>
+                <Item onClick={createDir.bind(null)}>Add folder</Item>
+                { currentSelection.length > 1 &&
+                    <>
+                    <Item onClick={setRenameMode.bind(null, true)}>Rename</Item>
+                    <Item onClick={deleteSelected.bind(null)}>Delete</Item>
+                    </>
+                }
+                {currentSelectedType === "playlist" &&
+                    <>
+                    <Separator/>
+                    <Item onClick={prefetchPlaylist.bind(null)}>Cache playlist</Item>
+                    </>
+                }
+            </Menu>
+        </>
     )
 }
 

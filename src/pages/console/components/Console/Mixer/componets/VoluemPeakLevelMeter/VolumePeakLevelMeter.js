@@ -107,7 +107,8 @@ const VolumePeakLevelMeter = ({
         if(!thumbRef.current) return;
         position = normalize(position);
         window.requestAnimationFrame(()=>{
-            thumbRef.current.style.transform = `translate${vertical ? "Y" : "X"}(${position}px)`
+            if(thumbRef.current)
+                thumbRef.current.style.transform = `translate${vertical ? "Y" : "X"}(${position}px)`
         })
         updateValue(position);
     }, [vertical, thumbRef ,normalize, updateValue])
@@ -119,12 +120,18 @@ const VolumePeakLevelMeter = ({
         updatePosition(position);
     }, [vertical, areaRect,  updatePosition])
 
-    const mouseDown = useCallback((event) => {
+    const pointerDown = useCallback((event) => {
         event.stopPropagation();
-        const {target, clientX, clientY} = event
+
+        const {target} = event
+        const clientX = event.clientX || event.touches[0]?.clientX;
+        const clientY = event.clientY || event.touches[0]?.clientY;
+
+        if(!clientY || !clientX || !target) return;
+
         let shift;
         setThumbState("dragged");
-        if(target.matches(".thumb")){
+        if(target.closest(".thumb") && event.pointerType === "mouse"){
             const rect = target.getBoundingClientRect();
             shift = vertical ? clientY - rect.top : clientX - rect.left;
         } else {
@@ -132,6 +139,9 @@ const VolumePeakLevelMeter = ({
             shift = vertical ? thumbRect.height / 2 : thumbRect.width / 2;
             const position = ( vertical ? clientY - rect.top : clientX - rect.left ) - shift;
             updatePosition(position);
+            if(event.pointerType !== "mouse"){
+                return
+            }
         }
         const mMove = mouseMove.bind(null, shift);
         const onMouseUp = (event) => {
@@ -140,18 +150,12 @@ const VolumePeakLevelMeter = ({
             window.removeEventListener('mouseleave', onMouseUp);
             mMove(event);
             setThumbState(null);
+            console.log("mouse up")
         }
         window.addEventListener('mousemove', mMove);
         window.addEventListener('mouseup', onMouseUp);
         window.addEventListener('mouseleave', onMouseUp);
     }, [vertical, thumbRect,  updatePosition, mouseMove, setThumbState])
-
-    const mouseDoubleClick = useCallback(()=>{
-        if(!doubleClickInit) return;
-        isDraggedRef.current = true;
-        updatePosition(positionFromValue(0))
-        isDraggedRef.current = false;
-    }, [isDraggedRef, updatePosition, positionFromValue, doubleClickInit])
 
     useEffect(function setInitialPosition(){
         if(value !== undefined && value !== null) return ;
@@ -165,17 +169,16 @@ const VolumePeakLevelMeter = ({
 
     return (
         <div ref={areaRef}
-             onMouseDown={mouseDown}
-             onDoubleClick={mouseDoubleClick}
+             onPointerDown={pointerDown}
              onDragStart={ e => e.preventDefault()}
+             draggable={false}
              className={"peak-level-meter volume-plm volume-plm--" + aspect + " " + className}>
                 { aspect === "horizontal"
                    ? <PeakLevelMeterH {...props} aspect={aspect}/>
                    : <PeakLevelMeterV {...props} aspect={aspect}/>
                 }
             <Thumb aspect={aspect}
-                   ref={thumbRef}
-                   onMouseDown={mouseDown}/>
+                   ref={thumbRef}/>
         </div>
     )
 }

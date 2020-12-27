@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo, useCallback, useRef} from "react";
+import React, {useEffect, useState, useMemo, useCallback, useRef, useContext} from "react";
 import {connect} from "react-redux";
 import {
     setMappingState,
@@ -16,6 +16,7 @@ import Modal from "./../../../../common/components/Modal/Modal";
 import UUID from "uuidjs";
 import classNames from "classnames";
 import "./control-menu.scss";
+import LayoutContext from "../../../../common/Layout/LayoutContext";
 
 const mapStateToProps = state =>({
     currentPort : state.control.port,
@@ -49,6 +50,7 @@ const ControlMenu = ({
     currentMidiProfileId, currentKbdProfileId,
     reqLoadProfile, reqCreateProfile, reqUpdateProfile, reqDeleteProfile,
      }) => {
+    const {mode, screen} = useContext(LayoutContext);
     const [midiDisabled, setMidiDisabled] = useState(false);
     const [modalState, setModalState] = useState(["hidden", "visible"][0]);
     const [midiIns, setMidiIns] = useState(null);
@@ -210,11 +212,12 @@ const ControlMenu = ({
 
     const kbdProfilesMenuItems = useMemo(() => profilesMenuItems("kbd"), [profilesMenuItems])
 
+
     return (
-        <div className="control component">
+        <div className={`control component control--${mode} control--${screen}`}>
             <div className="component__label">CFG</div>
             <nav className={"control__nav__container"} onMouseLeave={setCollapsed.bind(null, true)}>
-                <Button className={"control__nav__button"} onClick={setCollapsed.bind(null, false)}>
+                <Button className={"control__nav__button "} onClick={setCollapsed.bind(null, false)}>
                     <FontAwesomeIcon icon={faCogs}/>
                 </Button>
                 <ul className={"control__nav control__nav--" + (collapsed ? "collapsed" : "expanded")}>

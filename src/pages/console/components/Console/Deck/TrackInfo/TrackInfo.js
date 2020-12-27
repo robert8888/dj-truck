@@ -1,6 +1,4 @@
 import React from "react";
-import "./track-info.scss";
-
 import TrackDuration from "./TrackDuration/TrackDuration";
 import TrackTitle from "./TrackTitle/TrackTitle";
 import TimeLeft from "./TimeLeft/TimeLeft";
@@ -8,23 +6,25 @@ import Thumbnail from "./Thumbnail/Thumbnail";
 import CurrentBpm from "./CurrentBpm/CurrentBpm";
 import Pitch from "./Pitch/Pitch";
 import Bpm from "./Bpm/Bpm";
+import DeckName from "./DeckName/DeckName";
 
-const TrackInfo = ({name}) => {
+import "./track-info.scss";
+const TrackInfo = ({channel, mode}) => {
 
     return (
-        <div className={"track-info info-deck-" + name}>
-            <Thumbnail name={name} />
+        <div className={`track-info info-deck-${channel} track-info--${mode}`}>
+            {mode === "desktop" ? <Thumbnail name={channel} /> : <DeckName channel={channel} />}
             <div className="track-info-description">
-                 <TrackTitle name={name}/>
+                 <TrackTitle name={channel}/>
             </div>
             <div className="track-info-time">
-                <TimeLeft name={name}/>
-                <TrackDuration name={name}/>
+                <TimeLeft name={channel}/>
+                {mode === "desktop"  && <TrackDuration name={channel}/>}
             </div>
             <div className="track-info-bpm">
-                <CurrentBpm name={name}/>
-                <Pitch name={name}/>
-                <Bpm name={name}/>
+                <CurrentBpm channel={channel}/>
+                {mode === "desktop"  && <Pitch name={channel}/>}
+                {mode === "desktop"  && <Bpm name={channel}/>}
             </div>
         </div>
     )

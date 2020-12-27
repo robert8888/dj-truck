@@ -10,7 +10,7 @@ const ShiftButton = ({className, children, direction, update, pitch}) =>{
 
     const updatePitch = useCallback((mode) => {
         if(mode === "on"){
-            const sign = direction === "forward" ? -1 : 1;
+            const sign = direction === "forward" ? 1 : -1;
             const to = pitch + sign * rate;
             cache.current = pitch;
             update(to);

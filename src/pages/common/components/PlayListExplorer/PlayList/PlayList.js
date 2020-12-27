@@ -1,7 +1,5 @@
 import React, { Fragment } from "react";
-import { ContextMenuTrigger } from "react-contextmenu";
 import { connect } from "react-redux";
-import CtxMenu from "pages/common/components/ContextMenu/ContextMenu";
 import {
     deleteTrackRequest,
     loadTrack,
@@ -9,17 +7,25 @@ import {
     startCalcBpm,
     swapTrackOnList,
     updateTrackPositionRequest,
-    startSearchBpm, preFetchPlaylistContent
+    startSearchBpm, preFetchPlaylistContent, setBpmOrOffsetDeck
 } from "actions";
+import {
+    Menu,
+    Item,
+    Separator,
+} from "react-contexify";
 import EmptyListInfo from "./EmptList/EmptyList";
 import PlaylistCtx from "./PlaylistContext";
 import PlaylistTable from "./PlaylistTable/PlaylistTable";
 import PlaylistItem from "./Playlist_Item/PlaylistItem";
 import {getApi} from "apis/apiProvider";
+import ContextMenuProvider from "pages/common/components/ContextMenu/ContextMenuProvider"
 import "./play-list.scss";
+import InputModal from "../../InputModal/InputModal";
 
 
 class PlayList extends React.Component {
+
     constructor(...args){
         super(...args);
         this.currentHoverElement = -1;
@@ -32,12 +38,23 @@ class PlayList extends React.Component {
         } else {
             this.headers.push("Destination")
         }
+
+        this.state = {
+            currentHoveredTrack : null,
+        }
     }
 
     setCurrentHover(index) {
         if (!this.menuVisible) {
             this.currentHoverElement = index;
         }
+    }
+
+    updateCurrentHoveredTrack(){
+        this.setState(state => ({
+            ...state,
+            currentHoveredTrack: this.props.playlist[this.currentHoverElement]
+        }))
     }
 
     loadTrack(destination) {
@@ -87,6 +104,17 @@ class PlayList extends React.Component {
         )
     }
 
+    setBpm(bpm){
+        if (this.currentHoverElement === -1) return;
+
+        const trackId = this.props.playlist[this.currentHoverElement]?.id;
+        const trackOffset = this.props.playlist[this.currentHoverElement]?.offset;
+
+        if(trackId === undefined || trackId === null)
+            return;
+
+        this.props.setBpm(trackId, bpm, trackOffset);
+    }
 
     makeListSnapshot() {
         this.playlistSnapshot = this.props.playlist;
@@ -118,32 +146,12 @@ class PlayList extends React.Component {
         }
     }
 
-    getContextMenuItems(){
-        let items =  {
-            "Calc BPM": this.reCalcBpm.bind(this),
-            "Get Bpm": this.searchBpm.bind(this),
-            "Delete": this.deleteTrack.bind(this),
-            "Cache": this.cacheTrack.bind(this),
-        }
-        if(this.props.page === "console"){
-            items = {
-                ...items,
-                "Send to A": this.loadTrack.bind(this, "A"),
-                "Send to B": this.loadTrack.bind(this, "B"),
-            }
-        }
-        return items;
-    }
-
-
     render() {
         return (
             <Fragment>
                 <div className="playlist">
-                    <ContextMenuTrigger id="playlist_ctx_menu" className="playlist__menu" >
-                        <PlaylistCtx.Provider value={{
-                            setHover: this.setCurrentHover.bind(this),
-                        }}>
+                    <ContextMenuProvider id="PLAYLIST">
+                        <PlaylistCtx.Provider value={{setHover: this.setCurrentHover.bind(this)}}>
                             <Fragment>
                                 <PlaylistTable headers={this.headers}>
                                     {this.props.playlist && this.props.playlist.map((item, index) =>
@@ -168,21 +176,47 @@ class PlayList extends React.Component {
                                 </PlaylistTable>
                             </Fragment>
                         </PlaylistCtx.Provider>
-                    </ContextMenuTrigger>
+                    </ContextMenuProvider>
                     <EmptyListInfo empty={this.isEmpty()} />
                 </div>
-                <CtxMenu
-                    id="playlist_ctx_menu"
-                    items={this.getContextMenuItems()}
-                    handlers={{
-                        onShow: () => this.menuVisible = true,
-                        onHide: () => this.menuVisible = false,
-                    }}
-                />
+                <Menu id={"PLAYLIST"} className={"context-menu context-menu--playlist"}>
+                    <Item onClick={this.reCalcBpm.bind(this)}> Calc BPM </Item>
+                    <Item onClick={this.searchBpm.bind(this)}> Get BPM </Item>
+                    <Item onClick={() =>{
+                        this.openModal(true)
+                        this.updateCurrentHoveredTrack()
+                    }}>
+                        Set BPM
+                    </Item>
+                    <Item onClick={this.deleteTrack.bind(this)}> Delete </Item>
+                    <Item onClick={this.cacheTrack.bind(this)}> Cache </Item>
+                    {this.props.page === "console" &&
+                        <>
+                        <Separator />
+                        <Item onClick={this.loadTrack.bind(this, "A")}>
+                            <span className="context-menu__item context-menu__item--deck-A" data-deck="A">Send to </span>
+                        </Item>
+                        <Item onClick={this.loadTrack.bind(this, "B")}>
+                            <span className="context-menu__item context-menu__item--deck-B" data-deck="B">Send to </span>
+                        </Item>
+                        </>
+                    }
+                </Menu>
+                <InputModal
+                    openRef={ref => this.openModal = ref}
+                    title={"Set Bpm"}
+                    onConfirm={this.setBpm.bind(this)}
+                    textContent={this.state.currentHoveredTrack?.title}
+                    buttonText={"Update BPM"}
+                    initValue={this.state.currentHoveredTrack?.bpm}
+                    inputProps={{min: 60, max: 300, step: .01}}
+                    inputType="number"/>
             </Fragment>
         )
     }
 }
+
+
 
 const mapStateToProps = (state) => ({
     playlist: state.playList.list,
@@ -198,6 +232,7 @@ const mapDispatchToProps = dispatch => ({
     cache: (playlist, tracks) => dispatch(preFetchPlaylistContent(playlist, tracks)),
     swapTrack: (from, to) => dispatch(swapTrackOnList(from, to)),
     reCalcBpm: (track, playlist) => dispatch(startCalcBpm(track, playlist)),
+    setBpm: (trackId, bpm, offset) => dispatch(setBpmOrOffsetDeck(null, bpm, offset, trackId)),
     startSearchBpm: (track, playlist) => dispatch(startSearchBpm(track, playlist)),
     resetList: (list) => dispatch(resetCurrentPlaylistContent(list)),
     updateTracksPositions : (tracksPositions) => dispatch(updateTrackPositionRequest(tracksPositions))

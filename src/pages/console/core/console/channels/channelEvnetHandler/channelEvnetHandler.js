@@ -63,7 +63,7 @@ export default class EventHandler {
 
     channel.master.on(haveBufferedEvents ? "buffered" : "ready",  () => {
       const width = channel.slave.params.container.getBoundingClientRect().width
-      const resolution = 280 * window.devicePixelRatio;
+      const resolution = 600 * window.devicePixelRatio;
       const peaks = channel.master.backend.getPeaks(resolution, 0 , resolution);
       const start = 0;
       const end = peaks.length / 2;

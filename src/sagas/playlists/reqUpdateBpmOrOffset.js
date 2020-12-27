@@ -25,15 +25,12 @@ const selectCurrentPlaylist = (state) => {
 function* handle(action) {
      const path = ['saga', 'playlist', 'update bpm or offset']
      try{
-         let {destination: channel, offset, bpm} = action;
-         if(bpm && (offset !== null && offset !== undefined)){
-             return;
-         }
+         let {destination: channel, offset, bpm, trackId} = action;
 
-         const trackId = yield select(selectTrackId, channel);
+         const id = trackId || (yield select(selectTrackId, channel));
          const playlist = yield select(selectCurrentPlaylist);
 
-         if(!trackId || !playlist) return;
+         if(!id || !playlist) return;
 
          if(!offset) {
              offset = yield select(selectTrackOffset, channel);
@@ -43,7 +40,7 @@ function* handle(action) {
              offset = offset % beat;
          }
 
-         yield put(setBpmAndOffset(trackId, playlist, bpm, offset))
+         yield put(setBpmAndOffset(id, playlist, bpm, offset))
      } catch(error){
          yield put(pushLog(Log.Error(
              path,

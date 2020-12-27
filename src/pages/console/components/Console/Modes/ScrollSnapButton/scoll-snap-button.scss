@@ -1,12 +1,16 @@
 @import "./../../../../../../css/colors";
 @import "./../../../../../../css/mixins";
 
-
 .c-scroll-snap-switch{
 
   &__container{
-
+    position: absolute;
+    top: 100%;
+    @include panel-border(0.2);
+    border-top: none;
+    left: -1px;
   }
+
   &__wrapper{
    // background: $secondary-dark;
     padding: 6px 12px;
@@ -17,7 +21,23 @@
       letter-spacing: 2px;
       color: darken($primary , 20%)
     }
+
+    position: relative;
+    z-index: 1;
+    &:after{
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: calc(100% + 3px);
+      border: 1px solid lighten($primary-dark, 5%);
+      border-top: none;
+      top: -3px;
+      left: 0;
+      background: $secondary-dark;
+      z-index: -1;
+    }
   }
+
   &.c-switch{
     --width: 30px;
     --height: 15px;
@@ -26,7 +46,7 @@
     --thumb-color: #{$primary};
     --thumb-hover-color: #{darken($primary, 15%)};
 
-
     --thumb-position-max: 100%;
   }
 }
+

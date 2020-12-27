@@ -211,10 +211,11 @@ class Knob extends React.Component{
     pointerDown(event){
         event.stopPropagation();
         const pointerMove = this.pointerMove.bind(this, event.clientY || event.touches[0].clientY);
+
         this.snap();
         const removeListener = () =>{
-            document.body.removeEventListener('mousemove', pointerMove);
-            document.body.removeEventListener('touchmove', pointerMove);
+            document.body.removeEventListener('mousemove', pointerMove, {passive: false});
+            document.body.removeEventListener('touchmove', pointerMove, {passive: false});
             document.body.removeEventListener('mouseup', removeListener);
             document.body.removeEventListener('mouseleave', removeListener);
             document.body.removeEventListener('touchend', removeListener);
@@ -225,11 +226,13 @@ class Knob extends React.Component{
             })
             
         }
-        document.body.addEventListener('mousemove', pointerMove, )
+
+        document.body.addEventListener('mousemove', pointerMove, {passive: false})
         document.body.addEventListener("touchmove", pointerMove, {passive: false})
         document.body.addEventListener('mouseup', removeListener);
         document.body.addEventListener('mouseleave', removeListener);
         document.body.addEventListener('touchend', removeListener);
+
         this.setState({...this.setState, isDragged: true})
         this.setActive(true);
     }

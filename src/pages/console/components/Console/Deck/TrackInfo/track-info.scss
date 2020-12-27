@@ -1,22 +1,96 @@
 @import "css/colors.scss";
+@import "css/mixins.scss";
 
 $track-info-height : 60px;
 
+@mixin input-active-color($color){
+    &:hover, &:focus, &:active{
+        &:not(:disabled){
+            color: $color;
+        }
+        border: none;
+        outline: none;
+    }
+}
 
 @each $deck, $colors in $deck-colors{
     $deck-primary-color: map-get($colors, "primary");
 
     .track-info.info-deck-#{$deck}{
-        height: $track-info-height;
-        display: flex;
-        background: $primary-dark;
-
         * {
             user-select: none;
         }
 
-        .track-info-thumbnail{
+        height: $track-info-height;
+        display: flex;
+        background: $primary-dark;
 
+        .track-bpm-current{
+            position: unset;
+            display: block;
+            width: 95%;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border-radius: 3px;
+            text-align: right;
+
+            &__input{
+                @include input-number-clean();
+                @include input-active-color($deck-primary-color);
+                width: 90%;
+                outline:none;
+                border: none;
+                margin: 0;
+                padding: 0 1px;
+
+                line-height: 1em;
+                font-size: 1em;
+                font-weight: 800;
+
+                background: $primary-dark;
+                color: $primary-text-color;
+                //&:focus, &:hover, &:active, &:focus:hover{
+                //    &:not(:disabled){
+                //        color: $deck-primary-color;
+                //    }
+                //    outline: none;
+                //}
+            }
+            &__wrapper{
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+
+        &.track-info--mobile, &.track-info--tablet {
+            height: 25px;
+            .track-info-description {;
+                padding: 0;
+                .track-info-title {
+                    -webkit-line-clamp: 1;
+                }
+            }
+
+            .track-info-bpm{
+                padding: 1px 0;
+                width: 70px;
+                min-width: 70px;
+                margin-left: 2.5px;
+                font-size: 1em;
+                input.track-bpm-current{
+                    border: 1px solid $deck-primary-color;
+                    padding: 0 3px;
+                    line-height: 1em;
+                    font-size: 1em;
+                    margin: 0;
+                    outline: none;
+                }
+            }
+        }
+
+
+        .track-info-thumbnail{
             height: $track-info-height;
             width: 80px;
             font-size: 10px;
@@ -29,24 +103,27 @@ $track-info-height : 60px;
 
         .track-info-description{
             flex-grow: 5;
-            padding-right: 5px;
-            height: $track-info-height - 10px;
+           // padding-right: 5px;
+            padding-top: 5px;
+            height: 100%;
             overflow: hidden;
             span{
                 font-weight: bold;
             }
             .track-info-title{
-
+                margin: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
             }
         }
-
 
         .track-info-time{
             position: relative;
             width: 60px;
             min-width: 60px;
-
-            height: $track-info-height;
 
             padding: 5px 0;
             span{
@@ -79,7 +156,7 @@ $track-info-height : 60px;
             min-width: 60px;
             justify-content: space-between;
             box-sizing: border-box;
-            padding: 5px 0;
+            padding: 0  0 5px 0;
             span{
                 position: absolute;
                 right: 0;
@@ -93,33 +170,28 @@ $track-info-height : 60px;
             }
             .track-bpm {
                 &-pitch {
-                    top: 22.5px;
-                }
-                &__init {
-                    top: 40px;
+                    top: 24px;
                 }
                 &__edit{
+                    @include input-number-clean();
+                    @include input-active-color($deck-primary-color);
                     position: absolute;
                     top: 40px;
                     right: 0;
                     margin-right: 3px;
                     display: inline;
                     height: 18px;
-                    width: 40px;
-                    font-size: 0.7rem;
+                    min-width: 50px;
+                    font-size: 0.8rem;
                     font-weight: 700;
                     border: none;
                     background: $primary-dark;
-                    color: $deck-primary-color;
-                    &::-webkit-inner-spin-button,
-                    &::-webkit-outer-spin-button {
-                        -webkit-appearance: none;
-                        margin: 0;
-                    }
-                    -moz-appearance: textfield;
+                    color: $primary-text-color;
+                    text-align: right;
+
+
                 }
             }
         }
     }
-
 }

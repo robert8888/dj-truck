@@ -1,14 +1,15 @@
-import React, { useState,  useCallback, useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useState,  useCallback, useEffect, useContext } from "react";
+import { connect} from "react-redux";
 import { createRecordinRequest , endRecording } from "actions";
 import RecordButton from "./../componets/RecordButton/RecordButton";
 import RecordNameInput from "./../componets/RecordNameInput/RecordNameInput";
 import RecordTime from "../componets/RecordTime/RecordTime";
 import RECORDER_STATE from "reducers/console/recorder/stateDef";
+import LayoutContext from "../../../../../common/Layout/LayoutContext";
 import "./recorder.scss";
 
-
 const Recorder = ({ recordingState, startRecording, endRecording , userLogged, recName }) =>{
+    const {mode, screen} = useContext(LayoutContext);
     const [buttonDisabled, setButtonDisabled] = useState(true);
     const [inputDisabled, setInputDisabled] = useState(true);
     const [timeRunning, setTimeRunning] = useState(false)
@@ -74,7 +75,7 @@ const Recorder = ({ recordingState, startRecording, endRecording , userLogged, r
 
 
     return (
-        <div className="recorder">
+        <div className={"recorder recorder--" + mode + " recorder--" + screen}>
             <div className="label">REC</div>
             <RecordButton
                 onChange={recordStateChange}

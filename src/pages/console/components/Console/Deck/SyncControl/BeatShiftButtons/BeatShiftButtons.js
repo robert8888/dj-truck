@@ -11,9 +11,9 @@ const BeatShiftButtons = ({channel, active, beatPosition}) =>{
     return (
         <div className={"beat-shift"}>
             <ShiftButton className={classNames(
-                  "beat-shift__btn beat-shift__btn--backward",
-                         {" beat-shift__btn--active": beatPosition === "ahead" && active}
-                         )}
+                      "beat-shift__btn beat-shift__btn--backward",
+                             {" beat-shift__btn--active": beatPosition === "ahead" && active})
+                         }
                          direction={"backward"}
                          get={state => state.console.channel[channel].playBackState.pitch.current}
                          set={setPitch.bind(null, channel)}
@@ -22,9 +22,9 @@ const BeatShiftButtons = ({channel, active, beatPosition}) =>{
             </ShiftButton>
 
             <ShiftButton className={classNames(
-                  "beat-shift__btn beat-shift__btn--forward",
-                         {" beat-shift__btn--active": beatPosition === "delayed" && active}
-                         )}
+                      "beat-shift__btn beat-shift__btn--forward",
+                             {" beat-shift__btn--active": beatPosition === "delayed" && active})
+                         }
                          direction={"forward"}
                          get={state => state.console.channel[channel].playBackState.pitch.current}
                          set={setPitch.bind(null, channel)}

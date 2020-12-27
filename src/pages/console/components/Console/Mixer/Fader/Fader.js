@@ -2,9 +2,8 @@ import React, { useState, useEffect}from "react";
 import { connect } from "react-redux";
 import {MAPPING, setFader} from "actions";
 import Slider from "./../../../common/RangeSlider/Slider";
-import "./fader-slider.scss";
-import generalStyle from "css/general.scss";
 import withControlMapping from "../../Control/withControlMapping";
+import "./fader-slider.scss";
 
 const Fader = props => {
     let [isZero , setIsZero ] = useState(true);
@@ -33,21 +32,11 @@ const Fader = props => {
         }
     }
 
-    let orientation = {
-        horizontal : true,
-    };
-
-    if(window.innerWidth < parseInt(generalStyle.verticalBreakPointExtraSmall))
-    {
-        delete orientation.horizontal;
-        orientation.vertical = true;
-    }
-
     return (
         <div className={"fader" + ((props.className) ? " " + props.className  : "") } >
             <div className={"zero-indicator " + ((isZero) ? "indicator--active" : "")}/>
             <Slider className="fader" 
-                {...orientation}
+                horizontal
                 from={-50} 
                 to={50} 
                 step={5} 

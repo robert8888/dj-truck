@@ -5,6 +5,11 @@
         width: 100%;
         height: 100%;
         margin:0 calc(clamp(30px, 10%, 50px) + 2px);
+        &.sync-bar-auto{
+            height: 20px;
+            width: 100%;
+            margin: unset;
+        }
         .bar-area{
             position: relative;
             height: 100%;
@@ -35,10 +40,16 @@
     }
 }
 
+
+
 .sync-bar-deck-A{
     @include sync-bar($deck-A-primary)
 }
 
 .sync-bar-deck-B{
     @include sync-bar($deck-B-primary)
+}
+
+.sync-bar-deck-idle{
+    @include sync-bar($primary)
 }

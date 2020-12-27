@@ -2,35 +2,37 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import ReactDOM from "react-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faWindowClose} from "@fortawesome/free-solid-svg-icons";
-import "./modal.scss";
 import classNames from "classnames"
+import "./modal.scss";
 
 const Modal = ({children, onHide, show , title, backdropHide = false}) => {
-    const [isVisible, setVisible] = useState(show ?? false);
-    const mouseDown = useRef();
+    const [isVisible, setVisible] = useState(false);
 
-    const showModal = useCallback(() => {
-        if(!mouseDown.current) return;
-        setVisible(true);
-        window.addEventListener("mousedown", mouseDown.current)
-    },[setVisible, mouseDown]);
-
-    const hideModal = useCallback(() =>{
-        setVisible(false);
-        window.removeEventListener("mousedown", mouseDown.current);
-        onHide && onHide instanceof Function && onHide();
-    }, [setVisible, mouseDown, onHide])
-
-    mouseDown.current = useCallback(({target})=>{
-        if(!backdropHide) return;
-        if(target.closest(".modal__container")) return;
-        hideModal();
-    },[hideModal, backdropHide])
+    const onHideCallback = useRef(() => {});
+    useEffect(() => {
+        onHideCallback.current = onHide
+    }, [onHide, onHideCallback]);
 
     useEffect(()=>{
-        show ? showModal() : hideModal();
-    }, [show, showModal, hideModal])
+        setVisible(show)
+    }, [show])
 
+    const mouseDown = useCallback(({target} = {}) =>{
+        if((backdropHide || !target?.closest(".modal__close-btn")) &&
+          (!backdropHide ||(!target?.closest(".modal__close-btn") && target.closest(".modal__container")))
+        ) return;
+
+        setVisible(false)
+    }, [setVisible,  backdropHide])
+
+    useEffect(() => {
+        if(isVisible){
+            window.addEventListener("mousedown", mouseDown)
+        } else {
+            window.removeEventListener("mousedown", mouseDown);
+            onHideCallback.current();
+        }
+    }, [isVisible, onHideCallback, mouseDown])
 
     const containerClass = useMemo(()=> classNames(
         "modal", {
@@ -38,12 +40,14 @@ const Modal = ({children, onHide, show , title, backdropHide = false}) => {
         }
     ), [isVisible])
 
+    if(!isVisible) return null;
+
     return ReactDOM.createPortal((
         <div className={containerClass}>
             <div className={"modal__container"}>
                 <div className={"modal__header"}>
                     <button className={"modal__close-btn"}
-                            onClick={hideModal}>
+                            onClick={mouseDown}>
                         <FontAwesomeIcon className={"icon"} icon={faWindowClose}/>
                     </button>
                     {title &&

@@ -80,6 +80,16 @@ a:hover {
     }
 }
 
+.react-contexify{
+    z-index: 10000;
+    &__item:not(.react-contexify__item--disabled):hover,
+    &__item:not(.react-contexify__item--disabled):focus
+    {
+        & > .react-contexify__item__content{
+            background: darken($primary, 30%);
+        }
+    }
+}
 
 
 
@@ -96,3 +106,4 @@ html.scroll-snap{
     scroll-snap-type: y mandatory;
     scroll-padding: 100px;
 }
+

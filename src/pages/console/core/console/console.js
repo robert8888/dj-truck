@@ -54,8 +54,6 @@ export default class Console{
         return this.channels.getChannelInterface(channelName);
     }
 
- 
-
     createChannel(channelName, ...args){
         const buildChannel = () => {
             args.push(this.mixer.mainAudioContext);
@@ -64,7 +62,6 @@ export default class Console{
         }
     
         setTimeout(buildChannel.bind(this), 0);
-
     }
 
     destroyChannel(channelName){

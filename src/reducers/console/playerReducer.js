@@ -210,6 +210,13 @@ function consoleReducer(state = initState, action) {
             return nextPlaybackState(state, action.destination, false, { pitch: prevPitch - action.amount }, true)
         }
 
+        case ACTIONS.SET_PITCH_RANGE: {
+            const {destination: channel, range} = action;
+            return nextPlaybackState(state, channel, false, {
+                "pitch/min" : -range,
+                "pitch/max" : range,
+            })
+        }
 
         case ACTIONS.TOGGLE_PLAY: {
             const {value} = action;

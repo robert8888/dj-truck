@@ -3,6 +3,8 @@ import {toGainCurve} from "utils/sound/converter";
 const Equaliztion = {
 
     setGainValue(channelName, value, nodeName) {
+        //if(isNaN(value)) return;
+
         let gain = 1 + value / 100;
         let audioCtx = this.channels.getChannel(channelName).backend.ac;
 
@@ -11,6 +13,8 @@ const Equaliztion = {
     },
 
     setFilterValue(channelName, value, nodeName) {
+        //if(isNaN(value)) return;
+
         let audioCtx = this.channels.getChannel(channelName).backend.ac;
 
         let channel = this.audioNodes.channels[channelName];

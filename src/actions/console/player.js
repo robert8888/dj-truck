@@ -4,7 +4,8 @@ const  ACTIONS = {
     SET_LOADING_PROGRESS : "set $value of loading progress to $destination channel",
     SET_PROCESSING : "set $value of processing state to $destination channel",
     SET_READY : "Set channel ready playBackStatus",
-    SET_PITCH : "Setting $pitch to $destination channel",
+    SET_PITCH : "Set $pitch to $destination channel",
+    SET_PITCH_RANGE: "Set pitch $range to $destination channel",
     SET_PITCH_TEMP: "Set $pitch to $destination channel temporary",
     SET_TIME_LEFT: "Sett $timeLEft to $destination channel",
     SET_TIME_WARNING: "Setting $value of tracks is ending warning for $destination channel",
@@ -61,12 +62,14 @@ export function setChannelReady(value, destination){
 
 
 export function setPitch( destination, pitch){
-    return {
-        type: ACTIONS.SET_PITCH,
-        pitch: pitch,
-        destination: destination
-    }
+    return { type: ACTIONS.SET_PITCH, pitch,  destination}
 }
+
+export function setPitchRange( destination, range){
+    return { type: ACTIONS.SET_PITCH_RANGE, destination, range}
+}
+
+
 
 export function setPitchTemp( destination, about){
     return {

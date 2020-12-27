@@ -14,7 +14,8 @@ const initState = () => {
             max: 100,
         },
         currentEffect: null,
-        effects: {}
+        effects: {},
+        expanded: false, // tablet and mobile only
     };
 
     const state = {
@@ -84,6 +85,16 @@ export default function effectorReducer(state = initState(), action) {
         case ACTIONS.SET_CURRENT_EFFECT : {
             let {value, channel} = action;
             if(value === undefined) return state;
+            if(value === "idle"){
+                return produce(state, draftState =>{
+                    draftState.channels[action.channel].currentEffect = 0;
+                    draftState.lastChange = {
+                        signature : "#EffectChange/" + channel,
+                        effect : 0,
+                        channel
+                    }
+                })
+            }
             const min = 0;
             const max = Object.keys(state.effects).length - 1;
             const current = Object.keys(state.effects).indexOf(state.channels[channel].currentEffect);
@@ -122,6 +133,13 @@ export default function effectorReducer(state = initState(), action) {
                     channel,
                     value,
                 }
+            })
+        }
+
+        case ACTIONS.SET_CHANNEL_EXPANDED: {
+            let {channel, value} = action;
+            return produce(state, draftState =>{
+                draftState.channels[channel].expanded = value;
             })
         }
 

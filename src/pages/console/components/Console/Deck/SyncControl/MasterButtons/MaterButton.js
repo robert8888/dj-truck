@@ -1,6 +1,6 @@
 import React from "react";
 import {Button} from "react-bootstrap";
-import withControlMapping from "../../Control/withControlMapping";
+import withControlMapping from "../../../Control/withControlMapping";
 import {connect} from "react-redux";
 
 const MasterButton = ({update, state}) => {

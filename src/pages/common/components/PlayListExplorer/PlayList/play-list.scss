@@ -30,6 +30,27 @@
     }
 }
 
+.context-menu{
+    &__item{
+        color: inherit;
+        &:after{
+            content: attr(data-deck);
+            margin-left: 5px;
+            color: #eee;
+            background: $primary-dark;
+            border: 2px solid $primary-dark;
+            padding: 2.5px 5px;
+            border-radius: 5px;
+        }
+
+        @each $deck, $colors in $deck-colors {
+            &--deck-#{$deck}:after{
+                border-color: map-get($colors, "primary")
+            }
+        }
+    }
+}
+
 .btn-dest.btn-primary{
     margin: 6px 6px 6px 0;
     padding: 6px 18px;

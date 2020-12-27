@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-on-scroll-animation/build/index.css";
+import "react-contexify/dist/ReactContexify.css";
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Auth0Provider } from "./auth0/react-auth0-spa";

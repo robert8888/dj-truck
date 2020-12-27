@@ -168,8 +168,8 @@ export function setBpmAndOffset(id, playlist, bpm, offset) {
     return { type: ACTIONS.PL_SET_BPM_AND_OFFSET, id, playlist, bpm, offset, }
 }
 
-export function setBpmOrOffsetDeck(destination, bpm, offset){
-    return { type: ACTIONS.PL_SET_DECK_BPM_OR_OFFSET, destination, bpm, offset}
+export function setBpmOrOffsetDeck(destination, bpm, offset, trackId){
+    return { type: ACTIONS.PL_SET_DECK_BPM_OR_OFFSET, destination, bpm, offset, trackId}
 }
 
 export function deleteTrackRequest(index, id) {

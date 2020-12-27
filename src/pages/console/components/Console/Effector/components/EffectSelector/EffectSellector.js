@@ -18,7 +18,7 @@ const EffectSelector = ({effects, current, update}) => {
         <div className="effect-selector__wrapper">
             <DropdownButton title={current || "-----"} className="effect-selector__button btn-effect-select">
                 <Dropdown.Item key={"none"}
-                               onClick={update.bind(null, undefined)}>
+                               onClick={update.bind(null, "idle")}>
                     -----
                 </Dropdown.Item>
                 {dropItems}

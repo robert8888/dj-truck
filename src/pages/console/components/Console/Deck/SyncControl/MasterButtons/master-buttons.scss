@@ -1,0 +1,32 @@
+@import "css/colors.scss";
+@import "css/mixins.scss";
+
+
+.master-buttons{
+  display: flex;
+  justify-content: center;
+  &--tablet, &--mobile{
+    padding: 0 3px;
+  }
+
+  &--A {
+    button.btn.btn-primary {
+      @include button--small($deck-A-primary);
+    }
+  }
+
+  &--B {
+    button.btn.btn-primary {
+      @include button--small($deck-B-primary);
+    }
+  }
+
+  &--xs{
+    button.btn.btn-primary {
+    font-size: 0;
+    &:first-letter{
+        font-size: 10px;
+      }
+    }
+  }
+}

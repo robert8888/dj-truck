@@ -15,10 +15,16 @@ import DeckContext from "./DeckCtx";
 import ConsoleContext from "./../ConsoleCtx";
 import classNames from "classnames";
 import "./deck.scss";
+import LayoutContext from "../../../../common/Layout/LayoutContext";
+import BeatShiftButtons from "./SyncControl/BeatShiftButtons/BeatShiftButtons";
+import MasterButtons from "./SyncControl/MasterButtons/MasterButtons";
+import PitchRangeButton from "./PitchRangeButton/PitchRangeButton";
 
 
 const Deck = ({name: channel, loadTrack}) => {
     const consoleContext = useContext(ConsoleContext);
+    const {mode, screen} = useContext(LayoutContext);
+
     const dropResult = (item) => {
         loadTrack(item.track, channel);
         return {
@@ -31,34 +37,57 @@ const Deck = ({name: channel, loadTrack}) => {
         drop: dropResult,
     })
 
-
     const containerClassNames = useMemo(()=>{
         return classNames(
             "deck",
-            "deck--" + channel, {
+            "deck--" + channel,
+            "deck--" + mode,
+            "deck--" + screen,
+            {
                 "deck--collapsed": consoleContext.collapse,
                 "deck--expanded" : !consoleContext.collapse,
             })
-    }, [consoleContext, channel])
+    }, [consoleContext, channel, mode, screen])
 
     return (
         <ErrorBoundary>
             <DeckContext.Provider value={{channel: channel}}>
                 <div className={containerClassNames} ref={drop}>
-                    <TrackInfo name={channel} />
+                    <TrackInfo channel={channel} mode={mode}/>
                     <div className={"deck__group"}>
-                        <SyncControl channel={channel} />
+                        {mode === "desktop" &&
+                        <>
+                            <SyncControl channel={channel} />
+                            <PitchRangeButton channel={channel}/>
+                        </>
+                        }
+
                     </div>
                     <div className="player-container">
-                        <Player name={channel} />
-                        <PitchSlider name={channel}/>
+                        <Player channel={channel} mode={mode} />
+                        {mode === "desktop" && <PitchSlider name={channel}/>}
                     </div>
-                    <div className="controls">
+
+                    {mode === "desktop" &&
+                        <div className={`deck__controls deck__controls--${channel} `}>
+                            <PlayBackControls name={channel} />
+                            <PitchButtons name={channel} />
+                            <Looper name={channel} />
+                        </div>
+                    }
+                    {mode !== "desktop" &&
+                        <BeatShiftButtons channel={channel} active={true}/>
+                    }
+                </div>
+            {mode !== "desktop" &&
+                <>
+                    <div className={`deck__controls deck__controls--${channel} deck__controls--${mode}`}>
                         <PlayBackControls name={channel} />
-                        <PitchButtons name={channel} />
                         <Looper name={channel} />
                     </div>
-                </div>
+                    <MasterButtons channel={channel}/>
+                </>
+            }
             </DeckContext.Provider>
         </ErrorBoundary>
     )

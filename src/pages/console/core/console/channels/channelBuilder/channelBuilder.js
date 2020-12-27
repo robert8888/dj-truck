@@ -11,7 +11,7 @@ export default class ChannelBuilder {
     this.dispatch = store.dispatch;
   }
 
-  create(channelName, masterContainer, slaveContainer, mainAudioContext) {
+  create(channelName, masterContainer, slaveContainer, mainAudioContext, _preConfig = {}) {
     let channel = { channelName, masterContainer, slaveContainer };
 
     //--configs
@@ -20,8 +20,7 @@ export default class ChannelBuilder {
 
     //--master waveSurfer obj
     channel.masterConfig.audioContext = mainAudioContext;
-    channel.master = WaveSurfer.create(channel.masterConfig);
-
+    channel.master = WaveSurfer.create({...channel.masterConfig, ...(_preConfig.master || {})});
     channel.master.__proto__.loadWithEvent = function (...args) {
       this.fireEvent("load");
       this.load(...args);
@@ -32,7 +31,7 @@ export default class ChannelBuilder {
       this.loadBlob(...args);
     }
 
-    channel.slave = WaveSurfer.create(channel.slaveConfig);
+    channel.slave = WaveSurfer.create({...channel.slaveConfig, ...(_preConfig.slave || {})});
 
     this.eventHandler.createEventHandling(channel)
 
@@ -54,7 +53,6 @@ export default class ChannelBuilder {
 
     for(let key in channel) { delete channel[key];}
   }
-
 
 
   createBars(channel, { bpm, offset }) {

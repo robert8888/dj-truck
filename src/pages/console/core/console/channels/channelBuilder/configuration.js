@@ -1,5 +1,4 @@
 import colors from "css/colors.scss";
-import style from "./../../../../components/Console/Deck/Player/player.scss"
 import WaveSurferAsync from "wavesurfer.js-async";
 import ZoomRenderer from "../WavesurferZoomRenderer/ZoomRenderer";
 
@@ -27,7 +26,7 @@ const masterConfig = (container, name) => ({ // name deck A or B
     scrollParent: true,
     hideScrollbar:true,
     fillParent: false,
-    height: style.masterHeight.slice(0, -2) || 100,
+    height: 150,
     minPxPerSec : 150,
     pixelRatio : 1,
     //partialRender: true,
@@ -42,7 +41,7 @@ const slaveConfig = (container, name) => ({
     fillParent: true,
     scrollParent : false,
     hideScrollbar: true,
-    height: style.slaveHeight.slice(0, -2),
+    height: 50,
 })
 
 export default {

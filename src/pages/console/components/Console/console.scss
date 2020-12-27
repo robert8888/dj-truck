@@ -2,64 +2,9 @@
 @import "css/colors.scss";
 @import "css/mixins.scss";
 
-.component{
-  &__label{
-    @include label();
-  }
-
-  .collapse-button{
-    &__container{
-      position: absolute;
-      top: 100%;
-      right: -1px;
-      @include panel-border(0.2);
-      border-top: none;
-    }
-    &__wrapper{
-      border: 1px solid lighten($primary-dark, 5%);
-      border-top: none;
-      position: relative;
-      &:before{
-        content: "";
-        position: absolute;
-        top: -3px;
-        width: 100%;
-        height: 3px;
-        left: 0;
-        background: $secondary-dark;
-      }
-    }
-  }
+.component__label{
+  @include label();
 }
-
-.c-scroll-snap-switch{
-  &__container{
-    position: absolute;
-    top: 100%;
-    @include panel-border(0.2);
-    border-top: none;
-    left: -1px;
-  }
-  &__wrapper{
-    position: relative;
-    z-index: 1;
-    &:after{
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: calc(100% + 3px);
-      border: 1px solid lighten($primary-dark, 5%);
-      border-top: none;
-      top: -3px;
-      left: 0;
-      background: $secondary-dark;
-      z-index: -1;
-    }
-
-  }
-}
-
-
 
 
 .console {
@@ -69,7 +14,7 @@
   margin-bottom: 25px;
   display: grid;
   grid-template-columns: calc(50% - 150px) 300px calc(50% - 150px);
-
+  background: $secondary-dark;
 
   &--expanded{
     grid-template-rows: auto auto auto;
@@ -94,13 +39,14 @@
       grid-column: 1;
       grid-row: 3;
     }
+
     .deck-B{
       grid-column: 3;
       grid-row: 3;
     }
     .mixer{
       grid-column: 2;
-      grid-row: 2 / span 2;
+      grid-row: 2 / span 3;
     }
   }
 
@@ -131,49 +77,135 @@
       top: 25px;
     }
   }
-}
 
-@media (max-width: $vertical-break-point) {
-  
-  .console {
-    grid-template-columns: auto;
-    grid-template-rows: repeat(7,  auto);
 
+  &--tablet, &--mobile{
+   grid-template-columns: repeat(6, 1fr);
+    &> div, .mastering {
+      display: none;
+    }
     .configuration{
       grid-column: 1;
-      grid-row: 1;
     }
     .recorder{
-      grid-column: 1;
-      grid-row: 2;
+      display: flex;
+      grid-column: 1 / span 6;
+      margin-left: 69px;
+      width: calc(100% - 69px);
     }
-
-    .deck.deck-A {
-      grid-column: 1;
+    .deck.deck--A{
+      grid-column: 1 / span 6;
+      grid-row: 2;
+      display: flex;
+    }
+    .sync-bar-auto{
+      display: flex;
+      grid-column: 2 / span 4;
       grid-row: 3;
     }
-  
-    .mixer{
-      grid-column: 1;
+    .master-buttons{display: flex}
+    .master-buttons--A{
+      grid-column: 1 ;
+      grid-row: 3;
+    }
+    .master-buttons--B{
+      grid-column: 6;
+      grid-row: 3;
+      flex-direction: row-reverse;
+    }
+    .deck.deck--B{
+      grid-column: 1 / span 6;
       grid-row: 4;
+      display: flex;
+    }
+    .deck__controls--A{
+      grid-column: 1 / span 3;
+      grid-row: 5;
+      display: block;
+    }
+    .deck__controls--B{
+      grid-column: 4 / span 3;
+      grid-row: 5;
+      display: block;
+    }
+    .mixer{
+      display: grid;
+      grid-column: 1 / span 6;
+      grid-row: 6
     }
 
     .effector.ch-1{
-      grid-column: 1;
+      display: flex;
+      position: fixed;
+      left: 0;
+    }
+    .effector.ch-2{
+      display: flex;
+      position: fixed;
+      right: 0;
+    }
+  }
+  &--xs{
+    .deck__controls--A{
+      grid-column: 1 / span 6;
       grid-row: 5;
     }
-    
-    .effector.ch-2{
-      grid-column: 1;
+    .deck__controls--B{
+      padding-top: 10px;
+      grid-column: 1 / span 6;
       grid-row: 6;
     }
-
-    .deck-B{
-      grid-column: 1;
-      grid-row: 7;
+    .recorder{
+      margin-left: 49px;
+      width: calc(100% - 49px);
     }
-
+    .mixer{
+      grid-row: 7
+    }
   }
-
 }
 
+//@media (max-width: $vertical-break-point) {
+//
+//  .console {
+//    grid-template-columns: auto;
+//    grid-template-rows: repeat(7,  auto);
+//
+//    .configuration{
+//      grid-column: 1;
+//      grid-row: 1;
+//    }
+//    .recorder{
+//      grid-column: 1;
+//      grid-row: 2;
+//    }
+//
+//    .deck.deck-A {
+//      grid-column: 1;
+//      grid-row: 3;
+//    }
+//
+//    .mixer{
+//      grid-column: 1;
+//      grid-row: 4;
+//    }
+//
+//    .effector.ch-1{
+//      grid-column: 1;
+//      grid-row: 5;
+//    }
+//
+//    .effector.ch-2{
+//      grid-column: 1;
+//      grid-row: 6;
+//    }
+//
+//    .deck-B{
+//      grid-column: 1;
+//      grid-row: 7;
+//    }
+//
+//  }
+//
+//}
+//

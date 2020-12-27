@@ -1,9 +1,7 @@
 @import "css/colors.scss";
 @import "css/utils.scss";
+@import "css/mixins.scss";
 
-@mixin deck($primary-color){
-    box-shadow: 0 0 8px 1px rgba(255, 255, 255, .05) inset;
-}
 
 @each $deck, $colors in $deck-colors{
     .deck--#{$deck}{
@@ -18,12 +16,17 @@
     padding: 5px 5px 0;
     background: $secondary-dark;
     border: 1px solid;
+    border-bottom: none;
     position: relative;
+
+    display: flex;
+    flex-direction: column;
+
     &--A{
-        @include deck($deck-A-primary);
+        @include panel-shadow();
     }
     &--B{
-        @include deck($deck-B-primary);
+        @include panel-shadow();
     }
     &__group{
         display: flex;
@@ -33,29 +36,103 @@
         display: flex;
         justify-content: space-between;
         .player {
-          width : calc(100% - 50px)
+           width : calc(100% - 50px)
         }
     }
-    
-    .controls{
+
+    &--mobile, &--tablet{
+        .player-container .player {
+            width: 100%;
+        }
+        &.deck--B{
+            flex-direction: column-reverse;
+            padding-top: 0;
+            padding-bottom: 5px;
+        }
+
+        .beat-shift{
+            z-index: 1000;
+            width: calc(100% + 20px);
+            left: -10px;
+            height: 50px;
+            top: 35px;
+            &__btn {
+                position: relative;
+                &:before{
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    background: transparent;
+                    top: -70%;
+                    left: -20%;
+                    bottom: -70%;
+                    right: -20%;
+                }
+            }
+        }
+        &.deck--A .beat-shift{
+            top: 107.5px;
+        }
+
+        .beat-offset{
+            position: absolute;
+            left: calc(50% - 5px);
+            //top: 55px;
+            bottom: 55px;
+
+
+        }
+        &.deck--A  .beat-offset{
+            top: 70px;
+            bottom: unset;
+        }
+    }
+    &--mobile{
+        .beat-shift{
+            height: 30px;
+            top: 30px;
+        }
+        &.deck--A .beat-shift{
+            top: 90px;
+        }
+        .beat-offset{
+            bottom: 47.5px;
+        }
+        &.deck--A  .beat-offset{
+            top: 62.5px;
+            bottom: unset;
+        }
+    }
+
+
+    &__controls{
         padding: 5px 0;
+        &--mobile, &--tablet{
+            background: $secondary-dark;
+            padding: 2.5px 5px 5px 5px;
+            button{
+                @include button--mobile();
+            }
+        }
     }
     &--collapsed{
         .sync-control,
         .pitch,
         .btn--in-key,
+        .btn--cue,
         .player__master{
             display: none;
-        }
-        .controls{
-            &__looper,
-            &__pitch,
-            .btn--cue{
-                display: none;
-            }
-            &__playback{
-                position: absolute;
-                bottom: 12.5px;
+        };
+        .deck__controls{
+            .controls{
+                &__looper,
+                &__pitch {
+                    display: none;
+                }
+                &__playback{
+                    position: absolute;
+                    bottom: 12.5px;
+                }
             }
         }
         .player{

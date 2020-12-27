@@ -3,15 +3,16 @@ import { connect } from "react-redux";
 import { consoleStopAll, setFooterType } from "actions";
 import { usePlayer } from "pages/common/Hooks/usePlayer";
 import Deck from "./Deck/Deck";
+import SyncBarAuto from "./Deck/SyncControl/SyncBar/SyncBarAuto";
 import Effector from "./Effector/Effector";
 import Mastering from "./Mixer/Master/Master";
 import Mixer from "./Mixer/Mixer";
 import Recorder from "./Mixer/Recorder/Recorder";
 import ErrorBoundary from "pages/common/components/ErrorBoundary/ErrorBoundary";
 import ControlMenu from "./Control/ControlMenu";
-import CollapseButton from "./Settings/CollapseButton/CollpaseButton";
+import CollapseButton from "./Modes/CollapseButton/CollpaseButton";
+import ScrollSnapButton from "./Modes/ScrollSnapButton/ScrollSnapButton";
 import useDynamicFooter from "pages/common/Hooks/useDynamicFooter";
-import ScrollSnapButton from "./Settings/ScrollSnapButton/ScrollSnapButton";
 import ConsoleCtx from "./ConsoleCtx";
 import LayoutContext from "../../../common/Layout/LayoutContext";
 import "./console.scss";
@@ -19,7 +20,7 @@ import "./console.scss";
 const Console = ({callStopAll, consoleCollapse }) => {
     const setFooter = useDynamicFooter()
     const [control] = usePlayer();
-    const {mode} = useContext(LayoutContext);
+    const {mode, screen} = useContext(LayoutContext);
 
     useEffect(() =>{
         control.stop();
@@ -39,22 +40,24 @@ const Console = ({callStopAll, consoleCollapse }) => {
                 collapse: consoleCollapse
             }}>
                 <div className={"component console " +
-                    "console--" + (consoleCollapse ? "collapsed " : "expanded ") +
-                    "console--" + mode
+                    " console--" + (consoleCollapse ? "collapsed " : "expanded ") +
+                    " console--" + mode +
+                    " console--" + screen
                 }>
                     <div className={"configuration"}>
                         <ControlMenu/>
-                        <Mastering />
+                        {mode === "desktop" && <Mastering />}
                     </div>
                     <Recorder />
 
                     <Effector channel={1} />
+                    <Effector channel={2} />
+
                     <Deck name="A"/>
+                    <Deck name="B"/>
 
                     <Mixer />
-
-                    <Effector channel={2} />
-                    <Deck name="B"/>
+                    {mode !== "desktop" && <SyncBarAuto/>}
                     <ScrollSnapButton/>
                     <CollapseButton/>
                 </div>

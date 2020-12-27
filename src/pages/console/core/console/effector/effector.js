@@ -117,9 +117,6 @@ export default class Effector {
         const channel = this.channels[channelNumber];
 
         const {a: dry, b: wet} = equalPower(value / 100);
-      //  let dry = (100 - value) / 100;
-        //let wet = value / 100;
-
 
         channel.dryNode.gain.setTargetAtTime(dry, this.mainAC.currentTime, 0.01);
         channel.wetNode.gain.setTargetAtTime(wet, this.mainAC.currentTime, 0.01);
@@ -132,7 +129,7 @@ export default class Effector {
         if (effectName) {
             this.disconectCurrent(channel);
 
-            let params = this.assingDefaultParams({}, effectName);
+            let params = this.assignDefaultParams({}, effectName);
             const effectorChannel = store.getState().effector.channels;
             if (effectorChannel && effectorChannel[channelNumber]) {
                 params = { ...effectorChannel[channelNumber].effects[effectName] }
@@ -149,7 +146,7 @@ export default class Effector {
 
     }
 
-    assingDefaultParams(obj, effect) {
+    assignDefaultParams(obj, effect) {
         Object.entries(this.effects[effect].params).forEach(([key, value]) => {
             obj[key] = value.defaultValue;
         })

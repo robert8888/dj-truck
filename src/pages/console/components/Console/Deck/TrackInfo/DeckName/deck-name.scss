@@ -1,0 +1,19 @@
+@import "css/colors";
+
+
+.track-info{
+  &__deck-name{
+    background: var(--deck-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    margin-right: 10px;
+    &__text{
+      color: $primary-text-color;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin: 0;
+    }
+  }
+}

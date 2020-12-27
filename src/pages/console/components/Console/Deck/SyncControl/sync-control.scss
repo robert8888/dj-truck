@@ -9,16 +9,6 @@
     padding: 3px 0;
     line-height: 1;
     display: flex;
-    &--A{
-        button.btn.btn-primary{
-            @include deck-sync-button($deck-A-primary);
-        }
-    }
-    &--B{
-        button.btn.btn-primary{
-            @include deck-sync-button($deck-B-primary);
-        }
-    }
 
     &__group{
         width: 100%;
@@ -33,7 +23,7 @@
     }
 
 
-    .btn--beat-offset {
+    .beat-offset.btn {
         position: absolute;
         right: 4px;
     }

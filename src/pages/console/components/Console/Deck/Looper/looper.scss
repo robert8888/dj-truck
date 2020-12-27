@@ -8,8 +8,19 @@
     &--#{$channel} .btn.btn-primary{
         @include deck-button(map-get($colors, "primary"));
     }
+
+    .mini-slider{
+      --width : 75px;
+      --height: 40px;
+      &--mobile, &--tablet{
+        --width : 60px;
+        --height: 28px;
+      }
+    }
+
     .mini-slider--#{$channel},.mini-slider--#{$channel} > div {
-      @include mini-slider(map-get($colors, "primary"), 75px, 40px);
+
+      @include mini-slider(map-get($colors, "primary"));
     }
   }
   float: right;

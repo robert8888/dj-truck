@@ -14,6 +14,10 @@
     padding-left: 25px;
     padding-bottom: 2px;
 
+    &__group{
+        display: flex;
+        margin-right: auto;
+    }
 
     .effect-selector{
         &, &__wrapper{
@@ -38,5 +42,70 @@
     .effect-param{
         align-self: flex-end;
         display: flex;
+    }
+
+    &--mobile, &--tablet{
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 1001;
+
+        width: 260px;
+        height: auto;
+        border: 1px solid $primary;
+        border-radius: 0 0 0 5px;
+        padding-left: 10px;
+        transition: transform .8s ease-in-out;
+        .effector__group{
+            justify-content: space-between;
+        }
+        .component__label{
+            font-size: 15px;
+            border: 1px solid $primary;
+            border-right: none;
+            transform: translate(-100%, -1px);
+        }
+        .effect-selector{
+
+        }
+        .effect-param{
+            margin-right: auto;
+        }
+        &.effector{
+            &--collapsed{
+                transform: translateX(100%);
+            }
+            &--expand{
+                transform: translateX(0);
+            }
+        }
+        &:hover{
+            z-index: 1100;
+        }
+        &.ch-1.effector{
+            .component__label{
+                right: 0;
+                left: unset;
+                font-size: 15px;
+                border: 1px solid $primary;
+                border-left: none;
+                transform: translate(100%, -1px);
+            }
+            .effector__group{
+                flex-direction: row-reverse;
+                margin-left: auto;
+                margin-right: unset;
+            }
+            .effect-param{
+                margin-right: unset;
+                margin-left: auto;
+            }
+            &--collapsed{
+                transform: translateX(-100%);
+            }
+            &--expand{
+                transform: translateX(0);
+            }
+
+        }
     }
 }

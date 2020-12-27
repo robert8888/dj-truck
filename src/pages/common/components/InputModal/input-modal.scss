@@ -1,0 +1,25 @@
+@import "css/colors.scss";
+
+.modal{
+  &__group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:not(:last-of-type){
+      margin-bottom: 10px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid lighten($secondary-dark, 10);
+    }
+  }
+  &__text{
+    margin: 0 20px 0 0;
+    align-self: flex-end;
+    font-size: 1.0em;
+  }
+  button.btn.btn-primary{
+    font-size: 0.9em;
+    letter-spacing: .5px;
+    margin-left: auto;
+    display: inline;
+  }
+}

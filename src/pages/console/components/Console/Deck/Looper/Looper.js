@@ -5,6 +5,7 @@ import "./looper.scss";
 import {MAPPING, setLoop, setLoopLength} from "actions";
 import InButton from "./InButton";
 import OutButton from "./OutButton";
+import LayoutContext from "../../../../../common/Layout/LayoutContext";
 
 const mapStateToProps = (state, ownProps) => ({
     loopState : state.console.channel[ownProps.name].playBackState.loop,
@@ -18,6 +19,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
 class Looper extends React.Component {
+  static contextType = LayoutContext;
+
   constructor(...args) {
     super(...args);
     this.sliderElement = React.createRef();
@@ -41,6 +44,7 @@ class Looper extends React.Component {
 
    render() {
    const {name} = this.props;
+   const {mode} = this.context;
     return (
       <div className={"controls__looper controls__looper--" + name}>
         <InButton  onClick={this.props.setLoop.bind(null, true)}
@@ -50,7 +54,7 @@ class Looper extends React.Component {
                    role={MAPPING[`DECK_CHANNEL_${name}_LOOP_OUT`]}/>
         <MiniSlider
           onChange={this.sliderValueChange.bind(this)}
-          className={"mini-slider--" + name}
+          className={`mini-slider mini-slider--${name} mini-slider--${mode}`}
           slides={this.sliderItems}
           value={this.props.loopLengthValue}
           role={MAPPING[`DECK_CHANNEL_${name}_LOOP_LENGTH`]}

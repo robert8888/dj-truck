@@ -14,7 +14,8 @@ export default class ZoomRenderer extends Drawer{
 
     destroy() {
         super.destroy();
-        this.resizeObserver.disconnect()
+        this.resizeObserver.disconnect();
+        this.containerObserwer.disconnect();
     }
 
     handleEvent(e, noPrevent) {
@@ -50,9 +51,15 @@ export default class ZoomRenderer extends Drawer{
         );
         this.waveCc = waveCanvas.getContext('2d');
         this.resizeObserver = new ResizeObserver(entries => {
-            this.waveCc.canvas.width = entries[0].contentRect.width
+            this.waveCc.canvas.width = entries[0].contentRect.width;
+            this.waveCc.canvas.height = entries[0].contentRect.height;
         });
         this.resizeObserver.observe(waveCanvas);
+
+        this.containerObserwer = new ResizeObserver(entries => {
+            this.wrapper.style.height = entries[0].contentRect.height + "px";
+        })
+        this.containerObserwer.observe(this.params.container)
     }
 
     updateSize() {

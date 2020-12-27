@@ -248,6 +248,11 @@ class Slider extends React.Component {
   }
 
   componentDidUpdate(prevProbs){
+    if( this.props.from !== prevProbs.from || this.props.to !== prevProbs.to){
+      this.update();
+      return;
+    }
+
     if( this.props.value !== undefined &&
         this.props.value !== this.state.value &&
         !this.state.isDragged){
@@ -256,7 +261,11 @@ class Slider extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    return (this.props.value !== nextProps.value)
+    return (
+        this.props.value !== nextProps.value ||
+        this.props.from !== nextProps.from ||
+        this.props.to !== nextProps.to
+    )
   }
 
   render() {

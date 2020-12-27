@@ -2,15 +2,16 @@
 @import "css/mixins.scss";
 
 
-@mixin mini-slider($color, $width, $height) {
+@mixin mini-slider($color ) {
     &.slider-container{
         @include block-like-button($color);
         cursor: pointer;
         position: relative;
         display: inline-block;
         vertical-align: middle;
-        width: $width;
-        height: $height;
+        width: var(--width);
+        height: var(--height);
+        margin-top: 1px;
         padding: 0;
         overflow: hidden;
         .slider-list{

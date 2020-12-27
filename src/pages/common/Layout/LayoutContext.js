@@ -17,14 +17,15 @@ export const LayoutContextProvider = ({children}) => {
 
 
     const mode = useMemo(() => {
-        const modes = ["mobile", "tablet", "desktop"];
-        if(device === "mobile" && ["xs", "sm"].includes(screen)){
+        const modes = ["tablet", "mobile", "desktop"];
+        if(["md", "lg"].includes(screen)){
             return modes[0]
-        } else if(["mobile", "tablet"].includes(device) && ["md", "lg"].includes(screen)){
+        } else if(["xs", "sm"].includes(screen)){
             return modes[1]
         } else
             return modes[2]
-    }, [device, screen])
+    }, [screen])
+
 
     return (
         <LayoutContext.Provider value={{
