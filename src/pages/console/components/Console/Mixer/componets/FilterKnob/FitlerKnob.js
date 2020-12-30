@@ -1,8 +1,8 @@
 import React from "react";
-import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed";
-import "./filter-knob.scss";
-import withControlMapping from "../../../Control/withControlMapping";
 import {connect} from "react-redux";
+import KnobDescribed from "./../../../../common/KnobDescribed/KnobDescribed";
+import withControlMapping from "../../../Control/withControlMapping";
+import "./filter-knob.scss";
 
 const FilterKnob = ({value, update, text}) =>{
     const displayText = (value) => {
@@ -24,6 +24,7 @@ const FilterKnob = ({value, update, text}) =>{
             quantize={0.01} 
             onChange={ update }
             value={value}
+            responseFactor={0.5}
             doubleClickInit/>
     )
 }

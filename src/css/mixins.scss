@@ -547,7 +547,7 @@
     left: $left;
     right: $right;
     display: none;
-    z-index: 1000;
+    z-index: 10000;
     background: $secondary-dark;
     border-top: 1px solid $primary;
     color: $primary-text-color;
@@ -618,5 +618,32 @@
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button{
         -webkit-appearance: none;
+    }
+}
+
+
+@mixin line-clamp($lines){
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@mixin text-overflow($nowrap : false){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @if $nowrap == true {
+        white-space: nowrap;
+    }
+}
+
+@mixin link-color($color, $hover: false){
+    &, &:link,  &:hover, &:visited, &:active{
+        color: $color;
+    }
+    @if $hover != false{
+        &:hover{
+            color: $color;
+        }
     }
 }

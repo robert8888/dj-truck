@@ -4,7 +4,7 @@ import { pushTrackToListRequest } from "actions";
 import "./search-results.scss";
 import SearchItem from "./SearchItem/SearchItem";
 
-class SearchResults extends React.Component {
+class SearchResultsList extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -48,4 +48,4 @@ const mapDispatchToProps = dispatch => ({
     addToListHandle: (playlist, track) => dispatch(pushTrackToListRequest(track, playlist)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsList);

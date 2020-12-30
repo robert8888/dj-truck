@@ -15,6 +15,7 @@ const EqKnob = ({update, value, className, text}) =>{
             quantize={{negative: 1, positive:0.1}} 
             onChange={ update }
             value={ value }
+            responseFactor={.4}
             doubleClickInit/>
     )
 }

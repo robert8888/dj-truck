@@ -56,17 +56,20 @@
             left: -10px;
             height: 50px;
             top: 35px;
-            &__btn {
-                position: relative;
-                &:before{
-                    content: "";
-                    display: block;
-                    position: absolute;
-                    background: transparent;
-                    top: -70%;
-                    left: -20%;
-                    bottom: -70%;
-                    right: -20%;
+            &__btn, &__btn > button {
+                &:not(div){
+                    position: relative;
+                    &:before{
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        background: transparent;
+                        pointer-events: all;
+                        top: -70%;
+                        left: -20%;
+                        bottom: -70%;
+                        right: -20%;
+                    }
                 }
             }
         }

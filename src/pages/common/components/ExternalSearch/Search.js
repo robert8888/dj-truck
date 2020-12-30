@@ -6,7 +6,7 @@ import { API_TYPES, getApisName } from "apis/apiProvider";
 import { Spin } from "react-loading-io";
 import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 import classNames from "classnames"
-import SearchResults from './SerachResults/SearchResults.js';
+import SearchResults from './SerachResultsList/SearchResultsList.js';
 import "./search.scss";
 
 const Search = ({

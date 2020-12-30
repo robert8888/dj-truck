@@ -9,9 +9,11 @@
     justify-content: space-between;
     pointer-events: none;
     &__btn, &__btn > button{
-      @include button-flat(var(--deck-color-rgb));
       width: clamp(30px, 10%, 50px);
       color: $primary-dark;
       pointer-events: all;
+      &:not(div){
+        @include button-flat(var(--deck-color-rgb));
+      }
     }
 }

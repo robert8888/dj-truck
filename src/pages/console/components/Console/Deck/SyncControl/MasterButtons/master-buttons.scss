@@ -8,7 +8,9 @@
   &--tablet, &--mobile{
     padding: 0 3px;
   }
-
+  @at-root div#{&}{
+    line-height: 1em;
+  }
   &--A {
     button.btn.btn-primary {
       @include button--small($deck-A-primary);

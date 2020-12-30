@@ -1,18 +1,19 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { ACTIONS, pushLog, setUserProfileWithToken } from "actions";
-import { getApi } from "./../../apis/apiProvider";
-import { getToken } from "./../../auth0/getToken";
-import { Log } from "./../../utils/logger/logger";
-import errorParser from "./../../utils/serverErrorParser/errorParser";
+import { getApi } from "apis/apiProvider";
+import { getToken } from "auth0/getToken";
+import { Log } from "utils/logger/logger";
+import errorParser from "utils/serverErrorParser/errorParser";
 
 const getLogged = state => state.user.logged;
 
 export default function* watcher() {
     //action dispatched in auth0/react-auth0-spa.js
-    yield takeEvery(ACTIONS.SET_USER_PROFILE, handel);
+    yield takeEvery(ACTIONS.SET_USER_PROFILE, handle);
 }
 
-function* handel(action) {
+function* handle(action) {
+    console.log("call get user data")
     const path = ['saga', 'current user saga'];
     const logged = yield select(getLogged);
     if (logged) {

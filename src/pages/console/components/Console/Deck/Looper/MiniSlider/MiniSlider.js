@@ -1,5 +1,4 @@
 import React from "react";
-import withRefSize from "pages/common/components/HOC/withRefSize";
 import withControlMapping from "../../../Control/withControlMapping";
 import "./mini-slider.scss";
 
@@ -10,6 +9,7 @@ class MiniSlider extends React.Component {
   constructor(...args) {
     super(...args);
     this.ref = React.createRef();
+    this.container = React.createRef();
     this.state = {
       currentSlide: this.props.value || 0,
     };
@@ -38,8 +38,9 @@ class MiniSlider extends React.Component {
   }
 
   changeSlide(event) {
-    let x = event.clientX  - event.target.getBoundingClientRect().left;
-    const clickSide = ( x > this.props.size.container.width / 2) ? "right" : "left";
+    const containerRect = this.container.current.getBoundingClientRect()
+    let x = event.clientX  - containerRect.left;
+    const clickSide = ( x > containerRect.width / 2) ? "right" : "left";
 
     if(clickSide === "right"){
       this.nextSlide();
@@ -53,6 +54,7 @@ class MiniSlider extends React.Component {
     this.updateSlide(this.props.value);
   }
 
+
   render() {
     const listStyle = {
       transform: "translateX(-" + this.state.currentSlide + "00%)",
@@ -64,7 +66,7 @@ class MiniSlider extends React.Component {
       <div
         className={"slider-container " + classNames}
         onClick={this.changeSlide.bind(this)}
-        ref={this.props.exportRef.bind(this, "container")}>
+        ref={this.container}>
           <FontAwesomeIcon icon={faCircle} className="ctr ctr-minus" />
           <FontAwesomeIcon icon={faCircle} className="ctr ctr-plus" />
           <ul className="slider-list" style={listStyle}>
@@ -80,4 +82,4 @@ class MiniSlider extends React.Component {
   }
 }
 
-export default withControlMapping(withRefSize(MiniSlider));
+export default withControlMapping(MiniSlider);

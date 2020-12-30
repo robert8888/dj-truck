@@ -30,8 +30,12 @@ const VolumePeakLevelMeter = ({
 
 
     useEffect(()=>{
-        thumbRef.current && setThumbRect(thumbRef.current.getBoundingClientRect());
-    }, [aspect, thumbRef, setThumbRect, areaRef, setAreaRect])
+        const resizeObserver = new ResizeObserver( entries => {
+            setThumbRect(entries[0].contentRect)
+        })
+        resizeObserver.observe(thumbRef.current);
+        return () => resizeObserver.disconnect();
+    }, [thumbRef, setThumbRect])
 
 
     const zero = useMemo(()=> {
@@ -150,7 +154,6 @@ const VolumePeakLevelMeter = ({
             window.removeEventListener('mouseleave', onMouseUp);
             mMove(event);
             setThumbState(null);
-            console.log("mouse up")
         }
         window.addEventListener('mousemove', mMove);
         window.addEventListener('mouseup', onMouseUp);

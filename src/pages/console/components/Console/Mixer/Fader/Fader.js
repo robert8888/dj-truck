@@ -39,7 +39,7 @@ const Fader = props => {
                 horizontal
                 from={-50} 
                 to={50} 
-                step={5} 
+                step={2.5}
                 stickiZero={5}
                 value={props.value}
                 onChange={ sliderChangeHandle} />

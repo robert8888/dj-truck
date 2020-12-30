@@ -3,6 +3,29 @@ import style from "./knob.scss";
 import _throttle from "lodash/throttle";
 import PropTypes from "prop-types";
 
+const propTypes = {
+    initValue: PropTypes.number, //allow to set init value
+    showValue: PropTypes.oneOfType([
+        PropTypes.bool, //display numeric value on knob
+        PropTypes.oneOf(["always"]),
+    ]),
+    displayFormula: PropTypes.func, // allow to pass function witch transform displayed value
+    scale: PropTypes.number,// scale value eg. 10 give range from 0 to 10 - (100 / scale)
+    symmetric: PropTypes.bool, // if is true instead value from 0 to 100 / scale - it will have from -100 to 100
+    asymmetric: PropTypes.shape({ // allows to set asymmetric scale
+        negative: PropTypes.number, // eg: negative: 2 makes negative value dived by 2 - instead -100 to 100 gives: -50 to 100
+        positive: PropTypes.number, //
+    }),
+    quantize: PropTypes.oneOfType([
+        PropTypes.number, // eg:  value : 2 -> 100, 98 , 96....
+        PropTypes.shape({
+            negative: PropTypes.number, // asymmetric quantization
+            positive: PropTypes.number, //
+        })
+    ]),
+    responseFactor: PropTypes.number, // ratio for mouse dragging action - default 1
+    text: PropTypes.string, // text displayed during dragging and hover
+}
 
 class Knob extends React.Component{
 
@@ -239,8 +262,10 @@ class Knob extends React.Component{
 
     pointerMove(startY, event){
         event.stopPropagation();
-        event.preventDefault();
-        let responseFactor = this.props.responsFactor || 1;
+        if(event.cancelable){
+            event.preventDefault();
+        }
+        let responseFactor = this.props.responseFactor || 1;
         const clintY = event.clientY || event.touches[0].clientY;
         let position = this.state.snapShotPosition - (clintY  - startY) * responseFactor;
         this.setPosition(position);
@@ -337,29 +362,6 @@ class Knob extends React.Component{
     }
 }
 
-Knob.propTypes = {
-    initValue: PropTypes.number, //allow to set init value
-    showValue: PropTypes.oneOfType([
-        PropTypes.bool, //display numeric value on knob
-        PropTypes.oneOf(["always"]),
-    ]),
-    displayFormula: PropTypes.func, // allow to pass function witch transform displayed value
-    scale: PropTypes.number,// scale value eg. 10 give range from 0 to 10 - (100 / scale)
-    symmetric: PropTypes.bool, // if is true instead value from 0 to 100 / scale - it will have from -100 to 100
-    asymmetric: PropTypes.shape({ // allows to set asymmetric scale
-        negative: PropTypes.number, // eg: negative: 2 makes negative value dived by 2 - instead -100 to 100 gives: -50 to 100
-        positive: PropTypes.number, //
-    }),
-    quantize: PropTypes.oneOfType([
-        PropTypes.number, // eg:  value : 2 -> 100, 98 , 96....
-        PropTypes.shape({
-            negative: PropTypes.number, // asymmetric quantization
-            positive: PropTypes.number, //
-        })
-    ]),
-    responseFactor: PropTypes.number, // ratio for mouse dragging action - default 1
-    text: PropTypes.string, // text displayed during dragging and hover
-}
-
+Knob.propTypes = propTypes
 
 export default Knob;
