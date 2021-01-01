@@ -151,7 +151,7 @@ export default class Console{
             }
 
             case STATUS.FILTER_RES_CHANGE : {
-                this.mixer.setFiterResonas(diff.channel, diff.currentValue);
+                this.mixer.setFilterResonance(diff.channel, diff.currentValue);
                 break;
             }
 

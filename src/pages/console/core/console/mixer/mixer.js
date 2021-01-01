@@ -196,6 +196,8 @@ export default class Mixer {
                 returnNode.connect(channelNodes.volumeNode);
             })
         }
+        // fader initial value - equal power fader algorithm
+        channelNodes.faderVolumeNode.gain.setValueAtTime(Math.sqrt(2) / 2 , audioCtx.currentTime);
 
         //Assign in chain 
         this.channels.getChannel(channelName).backend.setFilters([

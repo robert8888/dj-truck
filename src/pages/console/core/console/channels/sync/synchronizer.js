@@ -18,7 +18,6 @@ export default class Synchronizer {
   }
 
   sync(channelName) {
-    console.log("sync channel", channelName);
     const state = store.getState();
     if (channelName === state.console.master) { //you can't sync master to master
       this.dispatch(setSync(channelName, false));

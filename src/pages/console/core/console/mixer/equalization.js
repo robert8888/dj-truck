@@ -41,6 +41,14 @@ const Equaliztion = {
         this.setFilterValue(channelName, value, 'eqLowFilterNode');
     },
 
+    setResonance(channel, value = 0){
+        channel.lowPassFilterNode.Q
+            .setValueAtTime(value, this.mainAudioContext.currentTime);
+
+        channel.highPassFilterNode.Q
+            .setValueAtTime(value, this.mainAudioContext.currentTime);
+    },
+
     setFilterFreq(channelName, value) {
        // knobValue *= 800;
         const channel = this.audioNodes.channels[channelName];
@@ -52,7 +60,8 @@ const Equaliztion = {
 
             channel.highPassFilterNode.frequency
                 .setValueAtTime(0, this.mainAudioContext.currentTime);
-            setFilterRes.call(this, channel, channel._fitlerResonasValue);
+
+            this.setResonance(channel, channel._fitlerResonasValue);
         } else if (value > 0) {
             // high pass filter
             channel.lowPassFilterNode.frequency
@@ -62,7 +71,7 @@ const Equaliztion = {
             channel.highPassFilterNode.frequency
                 .setValueAtTime(value, this.mainAudioContext.currentTime);
 
-            setFilterRes.call(this, channel, channel._fitlerResonasValue);
+            this.setResonance(channel, channel._fitlerResonasValue)
         } else {
             //0 turn of all
             channel.lowPassFilterNode.frequency
@@ -70,22 +79,16 @@ const Equaliztion = {
 
             channel.highPassFilterNode.frequency
                 .setValueAtTime(0, this.mainAudioContext.currentTime);
-                
-            setFilterRes.call(this, channel, 0);
-        }
 
-        function setFilterRes(channel, value = 0) {
-            channel.lowPassFilterNode.Q
-                .setValueAtTime(value, this.mainAudioContext.currentTime);
-
-            channel.highPassFilterNode.Q
-                .setValueAtTime(value, this.mainAudioContext.currentTime);
+            this.setResonance(channel, 0);
         }
     },
 
-    setFiterResonas(channelName, value) {
+    setFilterResonance(channelName, value) {
         const channel = this.audioNodes.channels[channelName];
         channel._fitlerResonasValue = value;
+
+        this.setResonance(channel, value);
     },
 }
 

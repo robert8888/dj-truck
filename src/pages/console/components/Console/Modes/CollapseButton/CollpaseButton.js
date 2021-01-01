@@ -7,6 +7,8 @@ import {MAPPING, setConsoleState} from "actions"
 import "./collapse-button.scss";
 import BinaryButton from "pages/common/components/BinnaryButton/BinnaryButton";
 
+
+
 const CollapseButton = ({update}) => {
     const consoleContext = useContext(consoleCtx)
 

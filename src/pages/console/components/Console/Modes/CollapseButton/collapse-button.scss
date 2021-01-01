@@ -6,7 +6,7 @@
    @include button--small($primary-dark);
     padding: 6px 16px;
     background: $dark-red;
-    &.btn--pressed-filed{
+    &.btn-primary.btn--pressed-filed{
       background: $dark-red;
       color: white;
     }

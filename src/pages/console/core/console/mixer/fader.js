@@ -1,4 +1,4 @@
-import { equalPowerFader } from "./../../../../../utils/sound/converter"
+import { equalPowerFader } from "utils/sound/converter"
 
 const fader  = {
     setFader(value) {//in procent from -50%  to + 50% (not 0.01) but 1
@@ -8,8 +8,8 @@ const fader  = {
         let audioCtxB = this.channels.getChannel("B").backend.ac;
 
         if (!faderVolumeNodeA || !faderVolumeNodeB || !audioCtxA || !audioCtxB) {
-            throw new Error(`Fader value not set. Mising auiodContext or AudioNode ref
-                            .Checkout funtion setFader in mixer object`);
+            throw new Error(`Fader value not set. Missing audioContext or AudioNode ref
+                            .Checkout function setFader in mixer object`);
         }
 
         const { a: volA, b: volB } = equalPowerFader(value)

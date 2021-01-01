@@ -32,7 +32,6 @@
         display: flex;
     }
     .player-container{
-       // position: relative;
         display: flex;
         justify-content: space-between;
         .player {
@@ -140,6 +139,9 @@
         }
         .player{
             left: 50px;
+            &-container{
+                margin-top: 1px;
+            }
         }
     }
 }
