@@ -301,6 +301,7 @@
     }
 }
 
+
 @mixin textarea($color: $primary){
     &, &:disabled{
         &, &:active, &:hover, &:focus{

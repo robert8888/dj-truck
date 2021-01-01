@@ -117,8 +117,8 @@ class Header extends React.Component {
         <LoadingBar className="loading-bar" />
         <header
           className={classNames("top-bar", {
-            "bar--hidden": this.props.hidden,
-            "bar--dissabled": this.props.dissabled
+            "top-bar--hidden": this.props.hidden,
+            "top-bar--disabled": this.props.disabled
           })}
           ref={this.barState.barElement}>
           <Container className="app layout container-xl" >
@@ -135,7 +135,7 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  sticki: state.layout.header.sticki,
+  sticky: state.layout.header.sticky,
   hidden: state.layout.header.hidden,
   disabled: state.layout.header.disabled,
 })

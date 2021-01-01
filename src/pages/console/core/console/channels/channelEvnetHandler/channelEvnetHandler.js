@@ -125,6 +125,7 @@ export default class EventHandler {
 
   startSync = channel => {
     channel.syncHandle = setInterval(() => {
+      channel.slave.drawer &&
       channel.slave.drawer.progress(
         channel.master.backend.getPlayedPercents()
       );

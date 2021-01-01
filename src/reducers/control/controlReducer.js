@@ -65,8 +65,9 @@ export default function controlReducer(state  = initState, action){
         case ACTIONS.CONTROL_SET_MIDI_MAPPING_VALUE : {
             if(!state.currentMapping) return state;
             const {midiMsg} = action;
+            const profile = state.profiles[state.currentMidiProfileId];
+            if(!profile) return state;
             return produce(state, draftState => {
-                const profile = state.profiles[state.currentMidiProfileId];
                 const toAction = _omitBy(profile.map.toAction, ( value, key) =>
                       ((key === midiMsg.id) || (value === state.currentMapping.id))
                     )

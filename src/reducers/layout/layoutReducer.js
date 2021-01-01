@@ -1,13 +1,13 @@
-import produce from "imer";
-import { ACTIONS } from "./../../actions";
+import {produce} from "imer";
+import { ACTIONS } from "actions";
 
 const FOOTER_TYPES = ["none", "default", "player"]
 
 const initState = {
     header: {
-        disable: false,
+        disabled: false,
         hidden: false,
-        sticki: true,
+        sticky: true,
     },
     footer: {
         type: FOOTER_TYPES[0],
@@ -40,9 +40,9 @@ export default function headerState(state = initState, action) {
 
         case ACTIONS.LAYOUT_SET_HEADER_VAR: {
             const { vars } = action;
-            return produce(state, drafState => {
+            return produce(state, draftState => {
                 for (let [name, value] of Object.entries(vars)) {
-                    drafState.header[name] = value;
+                    draftState.header[name] = value;
                 }
             })
         }

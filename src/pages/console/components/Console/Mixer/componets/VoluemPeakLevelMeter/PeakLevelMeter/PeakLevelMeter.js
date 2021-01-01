@@ -1,6 +1,7 @@
 import React from "react"
 import classNames from "classnames";
-import "./peak-level-meter--vertical.scss";
+import SimpleThrottle from "utils/functions/SimpleThrottle";
+import "./peak-level-meter.scss";
 // there is 30 leds indicators
 // 25 is blue and calc from bottom last 25 is zero dB.
 
@@ -34,6 +35,8 @@ class PeakLevelMater extends React.PureComponent {
         }
         this.breakFlag = false;
         this.lastCall = 0;
+
+        this.updateLed = SimpleThrottle.call(this, this.updateLedStates, 30)
     }
 
     updateLedStates() {
@@ -44,21 +47,28 @@ class PeakLevelMater extends React.PureComponent {
             this.leftRefs[i].current.classList.toggle("led--on", (i <= ledOn))
             this.rightRefs[i].current.classList.toggle("led--on", (i <= ledOn))
         }
-        if(!this.breakFlag){
-            requestAnimationFrame(() => this.updateLedStates.call(this))
-        }
+    }
+
+    loop() {
+        if (this.breakFlag) return;
+        this.updateLed();
+        requestAnimationFrame(() => this.loop())
+    }
+
+    start(){
+        this.breakFlag = false;
+        this.props.interface.startUpdating();
+        this.loop();
+    }
+
+    stop(){
+        this.breakFlag = true;
+        if(!this.props.interface) return;
+        this.props.interface.stopUpdating();
     }
 
     checkActive(){
-        if(this.props.active && this.props.interface){
-            this.breakFlag = false;
-            this.props.interface.startUpdating();
-            this.updateLedStates();
-        } else {
-            this.breakFlag = true;
-            if(!this.props.interface) return;
-            this.props.interface.stopUpdating();
-        }
+        this.props.active && this.props.interface ? this.start() : this.stop();
     }
 
     componentDidUpdate() {

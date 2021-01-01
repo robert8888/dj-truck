@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {connect} from "react-redux";
-import PeakLevelMeterH from "./PeakLevelMeter/PeakLevelMeterH";
-import PeakLevelMeterV from "./PeakLevelMeter/PeakLevelMeterV";
+import PeakLevelMeter from "./PeakLevelMeter/PeakLevelMeter";
 import Thumb from "./Thumb/Thumb";
 import {toRange} from "utils/math/argRanges";
 import _throttle from "lodash/throttle";
@@ -117,12 +116,12 @@ const VolumePeakLevelMeter = ({
         updateValue(position);
     }, [vertical, thumbRef ,normalize, updateValue])
 
-    const mouseMove = useCallback((shift, event)=>{
+    const mouseMove = useCallback((shift, areaRect, event)=>{
         event.stopPropagation();
         const {clientX, clientY} = event;
         const position = (vertical ? clientY - areaRect.top : clientX - areaRect.left) - shift;
         updatePosition(position);
-    }, [vertical, areaRect,  updatePosition])
+    }, [vertical, updatePosition])
 
     const pointerDown = useCallback((event) => {
         event.stopPropagation();
@@ -147,7 +146,9 @@ const VolumePeakLevelMeter = ({
                 return
             }
         }
-        const mMove = mouseMove.bind(null, shift);
+
+        const areaRect = areaRef.current.getBoundingClientRect();
+        const mMove = mouseMove.bind(null, shift, areaRect);
         const onMouseUp = (event) => {
             window.removeEventListener('mousemove', mMove);
             window.removeEventListener('mouseup', onMouseUp);
@@ -158,7 +159,7 @@ const VolumePeakLevelMeter = ({
         window.addEventListener('mousemove', mMove);
         window.addEventListener('mouseup', onMouseUp);
         window.addEventListener('mouseleave', onMouseUp);
-    }, [vertical, thumbRect,  updatePosition, mouseMove, setThumbState])
+    }, [vertical, thumbRect,  updatePosition, mouseMove, setThumbState, areaRef])
 
     useEffect(function setInitialPosition(){
         if(value !== undefined && value !== null) return ;
@@ -176,10 +177,11 @@ const VolumePeakLevelMeter = ({
              onDragStart={ e => e.preventDefault()}
              draggable={false}
              className={"peak-level-meter volume-plm volume-plm--" + aspect + " " + className}>
-                { aspect === "horizontal"
-                   ? <PeakLevelMeterH {...props} aspect={aspect}/>
-                   : <PeakLevelMeterV {...props} aspect={aspect}/>
-                }
+                {/*{ aspect === "horizontal"*/}
+                {/*   ? <PeakLevelMeterH {...props} aspect={aspect}/>*/}
+                {/*   : <PeakLevelMeterV {...props} aspect={aspect}/>*/}
+                {/*}*/}
+                <PeakLevelMeter {...props} aspect={aspect}/>
             <Thumb aspect={aspect}
                    ref={thumbRef}/>
         </div>

@@ -144,13 +144,19 @@ class Slider extends React.Component {
     } // dragging
     else if (event.target === this.sliderThumbElement.current) {
       this.setState({ ...this.state, isDragged: true });
-      const rect = this.sliderThumbElement.current.getBoundingClientRect();
-      const shiftY = event.clientY - rect.top;
-      const shiftX = event.clientX - rect.left;
-      document.addEventListener("mousemove", e =>
-        this.mouseMoveHandler.call(this, e, shiftY, shiftX)
-      );
-      document.addEventListener("dragstart", this.preventDrag);
+      const thumbRect = this.sliderThumbElement.current.getBoundingClientRect();
+      const areaRect = this.sliderAreaElement.current.getBoundingClientRect();
+      const shiftY = event.clientY - thumbRect.top;
+      const shiftX = event.clientX - thumbRect.left;
+      const areaOffset = this.props.horizontal ? areaRect.left : areaRect.top;
+
+      const mouseMove = this.mouseMoveHandler.bind(this, shiftY, shiftX, areaOffset);
+
+      document.addEventListener("mousemove", mouseMove);
+      document.addEventListener("mouseup", function mouseUp(){
+          document.removeEventListener("mouseup", mouseUp);
+          document.removeEventListener("mousemove", mouseMove)
+      })
     }
 
     document.addEventListener("mouseup", this.mouseUpHandler);
@@ -176,27 +182,26 @@ class Slider extends React.Component {
       }
     }
 
-    document.removeEventListener("mousemove", this.mouseMoveHandler.bind(this));
     document.removeEventListener("mouseup", this.mouseUpHandler);
     document.removeEventListener("dragend", this.mouseUpHandler);
     document.removeEventListener("dragstart", this.preventDrag);
   };
 
-  mouseMoveHandler = (event, shiftY, shiftX) => {
+  mouseMoveHandler = (shiftY, shiftX, areaOffset, event) => {
     if (!this.state.isDragged) return;
     let position;
     if (this.props.horizontal) {
-      position =
-        event.clientX -
-        this.state.sliderAreaOffset -
-        shiftX +
-        this.state.thumbSize / 2;
+      position
+        = event.clientX
+        - areaOffset
+        - shiftX
+        + this.state.thumbSize / 2;
     } else {
-      position =
-        event.clientY -
-        this.state.sliderAreaOffset -
-        shiftY +
-        this.state.thumbSize / 2;
+      position
+        = event.clientY
+        - areaOffset
+        - shiftY
+        + this.state.thumbSize / 2;
     }
     this.setPosition(position);
   };

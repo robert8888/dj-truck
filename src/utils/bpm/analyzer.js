@@ -26,7 +26,6 @@ export function calcBpmAndOffset(url) {
 }
 
 export function calcAccurateBpmAndOffset(url, cache = false) {
-    console.log("cacl for url", url)
   return fetch(url)
     .then(response => {
         if(cache)

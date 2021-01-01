@@ -26,7 +26,7 @@ function* handle(action) {
         const response = yield callQuery(query, token);
 
         const user = response?.data?.me;
-    
+
         if(response.errors){
             throw new Error("unable to reasd cucrent user data:" + errorParser(response.errors));
         }

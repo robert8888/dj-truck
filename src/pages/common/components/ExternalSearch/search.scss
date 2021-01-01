@@ -68,13 +68,25 @@
                 order: 3;
                 min-width: calc(100% - 15px);
                 margin: 10px 5px 10px 0;
+                &__input{
+                    padding: 6px 16px;
+                    font-size: .8em;
+                }
             }
+            .btn-api-select > .btn,
+            .btn-max-result-select > .btn,
+            .btn-search-clear.btn {
+                padding: 6px;
+                font-size: .8em;
+            }
+
             .btn-search-clear{
                 order: 4;
                 margin-top: 50px;
                 min-width: calc(100%);
             }
         }
+
 
     }
 

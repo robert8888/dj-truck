@@ -1,9 +1,8 @@
 import React from "react";
 import withControlMapping from "../../../Control/withControlMapping";
-import "./mini-slider.scss";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import "./mini-slider.scss";
 
 class MiniSlider extends React.Component {
   constructor(...args) {
@@ -39,7 +38,7 @@ class MiniSlider extends React.Component {
 
   changeSlide(event) {
     const containerRect = this.container.current.getBoundingClientRect()
-    let x = event.clientX  - containerRect.left;
+    let x = (event.clientX || event.touches[0].clientX) - containerRect.left;
     const clickSide = ( x > containerRect.width / 2) ? "right" : "left";
 
     if(clickSide === "right"){
