@@ -14,8 +14,8 @@ export default class PingPongDelay extends Effect{
                 },
                 time: {
                     min: 0,
-                    max: 180,
-                    defaultValue: 5,
+                    max: 1,
+                    defaultValue: 0.5,
                     type: "float",
                     description: "time"
                 },
@@ -68,8 +68,8 @@ export default class PingPongDelay extends Effect{
 
     set time(value){
         value = this._valueToRange(value, "time")
-        this._time= value;
-        ///
+        this._time = value;
+
         this.delayNodeLeft.delayTime.setTargetAtTime(
                 value, 
                 this._context.currentTime, 

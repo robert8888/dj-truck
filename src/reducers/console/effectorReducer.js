@@ -37,7 +37,7 @@ const nextParameterState = (state, channel, effect, param, value) => {
 
         _set(draftState,  ['channels', channel, 'effects', effect, param], value)
 
-        draftState.lastChange = {signature, channel, effect, param}
+        draftState.lastChange = {signature, channel, effect, param: {[param]: value}}
     })
 }
 

@@ -266,7 +266,7 @@ class Knob extends React.Component{
             event.preventDefault();
         }
         let responseFactor = this.props.responseFactor || 1;
-        const clintY = event.clientY || event.touches[0].clientY;
+        const clintY = event.clientY ?? ((event.touches && event.touches[0].clientY) || 0);
         let position = this.state.snapShotPosition - (clintY  - startY) * responseFactor;
         this.setPosition(position);
     }

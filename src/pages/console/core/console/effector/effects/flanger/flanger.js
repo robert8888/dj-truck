@@ -6,30 +6,30 @@ export default class Flanger extends Effect {
         return {
             params: {
                 time: { // div by  100
-                    min: 0,
-                    max: 100,
-                    defaultValue: 45,
+                    min: 0.3,
+                    max: 50,
+                    defaultValue: 5,
                     type: "float",
                     description: "time"
                 },
                 speed: { // div by 10
                     min: 5,
                     max: 50,
-                    defaultValue: 14,
+                    defaultValue: 28,
                     type: "float",
                     description: "speed"
                 },
                 depth: {// div by 20 000
                     min: 10,
                     max: 100,
-                    defaultValue: 19,
+                    defaultValue: 60,
                     type: "float",
                     description : "depth"
                 },
                 feedback : { // div by 100
                     min: 0,
                     max: 80,
-                    defaultValue: 8,
+                    defaultValue: 40,
                     type: "float",
                     description : "fb"
                 }

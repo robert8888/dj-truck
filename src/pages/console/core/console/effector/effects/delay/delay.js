@@ -7,14 +7,14 @@ export default class Delay extends Effect {
                 feedback: {
                     min: 0,
                     max: 100,
-                    defaultValue: 50,
+                    defaultValue: 70,
                     type: "float",
                     description : "fb"
                 },
                 time: {
-                    min: 0,
-                    max: 1,
-                    defaultValue: .1,
+                    min: .01,
+                    max: 2,
+                    defaultValue: .06,
                     type: "float",
                     description: "time"
                 },
